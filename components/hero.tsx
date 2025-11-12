@@ -33,12 +33,21 @@ export default function Hero({ language }: HeroProps) {
       {/* 🔹 Background Video */}
       <video
         className="absolute inset-0 w-full h-full object-cover opacity-70"
-        src="/hero.mp4"
         autoPlay
         loop
         muted
         playsInline
-      />
+        // 🔹 Optional: Add a poster image to show while video loads
+        // poster="/hero-poster.jpg" 
+        // 🔹 NOTE: The 'src' attribute has been removed
+      >
+        {/* 🔹 Mobile video (shows on screens up to 767px wide) */}
+        <source src="/hero-m.mp4" type="video/mp4" media="(max-width: 767px)" />
+        {/* 🔹 Desktop video (shows on screens 768px and wider) */}
+        <source src="/hero.mp4" type="video/mp4" media="(min-width: 768px)" />
+        {/* 🔹 Fallback text */}
+        Your browser does not support the video tag.
+      </video>
 
       {/* 🔹 Overlay Gradient */}
       <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/50 to-black/20"></div>
