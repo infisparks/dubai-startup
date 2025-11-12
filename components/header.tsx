@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
+// 🔹 1. IMPORT usePathname
+import { usePathname } from "next/navigation" 
 import { Menu, X } from "lucide-react"
 
 interface HeaderProps {
@@ -23,7 +25,7 @@ const translations = {
   ar: {
     home: "الرئيسية",
     about: "حول",
-    investors: "للمستثمرين",
+    investors: "ل للمستثمرين",
     startups: "للشركات الناشئة",
     contact: "تواصل",
     investor: "مستثمر",
@@ -32,12 +34,27 @@ const translations = {
 }
 
 export default function Header({ language = "en", setLanguage }: HeaderProps) {
+  // 🔹 2. GET PATHNAME AND CHECK IF HOMEPAGE
+  const pathname = usePathname()
+  const isHomepage = pathname === "/"
+
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const t = translations[language]
 
+  // 🔹 3. CREATE EFFECTIVE STATE
+  // On homepage, this will be true/false based on scroll
+  // On other pages, this will ALWAYS be true
+  const effectiveScrolled = scrolled || !isHomepage
+
   // 🔹 Detect scroll position to change header background
   useEffect(() => {
+    // Only add scroll listener if we are on the homepage
+    if (!isHomepage) {
+      setScrolled(true) // Set scrolled true permanently for other pages
+      return
+    }
+
     const handleScroll = () => {
       if (window.scrollY > 20) {
         setScrolled(true)
@@ -48,12 +65,13 @@ export default function Header({ language = "en", setLanguage }: HeaderProps) {
 
     window.addEventListener("scroll", handleScroll)
     return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
+  }, [isHomepage]) // Re-run effect if path changes
 
   return (
     <header
       className={`fixed w-full top-0 z-50 transition-all duration-500 ${
-        scrolled
+        // 🔹 4. USE effectiveScrolled
+        effectiveScrolled
           ? "bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm"
           : "bg-transparent border-transparent"
       }`}
@@ -64,7 +82,8 @@ export default function Header({ language = "en", setLanguage }: HeaderProps) {
           <Link href="/" className="flex items-center gap-2">
             <div className="relative w-52 h-10">
               <Image
-                src="/logo.png"
+                // 🔹 4. USE effectiveScrolled
+                src={effectiveScrolled ? "/logo.png" : "/logo-white.png"}
                 alt="Investarise Logo"
                 fill
                 className="object-contain"
@@ -80,7 +99,8 @@ export default function Header({ language = "en", setLanguage }: HeaderProps) {
                 key={key}
                 href={`/#${key}`}
                 className={`px-4 py-2 rounded-lg transition-colors font-medium text-sm ${
-                  scrolled
+                  // 🔹 4. USE effectiveScrolled
+                  effectiveScrolled
                     ? "text-slate-700 hover:text-[#013371] hover:bg-slate-50"
                     : "text-white hover:text-blue-200"
                 }`}
@@ -96,7 +116,8 @@ export default function Header({ language = "en", setLanguage }: HeaderProps) {
               <button
                 onClick={() => setLanguage(language === "en" ? "ar" : "en")}
                 className={`px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
-                  scrolled
+                  // 🔹 4. USE effectiveScrolled
+                  effectiveScrolled
                     ? "text-slate-700 hover:text-[#013371] hover:bg-slate-50"
                     : "text-white hover:text-blue-200"
                 }`}
@@ -108,7 +129,8 @@ export default function Header({ language = "en", setLanguage }: HeaderProps) {
             <Link
               href="/investor-form"
               className={`hidden sm:flex px-4 py-2 rounded-lg font-medium text-sm shadow-md transition-colors ${
-                scrolled
+                // 🔹 4. USE effectiveScrolled
+                effectiveScrolled
                   ? "bg-[#013371] text-white hover:bg-[#024fa3]"
                   : "bg-white text-[#013371] hover:bg-[#013371] hover:text-white"
               }`}
@@ -119,7 +141,8 @@ export default function Header({ language = "en", setLanguage }: HeaderProps) {
             <Link
               href="/founder-form"
               className={`hidden sm:flex px-4 py-2 border-2 rounded-lg font-medium text-sm transition-colors ${
-                scrolled
+                // 🔹 4. USE effectiveScrolled
+                effectiveScrolled
                   ? "border-[#013371] text-[#013371] hover:bg-[#013371] hover:text-white"
                   : "border-white text-white hover:bg-white hover:text-[#013371]"
               }`}
@@ -130,7 +153,8 @@ export default function Header({ language = "en", setLanguage }: HeaderProps) {
             {/* 🔹 Mobile Menu Button */}
             <button
               className={`lg:hidden p-2 rounded-lg transition-colors ${
-                scrolled
+                // 🔹 4. USE effectiveScrolled
+                effectiveScrolled
                   ? "text-slate-700 hover:bg-slate-100"
                   : "text-white hover:bg-white/10"
               }`}
@@ -145,7 +169,10 @@ export default function Header({ language = "en", setLanguage }: HeaderProps) {
         {mobileMenuOpen && (
           <nav
             className={`lg:hidden pb-4 space-y-2 animate-slideInDown ${
-              scrolled ? "bg-white/95 border-t border-slate-200" : "bg-black/50 backdrop-blur-md"
+              // 🔹 4. USE effectiveScrolled
+              effectiveScrolled
+                ? "bg-white/95 border-t border-slate-200"
+                : "bg-black/50 backdrop-blur-md"
             } rounded-b-xl`}
           >
             {["home", "about", "contact"].map((key) => (
@@ -153,7 +180,8 @@ export default function Header({ language = "en", setLanguage }: HeaderProps) {
                 key={key}
                 href={`/#${key}`}
                 className={`block px-4 py-2 rounded-lg font-medium text-sm ${
-                  scrolled
+                  // 🔹 4. USE effectiveScrolled
+                  effectiveScrolled
                     ? "text-slate-700 hover:text-[#013371] hover:bg-slate-50"
                     : "text-white hover:text-blue-200"
                 }`}
@@ -166,7 +194,8 @@ export default function Header({ language = "en", setLanguage }: HeaderProps) {
               <Link
                 href="/investor-form"
                 className={`block px-4 py-2 rounded-lg text-center font-medium text-sm ${
-                  scrolled
+                  // 🔹 4. USE effectiveScrolled
+                  effectiveScrolled
                     ? "bg-[#013371] text-white hover:bg-[#024fa3]"
                     : "bg-white text-[#013371] hover:bg-[#013371] hover:text-white"
                 }`}
@@ -176,7 +205,8 @@ export default function Header({ language = "en", setLanguage }: HeaderProps) {
               <Link
                 href="/founder-form"
                 className={`block px-4 py-2 border-2 rounded-lg text-center font-medium text-sm ${
-                  scrolled
+                  // 🔹 4. USE effectiveScrolled
+                  effectiveScrolled
                     ? "border-[#013371] text-[#013371] hover:bg-[#013371] hover:text-white"
                     : "border-white text-white hover:bg-white hover:text-[#013371]"
                 }`}
