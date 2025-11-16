@@ -23,6 +23,9 @@ interface SpeakerProfileData {
     topic_abstract: string;
     profile_photo_url: string | null;
     is_approved: boolean;
+    // ⭐ NEW: Added name and email from the SQL table
+    name: string | null;
+    email: string | null;
 }
 
 // Define the type for the form's state
@@ -122,13 +125,14 @@ export default function SpeakerFormPage() {
   // --- Supabase Session and Role Management ---
   const fetchUserData = useCallback(async (currentUser: SupabaseUser) => {
         setLoadingData(true);
-        // 1. Fetch Full Name (for pre-filling)
+        // 1. Fetch Full Name from profiles (used as initial default)
         const { data: profileData } = await supabase
             .from('profiles')
             .select('full_name')
             .eq('id', currentUser.id)
             .single();
 
+        // Set initial defaults from auth and profiles table
         setFormData((prev) => ({
             ...prev,
             fullName: profileData?.full_name || prev.fullName,
@@ -138,7 +142,8 @@ export default function SpeakerFormPage() {
         // 2. Fetch Speaker Profile Data
         const { data: speakerProfile } = await supabase
             .from('speaker_profiles')
-            .select('*')
+            // ⭐ UPDATED: Fetch name and email from speaker_profiles
+            .select('*, name, email') 
             .eq('user_id', currentUser.id)
             .single();
         
@@ -147,9 +152,13 @@ export default function SpeakerFormPage() {
             setIsApproved(speakerProfile.is_approved);
             setStep(0); // Show Status Card
             
-            // Pre-fill all specific form fields
+            // Pre-fill all specific form fields, prioritizing saved data
             setFormData((prev) => ({
                 ...prev,
+                // ⭐ UPDATED: Use name and email from speaker_profiles if available
+                fullName: speakerProfile.name || prev.fullName,
+                email: speakerProfile.email || currentUser.email!,
+                
                 phone: speakerProfile.phone || '',
                 linkedin: speakerProfile.linkedin || '',
                 jobTitle: speakerProfile.job_title || '',
@@ -392,6 +401,9 @@ export default function SpeakerFormPage() {
             topic_title: formData.topicTitle,
             topic_abstract: formData.topicAbstract,
             profile_photo_url: finalPhotoUrl,
+            // ⭐ NEW: Save name and email to the speaker_profiles table
+            name: formData.fullName,
+            email: formData.email,
         };
 
         let error;
@@ -568,7 +580,8 @@ const SpeakerFormView: React.FC<SpeakerFormViewProps> = ({
                     <h2 className="text-2xl font-bold text-slate-900 mb-8">{t.step1Title}</h2>
 
                     {[
-                        { label: t.fullName, name: "fullName", type: "text", placeholder: t.placeholder.name, required: true, disabled: true }, 
+                        // ⭐ FIXED: Full Name is now editable if not approved
+                        { label: t.fullName, name: "fullName", type: "text", placeholder: t.placeholder.name, required: true, disabled: isApproved }, 
                         { label: t.email, name: "email", type: "email", placeholder: t.placeholder.email, required: true, disabled: true }, 
                         { label: t.phone, name: "phone", type: "tel", placeholder: t.placeholder.phone, required: true, disabled: isApproved },
                         { label: t.linkedin, name: "linkedin", type: "url", placeholder: t.placeholder.linkedin, required: false, disabled: isApproved },
@@ -585,9 +598,10 @@ const SpeakerFormView: React.FC<SpeakerFormViewProps> = ({
                         value={formData[field.name as keyof SpeakerFormData] as string}
                         onChange={handleInputChange}
                         placeholder={field.placeholder}
-                        className={`w-full px-4 py-3 border-2 border-slate-200 rounded-lg focus:border-[#013371] focus:outline-none bg-white hover:border-slate-300 transition-colors ${field.disabled || isApproved ? 'bg-slate-100 cursor-not-allowed' : ''}`}
+                        // Use field.disabled to handle Email lock, and isApproved for others
+                        className={`w-full px-4 py-3 border-2 border-slate-200 rounded-lg focus:border-[#013371] focus:outline-none bg-white hover:border-slate-300 transition-colors ${field.disabled ? 'bg-slate-100 cursor-not-allowed' : ''}`}
                         required={field.required}
-                        disabled={field.disabled || isApproved}
+                        disabled={field.disabled}
                         />
                     </div>
                     ))}

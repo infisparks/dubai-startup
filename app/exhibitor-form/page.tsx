@@ -21,6 +21,9 @@ interface ExhibitorProfileData {
     company_description: string;
     company_logo_url: string | null;
     is_approved: boolean;
+    email: string | null; 
+    // ⭐ ADDED contact_personname HERE
+    contact_personname: string | null;
 }
 
 // Define the type for the form's state
@@ -108,7 +111,8 @@ export default function ExhibitorFormPage() {
   // --- Supabase Session and Role Management ---
   const fetchUserData = useCallback(async (currentUser: SupabaseUser) => {
         setLoadingData(true);
-        // 1. Fetch Full Name (for pre-filling)
+        
+        // 1. Fetch Full Name from profiles (initial default for pre-filling)
         const { data: profileData } = await supabase
             .from('profiles')
             .select('full_name')
@@ -141,6 +145,9 @@ export default function ExhibitorFormPage() {
                 boothType: exhibitorProfile.booth_type || '',
                 companyDescription: exhibitorProfile.company_description || '',
                 companyLogoUrl: exhibitorProfile.company_logo_url,
+                // ⭐ RETRIEVING THE SAVED CONTACT NAME
+                contactName: exhibitorProfile.contact_personname || profileData?.full_name || '',
+                // The email is already set from currentUser.email!
             }));
         } else {
             setHasExistingProfile(false);
@@ -344,6 +351,9 @@ export default function ExhibitorFormPage() {
             booth_type: formData.boothType,
             company_description: formData.companyDescription,
             company_logo_url: finalLogoUrl,
+            email: user.email!, 
+            // ⭐ SAVING CONTACT NAME TO THE DATABASE
+            contact_personname: formData.contactName, 
         };
 
         let error;
@@ -494,8 +504,10 @@ const ExhibitorFormView: React.FC<ExhibitorFormViewProps> = ({
                 {[
                     { label: t.companyName, name: "companyName", type: "text", placeholder: t.placeholder.companyName, required: true, disabled: isApproved },
                     { label: t.companyWebsite, name: "companyWebsite", type: "url", placeholder: t.placeholder.companyWebsite, required: true, disabled: isApproved },
-                    { label: t.contactName, name: "contactName", type: "text", placeholder: t.placeholder.contactName, required: true, disabled: true },
-                    { label: t.contactEmail, name: "contactEmail", type: "email", placeholder: t.placeholder.contactEmail, required: true, disabled: true },
+                    // Contact Name is now editable (if not approved)
+                    { label: t.contactName, name: "contactName", type: "text", placeholder: t.placeholder.contactName, required: true, disabled: isApproved },
+                    // Contact Email remains disabled as it's the user's login ID
+                    { label: t.contactEmail, name: "contactEmail", type: "email", placeholder: t.placeholder.contactEmail, required: true, disabled: true }, 
                     { label: t.contactPhone, name: "contactPhone", type: "tel", placeholder: t.placeholder.contactPhone, required: true, disabled: isApproved },
                 ].map((field) => (
                 <div key={field.name}>

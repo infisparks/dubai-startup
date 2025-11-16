@@ -9,7 +9,6 @@ import Header from "@/components/header"
 import Footer from "@/components/footer"
 import AuthPopup from "@/components/AuthPopup" 
 import EmailVerificationNotice from "@/components/EmailVerificationNotice" 
-// ⭐ FIX 3: Added 'Link' icon import
 import { ArrowRight, CheckCircle2, LogIn, Edit, Save, Lock, TrendingUp, Link as LinkIcon } from "lucide-react" 
 import { supabase } from "@/lib/supabaseConfig" 
 
@@ -21,7 +20,10 @@ interface InvestorProfileData {
     investment_type: string;
     experience: string;
     interests: string[] | null;
-    is_approved: boolean; // Added approval status
+    is_approved: boolean; 
+    // ⭐ NEW: Added name and email from the SQL table
+    name: string | null;
+    email: string | null;
 }
 
 // Define the type for the form's state
@@ -91,7 +93,7 @@ export default function InvestorFormPage() {
   const [showAuthPopup, setShowAuthPopup] = useState(false)
   const [needsVerification, setNeedsVerification] = useState(false)
   const [hasExistingProfile, setHasExistingProfile] = useState(false)
-  const [isApproved, setIsApproved] = useState(false) // State for approval
+  const [isApproved, setIsApproved] = useState(false) 
 
   const [step, setStep] = useState(1) // 1 = form step 1, 0 = status card
   const [language, setLanguage] = useState<"en" | "ar">("en")
@@ -109,7 +111,7 @@ export default function InvestorFormPage() {
   // --- Supabase Session and Role Management ---
   const fetchUserData = useCallback(async (currentUser: SupabaseUser) => {
         setLoadingData(true);
-        // 1. Fetch Role and Full Name (for pre-filling)
+        // 1. Fetch Role and Full Name from profiles table (used as initial default)
         const { data: profileData, error: profileError } = await supabase
             .from('profiles')
             .select('role, full_name')
@@ -120,7 +122,8 @@ export default function InvestorFormPage() {
             console.error("Error fetching profile:", profileError);
             setUserRole(null);
         } else {
-            setUserRole(profileData.role); // Set role, but we won't use it to block
+            setUserRole(profileData.role);
+            // Set initial defaults from auth and profiles table
             setFormData((prev) => ({
                 ...prev,
                 fullName: profileData.full_name || prev.fullName,
@@ -128,21 +131,26 @@ export default function InvestorFormPage() {
             }));
         }
 
-        // 2. Fetch Investor Profile Data (ALWAYS, regardless of role)
+        // 2. Fetch Investor Profile Data
         const { data: investorProfile, error: investorError } = await supabase
+            // ⭐ UPDATED: Fetch name and email from investor_profiles
             .from('investor_profiles')
-            .select('*, is_approved') // Fetch is_approved
+            .select('*, is_approved, name, email') 
             .eq('user_id', currentUser.id)
             .single();
         
         if (investorProfile && !investorError) {
             setHasExistingProfile(true);
-            setIsApproved(investorProfile.is_approved); // Set approval status
+            setIsApproved(investorProfile.is_approved);
             setStep(0); // Show Status Card
             
-            // Pre-fill all specific form fields
+            // Pre-fill all specific form fields, prioritizing data from investor_profiles
             setFormData((prev) => ({
                 ...prev,
+                // ⭐ UPDATED: Use name and email from investor_profiles if present, otherwise fall back.
+                fullName: investorProfile.name || prev.fullName,
+                email: investorProfile.email || currentUser.email!,
+                
                 phone: investorProfile.phone || '',
                 linkedin: investorProfile.linkedin || '',
                 investmentAmount: investorProfile.investment_amount || '',
@@ -155,7 +163,7 @@ export default function InvestorFormPage() {
             setStep(1); // Show new form
         }
         setLoadingData(false);
-    }, []); // Empty dependency array
+    }, []); 
 
   useEffect(() => {
     const getSession = async () => {
@@ -309,7 +317,7 @@ export default function InvestorFormPage() {
                 title: "حالة الملف الشخصي",
                 pending: "الملف الشخصي قيد المراجعة",
                 approved: "تمت الموافقة على الملف الشخصي",
-                notApprovedDesc: "ملفك الشخصي قيد المراجعة من قبل فريقنا. يمكنك تعديل التفاصيل الخاصة بك حتى تتم الموافقة عليه.",
+                notApprovedDesc: "ملفك الشخصي قيد المراجعة من قبل فريقنا. يمكنك تعديل التفاصيل الخاصة بك حتى تتم الموافقة عليها.",
                 approvedDesc: "تمت الموافقة على ملفك الاستثماري. لديك الآن حق الوصول الكامل إلى ميزات المنصة.",
                 viewDetails: "تفاصيل ملفك الشخصي (للقراءة فقط)",
             },
@@ -370,6 +378,9 @@ export default function InvestorFormPage() {
         investment_type: formData.investmentType,
         experience: formData.experience,
         interests: formData.interests,
+        // ⭐ NEW: Save name and email to the investor_profiles table
+        name: formData.fullName, 
+        email: formData.email, 
     };
 
     let error;
@@ -468,7 +479,7 @@ export default function InvestorFormPage() {
                 step={step}
                 formData={formData}
                 handleInputChange={handleInputChange}
-                handleCheckboxChange={handleCheckboxChange} // ⭐ FIX: Pass new handler
+                handleCheckboxChange={handleCheckboxChange} 
                 handleNext={handleNext}
                 handleBack={handleBack}
                 handleSubmit={handleSubmit}
@@ -527,7 +538,7 @@ interface InvestorFormViewProps {
     step: number;
     formData: InvestorFormData; // Use specific type
     handleInputChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => void;
-    handleCheckboxChange: (interest: string, isChecked: boolean) => void; // ⭐ FIX: Add new prop
+    handleCheckboxChange: (interest: string, isChecked: boolean) => void; 
     handleNext: () => void;
     handleBack: () => void;
     handleSubmit: (e: React.FormEvent) => void;
@@ -540,7 +551,7 @@ const InvestorFormView: React.FC<InvestorFormViewProps> = ({
     step, 
     formData, 
     handleInputChange, 
-    handleCheckboxChange, // ⭐ FIX: Receive new prop
+    handleCheckboxChange, 
     handleNext, 
     handleBack, 
     handleSubmit, 
@@ -581,8 +592,10 @@ const InvestorFormView: React.FC<InvestorFormViewProps> = ({
                     <h2 className="text-2xl font-bold text-slate-900 mb-8">{t.personalInfo}</h2>
 
                     {[
-                    { label: t.fullName, name: "fullName", type: "text", placeholder: t.placeholder.name, required: true, disabled: true }, 
+                    // ⭐ FIXED: Full Name is now editable (disabled only if isApproved)
+                    { label: t.fullName, name: "fullName", type: "text", placeholder: t.placeholder.name, required: true, disabled: isApproved }, 
                     { label: t.phone, name: "phone", type: "tel", placeholder: t.placeholder.phone, required: true, disabled: isApproved },
+                    // Email remains disabled as it's the core login identity
                     { label: t.email, name: "email", type: "email", placeholder: t.placeholder.email, required: true, disabled: true }, 
                     { label: t.linkedin, name: "linkedin", type: "url", placeholder: t.placeholder.linkedin, required: false, disabled: isApproved },
                     ].map((field) => (
@@ -596,6 +609,7 @@ const InvestorFormView: React.FC<InvestorFormViewProps> = ({
                         value={formData[field.name as keyof typeof formData]}
                         onChange={handleInputChange}
                         placeholder={field.placeholder}
+                        // Use field.disabled to handle Email lock, and isApproved for others
                         className={`w-full px-4 py-3 border-2 border-slate-200 rounded-lg focus:border-[#013371] focus:outline-none bg-white hover:border-slate-300 transition-colors ${field.disabled ? 'bg-slate-100 cursor-not-allowed' : ''}`}
                         required={field.required}
                         disabled={field.disabled}
@@ -668,7 +682,6 @@ const InvestorFormView: React.FC<InvestorFormViewProps> = ({
                             <input
                             type="checkbox"
                             checked={formData.interests.includes(interest)}
-                            // ⭐ FIX 2: Use the new handler
                             onChange={(e) => handleCheckboxChange(interest, e.target.checked)}
                             className="w-4 h-4 accent-[#013371] cursor-pointer"
                             disabled={isApproved}
@@ -786,7 +799,6 @@ const InvestorStatusView: React.FC<InvestorStatusViewProps> = ({ t, isApproved, 
                                     {field.value}
                                 </a>
                             ) : (
-                                // ⭐ FIX 2: Removed stray 'D.D' and fixed closing tag
                                 <p className="text-slate-900 font-medium">{field.value}</p>
                             )}
                         </div>

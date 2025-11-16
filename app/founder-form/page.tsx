@@ -27,6 +27,8 @@ interface FounderProfileData {
     problem_description: string | null;
     earning_status: string | null;
     is_approved: boolean;
+    // ⭐ ADDED EMAIL FIELD HERE
+    email: string;
 }
 
 // Define a type for the structure returned by the translations useMemo hook
@@ -118,7 +120,7 @@ export default function FounderFormPage() {
     website: "",
     description: "",
     founderName: "",
-    founderEmail: "",
+    founderEmail: "", // Kept as form field for display/pre-fill
     founderPhone: "",
     domain: "",
     domainOtherSpec: "",
@@ -140,7 +142,6 @@ export default function FounderFormPage() {
     setUserRole(profileData?.role || null);
     
     // 2. Fetch Founder Profile Data (ALWAYS, regardless of role)
-    //    This allows an 'investor' to also have a 'founder' profile.
     const { data: founderProfile } = await supabase
         .from('founder_profiles')
         .select('*')
@@ -162,6 +163,7 @@ export default function FounderFormPage() {
             website: founderProfile.website || '',
             description: founderProfile.description || '',
             founderName: founderProfile.founder_name || '',
+            // Use the email from the auth user for consistency, but founderProfile.email could also be used
             founderEmail: currentUser.email!,
             founderPhone: founderProfile.founder_phone || '',
             domain: founderProfile.domain || '',
@@ -185,6 +187,7 @@ export default function FounderFormPage() {
         setUser(currentUser);
         
         if (currentUser) {
+            // Set email immediately upon session load
             setFormData(prev => ({ ...prev, founderEmail: currentUser.email! }));
             if (!currentUser.email_confirmed_at) {
                 setNeedsVerification(true);
@@ -436,7 +439,7 @@ export default function FounderFormPage() {
             throw new Error(t.pitchDeckRequiredError);
         }
         
-        // Create submission data *without* is_approved
+        // 2. Create submission data, including the email
         const submissionData: Omit<FounderProfileData, 'is_approved'> = {
             company_name: formData.companyName,
             stage: formData.stage,
@@ -450,6 +453,8 @@ export default function FounderFormPage() {
             domain_other_spec: formData.domain === 'Other' ? formData.domainOtherSpec : null,
             problem_description: formData.problemDescription,
             earning_status: formData.earningStatus,
+            // ⭐ CRITICAL UPDATE: Add email to submission data
+            email: user.email!, 
         }
 
         let error;
@@ -514,9 +519,6 @@ export default function FounderFormPage() {
         );
     }
     
-    // ⭐ FIX: REMOVED the "Role Check: Deny access if user is an investor" block.
-    // A user can now see this form regardless of their primary role.
-
     // Show StatusView if profile exists AND we are on step 0 (default for existing users)
     if (hasExistingProfile && step === 0) {
         return (
@@ -531,7 +533,6 @@ export default function FounderFormPage() {
     }
 
     // Show FormView if we are on step 1 or 2
-    // This covers both new users (step=1) and existing users editing (step=1 or 2)
     if (step === 1 || step === 2) {
         return (
           <FormView 
