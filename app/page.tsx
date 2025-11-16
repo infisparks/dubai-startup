@@ -49,6 +49,7 @@ export default function Home() {
 
 <OurTeam language={language}/>
 <SponsorshipPackages language={language}/>
+
       {/* <FeaturedStartups language={language} />
       <HowItWorks language={language} />
       <InvestorBenefits language={language} />

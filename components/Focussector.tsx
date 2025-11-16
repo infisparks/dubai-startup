@@ -1,70 +1,116 @@
 'use client'
 
 import React, { useState, useRef, useEffect, useCallback } from 'react'
-// IMPORT ICONS DIRECTLY HERE from react-icons/fi
-import { FiCpu, FiCreditCard, FiHeart, FiHome, FiFeather, FiUsers } from 'react-icons/fi'
+// Importing Lucide icons for a modern look
+import { Zap, Leaf, CreditCard, Stethoscope, Home, Users, ChevronLeft, ChevronRight, CheckCircle } from 'lucide-react'
 
 interface FocusSectorsProps {
   language: 'en' | 'ar'
 }
 
-// --- Internal Arrow Components (Reused for brevity) ---
-function ChevronLeftIcon() {
-  return (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5"><path fillRule="evenodd" d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z" clipRule="evenodd" /></svg>
-  )
-}
+const PRIMARY_COLOR = "#2a3486"
 
-function ChevronRightIcon() {
-  return (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5"><path fillRule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clipRule="evenodd" /></svg>
-  )
-}
-
-// --- Icon Mapping Utility ---
-const IconMap: { [key: string]: React.ElementType } = {
-  Robot: FiCpu,          
-  Wallet: FiCreditCard,  
-  Heart: FiHeart,        
-  Building: FiHome,      
-  Leaf: FiFeather,       
-  User: FiUsers,         
-};
-
-
-// --- Data Structure (Omitted for brevity, assumed stable) ---
+// --- Data Structure (Updated to use the same image path for all sectors) ---
 const translations = {
   en: {
     title: 'Focus Sectors',
-    subtitle:
-      'Investarise Global Investment Summit 2026 will spotlight critical industries poised for significant growth and innovation.',
+    subtitle: 'Discover critical industries poised for significant growth and innovation.',
     footer:
       'These sectors represent areas where technological advancements and strategic investments can yield substantial returns and societal impact.',
     sectors: [
-      { iconKey: 'Robot', name: 'AI & Robotics', desc: 'Cutting-edge artificial intelligence and robotic solutions transforming industries.', },
-      { iconKey: 'Wallet', name: 'Fintech & Blockchain', desc: 'Digital financial innovations and blockchain technologies revolutionizing commerce.', },
-      { iconKey: 'Heart', name: 'Healthcare & Biotech', desc: 'Breakthrough medical technologies and biotech innovations improving lives.', },
-      { iconKey: 'Building', name: 'Real Estate & PropTech', desc: 'Smart property solutions and real estate innovations transforming urban development.', },
-      { iconKey: 'Leaf', name: 'Clean Energy & Sustainability', desc: 'Renewable energy solutions and sustainable practices driving environmental progress.', },
-      { iconKey: 'User', name: 'Women Empowerment', desc: 'Drive by innovation & equality, we are building a platform that supports women founders through mentorship, funding & community-enabling them rise, lead & succeed.', },
+      { icon: Zap, name: 'AI & Robotics', desc: 'Cutting-edge artificial intelligence and robotic solutions transforming industries.', image: '/Startup/1.png' },
+      { icon: CreditCard, name: 'Fintech & Blockchain', desc: 'Digital financial innovations and blockchain technologies revolutionizing commerce.', image: '/Startup/2.png' },
+      { icon: Stethoscope, name: 'Healthcare & Biotech', desc: 'Breakthrough medical technologies and biotech innovations improving lives.', image: '/Startup/3.png' },
+      { icon: Home, name: 'Real Estate & PropTech', desc: 'Smart property solutions and real estate innovations transforming urban development.', image: '/Startup/4.png' },
+      { icon: Leaf, name: 'Clean Energy & Sustainability', desc: 'Renewable energy solutions and sustainable practices driving environmental progress.', image: '/Startup/5.png' },
+      { icon: Users, name: 'Women Empowerment', desc: 'Platform supporting women founders through mentorship, funding, and community.', image: '/Startup/6.png' },
     ],
   },
   ar: {
     title: 'القطاعات الرئيسية',
-    subtitle:
-      'ستسلط قمة إنفستارايز العالمية للاستثمار 2026 الضوء على الصناعات الحيوية المهيأة لتحقيق نمو وابتكار كبيرين.',
+    subtitle: 'اكتشف الصناعات الحيوية المهيأة لتحقيق نمو وابتكار كبيرين.',
     footer:
       'تمثل هذه القطاعات مجالات يمكن أن تحقق فيها التطورات التكنولوجية والاستثمارات الاستراتيجية عوائد كبيرة وتأثيراً مجتمعياً.',
     sectors: [
-      { iconKey: 'Robot', name: 'الذكاء الاصطناعي والروبوتات', desc: 'حلول الذكاء الاصطناعي والروبوتات المتطورة التي تحول الصناعات.', },
-      { iconKey: 'Wallet', name: 'التكنولوجيا المالية والبلوكشين', desc: 'الابتكارات المالية الرقمية وتقنيات البلوكشين التي تحدث ثورة في التجارة.', },
-      { iconKey: 'Heart', name: 'الرعاية الصحية والتكنولوجيا الحيوية', desc: 'تقنيات طبية رائدة وابتكارات في التكنولوجيا الحيوية تعمل على تحسين الحياة.', },
-      { iconKey: 'Building', name: 'العقارات والتكنولوجيا العقارية', desc: 'حلول الممتلكات الذكية وابتكارات العقارات التي تحول التنمية الحضرية.', },
-      { iconKey: 'Leaf', name: 'الطاقة النظيفة والاستدامة', desc: 'حلول الطاقة المتجددة والممارسات المستدامة التي تدفع التقدم البيئي.', },
-      { iconKey: 'User', name: 'تمكين المرأة', desc: 'مدعومين بالابتكار والمساواة، نقوم ببناء منصة تدعم المؤسسات من النساء من خلال الإرشاد والتمويل والمجتمع - لتمكينهن من الصعود والقيادة والنجاح.', },
+      { icon: Zap, name: 'الذكاء الاصطناعي والروبوتات', desc: 'حلول الذكاء الاصطناعي والروبوتات المتطورة التي تحول الصناعات.', image: '/Startup/1.png' },
+      { icon: CreditCard, name: 'التكنولوجيا المالية والبلوكشين', desc: 'الابتكارات المالية الرقمية وتقنيات البلوكشين التي تحدث ثورة في التجارة.', image: '/Startup/1.png' },
+      { icon: Stethoscope, name: 'الرعاية الصحية والتكنولوجيا الحيوية', desc: 'تقنيات طبية رائدة وابتكارات في التكنولوجيا الحيوية تعمل على تحسين الحياة.', image: '/Startup/1.png' },
+      { icon: Home, name: 'العقارات والتكنولوجيا العقارية', desc: 'حلول الممتلكات الذكية وابتكارات العقارات التي تحول التنمية الحضرية.', image: '/Startup/1.png' },
+      { icon: Leaf, name: 'الطاقة النظيفة والاستدامة', desc: 'حلول الطاقة المتجددة والممارسات المستدامة التي تدفع التقدم البيئي.', image: '/Startup/1.png' },
+      { icon: Users, name: 'تمكين المرأة', desc: 'منصة تدعم المؤسسات من النساء من خلال الإرشاد والتمويل والمجتمع.', image: '/Startup/1.png' },
     ],
   },
 }
+
+// Helper component for the Image Card (Redefined based on FeaturedStartups style)
+const SectorCard: React.FC<{ sector: (typeof translations.en.sectors)[0]; isRtl: boolean }> = ({ sector }) => {
+    const Icon = sector.icon;
+    const [isHovered, setIsHovered] = useState(false);
+
+    return (
+        <div
+            className="flex-shrink-0 snap-start w-72 h-72 lg:w-full lg:h-auto
+                       transition-all duration-300"
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+        >
+            <div
+                className="group relative h-full rounded-xl overflow-hidden shadow-lg hover:shadow-2xl 
+                           transform hover:scale-[1.03] hover:-translate-y-1 transition-all duration-500 cursor-pointer"
+                style={{
+                    boxShadow: isHovered
+                        ? `0 25px 50px ${PRIMARY_COLOR}20`
+                        : "0 10px 30px rgba(0,0,0,0.1)",
+                }}
+            >
+                {/* Background Image */}
+                <img
+                    src={sector.image} // Uses the new '/Startup/1.png' path
+                    alt={sector.name}
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                />
+
+                {/* Overlay */}
+                <div
+                    className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-black/10 group-hover:from-black/80 transition-all duration-500"
+                />
+
+                {/* Icon Badge */}
+                <div className="absolute top-4 right-4 z-10">
+                    <div
+                        className="w-12 h-12 rounded-xl flex items-center justify-center bg-white shadow-md group-hover:scale-110 transition-transform duration-300"
+                        style={{ boxShadow: `0 4px 16px ${PRIMARY_COLOR}30` }}
+                    >
+                        <Icon
+                            className="w-6 h-6"
+                            style={{ color: PRIMARY_COLOR }}
+                        />
+                    </div>
+                </div>
+
+                {/* Text Content */}
+                <div className="absolute bottom-0 left-0 right-0 p-5 z-20">
+                    <div className="mb-2">
+                        <span
+                            className="inline-block px-3 py-1 rounded-lg text-sm font-semibold backdrop-blur-sm border border-white/30 text-white bg-white/15"
+                        >
+                            {sector.name}
+                        </span>
+                    </div>
+
+                    <h3 className="text-xl font-bold text-white mb-2 group-hover:translate-y-0.5 transition-all">
+                        {sector.name}
+                    </h3>
+
+                    <p className="text-white/90 text-sm leading-relaxed line-clamp-2 transition-colors">
+                        {sector.desc}
+                    </p>
+                </div>
+            </div>
+        </div>
+    );
+};
+
 
 export default function FocusSectors({
   language = 'en',
@@ -77,20 +123,17 @@ export default function FocusSectors({
   const [isScrollEnd, setIsScrollEnd] = useState(false)
 
   const checkScrollPosition = useCallback(() => {
-    const el = scrollContainerRef.current
-    if (el) {
-      const atStart = el.scrollLeft < 10
-      const atEnd = el.scrollLeft + el.clientWidth >= el.scrollWidth - 10
-      setIsScrollStart(atStart)
-      setIsScrollEnd(atEnd)
+    if (scrollContainerRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current
+      setIsScrollStart(scrollLeft < 10)
+      setIsScrollEnd(scrollLeft + clientWidth >= scrollWidth - 10)
     }
   }, [])
 
   const scroll = (direction: 'left' | 'right') => {
-    const el = scrollContainerRef.current
-    if (el) {
-      const scrollAmount = el.clientWidth * 0.85
-      el.scrollBy({
+    if (scrollContainerRef.current) {
+      const scrollAmount = 300 // Adjusted scroll amount for card width
+      scrollContainerRef.current.scrollBy({
         left: direction === 'left' ? -scrollAmount : scrollAmount,
         behavior: 'smooth',
       })
@@ -98,15 +141,15 @@ export default function FocusSectors({
   }
 
   useEffect(() => {
-    const el = scrollContainerRef.current
-    if (el) {
-      el.addEventListener('scroll', checkScrollPosition)
+    checkScrollPosition()
+    const scrollElement = scrollContainerRef.current
+    if (scrollElement) {
+      scrollElement.addEventListener('scroll', checkScrollPosition)
       window.addEventListener('resize', checkScrollPosition)
-      
-      checkScrollPosition()
-
-      return () => {
-        el.removeEventListener('scroll', checkScrollPosition)
+    }
+    return () => {
+      if (scrollElement) {
+        scrollElement.removeEventListener('scroll', checkScrollPosition)
         window.removeEventListener('resize', checkScrollPosition)
       }
     }
@@ -137,55 +180,23 @@ export default function FocusSectors({
                        md:hidden ${isScrollStart ? 'opacity-0' : 'opacity-100'}`}
             aria-label="Scroll left"
           >
-            <ChevronLeftIcon />
+            <ChevronLeft className="w-5 h-5" />
           </button>
           
           {/* Sectors Scroll Track */}
           <div
             ref={scrollContainerRef}
-            // UPDATED: Changed lg:grid-cols-6 to lg:grid-cols-3 for 3x2 layout
-            className="flex flex-nowrap overflow-x-auto scroll-smooth snap-x snap-mandatory gap-6 px-2 py-4
+            // Using gap-6 for mobile sizing
+            className="flex flex-nowrap overflow-x-auto scroll-smooth snap-x snap-mandatory gap-6 px-4 py-4
                        md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-8 md:p-0 md:overflow-visible
                        [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
           >
-            {t.sectors.map((sector, index) => {
-              const IconComponent = IconMap[sector.iconKey]
-              const isBlue = index % 2 === 0
-
-              return (
-                <div
-                  key={sector.name}
-                  className="bg-white p-6 rounded-2xl shadow-xl border border-slate-100 
-                             w-[85vw] flex-shrink-0 snap-start
-                             md:w-auto md:flex-shrink-1 
-                             transition-all duration-300 hover:shadow-lg hover:shadow-cyan-500/10 hover:-translate-y-1"
-                >
-                  <div className="flex flex-col items-center text-center h-full">
-                    {/* Icon with Gradient Circle */}
-                    <div
-                      className={`flex-shrink-0 p-4 rounded-full mb-4 ${
-                        isBlue
-                          ? 'bg-gradient-to-br from-blue-600 to-cyan-500 text-white'
-                          : 'bg-gradient-to-br from-cyan-500 to-blue-600 text-white'
-                      }`}
-                    >
-                      {IconComponent ? (
-                        <IconComponent className="w-8 h-8" />
-                      ) : (
-                        <span className="text-sm">?</span>
-                      )}
-                    </div>
-
-                    <h4 className="text-base font-bold text-slate-900 mb-2">
-                      {sector.name}
-                    </h4>
-                    <p className="text-xs text-slate-600 font-light leading-tight flex-grow">
-                      {sector.desc}
-                    </p>
-                  </div>
+            {t.sectors.map((sector, index) => (
+                // W-72 h-72 is necessary for uniformity on mobile
+                <div key={index} className="flex-shrink-0 snap-start w-72 h-72 lg:w-full lg:h-auto">
+                    <SectorCard sector={sector} isRtl={language === 'ar'} />
                 </div>
-              )
-            })}
+            ))}
           </div>
 
           {/* Right Arrow */}
@@ -195,7 +206,7 @@ export default function FocusSectors({
                        md:hidden ${isScrollEnd ? 'opacity-0' : 'opacity-100'}`}
             aria-label="Scroll right"
           >
-            <ChevronRightIcon />
+            <ChevronRight className="w-5 h-5" />
           </button>
         </div>
       </div>
