@@ -12,7 +12,20 @@ import Newsletter from "@/components/newsletter"
 import Contact from "@/components/contact"
 import Footer from "@/components/footer"
 import ScrollToTop from "@/components/scroll-to-top"
-
+import PrincePage from "@/components/PrincePage"
+import FounderPage from "@/components/Founder"
+import CoFoundersPage from "@/components/Cofounder"
+import ApprovedStartupsList from "@/components/ApprovedStartupsList"
+import Speaker from "@/components/Speaker"
+import EventOverview from "@/components/Eventoverview"
+import VisionAndGoals from "@/components/Vision"
+import { LandPlot } from "lucide-react"
+import FocusSectors from "@/components/Focussector"
+import VenueSection from "@/components/Venue"
+import Schedule from "@/components/Schedules"
+import MarketingStrategy from "@/components/Markiting"
+import OurTeam from "@/components/Team"
+import SponsorshipPackages from "@/components/Sponser"
 export default function Home() {
   const [language, setLanguage] = useState<"en" | "ar">("en")
 
@@ -21,12 +34,27 @@ export default function Home() {
       <Header language={language} setLanguage={setLanguage} />
       <Hero language={language} />
       <About language={language} />
-      <FeaturedStartups language={language} />
+      <PrincePage language={language} />
+      <FounderPage language={language} />
+      {/* <ApprovedStartupsList language={language}/> */}
+      <CoFoundersPage language={language}/>
+      <Speaker language={language} />
+<EventOverview language={language} />
+<VisionAndGoals language={language} />
+
+ <FocusSectors language={language}/>
+<VenueSection language={language} venueImageSrc={"/taj.jpg"}/>
+<Schedule language={language}/>
+<MarketingStrategy language={language}/>
+
+<OurTeam language={language}/>
+<SponsorshipPackages language={language}/>
+      {/* <FeaturedStartups language={language} />
       <HowItWorks language={language} />
       <InvestorBenefits language={language} />
       <Testimonials language={language} />
       <Newsletter language={language} />
-      <Contact language={language} />
+      <Contact language={language} /> */}
       <Footer language={language} />
       <ScrollToTop />
     </div>

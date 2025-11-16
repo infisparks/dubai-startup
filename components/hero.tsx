@@ -1,4 +1,7 @@
-import Link from "next/link"
+import { MapPin, Calendar } from "lucide-react" // Optional: using icons
+
+// 🔹 NOTE: If you don't use icons, you can delete the import above
+// and the <MapPin> / <Calendar> components below.
 
 interface HeroProps {
   language: "en" | "ar"
@@ -6,18 +9,24 @@ interface HeroProps {
 
 const translations = {
   en: {
-    headline: "Invest in Tomorrow's Dubai — Today.",
-    subheading:
-      "Investarise connects investors with the most promising startups shaping the future of Dubai.",
-    exploreStartups: "Explore Startups",
-    becomeInvestor: "Become an Investor",
+    headline: "Investarise Global Investment",
+    headline2: "Summit 2026",
+    tagline: "PITCH. CONNECT. PROSPER.",
+    location: "Taj Exotica Resort & Spa The Palm",
+    date: "February 5th and 6th, 2026",
+    statsInvestors: "100+ Investors",
+    statsStartups: "200+ Startups",
+    statsSpeakers: "10+ Speakers",
   },
   ar: {
-    headline: "استثمر في غد دبي — اليوم.",
-    subheading:
-      "يربط Investarise المستثمرين بأواعد أكثر الشركات الناشئة التي تشكل مستقبل دبي.",
-    exploreStartups: "استكشف الشركات",
-    becomeInvestor: "كن مستثمراً",
+    headline: "قمة إنفسترايز العالمية للاستثمار",
+    headline2: "2026",
+    tagline: "اعرض. تواصل. ازدهر.",
+    location: "منتجع وسبا تاج إكزوتيكا النخلة",
+    date: "5 و 6 فبراير 2026",
+    statsInvestors: "100+ مستثمر",
+    statsStartups: "200+ شركة ناشئة",
+    statsSpeakers: "10+ متحدثين",
   },
 }
 
@@ -37,9 +46,7 @@ export default function Hero({ language }: HeroProps) {
         loop
         muted
         playsInline
-        // 🔹 Optional: Add a poster image to show while video loads
-        // poster="/hero-poster.jpg" 
-        // 🔹 NOTE: The 'src' attribute has been removed
+        poster="/hero-poster.jpg" // Optional: A poster image matching the video
       >
         {/* 🔹 Mobile video (shows on screens up to 767px wide) */}
         <source src="/hero-m.mp4" type="video/mp4" media="(max-width: 767px)" />
@@ -53,45 +60,47 @@ export default function Hero({ language }: HeroProps) {
       <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/50 to-black/20"></div>
 
       {/* 🔹 Hero Content */}
-      <div className="relative z-10 text-center max-w-3xl mx-auto text-white px-2">
-        {/* Badge */}
-        <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-white/10 border border-white/20 rounded-full mb-6 backdrop-blur-md">
-          <div className="w-2 h-2 bg-green-400 rounded-full"></div>
-          <span className="text-xs sm:text-sm font-medium">
-            {language === "en"
-              ? "Now accepting Series A startups"
-              : "نقبل الآن شركات السلسلة أ"}
-          </span>
-        </div>
-
+      <div className="relative z-10 text-center max-w-4xl mx-auto text-white px-2">
         {/* Headline */}
-        <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold mb-4 leading-tight">
+        <h1 className="text-xl sm:text-4xl md:text-5xl font-extrabold mb-8 leading-tight">
           {t.headline}
+          <br />
+          {t.headline2}
         </h1>
 
-        {/* Subheading */}
-        <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-300 mb-10 leading-relaxed max-w-2xl mx-auto">
-          {t.subheading}
-        </p>
-
-        {/* Buttons */}
-        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center mb-10">
-          <Link
-            href="/founder-form"
-            className="px-6 sm:px-8 py-3 sm:py-4 bg-[#013371] text-white rounded-full font-medium sm:font-semibold hover:bg-[#024fa3] transition-all hover:shadow-lg text-base sm:text-lg text-center"
-          >
-            {t.exploreStartups}
-          </Link>
-          <Link
-            href="/investor-form"
-            className="px-6 sm:px-8 py-3 sm:py-4 border-2 border-white text-white rounded-full font-medium sm:font-semibold hover:bg-white/10 transition-all text-base sm:text-lg text-center"
-          >
-            {t.becomeInvestor}
-          </Link>
+        {/* Tagline Badge */}
+        <div className="my-8 inline-block">
+          <div className="px-6 py-3 sm:px-8 sm:py-4 bg-gradient-to-r from-[#013371] to-[#024fa3] rounded-full shadow-lg">
+            <span className="text-white text-sm sm:text-lg md:text-xl font-bold tracking-widest">
+              {t.tagline}
+            </span>
+          </div>
         </div>
 
-        {/* Decorative line */}
-        <div className="h-0.5 sm:h-1 w-24 sm:w-32 mx-auto bg-gradient-to-r from-[#013371] via-[#024fa3] to-[#013371] rounded-full opacity-80"></div>
+        {/* Event Details */}
+        <div className="flex flex-col sm:flex-row gap-4 sm:gap-8 justify-center items-center text-sm sm:text-base text-gray-200 my-10">
+          <div className="flex items-center gap-2">
+            {/* <MapPin size={18} className="text-gray-300" /> */}
+            <span>📍</span>
+            {/* Using emoji as a simple icon */}
+            <span>{t.location}</span>
+          </div>
+          <div className="flex items-center gap-2">
+            {/* <Calendar size={18} className="text-gray-300" /> */}
+            <span>🗓️</span>
+            {/* Using emoji as a simple icon */}
+            <span>{t.date}</span>
+          </div>
+        </div>
+
+        {/* Stats Bar */}
+        <div className="mt-12 text-sm sm:text-lg font-medium text-gray-100 flex flex-wrap justify-center gap-x-4 sm:gap-x-6 gap-y-2">
+          <span>{t.statsInvestors}</span>
+          <span className="text-gray-500">•</span>
+          <span>{t.statsStartups}</span>
+          <span className="text-gray-500">•</span>
+          <span>{t.statsSpeakers}</span>
+        </div>
       </div>
 
       {/* 🔹 Subtle background glow */}

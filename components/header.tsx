@@ -1,17 +1,20 @@
+// components/header.tsx
 "use client"
 
 import { useEffect, useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
-// 🔹 1. IMPORT usePathname
 import { usePathname } from "next/navigation" 
-import { Menu, X } from "lucide-react"
+import { Menu, X, LogOut, User as UserIcon } from "lucide-react"
+import { supabase } from "@/lib/supabaseConfig" // Assuming you use /lib/supabaseConfig
 
 interface HeaderProps {
-  language?: "en" | "ar"
-  setLanguage?: (lang: "en" | "ar") => void
+  language: "en" | "ar" // Made required for translations
+  setLanguage: (lang: "en" | "ar") => void // Made required
+  userEmail?: string | null; 
 }
 
+// ⭐ FIX: Updated translations
 const translations = {
   en: {
     home: "Home",
@@ -19,8 +22,8 @@ const translations = {
     investors: "For Investors",
     startups: "For Startups",
     contact: "Contact",
-    investor: "Investor",
-    founder: "Founder",
+    register: "Register", // ADDED
+    logout: "Logout",
   },
   ar: {
     home: "الرئيسية",
@@ -28,13 +31,12 @@ const translations = {
     investors: "ل للمستثمرين",
     startups: "للشركات الناشئة",
     contact: "تواصل",
-    investor: "مستثمر",
-    founder: "مؤسس",
+    register: "التسجيل", // ADDED
+    logout: "تسجيل الخروج",
   },
 }
 
-export default function Header({ language = "en", setLanguage }: HeaderProps) {
-  // 🔹 2. GET PATHNAME AND CHECK IF HOMEPAGE
+export default function Header({ language = "en", setLanguage, userEmail }: HeaderProps) {
   const pathname = usePathname()
   const isHomepage = pathname === "/"
 
@@ -42,16 +44,20 @@ export default function Header({ language = "en", setLanguage }: HeaderProps) {
   const [scrolled, setScrolled] = useState(false)
   const t = translations[language]
 
-  // 🔹 3. CREATE EFFECTIVE STATE
-  // On homepage, this will be true/false based on scroll
-  // On other pages, this will ALWAYS be true
   const effectiveScrolled = scrolled || !isHomepage
 
-  // 🔹 Detect scroll position to change header background
+  const handleLogout = async () => {
+    const { error } = await supabase.auth.signOut()
+    if (error) {
+      console.error("Logout Error:", error)
+      alert("Error logging out. Please try again.")
+    }
+  }
+
+  // Detect scroll position to change header background
   useEffect(() => {
-    // Only add scroll listener if we are on the homepage
     if (!isHomepage) {
-      setScrolled(true) // Set scrolled true permanently for other pages
+      setScrolled(true) 
       return
     }
 
@@ -65,12 +71,19 @@ export default function Header({ language = "en", setLanguage }: HeaderProps) {
 
     window.addEventListener("scroll", handleScroll)
     return () => window.removeEventListener("scroll", handleScroll)
-  }, [isHomepage]) // Re-run effect if path changes
+  }, [isHomepage]) 
+
+  const baseStyle = effectiveScrolled
+    ? "text-slate-700 hover:text-[#013371] hover:bg-slate-50"
+    : "text-white hover:text-blue-200"
+  
+  const iconColor = effectiveScrolled 
+    ? "text-slate-700 hover:bg-slate-100" 
+    : "text-white hover:bg-white/10"
 
   return (
     <header
       className={`fixed w-full top-0 z-50 transition-all duration-500 ${
-        // 🔹 4. USE effectiveScrolled
         effectiveScrolled
           ? "bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm"
           : "bg-transparent border-transparent"
@@ -78,11 +91,10 @@ export default function Header({ language = "en", setLanguage }: HeaderProps) {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
-          {/* 🔹 Logo */}
+          {/* Logo */}
           <Link href="/" className="flex items-center gap-2">
             <div className="relative w-52 h-10">
               <Image
-                // 🔹 4. USE effectiveScrolled
                 src={effectiveScrolled ? "/logo.png" : "/logo-white.png"}
                 alt="Investarise Logo"
                 fill
@@ -92,72 +104,61 @@ export default function Header({ language = "en", setLanguage }: HeaderProps) {
             </div>
           </Link>
 
-          {/* 🔹 Desktop Navigation */}
+          {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center gap-1">
             {["home", "about", "contact"].map((key) => (
               <a
                 key={key}
                 href={`/#${key}`}
-                className={`px-4 py-2 rounded-lg transition-colors font-medium text-sm ${
-                  // 🔹 4. USE effectiveScrolled
-                  effectiveScrolled
-                    ? "text-slate-700 hover:text-[#013371] hover:bg-slate-50"
-                    : "text-white hover:text-blue-200"
-                }`}
+                className={`px-4 py-2 rounded-lg transition-colors font-medium text-sm ${baseStyle}`}
               >
                 {t[key as keyof typeof t]}
               </a>
             ))}
           </nav>
 
-          {/* 🔹 CTA + Language + Mobile Menu */}
+          {/* CTA + Language + Auth/Mobile Menu */}
           <div className="flex items-center gap-3">
-            {setLanguage && (
-              <button
-                onClick={() => setLanguage(language === "en" ? "ar" : "en")}
-                className={`px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
-                  // 🔹 4. USE effectiveScrolled
-                  effectiveScrolled
-                    ? "text-slate-700 hover:text-[#013371] hover:bg-slate-50"
-                    : "text-white hover:text-blue-200"
-                }`}
-              >
-                {language === "en" ? "العربية" : "EN"}
-              </button>
+            
+            {/* User Info & Logout */}
+            {userEmail && (
+              <div className="hidden md:flex items-center space-x-3 border-r border-slate-200 pr-3">
+                <span className={`text-sm font-medium flex items-center gap-1 ${effectiveScrolled ? 'text-slate-600' : 'text-white'}`}>
+                  <UserIcon className="w-4 h-4" /> {userEmail}
+                </span>
+                <button
+                  onClick={handleLogout}
+                  className="flex items-center gap-2 px-3 py-1.5 text-sm bg-red-500 text-white rounded-lg hover:bg-red-600 transition"
+                >
+                  <LogOut className="w-4 h-4" />
+                  <span>{t.logout}</span>
+                </button>
+              </div>
             )}
-
+            
+            {/* Language Toggle */}
+            <button
+              onClick={() => setLanguage(language === "en" ? "ar" : "en")}
+              className={`px-3 py-2 text-sm font-medium rounded-lg transition-colors ${baseStyle}`}
+            >
+              {language === "en" ? "العربية" : "EN"}
+            </button>
+            
+            {/* ⭐ FIX: Combined Registration Button */}
             <Link
-              href="/investor-form"
+              href="/registration"
               className={`hidden sm:flex px-4 py-2 rounded-lg font-medium text-sm shadow-md transition-colors ${
-                // 🔹 4. USE effectiveScrolled
                 effectiveScrolled
                   ? "bg-[#013371] text-white hover:bg-[#024fa3]"
                   : "bg-white text-[#013371] hover:bg-[#013371] hover:text-white"
               }`}
             >
-              {t.investor}
+              {t.register}
             </Link>
 
-            <Link
-              href="/founder-form"
-              className={`hidden sm:flex px-4 py-2 border-2 rounded-lg font-medium text-sm transition-colors ${
-                // 🔹 4. USE effectiveScrolled
-                effectiveScrolled
-                  ? "border-[#013371] text-[#013371] hover:bg-[#013371] hover:text-white"
-                  : "border-white text-white hover:bg-white hover:text-[#013371]"
-              }`}
-            >
-              {t.founder}
-            </Link>
-
-            {/* 🔹 Mobile Menu Button */}
+            {/* Mobile Menu Button */}
             <button
-              className={`lg:hidden p-2 rounded-lg transition-colors ${
-                // 🔹 4. USE effectiveScrolled
-                effectiveScrolled
-                  ? "text-slate-700 hover:bg-slate-100"
-                  : "text-white hover:bg-white/10"
-              }`}
+              className={`lg:hidden p-2 rounded-lg transition-colors ${iconColor}`}
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             >
               {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -165,11 +166,10 @@ export default function Header({ language = "en", setLanguage }: HeaderProps) {
           </div>
         </div>
 
-        {/* 🔹 Mobile Dropdown Menu */}
+        {/* Mobile Dropdown Menu */}
         {mobileMenuOpen && (
           <nav
             className={`lg:hidden pb-4 space-y-2 animate-slideInDown ${
-              // 🔹 4. USE effectiveScrolled
               effectiveScrolled
                 ? "bg-white/95 border-t border-slate-200"
                 : "bg-black/50 backdrop-blur-md"
@@ -179,39 +179,34 @@ export default function Header({ language = "en", setLanguage }: HeaderProps) {
               <a
                 key={key}
                 href={`/#${key}`}
-                className={`block px-4 py-2 rounded-lg font-medium text-sm ${
-                  // 🔹 4. USE effectiveScrolled
-                  effectiveScrolled
-                    ? "text-slate-700 hover:text-[#013371] hover:bg-slate-50"
-                    : "text-white hover:text-blue-200"
-                }`}
+                className={`block px-4 py-2 rounded-lg font-medium text-sm ${baseStyle}`}
               >
                 {t[key as keyof typeof t]}
               </a>
             ))}
 
             <div className="pt-2 border-t border-slate-200 space-y-2">
+              {userEmail && (
+                <div className="flex justify-between items-center px-4 py-2 bg-slate-100 rounded-lg text-sm text-slate-700">
+                    <span className="flex items-center gap-1 font-medium">
+                        <UserIcon className="w-4 h-4" /> {userEmail}
+                    </span>
+                    <button onClick={handleLogout} className="text-red-500 hover:text-red-700 font-semibold">
+                        {t.logout}
+                    </button>
+                </div>
+              )}
+              
+              {/* ⭐ FIX: Combined Registration Button for Mobile */}
               <Link
-                href="/investor-form"
+                href="/registration"
                 className={`block px-4 py-2 rounded-lg text-center font-medium text-sm ${
-                  // 🔹 4. USE effectiveScrolled
                   effectiveScrolled
                     ? "bg-[#013371] text-white hover:bg-[#024fa3]"
                     : "bg-white text-[#013371] hover:bg-[#013371] hover:text-white"
                 }`}
               >
-                {t.investor}
-              </Link>
-              <Link
-                href="/founder-form"
-                className={`block px-4 py-2 border-2 rounded-lg text-center font-medium text-sm ${
-                  // 🔹 4. USE effectiveScrolled
-                  effectiveScrolled
-                    ? "border-[#013371] text-[#013371] hover:bg-[#013371] hover:text-white"
-                    : "border-white text-white hover:bg-white hover:text-[#013371]"
-                }`}
-              >
-                {t.founder}
+                {t.register}
               </Link>
             </div>
           </nav>
