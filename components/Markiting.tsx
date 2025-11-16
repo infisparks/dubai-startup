@@ -1,7 +1,9 @@
 'use client'
 
 import React from 'react'
-import { FiCheck, FiMail, FiGlobe, FiUsers, FiPackage, FiBriefcase, FiArrowRight } from 'react-icons/fi'
+import { FiCheck, FiMail, FiGlobe, FiBriefcase, FiArrowRight } from 'react-icons/fi'
+
+// ... (other imports and translations remain the same) ...
 
 interface MarketingStrategyProps {
   language: 'en' | 'ar'
@@ -11,232 +13,246 @@ const StrategyIconMap: { [key: string]: React.ElementType } = {
   Press: FiMail,
   Digital: FiGlobe,
   Partnerships: FiBriefcase,
-  Influencer: FiUsers,
-  PostEvent: FiPackage,
+  Influencer: FiBriefcase,
+  PostEvent: FiBriefcase,
 };
 
 const translations = {
   en: {
-    title: "Marketing & Promotion Strategy",
-    subtitle: "A comprehensive promotional framework designed to maximize market penetration and stakeholder engagement for the Investarise Global Investment Summit 2026.",
+    title: "Marketing & Promotion",
+    subtitle: "Comprehensive promotional framework designed to maximize market penetration and stakeholder engagement.",
     strategies: [
       {
         iconKey: 'Press',
         title: 'Press & Media',
         type: 'list',
-        items: ['Gulf News', 'Khaleej Times', 'Forbes Middle East', 'Nabd'],
+        items: ['Gulf News', 'Khaleej Times', 'Forbes ME', 'Nabd'],
       },
       {
         iconKey: 'Digital',
         title: 'Digital Marketing',
         type: 'list',
-        items: ['LinkedIn Ads', 'Meta Campaigns', 'Targeted Social Media'],
+        items: ['LinkedIn Ads', 'Meta Campaigns', 'Social Media'],
       },
       {
         iconKey: 'Partnerships',
         title: 'Strategic Partnerships',
         type: 'list',
-        items: ['Startup Accelerators', 'Incubators', 'Venture Capital Firms'],
+        items: ['Accelerators', 'Incubators', 'VC Firms'],
       },
       {
         iconKey: 'Influencer',
-        title: 'Influencer Collaborations',
+        title: 'Influencer Collab.',
         type: 'description',
-        description: 'Collaborations with industry thought leaders to enhance visibility and credibility.',
+        description: 'Industry thought leaders to enhance visibility and credibility.',
       },
       {
         iconKey: 'PostEvent',
         title: 'Post-Event Impact',
         type: 'description',
-        description: 'Production of a highlight film to extend the event\'s impact and reach.',
+        description: 'Highlight film production to extend event impact and reach.',
       },
     ],
+    cta: {
+      title: "Ready to amplify your presence?",
+      subtitle: "Create an impactful marketing strategy tailored to your goals.",
+      button: "Get Started"
+    }
   },
   ar: {
-    title: "استراتيجية التسويق والترويج",
-    subtitle: "إطار عمل ترويجي شامل مصمم لتعظيم اختراق السوق ومشاركة أصحاب المصلحة لقمة إنفستارايز العالمية للاستثمار 2026.",
+    title: "التسويق والترويج",
+    subtitle: "إطار عمل ترويجي شامل لتعظيم اختراق السوق ومشاركة أصحاب المصلحة.",
     strategies: [
       {
         iconKey: 'Press',
         title: 'الصحافة والإعلام',
         type: 'list',
-        items: ['جلف نيوز', 'الخليج تايمز', 'فوربس الشرق الأوسط', 'نبض'],
+        items: ['جلف نيوز', 'الخليج تايمز', 'فوربس ME', 'نبض'],
       },
       {
         iconKey: 'Digital',
         title: 'التسويق الرقمي',
         type: 'list',
-        items: ['إعلانات LinkedIn', 'حملات Meta', 'استهداف وسائل التواصل الاجتماعي'],
+        items: ['LinkedIn', 'Meta', 'وسائل التواصل'],
       },
       {
         iconKey: 'Partnerships',
-        title: 'الشراكات الاستراتيجية',
+        title: 'الشراكات',
         type: 'list',
-        items: ['مسرعات الشركات الناشئة', 'حاضنات الأعمال', 'شركات رأس المال المغامر'],
+        items: ['مسرعات', 'حاضنات', 'رأس المال'],
       },
       {
         iconKey: 'Influencer',
-        title: 'التعاون مع المؤثرين',
+        title: 'تعاون المؤثرين',
         type: 'description',
-        description: 'التعاون مع قادة الفكر في الصناعة لتعزيز الرؤية والمصداقية.',
+        description: 'قادة الفكر لتعزيز الرؤية والمصداقية.',
       },
       {
         iconKey: 'PostEvent',
         title: 'تأثير ما بعد الحدث',
         type: 'description',
-        description: 'إنتاج فيلم تسليطي لزيادة تأثير الحدث ووصوله.',
+        description: 'فيلم تسليطي لتوسيع تأثير الحدث.',
       },
     ],
+    cta: {
+      title: "جاهز لتضخيم حضورك؟",
+      subtitle: "أنشئ استراتيجية تسويق مؤثرة مصممة لأهدافك.",
+      button: "ابدأ الآن"
+    }
   },
 }
 
-export default function MarketingStrategy({ language }: MarketingStrategyProps) {
+// New component for the CTA, integrated into the grid
+const GridCta = ({ language }: { language: 'en' | 'ar' }) => {
+  const t = translations[language].cta;
+  const isRtl = language === 'ar';
+
+  return (
+    <div className={`lg:col-span-2 md:col-span-2 group relative overflow-hidden rounded-lg transition-all duration-300`}>
+      <div className="relative h-full p-4 rounded-lg border border-slate-200 overflow-hidden">
+        {/* Background Image */}
+        <img
+          src="https://images.unsplash.com/photo-1517245381831-f11a437e56b8?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" // Replace with your desired image URL
+          alt="Abstract background"
+          className="absolute inset-0 w-full h-full object-cover z-0"
+        />
+        {/* Overlay for text readability */}
+        <div className="absolute inset-0 bg-blue-800 bg-opacity-70 group-hover:bg-opacity-80 transition-all duration-300 z-10" />
+        
+        <div className="relative z-20 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 h-full">
+          <div className={isRtl ? 'text-right' : ''}>
+            <h4 className="text-sm font-bold text-white mb-0.5">
+              {t.title}
+            </h4>
+            <p className="text-xs text-white opacity-90">
+              {t.subtitle}
+            </p>
+          </div>
+          <button className="flex-shrink-0 px-5 py-2 text-sm bg-white text-blue-600 font-semibold rounded-lg transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 whitespace-nowrap">
+            {t.button}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+
+export default function MarketingStrategy({ language = 'en' }: MarketingStrategyProps) {
   const t = translations[language]
   const isRtl = language === 'ar'
 
   return (
     <section 
-      // ADJUSTMENT 1: Reduced Section Vertical Padding (py-20/24/32 -> py-16/24/24)
-      className="relative py-16 lg:py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-slate-50 via-white to-slate-50 overflow-hidden"
+      className="relative py-12 lg:py-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-slate-50 to-white overflow-hidden"
       dir={isRtl ? 'rtl' : 'ltr'}
     >
-      {/* Premium Background Elements */}
+      {/* Minimal Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-blue-50 to-cyan-50 rounded-full blur-3xl opacity-40" />
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-gradient-to-tr from-blue-50 to-indigo-50 rounded-full blur-3xl opacity-40" />
+        <div className="absolute top-0 right-0 w-80 h-80 bg-gradient-to-br from-blue-50 to-cyan-50 rounded-full blur-3xl opacity-30" />
+        <div className="absolute bottom-0 left-0 w-80 h-80 bg-gradient-to-tr from-blue-50 to-indigo-50 rounded-full blur-3xl opacity-30" />
       </div>
 
-      {/* Decorative Grid (Kept for style) */}
-      <div className="absolute inset-0 opacity-5 pointer-events-none"
-        style={{
-          backgroundImage: `linear-gradient(0deg, transparent 24%, rgba(15, 23, 42, 0.05) 25%, rgba(15, 23, 42, 0.05) 26%, transparent 27%, transparent 74%, rgba(15, 23, 42, 0.05) 75%, rgba(15, 23, 42, 0.05) 76%, transparent 77%, transparent), linear-gradient(90deg, transparent 24%, rgba(15, 23, 42, 0.05) 25%, rgba(15, 23, 42, 0.05) 26%, transparent 27%, transparent 74%, rgba(15, 23, 42, 0.05) 75%, rgba(15, 23, 42, 0.05) 76%, transparent 77%, transparent)`,
-          backgroundSize: '60px 60px'
-        }}
-      />
-
-      {/* Main Content Container */}
+      {/* Main Content */}
       <div className="w-full max-w-7xl mx-auto relative z-10">
         
-        {/* Header Section (Reduced vertical spacing) */}
-        <div className="mb-10 lg:mb-12">
-          
-          {/* Pre-title Badge (Reduced margin) */}
-          <div className="inline-flex items-center gap-2 mb-4">
-            <div className="w-2 h-2 rounded-full bg-gradient-to-r from-blue-500 to-cyan-500" />
-            <span className="text-xs font-semibold tracking-widest text-slate-600 uppercase">Strategic Framework</span>
+        {/* Header - Compact */}
+        <div className="mb-8">
+          <div className="inline-flex items-center gap-2 mb-2">
+            <div className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-blue-500 to-cyan-500" />
+            <span className="text-xs font-semibold tracking-widest text-slate-500 uppercase">Strategy</span>
           </div>
 
-          {/* Main Title */}
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-slate-900 mb-2 tracking-tight leading-tight max-w-4xl">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-900 mb-2 tracking-tight">
             {t.title}
-          </h1>
+          </h2>
 
-          {/* Accent Line and Subtitle (Reduced margin/padding) */}
-          <div className="flex gap-3 my-4">
-            <div className="w-1.5 h-8 bg-gradient-to-b from-blue-500 to-cyan-500 rounded-full" />
-            <p className="text-base sm:text-lg text-slate-600 max-w-3xl leading-snug font-light">
-              {t.subtitle}
-            </p>
-          </div>
+          <p className="text-xs sm:text-sm text-slate-600 max-w-3xl leading-relaxed font-light">
+            {t.subtitle}
+          </p>
         </div>
 
-        {/* Strategy Grid with Premium Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6"> {/* Reduced gap */}
+        {/* Strategy Grid - Updated to lg:grid-cols-4 */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
           {t.strategies.map((strategy, index) => {
             const IconComponent = StrategyIconMap[strategy.iconKey] || FiBriefcase;
-            const isWideCard = index >= 3;
-            const isLastGroup = index >= 3;
+            const isDescriptionType = strategy.type === 'description';
+            const spanCol = strategy.title.includes('Post-Event') || strategy.title.includes('تأثير ما بعد الحدث') ? 'lg:col-span-2' : 'lg:col-span-1';
+
 
             return (
               <div 
                 key={strategy.title}
                 className={`
-                  group relative overflow-hidden rounded-xl transition-all duration-500 ease-out
-                  ${isWideCard ? 'lg:col-span-3' : 'lg:col-span-1'}
-                  ${isLastGroup ? 'lg:flex lg:gap-6' : ''} {/* Reduced gap */}
+                  group relative overflow-hidden rounded-lg transition-all duration-300
+                  ${spanCol}
                 `}
               >
-                {/* Card Background with Hover Effect */}
-                <div className="absolute inset-0 bg-white border border-slate-200 rounded-xl transition-all duration-500 group-hover:border-slate-300 group-hover:shadow-xl" />
+                {/* Card Background */}
+                <div className="absolute inset-0 bg-white border border-slate-200 rounded-lg transition-all duration-300 group-hover:border-slate-300 group-hover:shadow-md" />
                 
-                {/* Gradient Overlay on Hover */}
-                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-xl"
+                {/* Subtle Hover Gradient */}
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg"
                   style={{
-                    background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, rgba(6, 182, 212, 0.05) 100%)'
+                    background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.03) 0%, rgba(6, 182, 212, 0.03) 100%)'
                   }}
                 />
 
-                {/* Card Content */}
-                <div 
-                  // ADJUSTMENT 3: Reduced internal card padding
-                  className={`relative p-6 sm:p-7 ${isWideCard ? 'lg:flex-1' : ''}`}
-                >
+                {/* Card Content - Tight Padding */}
+                <div className="relative p-4">
                   
-                  {/* Icon Container with Elevated Design */}
-                  <div className="flex items-start gap-3 mb-4"> {/* Reduced margin */}
+                  {/* Icon + Title Row */}
+                  <div className="flex items-start gap-2.5 mb-3">
                     <div className="relative flex-shrink-0">
-                      {/* Icon Background Circle */}
-                      <div className="absolute inset-0 bg-gradient-to-br from-blue-100 to-cyan-100 rounded-2xl blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                      <div className="relative w-14 h-14 bg-gradient-to-br from-blue-50 to-cyan-50 rounded-xl flex items-center justify-center border border-blue-100 group-hover:border-blue-200 transition-colors duration-500"> {/* Reduced icon size/padding */}
-                        <IconComponent className="w-6 h-6 text-blue-600" />
+                      <div className="w-10 h-10 bg-gradient-to-br from-blue-50 to-cyan-50 rounded-lg flex items-center justify-center border border-blue-100 group-hover:border-blue-200 transition-colors duration-300">
+                        <IconComponent className="w-5 h-5 text-blue-600" />
                       </div>
                     </div>
 
-                    {/* Title */}
-                    <div className={`pt-1 ${isRtl ? 'text-right' : ''}`}>
-                      <h3 className="text-lg sm:text-xl font-bold text-slate-900 leading-tight">
+                    <div className={`${isRtl ? 'text-right' : ''}`}>
+                      <h3 className="text-xs sm:text-sm font-bold text-slate-900 leading-tight">
                         {strategy.title}
                       </h3>
                     </div>
                   </div>
 
-                  {/* Content Section */}
-                  <div className={isWideCard ? 'lg:flex-1' : ''}>
-                    {strategy.type === 'list' && strategy.items ? (
-                      <div className={`grid gap-2 ${isWideCard ? 'sm:grid-cols-2 lg:grid-cols-2' : 'grid-cols-1'}`}> {/* Reduced gap */}
-                        {strategy.items.map((item, itemIndex) => (
-                          <div key={itemIndex} className="flex items-start gap-2 group/item">
-                            <div className="relative flex-shrink-0 mt-0.5"> {/* Tighter margin */}
-                              <div className="w-4 h-4 rounded-full bg-gradient-to-br from-blue-100 to-cyan-100 flex items-center justify-center border border-blue-200 group-hover/item:border-blue-300 transition-colors duration-300">
-                                <FiCheck className="w-3 h-3 text-blue-600 font-bold" />
-                              </div>
+                  {/* Content */}
+                  {strategy.type === 'list' && strategy.items ? (
+                    <div className="space-y-1.5">
+                      {strategy.items.map((item, itemIndex) => (
+                        <div key={itemIndex} className="flex items-start gap-2">
+                          <div className="flex-shrink-0 mt-0.5">
+                            <div className="w-3 h-3 rounded-full bg-gradient-to-br from-blue-100 to-cyan-100 flex items-center justify-center border border-blue-200 flex-shrink-0">
+                              <FiCheck className="w-2 h-2 text-blue-600" />
                             </div>
-                            <span className="text-xs text-slate-700 leading-tight font-medium"> {/* Tighter leading */}
-                              {item}
-                            </span>
                           </div>
-                        ))}
-                      </div>
-                    ) : (
-                      <div className="space-y-4">
-                        <p className="text-slate-700 leading-snug font-light text-sm"> {/* Tighter leading */}
-                          {strategy.description}
-                        </p>
-                        <div className="inline-flex items-center gap-2 text-blue-600 font-semibold text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                          Learn More
-                          <FiArrowRight className="w-4 h-4" />
+                          <span className="text-xs text-slate-600 leading-tight font-light">
+                            {item}
+                          </span>
                         </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div>
+                      <p className="text-xs text-slate-600 leading-tight font-light mb-2">
+                        {strategy.description}
+                      </p>
+                      <div className="inline-flex items-center gap-1 text-blue-600 font-semibold text-xs opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        {language === 'en' ? 'More' : 'المزيد'}
+                        <FiArrowRight className="w-3 h-3" />
                       </div>
-                    )}
-                  </div>
+                    </div>
+                  )}
                 </div>
               </div>
             );
           })}
+          
+          {/* CTA Section - Now integrated as a grid item, with image background and white text */}
+          <GridCta language={language} />
+
         </div>
 
-        {/* Footer CTA Section (Reduced vertical spacing) */}
-        <div className="mt-12 lg:mt-16 p-6 sm:p-8 rounded-xl border border-slate-200 bg-gradient-to-r from-white via-blue-50/30 to-white backdrop-blur-sm hover:border-slate-300 transition-all duration-500">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5"> {/* Reduced gap */}
-            <div className={isRtl ? 'text-right' : ''}>
-              <h4 className="text-lg font-bold text-slate-900 mb-1">Ready to amplify your event presence?</h4>
-              <p className="text-sm text-slate-600">Let's create an impactful marketing strategy tailored to your goals.</p>
-            </div>
-            <button className="flex-shrink-0 px-6 sm:px-8 py-2.5 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white font-semibold rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
-              Get Started
-            </button>
-          </div>
-        </div>
       </div>
     </section>
   )
