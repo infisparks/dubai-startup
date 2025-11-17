@@ -14,27 +14,37 @@ interface HeaderProps {
   userEmail?: string | null; 
 }
 
-// ⭐ FIX: Updated translations
+// ⭐ FIX: Updated translations (Changed 'For Startups' to 'For Startup')
 const translations = {
   en: {
     home: "Home",
     about: "About",
     investors: "For Investors",
-    startups: "For Startups",
-    contact: "Contact",
-    register: "Register", // ADDED
+    startup: "Startups", // CORRECTED
+    // contact: "Contact", // REMOVED
+    register: "Register", 
     logout: "Logout",
   },
   ar: {
     home: "الرئيسية",
     about: "حول",
     investors: "ل للمستثمرين",
-    startups: "للشركات الناشئة",
-    contact: "تواصل",
-    register: "التسجيل", // ADDED
+    startup: "للشركات الناشئة", // Keeping the original AR translation which is more contextually correct
+    // contact: "تواصل", // REMOVED
+    register: "التسجيل", 
     logout: "تسجيل الخروج",
   },
 }
+
+// Define the navigation items
+// 'home' and 'about' will use anchor links (/#...)
+// 'startup' will use a page link (/startup)
+const navItems: { key: keyof typeof translations.en; href: string }[] = [
+  { key: "home", href: "/#home" },
+  { key: "about", href: "/#about" },
+  // 💡 CHANGE: Key updated to 'startup'
+  { key: "startup", href: "/startups" }, 
+]
 
 export default function Header({ language = "en", setLanguage, userEmail }: HeaderProps) {
   const pathname = usePathname()
@@ -42,6 +52,7 @@ export default function Header({ language = "en", setLanguage, userEmail }: Head
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  // 💡 CHANGE: Used the correct key name 'startup' in the generic type assertion
   const t = translations[language]
 
   const effectiveScrolled = scrolled || !isHomepage
@@ -104,16 +115,17 @@ export default function Header({ language = "en", setLanguage, userEmail }: Head
             </div>
           </Link>
 
-          {/* Desktop Navigation */}
+          {/* Desktop Navigation - Updated */}
           <nav className="hidden lg:flex items-center gap-1">
-            {["home", "about", "contact"].map((key) => (
-              <a
-                key={key}
-                href={`/#${key}`}
+            {navItems.map((item) => (
+              <Link
+                key={item.key}
+                // 💡 FIX: Accessing the translation object with the correct key
+                href={item.href}
                 className={`px-4 py-2 rounded-lg transition-colors font-medium text-sm ${baseStyle}`}
               >
-                {t[key as keyof typeof t]}
-              </a>
+                {t[item.key]}
+              </Link>
             ))}
           </nav>
 
@@ -166,7 +178,7 @@ export default function Header({ language = "en", setLanguage, userEmail }: Head
           </div>
         </div>
 
-        {/* Mobile Dropdown Menu */}
+        {/* Mobile Dropdown Menu - Updated */}
         {mobileMenuOpen && (
           <nav
             className={`lg:hidden pb-4 space-y-2 animate-slideInDown ${
@@ -175,14 +187,15 @@ export default function Header({ language = "en", setLanguage, userEmail }: Head
                 : "bg-black/50 backdrop-blur-md"
             } rounded-b-xl`}
           >
-            {["home", "about", "contact"].map((key) => (
-              <a
-                key={key}
-                href={`/#${key}`}
+            {navItems.map((item) => (
+              <Link
+                key={item.key}
+                href={item.href}
                 className={`block px-4 py-2 rounded-lg font-medium text-sm ${baseStyle}`}
+                onClick={() => setMobileMenuOpen(false)} // Close menu on click
               >
-                {t[key as keyof typeof t]}
-              </a>
+                {t[item.key]}
+              </Link>
             ))}
 
             <div className="pt-2 border-t border-slate-200 space-y-2">
@@ -205,6 +218,7 @@ export default function Header({ language = "en", setLanguage, userEmail }: Head
                     ? "bg-[#013371] text-white hover:bg-[#024fa3]"
                     : "bg-white text-[#013371] hover:bg-[#013371] hover:text-white"
                 }`}
+                onClick={() => setMobileMenuOpen(false)} // Close menu on click
               >
                 {t.register}
               </Link>
