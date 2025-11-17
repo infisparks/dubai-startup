@@ -317,12 +317,25 @@ export default function AdminInvestorDashboard() {
     // --- Status Update Handler (Shared by Modal and External Buttons) ---
     const handleStatusUpdate = useCallback(async (userId: string, isApproved: boolean) => {
         try {
-            const { error: updateError } = await supabase
+            // 1. Update the investor_profiles table
+            const { error: updateInvestorProfileError } = await supabase
                 .from('investor_profiles')
                 .update({ is_approved: isApproved })
                 .eq('user_id', userId);
             
-            if (updateError) throw updateError;
+            if (updateInvestorProfileError) throw updateInvestorProfileError;
+            
+            // 2. Update the main user profiles table (assuming table name is 'profiles' and column is 'is_investor')
+            const { error: updateMainProfileError } = await supabase
+                .from('profiles') // Adjust table name if necessary (e.g., 'users' or 'app_users')
+                .update({ is_investor: isApproved }) // Set is_investor to true/false based on approval
+                .eq('id', userId); // Assuming the user_id matches the 'id' column in the profiles table
+
+            if (updateMainProfileError) {
+                // Log and alert the error, but don't stop the optimistic update of the local state
+                console.error("Error updating main user profile 'is_investor' status:", updateMainProfileError);
+                alert(`Warning: Failed to update main user profile status. (Error: ${updateMainProfileError.message})`);
+            }
             
             // Optimistically update local state
             setProfiles(prev => prev.map(p => 
