@@ -1,18 +1,18 @@
-// FounderFormPage.tsx
 "use client"
 
 import type React from "react"
-import { useState, useEffect, useCallback, useMemo, Dispatch, SetStateAction } from "react"
+import { useState, useEffect, useCallback, useMemo, Dispatch, SetStateAction, useRef } from "react"
 import { Session, User as SupabaseUser } from "@supabase/supabase-js"
 import Header from "@/components/header"
 import Footer from "@/components/footer"
 import AuthPopup from "@/components/AuthPopup"
 import EmailVerificationNotice from "@/components/EmailVerificationNotice"
-import QRCode from "react-qr-code" // IMPORT THIS PACKAGE
+import QRCode from "react-qr-code" 
+import html2canvas from "html2canvas" 
 import { 
   ArrowRight, Upload, CheckCircle2, LogIn, TrendingUp, Edit, 
   Lock, Save, Link as LinkIcon, XCircle, FileText, Globe, 
-  Linkedin, Phone, Mail, Building2, Calendar, DollarSign, FileCheck, ScanLine 
+  Linkedin, Phone, Mail, Building2, Calendar, DollarSign, FileCheck, ScanLine, Download 
 } from "lucide-react"
 import { supabase } from "@/lib/supabaseConfig"
 
@@ -105,8 +105,9 @@ type Translations = {
         notApprovedDesc: string;
         approvedDesc: string;
         viewDetails: string;
-        qrTitle: string; // New
-        qrDesc: string; // New
+        qrTitle: string;
+        qrDesc: string;
+        clickToDownload: string;
     };
     authError: string;
     pitchDeckRequiredError: string;
@@ -329,6 +330,7 @@ export default function FounderFormPage() {
                     viewDetails: "Application Details",
                     qrTitle: "Startup ID Pass",
                     qrDesc: "Scan to verify your startup identity",
+                    clickToDownload: "Click card to download",
                 },
                 authError: "Authentication error: Please try logging in again.",
                 pitchDeckRequiredError: "Pitch Deck is required.",
@@ -413,6 +415,7 @@ export default function FounderFormPage() {
                     viewDetails: "تفاصيل الطلب",
                     qrTitle: "بطاقة هوية الشركة الناشئة",
                     qrDesc: "امسح للتحقق من هوية شركتك الناشئة",
+                    clickToDownload: "انقر فوق البطاقة للتنزيل",
                 },
                 authError: "خطأ في المصادقة.",
                 pitchDeckRequiredError: "عرض الملعب مطلوب.",
@@ -566,7 +569,6 @@ export default function FounderFormPage() {
         }
 
         if (hasExistingProfile && step === 0) {
-            // PASS THE USER ID HERE
             return <StatusView t={t} isApproved={isApproved} formData={formData} setStep={setStep} canEdit={!isApproved} userId={user.id} />;
         }
 
@@ -604,9 +606,8 @@ export default function FounderFormPage() {
     )
 }
 
-// --- Modern Components ---
+// --- Helper Components ---
 
-// 1. Reusable Input Components
 const InputGroup = ({ label, required, children, subLabel }: { label: string, required?: boolean, children: React.ReactNode, subLabel?: string }) => (
     <div className="space-y-1.5">
         <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider">
@@ -658,7 +659,7 @@ const ToggleSwitch = ({ checked, onChange, disabled, labelOn, labelOff }: { chec
     </button>
 );
 
-// 2. Form View
+// --- Form View ---
 const FormView: React.FC<any> = ({ t, step, formData, pitchDeckMode, handleInputChange, handleFileUpload, handleToggleChange, handleUrlChange, handlePitchDeckModeChange, handleNext, handleBack, handleSubmit, isApproved, hasExistingProfile, clearUrl }) => {
     const isDisabled = isApproved;
     const isFileSelected = !!formData.pitchDeckFile;
@@ -812,7 +813,7 @@ const FormView: React.FC<any> = ({ t, step, formData, pitchDeckMode, handleInput
                                     </div>
                                 </div>
 
-                                {/* Financial & Legal Section (NEW) */}
+                                {/* Financial & Legal Section */}
                                 <div className="space-y-5">
                                     <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wider border-b pb-2">{t.financialDetails}</h3>
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
@@ -917,11 +918,51 @@ const FormView: React.FC<any> = ({ t, step, formData, pitchDeckMode, handleInput
     );
 };
 
-// 3. Status View (UPDATED WITH QR CODE)
+// --- Status View (FIXED: BADGE DOWNLOAD, NO LAB ERRORS, NO TEXT CLIPPING) ---
+// REPLACE THE ENTIRE StatusView COMPONENT WITH THIS
 const StatusView: React.FC<any> = ({ t, isApproved, formData, setStep, canEdit, userId }) => {
     const statusColor = isApproved ? "bg-green-50 text-green-700 border-green-200" : "bg-amber-50 text-amber-700 border-amber-200";
     const icon = isApproved ? <CheckCircle2 className="w-5 h-5" /> : <TrendingUp className="w-5 h-5" />;
     
+    const badgeRef = useRef<HTMLDivElement>(null);
+
+    const handleDownloadBadge = async () => {
+        if (!badgeRef.current || !isApproved) return;
+        
+        try {
+            // 1. Wait for styles to settle
+            await new Promise(resolve => setTimeout(resolve, 200));
+
+            const canvas = await html2canvas(badgeRef.current, {
+                scale: 4, // High resolution
+                useCORS: true, 
+                allowTaint: true,
+                backgroundColor: null,
+                logging: false,
+                scrollY: -window.scrollY,
+                // 2. This tweak forces html2canvas to render text slightly differently to avoid clipping
+                onclone: (clonedDoc) => {
+                    const element = clonedDoc.getElementById('badge-content');
+                    if (element) {
+                        // Force visibility and slightly adjust height for capture
+                        element.style.height = 'auto';
+                        element.style.visibility = 'visible';
+                    }
+                }
+            });
+            
+            const image = canvas.toDataURL("image/png", 1.0);
+            const link = document.createElement("a");
+            link.href = image;
+            link.download = `Founders-Pass-${formData.companyName.replace(/\s+/g, '-')}.png`;
+            link.click();
+        } catch (error) {
+            console.error("Error generating badge:", error);
+            alert("Could not download badge. Please try again.");
+        }
+    };
+
+    // ... DataItem and BooleanItem helpers ...
     const DataItem = ({ label, value, link }: { label: string, value: string, link?: boolean }) => (
         <div className="flex flex-col">
             <dt className="text-xs text-slate-500 uppercase tracking-wide font-medium mb-1">{label}</dt>
@@ -958,27 +999,146 @@ const StatusView: React.FC<any> = ({ t, isApproved, formData, setStep, canEdit, 
                 </div>
             </div>
 
-            {/* QR Code Section (Only if Approved) */}
+            {/* NEW PROFESSIONAL GOLD BADGE */}
             {isApproved && userId && (
-                <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm flex flex-col md:flex-row items-center gap-6 animate-fadeIn">
-                    <div className="bg-white p-3 border-2 border-slate-100 rounded-lg shadow-sm">
-                         <QRCode value={userId} size={120} />
-                    </div>
-                    <div className="text-center md:text-left">
-                        <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wider mb-1 flex items-center justify-center md:justify-start gap-2">
-                            <ScanLine className="w-4 h-4 text-[#013371]" /> {t.status.qrTitle}
-                        </h3>
-                        <p className="text-sm text-slate-500 max-w-xs">{t.status.qrDesc}</p>
-                        <div className="mt-3 bg-slate-50 p-2 rounded text-xs font-mono text-slate-600 border border-slate-100 break-all">
-                            ID: {userId}
+                <div className="flex flex-col items-center space-y-4 py-4 animate-fadeIn">
+                    <div 
+                        onClick={handleDownloadBadge}
+                        className="group relative w-full max-w-[420px] cursor-pointer transition-all duration-300 hover:scale-[1.02]"
+                        title={t.status.clickToDownload}
+                    >
+                        {/* FIXES APPLIED: 
+                            1. Added padding-bottom to text containers 
+                            2. Increased line-height to 1.5 or 1.6 
+                            3. Used display: block with margins to avoid Flexbox clipping issues
+                        */}
+                        <div 
+                            ref={badgeRef}
+                            id="badge-content"
+                            className="relative rounded-xl shadow-lg"
+                            style={{ 
+                                backgroundColor: '#ffffff', 
+                                border: '4px solid #C5A059',
+                                fontFamily: 'Arial, sans-serif',
+                                width: '100%',
+                                maxWidth: '420px',
+                                boxSizing: 'border-box' 
+                            }}
+                        >
+                             {/* Decorative Gold Header */}
+                            <div style={{ 
+                                height: '14px', 
+                                width: '100%', 
+                                background: 'linear-gradient(90deg, #bf953f 0%, #fcf6ba 50%, #bf953f 100%)',
+                                borderBottom: '1px solid #d4af37'
+                            }}></div>
+                            
+                            <div style={{ display: 'flex', padding: '24px 20px', gap: '20px', alignItems: 'center' }}>
+                                {/* QR Section */}
+                                <div style={{ 
+                                    backgroundColor: '#ffffff', 
+                                    padding: '6px', 
+                                    border: '1px solid #e2e8f0', 
+                                    borderRadius: '6px',
+                                    flexShrink: 0,
+                                    height: 'fit-content'
+                                }}>
+                                    <QRCode value={userId} size={90} fgColor="#000000" bgColor="#ffffff" />
+                                </div>
+
+                                {/* Text Details */}
+                                <div style={{ display: 'flex', flexDirection: 'column', flex: 1, minWidth: 0, justifyContent: 'center' }}>
+                                    
+                                    {/* Header Row */}
+                                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
+                                         <h4 style={{ 
+                                             color: '#b8860b', 
+                                             fontSize: '11px', 
+                                             fontWeight: 'bold', 
+                                             textTransform: 'uppercase', 
+                                             letterSpacing: '0.15em',
+                                             margin: 0,
+                                             lineHeight: '1.2'
+                                         }}>
+                                            Founders Pass
+                                         </h4>
+                                         <ScanLine style={{ width: '14px', height: '14px', color: '#b8860b' }} />
+                                    </div>
+                                    
+                                    {/* Company Name - FIXED: High line-height and explicit padding prevents 'p' from being cut */}
+                                    <h3 style={{ 
+                                        color: '#013371', 
+                                        fontSize: '22px', 
+                                        fontWeight: '800', 
+                                        lineHeight: '1.5', /* Crucial fix for clipping */
+                                        margin: '0 0 2px 0',
+                                        whiteSpace: 'nowrap', 
+                                        overflow: 'hidden', 
+                                        textOverflow: 'ellipsis',
+                                        paddingBottom: '4px', /* Extra buffer for descenders */
+                                        display: 'block'
+                                    }}>
+                                        {formData.companyName}
+                                    </h3>
+
+                                    {/* Founder Name */}
+                                    <p style={{ 
+                                        color: '#64748b', 
+                                        fontSize: '13px', 
+                                        fontWeight: '500', 
+                                        lineHeight: '1.6', /* Crucial fix for clipping */
+                                        margin: '0 0 14px 0',
+                                        whiteSpace: 'nowrap', 
+                                        overflow: 'hidden', 
+                                        textOverflow: 'ellipsis',
+                                        paddingBottom: '2px',
+                                        display: 'block'
+                                    }}>
+                                        {formData.founderName}
+                                    </p>
+                                    
+                                    {/* Footer Row */}
+                                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 'auto' }}>
+                                        <div style={{ 
+                                            background: 'linear-gradient(90deg, #bf953f 0%, #b8860b 100%)',
+                                            color: '#ffffff',
+                                            padding: '6px 12px', /* Increased padding so text doesn't touch edges */
+                                            borderRadius: '4px',
+                                            fontSize: '10px',
+                                            fontWeight: 'bold',
+                                            textTransform: 'uppercase',
+                                            letterSpacing: '0.05em',
+                                            lineHeight: '1.2'
+                                        }}>
+                                            VERIFIED
+                                        </div>
+                                        <div style={{ color: '#94a3b8', fontSize: '10px', fontFamily: 'monospace' }}>
+                                            ID: {userId.slice(0, 8)}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Download Overlay (Visual Only) */}
+                        <div className="absolute inset-0 rounded-xl flex items-center justify-center bg-slate-900/60 opacity-0 transition-opacity duration-200 group-hover:opacity-100 backdrop-blur-[1px]">
+                            <div className="bg-white/20 border border-white/30 backdrop-blur-md px-4 py-2 rounded-full shadow-lg">
+                                <p className="flex items-center gap-2 text-xs font-bold text-white tracking-wide">
+                                    <Download className="h-4 w-4" /> Download PNG
+                                </p>
+                            </div>
                         </div>
                     </div>
+                    
+                    <p className="text-xs text-slate-400 flex items-center gap-1">
+                        <Download className="w-3 h-3" /> {t.status.clickToDownload}
+                    </p>
                 </div>
             )}
 
-            {/* Dashboard Detail View */}
+            {/* Details Section (Unchanged) */}
             <div className="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
-                <div className="px-6 py-4 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
+                 <div className="px-6 py-4 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
                     <h3 className="font-semibold text-slate-900">{t.status.viewDetails}</h3>
                     {canEdit && (
                         <button onClick={() => setStep(1)} className="text-xs bg-white border border-slate-300 text-slate-700 px-3 py-1.5 rounded hover:bg-slate-50 transition-colors flex items-center gap-2">
@@ -1005,7 +1165,6 @@ const StatusView: React.FC<any> = ({ t, isApproved, formData, setStep, canEdit, 
                         <DataItem label={t.founderName} value={formData.founderName} />
                         <DataItem label={t.email} value={formData.founderEmail} />
                         
-                        {/* Pitch Deck Link */}
                         <div className="flex flex-col">
                             <dt className="text-xs text-slate-500 uppercase tracking-wide font-medium mb-1">{t.pitchDeck}</dt>
                             <dd>
