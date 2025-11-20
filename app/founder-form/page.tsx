@@ -3,16 +3,20 @@
 
 import type React from "react"
 import { useState, useEffect, useCallback, useMemo, Dispatch, SetStateAction } from "react"
-import Link from "next/link" 
 import { Session, User as SupabaseUser } from "@supabase/supabase-js"
 import Header from "@/components/header"
 import Footer from "@/components/footer"
-import AuthPopup from "@/components/AuthPopup" 
-import EmailVerificationNotice from "@/components/EmailVerificationNotice" 
-import { ArrowRight, Upload, CheckCircle2, LogIn, TrendingUp, Edit, Lock, Save } from "lucide-react" 
-import { supabase } from "@/lib/supabaseConfig" 
+import AuthPopup from "@/components/AuthPopup"
+import EmailVerificationNotice from "@/components/EmailVerificationNotice"
+import QRCode from "react-qr-code" // IMPORT THIS PACKAGE
+import { 
+  ArrowRight, Upload, CheckCircle2, LogIn, TrendingUp, Edit, 
+  Lock, Save, Link as LinkIcon, XCircle, FileText, Globe, 
+  Linkedin, Phone, Mail, Building2, Calendar, DollarSign, FileCheck, ScanLine 
+} from "lucide-react"
+import { supabase } from "@/lib/supabaseConfig"
 
-// Define the shape of the data we fetch/save
+// --- Types ---
 interface FounderProfileData {
     company_name: string;
     stage: string;
@@ -26,24 +30,39 @@ interface FounderProfileData {
     domain_other_spec: string | null;
     problem_description: string | null;
     earning_status: string | null;
+    establishment_year: number | null;
+    turnover: string | null;
+    net_profit: string | null;
+    it_returns_filed: boolean;
+    is_audited: boolean;
     is_approved: boolean;
-    // ⭐ ADDED EMAIL FIELD HERE
     email: string;
 }
 
-// Define a type for the structure returned by the translations useMemo hook
 type Translations = {
     title: string;
     subtitle: string;
     startupInfo: string;
     founderDetails: string;
+    financialDetails: string;
     companyName: string;
     stage: string;
     domain: string;
     domainOtherSpec: string;
     problemDescription: string;
     earningStatus: string;
+    establishmentYear: string;
+    turnover: string;
+    netProfit: string;
+    itFiled: string;
+    audited: string;
+    yes: string;
+    no: string;
     pitchDeck: string;
+    pitchDeckChoice: string;
+    uploadFile: string;
+    addUrl: string;
+    externalUrl: string;
     website: string;
     description: string;
     founderName: string;
@@ -55,8 +74,8 @@ type Translations = {
     submit: string;
     update: string;
     required: string;
-    uploadFile: string;
     fileHint: string;
+    urlHint: string;
     descHint: string;
     domains: string[];
     earnings: string[];
@@ -71,6 +90,10 @@ type Translations = {
         email: string;
         phone: string;
         companyLinkedin: string;
+        externalUrl: string;
+        turnover: string;
+        netProfit: string;
+        year: string;
     };
     ready: string;
     readyDesc: string;
@@ -82,6 +105,8 @@ type Translations = {
         notApprovedDesc: string;
         approvedDesc: string;
         viewDetails: string;
+        qrTitle: string; // New
+        qrDesc: string; // New
     };
     authError: string;
     pitchDeckRequiredError: string;
@@ -92,893 +117,910 @@ type Translations = {
     loginRequiredDesc: string;
     roleMismatch: string;
     roleMismatchDesc: string;
-    login: string; 
+    login: string;
     validation: {
         step1: string;
+        pitchDeckChoice: string;
     };
 };
 
+type PitchDeckMode = 'file' | 'url';
+
 export default function FounderFormPage() {
-  const [session, setSession] = useState<Session | null>(null)
-  const [user, setUser] = useState<SupabaseUser | null>(null)
-  const [userRole, setUserRole] = useState<string | null>(null) // We still fetch the role, but don't use it to block
-  const [loadingSession, setLoadingSession] = useState(true)
-  const [loadingData, setLoadingData] = useState(false)
-  const [showAuthPopup, setShowAuthPopup] = useState(false)
-  const [needsVerification, setNeedsVerification] = useState(false)
-  const [hasExistingProfile, setHasExistingProfile] = useState(false)
-  const [isApproved, setIsApproved] = useState(false) 
+    // --- State Logic ---
+    const [session, setSession] = useState<Session | null>(null)
+    const [user, setUser] = useState<SupabaseUser | null>(null)
+    const [userRole, setUserRole] = useState<string | null>(null)
+    const [loadingSession, setLoadingSession] = useState(true)
+    const [loadingData, setLoadingData] = useState(false)
+    const [showAuthPopup, setShowAuthPopup] = useState(false)
+    const [needsVerification, setNeedsVerification] = useState(false)
+    const [hasExistingProfile, setHasExistingProfile] = useState(false)
+    const [isApproved, setIsApproved] = useState(false)
 
-  const [step, setStep] = useState(1) // Default step is 1 for new users
-  const [language, setLanguage] = useState<"en" | "ar">("en")
-  const [formData, setFormData] = useState({
-    companyName: "",
-    stage: "",
-    pitchDeck: null as File | null,
-    pitchDeckUrl: null as string | null, 
-    companyLinkedin: "",
-    website: "",
-    description: "",
-    founderName: "",
-    founderEmail: "", // Kept as form field for display/pre-fill
-    founderPhone: "",
-    domain: "",
-    domainOtherSpec: "",
-    problemDescription: "",
-    earningStatus: "",
-  })
+    const [step, setStep] = useState(1)
+    const [language, setLanguage] = useState<"en" | "ar">("en")
+    const [pitchDeckMode, setPitchDeckMode] = useState<PitchDeckMode>('file');
+    const [formData, setFormData] = useState({
+        companyName: "",
+        stage: "",
+        pitchDeckFile: null as File | null,
+        pitchDeckUrl: null as string | null,
+        companyLinkedin: "",
+        website: "",
+        description: "",
+        founderName: "",
+        founderEmail: "",
+        founderPhone: "",
+        domain: "",
+        domainOtherSpec: "",
+        problemDescription: "",
+        earningStatus: "",
+        establishmentYear: "" as string | number,
+        turnover: "",
+        netProfit: "",
+        itReturnsFiled: false,
+        isAudited: false,
+    })
 
-  // --- SUPABASE DATA FETCHING AND AUTH LOGIC ---
-  const fetchUserData = useCallback(async (currentUser: SupabaseUser) => {
-    setLoadingData(true);
-    
-    // 1. Fetch Role (for context, not for blocking)
-    const { data: profileData } = await supabase
-        .from('profiles')
-        .select('role')
-        .eq('id', currentUser.id)
-        .single();
-    
-    setUserRole(profileData?.role || null);
-    
-    // 2. Fetch Founder Profile Data (ALWAYS, regardless of role)
-    const { data: founderProfile } = await supabase
-        .from('founder_profiles')
-        .select('*')
-        .eq('user_id', currentUser.id)
-        .single();
-    
-    if (founderProfile) {
-        setHasExistingProfile(true);
-        setIsApproved(founderProfile.is_approved);
-        setStep(0); // Show status view
-        
-        // Pre-fill form data
-        setFormData((prev) => ({
-            ...prev,
-            companyName: founderProfile.company_name || '',
-            stage: founderProfile.stage || '',
-            pitchDeckUrl: founderProfile.pitch_deck_url,
-            companyLinkedin: founderProfile.company_linkedin || '',
-            website: founderProfile.website || '',
-            description: founderProfile.description || '',
-            founderName: founderProfile.founder_name || '',
-            // Use the email from the auth user for consistency, but founderProfile.email could also be used
-            founderEmail: currentUser.email!,
-            founderPhone: founderProfile.founder_phone || '',
-            domain: founderProfile.domain || '',
-            domainOtherSpec: founderProfile.domain_other_spec || '',
-            problemDescription: founderProfile.problem_description || '',
-            earningStatus: founderProfile.earning_status || '',
-        }));
-    } else {
-         setHasExistingProfile(false);
-         setStep(1); // Show form
-    }
-    
-    setLoadingData(false);
-  }, []); // useCallback dependencies are empty
+    // --- Effects & Fetching ---
+    const fetchUserData = useCallback(async (currentUser: SupabaseUser) => {
+        setLoadingData(true);
+        const { data: profileData } = await supabase.from('profiles').select('role').eq('id', currentUser.id).single();
+        setUserRole(profileData?.role || null);
 
-  useEffect(() => {
-    const getSession = async () => {
-        const { data: { session }, } = await supabase.auth.getSession();
-        const currentUser = session?.user ?? null;
-        setSession(session);
-        setUser(currentUser);
-        
-        if (currentUser) {
-            // Set email immediately upon session load
-            setFormData(prev => ({ ...prev, founderEmail: currentUser.email! }));
-            if (!currentUser.email_confirmed_at) {
-                setNeedsVerification(true);
+        const { data: founderProfile } = await supabase.from('founder_profiles').select('*').eq('user_id', currentUser.id).single();
+
+        if (founderProfile) {
+            setHasExistingProfile(true);
+            setIsApproved(founderProfile.is_approved);
+            setStep(0);
+            const storedUrl = founderProfile.pitch_deck_url;
+            if (storedUrl && storedUrl.startsWith('http') && !storedUrl.includes(process.env.NEXT_PUBLIC_SUPABASE_URL || '')) {
+                setPitchDeckMode('url');
             } else {
-                setNeedsVerification(false);
-                await fetchUserData(currentUser);
+                setPitchDeckMode('file');
             }
+            setFormData((prev) => ({
+                ...prev,
+                companyName: founderProfile.company_name || '',
+                stage: founderProfile.stage || '',
+                pitchDeckUrl: storedUrl,
+                companyLinkedin: founderProfile.company_linkedin || '',
+                website: founderProfile.website || '',
+                description: founderProfile.description || '',
+                founderName: founderProfile.founder_name || '',
+                founderEmail: currentUser.email!,
+                founderPhone: founderProfile.founder_phone || '',
+                domain: founderProfile.domain || '',
+                domainOtherSpec: founderProfile.domain_other_spec || '',
+                problemDescription: founderProfile.problem_description || '',
+                earningStatus: founderProfile.earning_status || '',
+                establishmentYear: founderProfile.establishment_year || '',
+                turnover: founderProfile.turnover || '',
+                netProfit: founderProfile.net_profit || '',
+                itReturnsFiled: founderProfile.it_returns_filed || false,
+                isAudited: founderProfile.is_audited || false,
+            }));
+        } else {
+            setHasExistingProfile(false);
+            setStep(1);
         }
-        setLoadingSession(false);
+        setLoadingData(false);
+    }, []);
+
+    useEffect(() => {
+        const getSession = async () => {
+            const { data: { session }, } = await supabase.auth.getSession();
+            const currentUser = session?.user ?? null;
+            setSession(session);
+            setUser(currentUser);
+
+            if (currentUser) {
+                setFormData(prev => ({ ...prev, founderEmail: currentUser.email! }));
+                if (!currentUser.email_confirmed_at) {
+                    setNeedsVerification(true);
+                } else {
+                    setNeedsVerification(false);
+                    await fetchUserData(currentUser);
+                }
+            }
+            setLoadingSession(false);
+        };
+        getSession();
+        const { data: authListener } = supabase.auth.onAuthStateChange(
+            (event, newSession) => {
+                const currentUser = newSession?.user ?? null;
+                setSession(newSession);
+                setUser(currentUser);
+                if (event === "SIGNED_IN" && currentUser?.email_confirmed_at) {
+                    setNeedsVerification(false);
+                    setShowAuthPopup(false);
+                    fetchUserData(currentUser);
+                } else if (event === "SIGNED_OUT") {
+                    setNeedsVerification(false);
+                    setUserRole(null);
+                    setIsApproved(false);
+                    setHasExistingProfile(false);
+                    setStep(1);
+                    setPitchDeckMode('file');
+                    setFormData({
+                        companyName: "", stage: "", pitchDeckFile: null, pitchDeckUrl: null,
+                        companyLinkedin: "", website: "", description: "",
+                        founderName: "", founderEmail: "", founderPhone: "",
+                        domain: "", domainOtherSpec: "", problemDescription: "",
+                        earningStatus: "",
+                        establishmentYear: "", turnover: "", netProfit: "", itReturnsFiled: false, isAudited: false
+                    });
+                }
+            }
+        );
+        return () => { authListener.subscription.unsubscribe() };
+    }, [fetchUserData]);
+
+    // --- Translations ---
+    const t = useMemo(() => {
+        const translations = {
+            en: {
+                title: "Startup Application",
+                subtitle: "Get funding for your innovative startup",
+                startupInfo: "Startup Information",
+                founderDetails: "Founder & Legal",
+                financialDetails: "Financial Details",
+                companyName: "Company Name",
+                stage: "Funding Stage",
+                domain: "Primary Domain",
+                domainOtherSpec: "Specify Domain",
+                problemDescription: "Problem/Solution",
+                earningStatus: "Revenue Status",
+                establishmentYear: "Year of Establishment",
+                turnover: "Annual Turnover",
+                netProfit: "Net Profit",
+                itFiled: "IT Returns Filed?",
+                audited: "Accounts Audited?",
+                yes: "Yes",
+                no: "No",
+                pitchDeck: "Pitch Deck",
+                pitchDeckChoice: "Submission Method",
+                uploadFile: "Upload PDF/PPT",
+                addUrl: "External Link",
+                externalUrl: "Deck URL",
+                website: "Website",
+                description: "Short Description",
+                founderName: "Full Name",
+                email: "Email",
+                phone: "Phone",
+                companyLinkedin: "LinkedIn",
+                back: "Back",
+                next: "Next Step",
+                submit: "Submit Application",
+                update: "Update Profile",
+                required: "Required",
+                fileHint: "PDF or PPT, max 25MB",
+                urlHint: "Link to Video, Doc, or Drive",
+                descHint: "words remaining",
+                domains: ["FinTech", "HealthTech", "E-commerce", "SaaS", "EdTech", "Other"],
+                earnings: ["Pre-revenue", "Pilot/Traction", "Revenue Generating (<$1M)", "Scaling (>$1M)"],
+                stages: ["Pre-seed", "Seed", "Series A", "Series B", "Series C+"],
+                placeholder: {
+                    company: "Acme Inc.",
+                    website: "https://",
+                    description: "Briefly describe what your company does...",
+                    problemDescription: "What problem are you solving?",
+                    domainOtherSpec: "Specific industry...",
+                    name: "John Doe",
+                    email: "john@example.com",
+                    phone: "+1 234...",
+                    companyLinkedin: "https://linkedin.com/...",
+                    externalUrl: "https://",
+                    turnover: "e.g. ₹50 Lakhs",
+                    netProfit: "e.g. ₹5 Lakhs",
+                    year: "YYYY",
+                },
+                ready: "Ready to launch?",
+                readyDesc: "Our team reviews applications daily. We'll be in touch shortly.",
+                status: {
+                    title: "Application Status",
+                    notSubmitted: "Not Submitted",
+                    pending: "Under Review",
+                    approved: "Approved",
+                    notApprovedDesc: "Your application is currently being reviewed by our investment team.",
+                    approvedDesc: "Your startup has been approved for the next stage.",
+                    viewDetails: "Application Details",
+                    qrTitle: "Startup ID Pass",
+                    qrDesc: "Scan to verify your startup identity",
+                },
+                authError: "Authentication error: Please try logging in again.",
+                pitchDeckRequiredError: "Pitch Deck is required.",
+                submitSuccess: "Application submitted successfully!",
+                updateSuccess: "Application updated successfully!",
+                submitError: "An error occurred: ",
+                loginRequired: "Authentication Required",
+                loginRequiredDesc: "Please login to access the founder application.",
+                roleMismatch: "Access Denied",
+                roleMismatchDesc: "Your account is registered as an Investor.",
+                login: "Login / Sign Up",
+                validation: {
+                    step1: "Please complete all required fields.",
+                    pitchDeckChoice: "Please provide a pitch deck file or URL.",
+                }
+            },
+            ar: {
+                title: "طلب الشركة الناشئة",
+                subtitle: "احصل على تمويل لشركتك الناشئة المبتكرة",
+                startupInfo: "معلومات الشركة الناشئة",
+                founderDetails: "تفاصيل المؤسس",
+                financialDetails: "التفاصيل المالية",
+                companyName: "اسم الشركة",
+                stage: "مرحلة التمويل",
+                domain: "المجال الرئيسي",
+                domainOtherSpec: "تحديد المجال",
+                problemDescription: "نظرة عامة على المشكلة/الحل",
+                earningStatus: "حالة الإيرادات",
+                establishmentYear: "سنة التأسيس",
+                turnover: "دوران السنوي",
+                netProfit: "صافي الربح",
+                itFiled: "تم تقديم الإقرارات الضريبية؟",
+                audited: "حسابات مدققة؟",
+                yes: "نعم",
+                no: "لا",
+                pitchDeck: "إرسال عرض الملعب",
+                pitchDeckChoice: "طريقة عرض الملعب",
+                uploadFile: "تحميل ملف (PDF/PPT)",
+                addUrl: "إضافة رابط خارجي",
+                externalUrl: "رابط عرض الملعب",
+                website: "موقع الويب",
+                description: "وصف الشركة",
+                founderName: "اسم المؤسس",
+                email: "البريد الإلكتروني",
+                phone: "رقم الهاتف",
+                companyLinkedin: "LinkedIn",
+                back: "رجوع",
+                next: "التالي",
+                submit: "إرسال الطلب",
+                update: "تحديث الطلب",
+                required: "مطلوب",
+                fileHint: "PDF أو PowerPoint، بحد أقصى 25 ميجابايت",
+                urlHint: "رابط إلى الفيديو أو المستند",
+                descHint: "كلمة",
+                domains: ["التكنولوجيا المالية", "التكنولوجيا الصحية", "التجارة الإلكترونية", "SaaS", "التعليم", "أخرى"],
+                earnings: ["ما قبل الإيرادات", "تجريبي/احتكاك", "توليد الإيرادات (أقل من 1 مليون دولار)", "التوسع (أكثر من 1 مليون دولار)"],
+                stages: ["Pre-seed", "Seed", "Series A", "Series B", "Series C+"],
+                placeholder: {
+                    company: "أدخل اسم الشركة",
+                    website: "https://yourcompany.com",
+                    description: "وصف شركتك الناشئة...",
+                    problemDescription: "صف المشكلة والحل...",
+                    domainOtherSpec: "مثال: تكنولوجيا الفضاء",
+                    name: "أدخل اسمك الكامل",
+                    email: "أدخل بريدك الإلكتروني",
+                    phone: "أدخل رقم هاتفك",
+                    companyLinkedin: "https://linkedin.com/...",
+                    externalUrl: "https://...",
+                    turnover: "مثال: 50 ألف",
+                    netProfit: "مثال: 5 آلاف",
+                    year: "السنة",
+                },
+                ready: "هل أنت مستعد للإطلاق؟",
+                readyDesc: "يراجع فريقنا الطلبات يوميًا.",
+                status: {
+                    title: "حالة الطلب",
+                    notSubmitted: "لم يتم تقديم الطلب",
+                    pending: "الطلب قيد المراجعة",
+                    approved: "تمت الموافقة",
+                    notApprovedDesc: "يتم حاليًا مراجعة طلبك.",
+                    approvedDesc: "تمت الموافقة على شركتك الناشئة.",
+                    viewDetails: "تفاصيل الطلب",
+                    qrTitle: "بطاقة هوية الشركة الناشئة",
+                    qrDesc: "امسح للتحقق من هوية شركتك الناشئة",
+                },
+                authError: "خطأ في المصادقة.",
+                pitchDeckRequiredError: "عرض الملعب مطلوب.",
+                submitSuccess: "تم إرسال الطلب بنجاح!",
+                updateSuccess: "تم تحديث الطلب بنجاح!",
+                submitError: "حدث خطأ: ",
+                loginRequired: "تسجيل الدخول مطلوب",
+                loginRequiredDesc: "يرجى تسجيل الدخول للمتابعة.",
+                roleMismatch: "تم رفض الوصول",
+                roleMismatchDesc: "حسابك مسجل كمستثمر.",
+                login: "تسجيل الدخول",
+                validation: {
+                    step1: "يرجى ملء جميع الحقول.",
+                    pitchDeckChoice: "يرجى تقديم عرض الملعب.",
+                }
+            },
+        }
+        return translations[language] as Translations;
+    }, [language]);
+
+    // --- Handlers ---
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+        const { name, value } = e.target
+        setFormData((prev) => ({ ...prev, [name]: value }))
+    }
+
+    const handleToggleChange = (name: string, checked: boolean) => {
+        setFormData((prev) => ({ ...prev, [name]: checked }))
+    }
+
+    const handleUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setFormData((prev) => ({ ...prev, pitchDeckUrl: e.target.value, pitchDeckFile: null }))
+    }
+
+    const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0]
+        if (file) {
+            setFormData((prev) => ({ ...prev, pitchDeckFile: file, pitchDeckUrl: null }))
+        }
+    }
+
+    const clearUrl = () => { setFormData((prev) => ({ ...prev, pitchDeckUrl: null })) }
+
+    const handlePitchDeckModeChange = (mode: PitchDeckMode) => {
+        setPitchDeckMode(mode);
+        if (mode === 'file') { setFormData(prev => ({ ...prev, pitchDeckUrl: null })); } 
+        else { setFormData(prev => ({ ...prev, pitchDeckFile: null })); }
+    }
+
+    const handleNext = () => {
+        let isStep1Valid = !!formData.companyName && !!formData.domain && !!formData.website && !!formData.establishmentYear;
+        if (formData.domain === 'Other' && !formData.domainOtherSpec) isStep1Valid = false;
+        const isPitchDeckValid = !!formData.pitchDeckFile || !!formData.pitchDeckUrl;
+
+        if (!isStep1Valid) { alert(t.validation.step1); return; }
+        if (!isPitchDeckValid) { alert(t.validation.pitchDeckChoice); return; }
+        if (step < 2) setStep(step + 1)
+    }
+
+    const handleBack = () => { if (step > 1) setStep(step - 1) }
+
+    const uploadPitchDeck = async (file: File, userId: string) => {
+        const fileExt = file.name.split('.').pop();
+        const filePath = `${userId}/${Date.now()}.${fileExt}`;
+        const { data, error } = await supabase.storage.from('pitch_decks').upload(filePath, file, { cacheControl: '3600', upsert: false });
+        if (error) throw error;
+        const { data: urlData } = supabase.storage.from('pitch_decks').getPublicUrl(filePath);
+        return urlData.publicUrl;
     };
 
-    getSession();
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!user) return alert(t.authError);
+        if (isApproved) return;
+        setLoadingData(true);
+        let finalPitchUrl = formData.pitchDeckUrl;
 
-    const { data: authListener } = supabase.auth.onAuthStateChange(
-      (event, newSession) => {
-        const currentUser = newSession?.user ?? null;
-        setSession(newSession);
-        setUser(currentUser);
-        
-        if (event === "SIGNED_IN" && currentUser?.email_confirmed_at) {
-            setNeedsVerification(false);
-            setShowAuthPopup(false);
-            fetchUserData(currentUser);
-        } else if (event === "SIGNED_OUT") {
-            setNeedsVerification(false);
-            setUserRole(null);
-            setIsApproved(false);
-            setHasExistingProfile(false);
-            setStep(1); 
-            setFormData({
-                companyName: "", stage: "", pitchDeck: null, pitchDeckUrl: null,
-                companyLinkedin: "", website: "", description: "",
-                founderName: "", founderEmail: "", founderPhone: "",
-                domain: "", domainOtherSpec: "", problemDescription: "",
-                earningStatus: "",
-            });
-        }
-      }
-    );
-
-    return () => { authListener.subscription.unsubscribe() };
-  }, [fetchUserData]);
-
-  // --- TRANSLATIONS (Updated with new fields) ---
-  const t = useMemo(() => {
-    const translations = {
-        en: {
-            title: "Startup Application",
-            subtitle: "Get funding for your innovative startup",
-            startupInfo: "Startup Information",
-            founderDetails: "Founder Details",
-            companyName: "Company Name",
-            stage: "Funding Stage",
-            domain: "Primary Domain",
-            domainOtherSpec: "Specify Domain",
-            problemDescription: "Problem/Solution Overview",
-            earningStatus: "Earning Status",
-            pitchDeck: "Pitch Deck (PDF/PPT)",
-            website: "Company Website",
-            description: "Company Description (Max 250 words)",
-            founderName: "Founder Name",
-            email: "Email Address",
-            phone: "Phone Number",
-            companyLinkedin: "Company LinkedIn",
-            back: "Back",
-            next: "Next",
-            submit: "Submit Application",
-            update: "Update Application",
-            required: "Required",
-            uploadFile: "Upload your pitch deck",
-            fileHint: "PDF or PowerPoint, max 25MB",
-            descHint: "Describe in 200-250 words",
-            domains: ["FinTech", "HealthTech", "E-commerce", "SaaS", "EdTech", "Other"],
-            earnings: ["Pre-revenue", "Pilot/Traction", "Revenue Generating (Under $1M)", "Scaling (Over $1M)"],
-            stages: ["Pre-seed", "Seed", "Series A", "Series B", "Series C+"],
-            placeholder: {
-                company: "Enter company name",
-                website: "https://yourcompany.com",
-                description: "Describe your startup in max 250 words...",
-                problemDescription: "Describe the problem and your unique solution...",
-                domainOtherSpec: "e.g., Quantum Computing, SpaceTech",
-                name: "Enter your full name",
-                email: "Enter your email",
-                phone: "Enter your phone number",
-                companyLinkedin: "https://linkedin.com/company/yourcompany",
-            },
-            ready: "Ready to launch?",
-            readyDesc:
-                "Our team reviews applications daily. If your startup is a good fit, we'll schedule a call to discuss funding opportunities.",
-            status: {
-                title: "Application Status",
-                notSubmitted: "Application Not Submitted",
-                pending: "Application Pending Review",
-                approved: "Congratulations! Your Startup is Approved.",
-                notApprovedDesc: "Your application is currently being reviewed by our team. We aim to respond within 5 business days.",
-                approvedDesc: "Your startup has been approved for the next stage of funding discussions. Please check your email for a detailed next step from your dedicated advisor.",
-                viewDetails: "View Details (Read-Only)",
-            },
-            authError: "Authentication error: Please try logging in again.",
-            pitchDeckRequiredError: "Pitch Deck is required.",
-            submitSuccess: "Application submitted successfully! We will review your pitch.",
-            updateSuccess: "Application updated successfully!",
-            submitError: "An error occurred during submission: ",
-            loginRequired: "Login Required", 
-            loginRequiredDesc: "Please login or sign up as a Founder to access this application form.", 
-            roleMismatch: "Access Denied",
-            roleMismatchDesc: "Your account is registered as an Investor. Please login with a Founder account.",
-            login: "Login / Sign Up", // Added key
-            validation: {
-                step1: "Please fill in all required fields in Step 1.",
+        try {
+            if (formData.pitchDeckFile) {
+                finalPitchUrl = await uploadPitchDeck(formData.pitchDeckFile, user.id);
+            } else if (!finalPitchUrl) {
+                throw new Error(t.pitchDeckRequiredError);
             }
-        },
-        ar: {
-            title: "طلب الشركة الناشئة",
-            subtitle: "احصل على تمويل لشركتك الناشئة المبتكرة",
-            startupInfo: "معلومات الشركة الناشئة",
-            founderDetails: "تفاصيل المؤسس",
-            companyName: "اسم الشركة",
-            stage: "مرحلة التمويل",
-            domain: "المجال الرئيسي",
-            domainOtherSpec: "تحديد المجال",
-            problemDescription: "نظرة عامة على المشكلة/الحل",
-            earningStatus: "حالة الإيرادات",
-            pitchDeck: "عرض الملعب (PDF/PPT)",
-            website: "موقع الويب للشركة",
-            description: "وصف الشركة (بحد أقصى 250 كلمة)",
-            founderName: "اسم المؤسس",
-            email: "عنوان البريد الإلكتروني",
-            phone: "رقم الهاتف",
-            companyLinkedin: "LinkedIn للشركة",
-            back: "رجوع",
-            next: "التالي",
-            submit: "إرسال الطلب",
-            update: "تحديث الطلب",
-            required: "مطلوب",
-            uploadFile: "قم بتحميل عرض الملعب الخاص بك",
-            fileHint: "PDF أو PowerPoint، بحد أقصى 25 ميجابايت",
-            descHint: "اكتب وصفًا بـ 200-250 كلمة",
-            domains: ["التكنولوجيا المالية", "التكنولوجيا الصحية", "التجارة الإلكترونية", "SaaS", "التعليم", "أخرى"],
-            earnings: ["ما قبل الإيرادات", "تجريبي/احتكاك", "توليد الإيرادات (أقل من 1 مليون دولار)", "التوسع (أكثر من 1 مليون دولار)"],
-            stages: ["Pre-seed", "Seed", "Series A", "Series B", "Series C+"],
-            placeholder: {
-                company: "أدخل اسم الشركة",
-                website: "https://yourcompany.com",
-                description: "وصف شركتك الناشئة بحد أقصى 250 كلمة...",
-                problemDescription: "صف المشكلة والحل الفريد...",
-                domainOtherSpec: "مثال: الحوسبة الكمومية، تكنولوجيا الفضاء",
-                name: "أدخل اسمك الكامل",
-                email: "أدخل بريدك الإلكتروني",
-                phone: "أدخل رقم هاتفك",
-                companyLinkedin: "https://linkedin.com/company/yourcompany",
-            },
-            ready: "هل أنت مستعد للإطلاق؟",
-            readyDesc: "يراجع فريقنا الطلبات يوميًا. إذا كانت شركتك الناشئة مناسبة، سنجدول مكالمة لمناقشة فرص التمويل.",
-            status: {
-                title: "حالة الطلب",
-                notSubmitted: "لم يتم تقديم الطلب",
-                pending: "الطلب قيد المراجعة",
-                approved: "تهانينا! تمت الموافقة على شركتك الناشئة.",
-                notApprovedDesc: "يتم حاليًا مراجعة طلبك من قبل فريقنا. نهدف إلى الرد في غضون 5 أيام عمل.",
-                approvedDesc: "تمت الموافقة على شركتك الناشئة للمرحلة التالية من مناقشات التمويل. يرجى التحقق من بريدك الإلكتروني للحصول على خطوة تالية مفصلة من مستشارك المخصص.",
-                viewDetails: "عرض التفاصيل (للقراءة فقط)",
-            },
-            authError: "خطأ في المصادقة: يرجى محاولة تسجيل الدخول مرة أخرى.",
-            pitchDeckRequiredError: "عرض الملعب مطلوب.",
-            submitSuccess: "تم إرسال الطلب بنجاح! سنقوم بمراجعة العرض الخاص بك.",
-            updateSuccess: "تم تحديث الطلب بنجاح!",
-            submitError: "حدث خطأ أثناء الإرسال: ",
-            loginRequired: "تسجيل الدخول مطلوب", 
-            loginRequiredDesc: "يرجى تسجيل الدخول أو إنشاء حساب كمؤسس للوصول إلى نموذج الطلب هذا.", 
-            roleMismatch: "تم رفض الوصول",
-            roleMismatchDesc: "حسابك مسجل كمستثمر. يرجى تسجيل الدخول بحساب مؤسس.",
-            login: "تسجيل الدخول / إنشاء حساب", // Added key
-            validation: {
-                step1: "يرجى ملء جميع الحقول المطلوبة في الخطوة 1.",
+
+            const submissionData: Omit<FounderProfileData, 'is_approved'> = {
+                company_name: formData.companyName,
+                stage: formData.stage,
+                pitch_deck_url: finalPitchUrl,
+                website: formData.website,
+                description: formData.description,
+                founder_name: formData.founderName,
+                founder_phone: formData.founderPhone,
+                company_linkedin: formData.companyLinkedin,
+                domain: formData.domain,
+                domain_other_spec: formData.domain === 'Other' ? formData.domainOtherSpec : null,
+                problem_description: formData.problemDescription,
+                earning_status: formData.earningStatus,
+                establishment_year: formData.establishmentYear ? parseInt(String(formData.establishmentYear)) : null,
+                turnover: formData.turnover,
+                net_profit: formData.netProfit,
+                it_returns_filed: formData.itReturnsFiled,
+                is_audited: formData.isAudited,
+                email: user.email!,
             }
-        },
-    }
-    return translations[language] as Translations;
-  }, [language]); 
 
-  // --- FORM HANDLERS AND SUBMISSION ---
+            let error;
+            if (hasExistingProfile) {
+                const result = await supabase.from('founder_profiles').update(submissionData).eq('user_id', user.id).select();
+                error = result.error;
+            } else {
+                const result = await supabase.from('founder_profiles').insert({ user_id: user.id, ...submissionData, is_approved: false }).select();
+                error = result.error;
+            }
+            if (error) throw error;
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }))
-  }
-
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
-    if (file) {
-      setFormData((prev) => ({
-        ...prev,
-        pitchDeck: file,
-      }))
-    }
-  }
-
-  const handleNext = () => {
-    // Validation for Step 1
-    if (!formData.companyName || !formData.domain || !formData.website || (!formData.pitchDeck && !formData.pitchDeckUrl)) {
-        alert(t.validation.step1);
-        return;
-    }
-    if (step < 2) setStep(step + 1)
-  }
-
-  const handleBack = () => {
-    if (step > 1) setStep(step - 1)
-  }
-
-  const uploadPitchDeck = async (file: File, userId: string) => {
-    const fileExt = file.name.split('.').pop();
-    const filePath = `${userId}/${Date.now()}.${fileExt}`;
-
-    const { data, error } = await supabase.storage
-        .from('pitch_decks')
-        .upload(filePath, file, {
-            cacheControl: '3600',
-            upsert: false, 
-        });
-
-    if (error) throw error;
-    
-    // Get the public URL
-    const { data: urlData } = supabase.storage
-        .from('pitch_decks')
-        .getPublicUrl(filePath);
-
-    return urlData.publicUrl;
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!user) return alert(t.authError);
-    if (isApproved) return; 
-
-    setLoadingData(true);
-    let finalPitchUrl = formData.pitchDeckUrl;
-
-    try {
-        // 1. Handle File Upload if a new file was selected
-        if (formData.pitchDeck) {
-            finalPitchUrl = await uploadPitchDeck(formData.pitchDeck, user.id);
-        } else if (!finalPitchUrl) {
-            throw new Error(t.pitchDeckRequiredError);
+            alert(hasExistingProfile ? t.updateSuccess : t.submitSuccess);
+            setHasExistingProfile(true);
+            setFormData(prev => ({ ...prev, pitchDeckUrl: finalPitchUrl, pitchDeckFile: null }));
+            setStep(0);
+        } catch (err: any) {
+            alert(t.submitError + (err.message || ''));
+            console.error("Submission error:", err);
+        } finally {
+            setLoadingData(false);
         }
-        
-        // 2. Create submission data, including the email
-        const submissionData: Omit<FounderProfileData, 'is_approved'> = {
-            company_name: formData.companyName,
-            stage: formData.stage,
-            pitch_deck_url: finalPitchUrl,
-            website: formData.website,
-            description: formData.description,
-            founder_name: formData.founderName,
-            founder_phone: formData.founderPhone,
-            company_linkedin: formData.companyLinkedin,
-            domain: formData.domain,
-            domain_other_spec: formData.domain === 'Other' ? formData.domainOtherSpec : null,
-            problem_description: formData.problemDescription,
-            earning_status: formData.earningStatus,
-            // ⭐ CRITICAL UPDATE: Add email to submission data
-            email: user.email!, 
+    }
+
+    // --- Main Render ---
+    const renderContent = () => {
+        if (loadingSession || loadingData) {
+            return <div className="flex items-center justify-center py-32"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-slate-900"></div></div>
         }
 
-        let error;
-        if (hasExistingProfile) {
-            // Update existing profile (RLS will prevent this if is_approved=true)
-            const result = await supabase
-                .from('founder_profiles')
-                .update(submissionData)
-                .eq('user_id', user.id)
-                .select();
-            error = result.error;
-        } else {
-            // Insert new profile, explicitly setting is_approved to false
-            const result = await supabase
-                .from('founder_profiles')
-                .insert({ 
-                    user_id: user.id, 
-                    ...submissionData,
-                    is_approved: false 
-                })
-                .select();
-            error = result.error;
+        if (!user || needsVerification) {
+            if (needsVerification) return <EmailVerificationNotice language={language} />;
+            return (
+                <div className="max-w-md mx-auto mt-20 p-8 text-center bg-white border border-slate-200 rounded-xl shadow-sm">
+                    <div className="w-12 h-12 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <Lock className="w-6 h-6 text-slate-600" />
+                    </div>
+                    <h2 className="text-lg font-bold text-slate-900 mb-2">{t.loginRequired}</h2>
+                    <p className="text-sm text-slate-500 mb-6">{t.loginRequiredDesc}</p>
+                    <button
+                        onClick={() => setShowAuthPopup(true)}
+                        className="w-full py-2.5 bg-[#013371] text-white text-sm font-medium rounded-lg hover:bg-[#024fa3] transition-all flex items-center justify-center gap-2"
+                    >
+                        <LogIn className="w-4 h-4" /> {t.login}
+                    </button>
+                </div>
+            );
         }
 
-        if (error) throw error;
+        if (hasExistingProfile && step === 0) {
+            // PASS THE USER ID HERE
+            return <StatusView t={t} isApproved={isApproved} formData={formData} setStep={setStep} canEdit={!isApproved} userId={user.id} />;
+        }
 
-        alert(hasExistingProfile ? t.updateSuccess : t.submitSuccess);
-        setHasExistingProfile(true); 
-        setStep(0); // Show StatusView after successful submission/update
-    } catch (err: any) {
-        alert(t.submitError + (err.message || ''));
-        console.error("Submission error:", err);
-    } finally {
-        setLoadingData(false);
-    }
-  }
+        if (step === 1 || step === 2) {
+            return (
+                <FormView
+                    t={t} step={step} formData={formData} pitchDeckMode={pitchDeckMode}
+                    handleInputChange={handleInputChange} handleFileUpload={handleFileUpload}
+                    handleToggleChange={handleToggleChange}
+                    handleUrlChange={handleUrlChange} handlePitchDeckModeChange={handlePitchDeckModeChange}
+                    handleNext={handleNext} handleBack={handleBack} handleSubmit={handleSubmit}
+                    isApproved={isApproved} hasExistingProfile={hasExistingProfile} clearUrl={clearUrl}
+                />
+            );
+        }
 
-  // --- CONDITIONAL RENDERING LOGIC ---
-  const renderContent = () => {
-    if (loadingSession || loadingData) {
-      return (
-        <div className="text-center py-20 text-slate-600 text-xl font-medium animate-pulse">
-          Loading user session and profile...
-        </div>
-      )
+        return null;
     }
 
-    if (!user || needsVerification) {
-        if (needsVerification) return <EmailVerificationNotice language={language} />;
-        
-        return (
-            <div className="max-w-xl mx-auto mt-16 p-8 text-center bg-red-50 border-2 border-red-300 rounded-xl shadow-lg animate-fadeIn">
-              <h2 className="text-2xl font-bold text-slate-900 mb-4">{t.loginRequired}</h2>
-              <p className="text-slate-700 mb-6">{t.loginRequiredDesc}</p>
-              <button
-                onClick={() => setShowAuthPopup(true)}
-                className="px-8 py-3 bg-[#013371] text-white rounded-lg font-semibold hover:bg-[#024fa3] transition-all shadow-lg flex items-center justify-center gap-2 mx-auto"
-              >
-                <LogIn className="w-5 h-5" /> {t.login} 
-              </button>
-            </div>
-        );
-    }
-    
-    // Show StatusView if profile exists AND we are on step 0 (default for existing users)
-    if (hasExistingProfile && step === 0) {
-        return (
-            <StatusView 
-                t={t} 
-                isApproved={isApproved} 
-                formData={formData} 
-                setStep={setStep}
-                canEdit={!isApproved}
-            />
-        );
-    }
-
-    // Show FormView if we are on step 1 or 2
-    if (step === 1 || step === 2) {
-        return (
-          <FormView 
-              t={t} 
-              step={step} 
-              formData={formData} 
-              handleInputChange={handleInputChange} 
-              handleFileUpload={handleFileUpload} 
-              handleNext={handleNext} 
-              handleBack={handleBack} 
-              handleSubmit={handleSubmit}
-              isApproved={isApproved}
-              hasExistingProfile={hasExistingProfile} // Pass this to set button text
-          />
-        );
-    }
-
-    // Fallback for any other state
     return (
-        <div className="text-center py-20 text-slate-600 text-xl font-medium animate-pulse">
-          Loading...
+        <div className="min-h-screen flex flex-col bg-slate-50/50">
+            <Header language={language} setLanguage={setLanguage as Dispatch<SetStateAction<"en" | "ar">>} userEmail={user?.email} />
+            <main className="flex-1 pt-28 pb-20 px-4 md:px-6">
+                <div className="max-w-3xl mx-auto">
+                    <div className="mb-8">
+                        <h1 className="text-2xl md:text-3xl font-bold text-slate-900 tracking-tight mb-2">{t.title}</h1>
+                        <p className="text-sm text-slate-500">{t.subtitle}</p>
+                    </div>
+                    {renderContent()}
+                </div>
+            </main>
+            <Footer language={language} />
+            {showAuthPopup && <AuthPopup onClose={() => setShowAuthPopup(false)} onSuccess={() => setShowAuthPopup(false)} language={language} />}
         </div>
-    );
-  }
+    )
+}
 
-  return (
-    <div className="min-h-screen flex flex-col bg-white">
-      <Header 
-        language={language} 
-        setLanguage={setLanguage as Dispatch<SetStateAction<"en" | "ar">>}
-        userEmail={user?.email} 
-      />
+// --- Modern Components ---
 
-      {/* Main Content */}
-      <main className="flex-1 pt-32 pb-20 px-4">
-        <div className="max-w-2xl mx-auto">
-          {/* Header Section */}
-          <div className="mb-12 animate-fadeIn">
-            <h1 className="text-4xl md:text-5xl font-bold text-slate-900 mb-3">{t.title}</h1>
-            <p className="text-lg text-slate-600">{t.subtitle}</p>
-          </div>
-
-          {renderContent()}
-        </div>
-      </main>
-
-      <Footer language={language} />
-
-      {showAuthPopup && (
-        <AuthPopup
-          onClose={() => setShowAuthPopup(false)}
-          onSuccess={() => setShowAuthPopup(false)} 
-          language={language}
-        />
-      )}
+// 1. Reusable Input Components
+const InputGroup = ({ label, required, children, subLabel }: { label: string, required?: boolean, children: React.ReactNode, subLabel?: string }) => (
+    <div className="space-y-1.5">
+        <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider">
+            {label} {required && <span className="text-red-500">*</span>}
+        </label>
+        {children}
+        {subLabel && <p className="text-xs text-slate-400">{subLabel}</p>}
     </div>
-  )
-}
+);
 
+const StyledInput = (props: React.InputHTMLAttributes<HTMLInputElement>) => (
+    <input
+        {...props}
+        className={`w-full px-3 py-2.5 bg-white border border-slate-200 rounded-md text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#013371] focus:ring-1 focus:ring-[#013371]/20 transition-all disabled:bg-slate-50 disabled:text-slate-500 ${props.className}`}
+    />
+);
 
-// --- Helper Components for Cleanliness ---
+const StyledSelect = (props: React.SelectHTMLAttributes<HTMLSelectElement>) => (
+    <div className="relative">
+        <select
+            {...props}
+            className={`w-full px-3 py-2.5 bg-white border border-slate-200 rounded-md text-sm text-slate-900 focus:outline-none focus:border-[#013371] focus:ring-1 focus:ring-[#013371]/20 transition-all appearance-none disabled:bg-slate-50 ${props.className}`}
+        />
+        <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400">
+            <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+        </div>
+    </div>
+);
 
-// 1. Form View Component (Handles Steps 1 and 2)
-interface FormViewProps {
-    t: Translations; 
-    step: number;
-    formData: any; 
-    handleInputChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => void;
-    handleFileUpload: (e: React.ChangeEvent<HTMLInputElement>) => void;
-    handleNext: () => void;
-    handleBack: () => void;
-    handleSubmit: (e: React.FormEvent) => void;
-    isApproved: boolean;
-    hasExistingProfile: boolean; 
-}
+const ToggleSwitch = ({ checked, onChange, disabled, labelOn, labelOff }: { checked: boolean, onChange: (val: boolean) => void, disabled: boolean, labelOn: string, labelOff: string }) => (
+    <button
+        type="button"
+        onClick={() => !disabled && onChange(!checked)}
+        className={`relative inline-flex h-8 w-full md:w-48 items-center rounded-lg border px-1 transition-colors ${checked ? 'bg-[#013371]/5 border-[#013371]' : 'bg-white border-slate-200'}`}
+        disabled={disabled}
+    >
+        <span className="sr-only">Use setting</span>
+        <span
+            className={`${
+                checked ? 'translate-x-full md:translate-x-[calc(100%-8px)] bg-[#013371]' : 'translate-x-0 bg-slate-300'
+            } inline-block h-6 w-6 transform rounded-md transition-transform duration-200 ease-in-out`}
+        />
+        <span className="absolute inset-0 flex items-center justify-between px-3 text-xs font-medium">
+             <span className={`${!checked ? 'text-slate-900' : 'text-transparent'} transition-colors`}>{labelOff}</span>
+             <span className={`${checked ? 'text-[#013371]' : 'text-transparent'} transition-colors`}>{labelOn}</span>
+        </span>
+    </button>
+);
 
-const FormView: React.FC<FormViewProps> = ({ t, step, formData, handleInputChange, handleFileUpload, handleNext, handleBack, handleSubmit, isApproved, hasExistingProfile }) => {
-    
+// 2. Form View
+const FormView: React.FC<any> = ({ t, step, formData, pitchDeckMode, handleInputChange, handleFileUpload, handleToggleChange, handleUrlChange, handlePitchDeckModeChange, handleNext, handleBack, handleSubmit, isApproved, hasExistingProfile, clearUrl }) => {
     const isDisabled = isApproved;
-    const OTHER_DOMAIN_VALUE = "Other";
+    const isFileSelected = !!formData.pitchDeckFile;
+    const isUrlEntered = !!formData.pitchDeckUrl;
 
     return (
         <>
-            {/* Progress Steps */}
-            <div className="flex items-center justify-center gap-6 md:gap-8 mb-12 animate-slideInDown">
-                {[1, 2].map((stepNum) => (
-                    <div key={stepNum} className="flex items-center">
-                        <div
-                            className={`w-12 h-12 rounded-full flex items-center justify-center font-bold text-lg transition-all ${
-                                step >= stepNum ? "bg-[#013371] text-white shadow-lg" : "bg-slate-200 text-slate-500"
-                            }`}
-                        >
-                            {step > stepNum ? <CheckCircle2 className="w-6 h-6" /> : stepNum}
-                        </div>
-                        {stepNum < 2 && (
-                            <div className={`h-1 w-12 md:w-20 transition-all ${step >= 2 ? "bg-[#013371]" : "bg-slate-200"}`} />
-                        )}
-                    </div>
-                ))}
+            {/* Stepper */}
+            <div className="flex items-center justify-between mb-8 px-1">
+               <div className="flex items-center gap-3">
+                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-colors ${step >= 1 ? 'bg-[#013371] text-white' : 'bg-white border border-slate-200 text-slate-400'}`}>1</div>
+                    <span className={`text-sm font-medium ${step >= 1 ? 'text-slate-900' : 'text-slate-400'}`}>{t.startupInfo}</span>
+               </div>
+               <div className={`flex-1 h-px mx-4 ${step >= 2 ? 'bg-[#013371]' : 'bg-slate-200'}`}></div>
+               <div className="flex items-center gap-3">
+                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-colors ${step >= 2 ? 'bg-[#013371] text-white' : 'bg-white border border-slate-200 text-slate-400'}`}>2</div>
+                    <span className={`text-sm font-medium ${step >= 2 ? 'text-slate-900' : 'text-slate-400'}`}>{t.founderDetails}</span>
+               </div>
             </div>
 
-            {/* Form Card */}
-            <div className="bg-white border border-slate-200 rounded-2xl shadow-xl p-8 md:p-10 animate-slideInUp">
-                <form onSubmit={handleSubmit}>
-                    {/* Step 1: Startup Info */}
-                    {step === 1 && (
-                        <div className="space-y-6 animate-slideInUp">
-                            <h2 className="text-2xl font-bold text-slate-900 mb-8">{t.startupInfo}</h2>
-
-                            {[
-                                { label: t.companyName, name: "companyName", type: "text", placeholder: t.placeholder.company, required: true },
-                                { label: t.website, name: "website", type: "url", placeholder: t.placeholder.website, required: true },
-                                { label: t.companyLinkedin, name: "companyLinkedin", type: "url", placeholder: t.placeholder.companyLinkedin, required: false },
-                            ].map((field) => (
-                                <div key={field.name}>
-                                    <label className="block text-sm font-semibold text-slate-900 mb-2">
-                                        {field.label} {field.required && <span className="text-red-500">*</span>} 
-                                    </label>
-                                    <input
-                                        type={field.type}
-                                        name={field.name}
-                                        value={formData[field.name as keyof typeof formData] || ""}
-                                        onChange={handleInputChange}
-                                        placeholder={field.placeholder}
-                                        className={`w-full px-4 py-3 border-2 border-slate-200 rounded-lg focus:border-[#013371] focus:outline-none bg-white hover:border-slate-300 transition-colors ${isDisabled ? 'bg-slate-100 cursor-not-allowed' : ''}`}
-                                        required={field.required} 
-                                        disabled={isDisabled}
-                                    />
+            <div className="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
+                <div className="p-6 md:p-8">
+                    <form onSubmit={handleSubmit} className="space-y-6">
+                        {step === 1 && (
+                            <div className="space-y-6 animate-fadeIn">
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                                    <InputGroup label={t.companyName} required>
+                                        <div className="relative">
+                                            <Building2 className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                                            <StyledInput name="companyName" value={formData.companyName} onChange={handleInputChange} placeholder={t.placeholder.company} disabled={isDisabled} className="pl-9" required />
+                                        </div>
+                                    </InputGroup>
+                                    <InputGroup label={t.establishmentYear} required>
+                                        <div className="relative">
+                                            <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                                            <StyledInput type="number" name="establishmentYear" value={formData.establishmentYear} onChange={handleInputChange} placeholder={t.placeholder.year} min="1900" max={new Date().getFullYear() + 1} disabled={isDisabled} className="pl-9" required />
+                                        </div>
+                                    </InputGroup>
                                 </div>
-                            ))}
 
-                            {/* Domain Dropdown */}
-                            <div>
-                                <label className="block text-sm font-semibold text-slate-900 mb-2">
-                                    {t.domain} <span className="text-red-500">*</span>
-                                </label>
-                                <select
-                                    name="domain"
-                                    value={formData.domain}
-                                    onChange={handleInputChange}
-                                    className={`w-full px-4 py-3 border-2 border-slate-200 rounded-lg focus:border-[#013371] focus:outline-none bg-white hover:border-slate-300 transition-colors ${isDisabled ? 'bg-slate-100 cursor-not-allowed' : ''}`}
-                                    required
-                                    disabled={isDisabled}
-                                >
-                                    <option value="">Select Domain</option>
-                                    {t.domains.map((d: string) => ( 
-                                        <option key={d} value={d}>
-                                            {d}
-                                        </option>
-                                    ))}
-                                </select>
-                            </div>
-
-                            {/* Domain Other Specification (Conditional Input) */}
-                            {formData.domain === OTHER_DOMAIN_VALUE && (
-                                <div>
-                                    <label className="block text-sm font-semibold text-slate-900 mb-2">
-                                        {t.domainOtherSpec} <span className="text-red-500">*</span>
-                                    </label>
-                                    <input
-                                        type="text"
-                                        name="domainOtherSpec"
-                                        value={formData.domainOtherSpec}
-                                        onChange={handleInputChange}
-                                        placeholder={t.placeholder.domainOtherSpec}
-                                        className={`w-full px-4 py-3 border-2 border-slate-200 rounded-lg focus:border-[#013371] focus:outline-none bg-white hover:border-slate-300 transition-colors ${isDisabled ? 'bg-slate-100 cursor-not-allowed' : ''}`}
-                                        required
-                                        disabled={isDisabled}
-                                    />
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                                    <InputGroup label={t.website} required>
+                                        <div className="relative">
+                                            <Globe className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                                            <StyledInput type="url" name="website" value={formData.website} onChange={handleInputChange} placeholder={t.placeholder.website} disabled={isDisabled} className="pl-9" required />
+                                        </div>
+                                    </InputGroup>
+                                    <InputGroup label={t.companyLinkedin}>
+                                        <div className="relative">
+                                            <Linkedin className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                                            <StyledInput type="url" name="companyLinkedin" value={formData.companyLinkedin} onChange={handleInputChange} placeholder={t.placeholder.companyLinkedin} disabled={isDisabled} className="pl-9" />
+                                        </div>
+                                    </InputGroup>
                                 </div>
-                            )}
 
-                            {/* Pitch Deck Upload */}
-                            <div>
-                                <label className="block text-sm font-semibold text-slate-900 mb-2">
-                                    {t.pitchDeck} {formData.pitchDeckUrl ? "(Optional Update)" : <span className="text-red-500">*</span>}
-                                </label>
-                                <div className={`border-2 border-dashed rounded-lg p-6 text-center transition-all ${isDisabled ? 'border-slate-200 bg-slate-50' : 'border-slate-300 hover:border-[#013371] hover:bg-blue-50 cursor-pointer'}`}>
-                                    <input
-                                        type="file"
-                                        onChange={handleFileUpload}
-                                        accept=".pdf,.ppt,.pptx"
-                                        className="hidden"
-                                        id="pitch-upload"
-                                        required={!formData.pitchDeckUrl}
-                                        disabled={isDisabled}
-                                    />
-                                    <label htmlFor="pitch-upload" className={`cursor-pointer block ${isDisabled ? 'cursor-not-allowed' : ''}`}>
-                                        <Upload className="w-8 h-8 text-[#013371] mx-auto mb-2" />
-                                        {formData.pitchDeck ? (
-                                            <p className="text-sm font-semibold text-slate-900">{formData.pitchDeck.name}</p>
-                                        ) : formData.pitchDeckUrl ? (
-                                            <p className="text-sm font-semibold text-green-600">Existing file uploaded. Click to replace.</p>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                                    <InputGroup label={t.domain} required>
+                                        <StyledSelect name="domain" value={formData.domain} onChange={handleInputChange} disabled={isDisabled} required>
+                                            <option value="">Select...</option>
+                                            {t.domains.map((d: string) => <option key={d} value={d}>{d}</option>)}
+                                        </StyledSelect>
+                                    </InputGroup>
+                                    {formData.domain === "Other" && (
+                                        <InputGroup label={t.domainOtherSpec} required>
+                                            <StyledInput name="domainOtherSpec" value={formData.domainOtherSpec} onChange={handleInputChange} placeholder={t.placeholder.domainOtherSpec} disabled={isDisabled} required />
+                                        </InputGroup>
+                                    )}
+                                </div>
+
+                                {/* Pitch Deck Section */}
+                                <div className="pt-2">
+                                    <InputGroup label={t.pitchDeck} required>
+                                        <div className="bg-slate-50 p-1 rounded-lg flex mb-4 w-full md:w-fit border border-slate-200">
+                                            {(['file', 'url'] as const).map((mode) => (
+                                                <button
+                                                    key={mode}
+                                                    type="button"
+                                                    onClick={() => handlePitchDeckModeChange(mode)}
+                                                    className={`flex-1 px-4 py-1.5 text-xs font-medium rounded-md transition-all ${pitchDeckMode === mode ? 'bg-white text-[#013371] shadow-sm border border-slate-100' : 'text-slate-500 hover:text-slate-700'}`}
+                                                    disabled={isDisabled}
+                                                >
+                                                    {mode === 'file' ? t.uploadFile : t.addUrl}
+                                                </button>
+                                            ))}
+                                        </div>
+
+                                        {pitchDeckMode === 'file' ? (
+                                            <div className="relative">
+                                                <input type="file" id="pitch-upload" onChange={handleFileUpload} accept=".pdf,.ppt,.pptx" className="hidden" disabled={isDisabled} />
+                                                <label htmlFor="pitch-upload" className={`block border border-dashed border-slate-300 rounded-lg p-8 text-center hover:bg-slate-50 hover:border-[#013371] transition-all cursor-pointer ${isDisabled ? 'opacity-60 pointer-events-none' : ''}`}>
+                                                    <div className="w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-3 text-[#013371]">
+                                                        <Upload className="w-5 h-5" />
+                                                    </div>
+                                                    {isFileSelected ? (
+                                                        <div className="flex items-center justify-center gap-2 text-sm font-medium text-[#013371]">
+                                                            <FileText className="w-4 h-4" /> {formData.pitchDeckFile.name}
+                                                        </div>
+                                                    ) : (
+                                                        <>
+                                                            <p className="text-sm font-medium text-slate-900">{t.uploadFile}</p>
+                                                            <p className="text-xs text-slate-500 mt-1">{t.fileHint}</p>
+                                                        </>
+                                                    )}
+                                                </label>
+                                                {formData.pitchDeckUrl && !isFileSelected && (
+                                                     <p className="text-xs text-green-600 mt-2 flex items-center gap-1"><CheckCircle2 className="w-3 h-3" /> Current file on server.</p>
+                                                )}
+                                            </div>
                                         ) : (
-                                            <>
-                                                <p className="text-sm font-semibold text-slate-900 mb-1">{t.uploadFile}</p>
-                                                <p className="text-xs text-slate-500">{t.fileHint}</p>
-                                            </>
+                                            <div className="relative">
+                                                <StyledInput type="url" name="pitchDeckUrl" value={formData.pitchDeckUrl || ""} onChange={handleUrlChange} placeholder={t.placeholder.externalUrl} disabled={isDisabled} />
+                                                {isUrlEntered && (
+                                                    <button type="button" onClick={clearUrl} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-red-500" disabled={isDisabled}>
+                                                        <XCircle className="w-4 h-4" />
+                                                    </button>
+                                                )}
+                                            </div>
                                         )}
-                                    </label>
+                                    </InputGroup>
+                                </div>
+
+                                <div className="flex justify-end pt-4">
+                                    <button type="button" onClick={handleNext} className="bg-[#013371] text-white px-6 py-2.5 rounded-lg text-sm font-medium hover:bg-[#024fa3] transition-colors flex items-center gap-2">
+                                        {t.next} <ArrowRight className="w-4 h-4" />
+                                    </button>
                                 </div>
                             </div>
+                        )}
 
-                            <div className="flex gap-4 pt-6">
-                                <button
-                                    type="button"
-                                    disabled
-                                    className="flex-1 px-6 py-3 bg-slate-100 text-slate-400 rounded-lg font-semibold cursor-not-allowed"
-                                >
-                                    {t.back}
-                                </button>
-                                <button
-                                    type="button"
-                                    onClick={handleNext}
-                                    className="flex-1 px-6 py-3 bg-[#013371] text-white rounded-lg font-semibold hover:bg-[#024fa3] transition-all flex items-center justify-center gap-2 shadow-lg hover:shadow-xl"
-                                    disabled={isDisabled}
-                                >
-                                    {t.next} <ArrowRight className="w-4 h-4" />
-                                </button>
-                            </div>
-                        </div>
-                    )}
-
-                    {/* Step 2: Founder Details & Descriptions */}
-                    {step === 2 && (
-                        <div className="space-y-6 animate-slideInUp">
-                            <h2 className="text-2xl font-bold text-slate-900 mb-8">{t.founderDetails}</h2>
-
-                            {[
-                                { label: t.founderName, name: "founderName", type: "text", placeholder: t.placeholder.name, required: true, disabled: false },
-                                { label: t.email, name: "founderEmail", type: "email", placeholder: t.placeholder.email, required: true, disabled: true }, 
-                                { label: t.phone, name: "founderPhone", type: "tel", placeholder: t.placeholder.phone, required: true, disabled: false },
-                            ].map((field) => (
-                                <div key={field.name}>
-                                    <label className="block text-sm font-semibold text-slate-900 mb-2">
-                                        {field.label} {field.required ? <span className="text-red-500">*</span> : ''}
-                                    </label>
-                                    <input
-                                        type={field.type}
-                                        name={field.name}
-                                        value={formData[field.name as keyof typeof formData] || ""}
-                                        onChange={handleInputChange}
-                                        placeholder={field.placeholder}
-                                        className={`w-full px-4 py-3 border-2 border-slate-200 rounded-lg focus:border-[#013371] focus:outline-none bg-white hover:border-slate-300 transition-colors ${field.disabled || isDisabled ? 'bg-slate-100 cursor-not-allowed' : ''}`}
-                                        required={field.required}
-                                        disabled={field.disabled || isDisabled}
-                                    />
+                        {step === 2 && (
+                            <div className="space-y-8 animate-fadeIn">
+                                {/* Founder Details Section */}
+                                <div className="space-y-5">
+                                    <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wider border-b pb-2">{t.founderDetails}</h3>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                                        <InputGroup label={t.founderName} required>
+                                            <StyledInput name="founderName" value={formData.founderName} onChange={handleInputChange} placeholder={t.placeholder.name} disabled={isDisabled} required />
+                                        </InputGroup>
+                                        <InputGroup label={t.email} required>
+                                            <div className="relative">
+                                                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                                                <StyledInput type="email" name="founderEmail" value={formData.founderEmail} disabled className="pl-9 bg-slate-50 cursor-not-allowed" required />
+                                            </div>
+                                        </InputGroup>
+                                        <InputGroup label={t.phone} required>
+                                             <div className="relative">
+                                                <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                                                <StyledInput type="tel" name="founderPhone" value={formData.founderPhone} onChange={handleInputChange} placeholder={t.placeholder.phone} disabled={isDisabled} className="pl-9" required />
+                                            </div>
+                                        </InputGroup>
+                                    </div>
                                 </div>
-                            ))}
-                            
-                            {/* Funding Stage */}
-                            <div>
-                                <label className="block text-sm font-semibold text-slate-900 mb-2">
-                                    {t.stage} <span className="text-red-500">*</span>
-                                </label>
-                                <select
-                                    name="stage"
-                                    value={formData.stage}
-                                    onChange={handleInputChange}
-                                    className={`w-full px-4 py-3 border-2 border-slate-200 rounded-lg focus:border-[#013371] focus:outline-none bg-white hover:border-slate-300 transition-colors ${isDisabled ? 'bg-slate-100 cursor-not-allowed' : ''}`}
-                                    required
-                                    disabled={isDisabled}
-                                >
-                                    <option value="">Select funding stage</option>
-                                    {t.stages.map((s: string) => ( 
-                                        <option key={s} value={s}>
-                                            {s}
-                                        </option>
-                                    ))}
-                                </select>
-                            </div>
 
-                            {/* Earning Status */}
-                            <div>
-                                <label className="block text-sm font-semibold text-slate-900 mb-2">
-                                    {t.earningStatus} <span className="text-red-500">*</span>
-                                </label>
-                                <select
-                                    name="earningStatus"
-                                    value={formData.earningStatus}
-                                    onChange={handleInputChange}
-                                    className={`w-full px-4 py-3 border-2 border-slate-200 rounded-lg focus:border-[#013371] focus:outline-none bg-white hover:border-slate-300 transition-colors ${isDisabled ? 'bg-slate-100 cursor-not-allowed' : ''}`}
-                                    required
-                                    disabled={isDisabled}
-                                >
-                                    <option value="">Select earning status</option>
-                                    {t.earnings.map((e: string) => ( 
-                                        <option key={e} value={e}>
-                                            {e}
-                                        </option>
-                                    ))}
-                                </select>
-                            </div>
+                                {/* Financial & Legal Section (NEW) */}
+                                <div className="space-y-5">
+                                    <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wider border-b pb-2">{t.financialDetails}</h3>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                                        <InputGroup label={t.stage} required>
+                                            <StyledSelect name="stage" value={formData.stage} onChange={handleInputChange} disabled={isDisabled} required>
+                                                <option value="">Select...</option>
+                                                {t.stages.map((s: string) => <option key={s} value={s}>{s}</option>)}
+                                            </StyledSelect>
+                                        </InputGroup>
+                                        <InputGroup label={t.earningStatus} required>
+                                            <StyledSelect name="earningStatus" value={formData.earningStatus} onChange={handleInputChange} disabled={isDisabled} required>
+                                                <option value="">Select...</option>
+                                                {t.earnings.map((e: string) => <option key={e} value={e}>{e}</option>)}
+                                            </StyledSelect>
+                                        </InputGroup>
+                                        
+                                        {/* Turnover & Profit */}
+                                        <InputGroup label={t.turnover} required>
+                                            <div className="relative">
+                                                <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                                                <StyledInput name="turnover" value={formData.turnover} onChange={handleInputChange} placeholder={t.placeholder.turnover} disabled={isDisabled} className="pl-9" required />
+                                            </div>
+                                        </InputGroup>
+                                        <InputGroup label={t.netProfit} required>
+                                            <div className="relative">
+                                                <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                                                <StyledInput name="netProfit" value={formData.netProfit} onChange={handleInputChange} placeholder={t.placeholder.netProfit} disabled={isDisabled} className="pl-9" required />
+                                            </div>
+                                        </InputGroup>
 
-                            {/* Problem Description */}
-                            <div>
-                                <label className="block text-sm font-semibold text-slate-900 mb-2">
-                                    {t.problemDescription} <span className="text-red-500">*</span>
-                                </label>
-                                <textarea
-                                    name="problemDescription"
-                                    value={formData.problemDescription}
-                                    onChange={handleInputChange}
-                                    placeholder={t.placeholder.problemDescription}
-                                    rows={3}
-                                    className={`w-full px-4 py-3 border-2 border-slate-200 rounded-lg focus:border-[#013371] focus:outline-none bg-white hover:border-slate-300 transition-colors resize-none ${isDisabled ? 'bg-slate-100 cursor-not-allowed' : ''}`}
-                                    required
-                                    disabled={isDisabled}
-                                />
-                            </div>
+                                        {/* Toggles */}
+                                        <InputGroup label={t.itFiled}>
+                                            <div className="flex items-center h-[42px]">
+                                                <ToggleSwitch 
+                                                    checked={formData.itReturnsFiled} 
+                                                    onChange={(val) => handleToggleChange('itReturnsFiled', val)} 
+                                                    disabled={isDisabled} 
+                                                    labelOn={t.yes} 
+                                                    labelOff={t.no} 
+                                                />
+                                            </div>
+                                        </InputGroup>
+                                        <InputGroup label={t.audited}>
+                                             <div className="flex items-center h-[42px]">
+                                                <ToggleSwitch 
+                                                    checked={formData.isAudited} 
+                                                    onChange={(val) => handleToggleChange('isAudited', val)} 
+                                                    disabled={isDisabled} 
+                                                    labelOn={t.yes} 
+                                                    labelOff={t.no} 
+                                                />
+                                            </div>
+                                        </InputGroup>
+                                    </div>
+                                </div>
 
-                            {/* Company Description (Original) */}
-                            <div>
-                                <label className="block text-sm font-semibold text-slate-900 mb-2">
-                                    {t.description} <span className="text-red-500">*</span>
-                                </label>
-                                <textarea
-                                    name="description"
-                                    value={formData.description}
-                                    onChange={handleInputChange}
-                                    placeholder={t.placeholder.description}
-                                    rows={4}
-                                    maxLength={250}
-                                    className={`w-full px-4 py-3 border-2 border-slate-200 rounded-lg focus:border-[#013371] focus:outline-none bg-white hover:border-slate-300 transition-colors resize-none ${isDisabled ? 'bg-slate-100 cursor-not-allowed' : ''}`}
-                                    required
-                                    disabled={isDisabled}
-                                />
-                                <p className="text-xs text-slate-500 mt-2">
-                                    {formData.description.length}/250 {t.descHint}
-                                </p>
-                            </div>
+                                {/* Descriptions */}
+                                <div className="space-y-5">
+                                    <InputGroup label={t.problemDescription} required>
+                                        <textarea
+                                            name="problemDescription"
+                                            value={formData.problemDescription}
+                                            onChange={handleInputChange}
+                                            placeholder={t.placeholder.problemDescription}
+                                            rows={3}
+                                            className="w-full px-3 py-2.5 bg-white border border-slate-200 rounded-md text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#013371] focus:ring-1 focus:ring-[#013371]/20 transition-all disabled:bg-slate-50 resize-none"
+                                            required
+                                            disabled={isDisabled}
+                                        />
+                                    </InputGroup>
 
-                            <div className="flex gap-4 pt-6">
-                                <button
-                                    type="button"
-                                    onClick={handleBack}
-                                    className="flex-1 px-6 py-3 bg-slate-100 text-slate-900 rounded-lg font-semibold hover:bg-slate-200 transition-all flex items-center justify-center gap-2"
-                                >
-                                    <ArrowRight className="w-4 h-4 rotate-180" /> {t.back}
-                                </button>
-                                <button
-                                    type="submit"
-                                    className="flex-1 px-6 py-3 bg-[#013371] text-white rounded-lg font-semibold hover:bg-[#024fa3] transition-all shadow-lg hover:shadow-xl flex items-center justify-center gap-2"
-                                    disabled={isDisabled}
-                                >
-                                    {hasExistingProfile ? t.update : t.submit} {hasExistingProfile && <Save className="w-4 h-4"/>}
-                                </button>
-                            </div>
-                        </div>
-                    )}
-                </form>
-            </div>
+                                    <InputGroup label={t.description} required>
+                                        <textarea
+                                            name="description"
+                                            value={formData.description}
+                                            onChange={handleInputChange}
+                                            placeholder={t.placeholder.description}
+                                            rows={4}
+                                            maxLength={250}
+                                            className="w-full px-3 py-2.5 bg-white border border-slate-200 rounded-md text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#013371] focus:ring-1 focus:ring-[#013371]/20 transition-all disabled:bg-slate-50 resize-none"
+                                            required
+                                            disabled={isDisabled}
+                                        />
+                                        <p className="text-xs text-slate-400 text-right pt-1">{formData.description.length}/250</p>
+                                    </InputGroup>
+                                </div>
 
-            {/* Info Box */}
-            <div
-                className="mt-8 bg-blue-50 border-2 border-blue-200 rounded-xl p-6 animate-slideInUp"
-                style={{ animationDelay: "200ms" }}
-            >
-                <p className="font-semibold text-slate-900 mb-2">{t.ready}</p>
-                <p className="text-slate-600">{t.readyDesc}</p>
+                                <div className="flex gap-3 pt-4 border-t border-slate-100">
+                                    <button type="button" onClick={handleBack} className="px-4 py-2.5 rounded-lg text-sm font-medium text-slate-600 bg-slate-100 hover:bg-slate-200 transition-colors">
+                                        {t.back}
+                                    </button>
+                                    <button type="submit" disabled={isDisabled} className="flex-1 bg-[#013371] text-white px-6 py-2.5 rounded-lg text-sm font-medium hover:bg-[#024fa3] transition-all flex items-center justify-center gap-2 shadow-sm disabled:opacity-50">
+                                        {hasExistingProfile ? t.update : t.submit} {hasExistingProfile && <Save className="w-4 h-4" />}
+                                    </button>
+                                </div>
+                            </div>
+                        )}
+                    </form>
+                </div>
             </div>
         </>
     );
 };
 
+// 3. Status View (UPDATED WITH QR CODE)
+const StatusView: React.FC<any> = ({ t, isApproved, formData, setStep, canEdit, userId }) => {
+    const statusColor = isApproved ? "bg-green-50 text-green-700 border-green-200" : "bg-amber-50 text-amber-700 border-amber-200";
+    const icon = isApproved ? <CheckCircle2 className="w-5 h-5" /> : <TrendingUp className="w-5 h-5" />;
+    
+    const DataItem = ({ label, value, link }: { label: string, value: string, link?: boolean }) => (
+        <div className="flex flex-col">
+            <dt className="text-xs text-slate-500 uppercase tracking-wide font-medium mb-1">{label}</dt>
+            <dd className="text-sm font-medium text-slate-900 break-words">
+                {link ? (
+                    <a href={value.startsWith('http') ? value : `https://${value}`} target="_blank" rel="noopener noreferrer" className="text-[#013371] hover:underline flex items-center gap-1">
+                        {value} <LinkIcon className="w-3 h-3" />
+                    </a>
+                ) : value}
+            </dd>
+        </div>
+    );
 
-// 2. Status View Component (Showed after submission)
-interface StatusViewProps {
-    t: Translations; // Use the defined type
-    isApproved: boolean;
-    formData: any;
-    setStep: Dispatch<SetStateAction<number>>;
-    canEdit: boolean; 
-}
-
-const StatusView: React.FC<StatusViewProps> = ({ t, isApproved, formData, setStep, canEdit }) => {
-    const statusColor = isApproved ? "bg-green-50 border-green-300 text-green-700" : "bg-yellow-50 border-yellow-300 text-yellow-700";
-    const statusIcon = isApproved ? <CheckCircle2 className="w-8 h-8" /> : <TrendingUp className="w-8 h-8"/>;
-    const statusTitle = isApproved ? t.status.approved : t.status.pending;
-    const statusDesc = isApproved ? t.status.approvedDesc : t.status.notApprovedDesc;
-
-    const readOnlyFields = [
-        { label: t.companyName, value: formData.companyName },
-        { label: t.stage, value: formData.stage },
-        { label: t.domain, value: formData.domain === 'Other' ? `${formData.domain} (${formData.domainOtherSpec})` : formData.domain },
-        { label: t.earningStatus, value: formData.earningStatus },
-        { label: t.founderName, value: formData.founderName },
-        { label: t.email, value: formData.founderEmail },
-        { label: t.website, value: formData.website, link: true },
-        { label: t.pitchDeck, value: "View Pitch Deck", link: true, url: formData.pitchDeckUrl },
-    ];
-
+    const BooleanItem = ({ label, value }: { label: string, value: boolean }) => (
+        <div className="flex flex-col">
+            <dt className="text-xs text-slate-500 uppercase tracking-wide font-medium mb-1">{label}</dt>
+            <dd className="flex items-center gap-2">
+                <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${value ? 'bg-green-100 text-green-800' : 'bg-slate-100 text-slate-600'}`}>
+                    {value ? <FileCheck className="w-3 h-3 mr-1" /> : <XCircle className="w-3 h-3 mr-1" />}
+                    {value ? 'Yes' : 'No'}
+                </span>
+            </dd>
+        </div>
+    );
 
     return (
-        <div className="space-y-8">
+        <div className="space-y-6">
             {/* Status Card */}
-            <div className={`p-8 rounded-xl shadow-lg flex items-start gap-4 ${statusColor}`}>
-                {statusIcon}
+            <div className={`p-6 rounded-xl border ${statusColor} flex items-start gap-4`}>
+                <div className="mt-1">{icon}</div>
                 <div>
-                    <h2 className="text-2xl font-bold mb-2">{t.status.title}</h2>
-                    <h3 className="text-xl font-semibold mb-2">{statusTitle}</h3>
-                    <p className="text-sm">{statusDesc}</p>
+                    <h3 className="font-bold text-base mb-1">{isApproved ? t.status.approved : t.status.pending}</h3>
+                    <p className="text-sm opacity-90">{isApproved ? t.status.approvedDesc : t.status.notApprovedDesc}</p>
                 </div>
             </div>
 
-            {/* Details and Edit Button */}
-            <div className="bg-white border border-slate-200 rounded-2xl shadow-xl p-8">
-                <div className="flex justify-between items-center mb-6">
-                    <h3 className="text-2xl font-bold text-slate-900">{t.status.viewDetails}</h3>
+            {/* QR Code Section (Only if Approved) */}
+            {isApproved && userId && (
+                <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm flex flex-col md:flex-row items-center gap-6 animate-fadeIn">
+                    <div className="bg-white p-3 border-2 border-slate-100 rounded-lg shadow-sm">
+                         <QRCode value={userId} size={120} />
+                    </div>
+                    <div className="text-center md:text-left">
+                        <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wider mb-1 flex items-center justify-center md:justify-start gap-2">
+                            <ScanLine className="w-4 h-4 text-[#013371]" /> {t.status.qrTitle}
+                        </h3>
+                        <p className="text-sm text-slate-500 max-w-xs">{t.status.qrDesc}</p>
+                        <div className="mt-3 bg-slate-50 p-2 rounded text-xs font-mono text-slate-600 border border-slate-100 break-all">
+                            ID: {userId}
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Dashboard Detail View */}
+            <div className="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
+                <div className="px-6 py-4 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
+                    <h3 className="font-semibold text-slate-900">{t.status.viewDetails}</h3>
                     {canEdit && (
-                        <button
-                            onClick={() => setStep(1)} // Go back to Step 1 to edit
-                            className="flex items-center gap-2 px-4 py-2 bg-yellow-500 text-white rounded-lg font-semibold hover:bg-yellow-600 transition-colors shadow-md"
-                        >
-                            <Edit className="w-4 h-4" /> {t.update}
+                        <button onClick={() => setStep(1)} className="text-xs bg-white border border-slate-300 text-slate-700 px-3 py-1.5 rounded hover:bg-slate-50 transition-colors flex items-center gap-2">
+                            <Edit className="w-3 h-3" /> {t.update}
                         </button>
                     )}
-                    {!canEdit && (
-                        <span className="flex items-center gap-2 px-4 py-2 bg-slate-100 text-slate-500 rounded-lg font-semibold shadow-md">
-                            <Lock className="w-4 h-4" /> Application Locked
-                        </span>
-                    )}
                 </div>
-
-                {/* Read-Only Fields Grid */}
-                <div className="grid md:grid-cols-2 gap-x-8 gap-y-4 text-sm">
-                    {readOnlyFields.map((field) => (
-                        <div key={field.label}>
-                            <p className="font-semibold text-slate-500 mb-1">{field.label}:</p>
-                            {field.link ? (
-                                <a 
-                                    href={field.url || (field.label === t.website ? field.value : '#')} 
-                                    target="_blank" 
-                                    rel="noopener noreferrer"
-                                    className="text-[#013371] hover:underline break-words"
-                                >
-                                    {field.value}
-                                </a>
-                            ) : (
-                                <p className="text-slate-900 font-medium">{field.value}</p>
-                            )}
+                <div className="p-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-y-6 gap-x-8">
+                        <DataItem label={t.companyName} value={formData.companyName} />
+                        <DataItem label={t.establishmentYear} value={String(formData.establishmentYear)} />
+                        <DataItem label={t.website} value={formData.website} link />
+                        <DataItem label={t.stage} value={formData.stage} />
+                        <DataItem label={t.earningStatus} value={formData.earningStatus} />
+                        <DataItem label={t.domain} value={formData.domain === 'Other' ? `${formData.domain} (${formData.domainOtherSpec})` : formData.domain} />
+                        
+                        <div className="md:col-span-2 grid grid-cols-2 md:grid-cols-4 gap-6 bg-slate-50 p-4 rounded-lg border border-slate-100">
+                            <DataItem label={t.turnover} value={formData.turnover} />
+                            <DataItem label={t.netProfit} value={formData.netProfit} />
+                            <BooleanItem label={t.itFiled} value={formData.itReturnsFiled} />
+                            <BooleanItem label={t.audited} value={formData.isAudited} />
                         </div>
-                    ))}
-                    <div className="md:col-span-2">
-                        <p className="font-semibold text-slate-500 mb-1">{t.problemDescription}:</p>
-                        <p className="text-slate-900 font-medium whitespace-pre-wrap">{formData.problemDescription}</p>
+
+                        <DataItem label={t.founderName} value={formData.founderName} />
+                        <DataItem label={t.email} value={formData.founderEmail} />
+                        
+                        {/* Pitch Deck Link */}
+                        <div className="flex flex-col">
+                            <dt className="text-xs text-slate-500 uppercase tracking-wide font-medium mb-1">{t.pitchDeck}</dt>
+                            <dd>
+                                <a href={formData.pitchDeckUrl || '#'} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#013371]/5 text-[#013371] rounded text-xs font-bold hover:bg-[#013371]/10 transition-colors">
+                                    <FileText className="w-3 h-3" /> View Document
+                                </a>
+                            </dd>
+                        </div>
+
+                        <div className="md:col-span-2 pt-2 border-t border-slate-100">
+                            <dt className="text-xs text-slate-500 uppercase tracking-wide font-medium mb-2 mt-4">{t.problemDescription}</dt>
+                            <dd className="text-sm text-slate-700 leading-relaxed whitespace-pre-wrap bg-slate-50 p-3 rounded-lg border border-slate-100">
+                                {formData.problemDescription}
+                            </dd>
+                        </div>
                     </div>
                 </div>
             </div>
