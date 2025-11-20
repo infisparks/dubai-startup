@@ -1,18 +1,17 @@
 "use client"
 
 import type React from "react"
-// ⭐ FIX: Added useOptimistic, though we'll use a manual optimistic update for simplicity
 import { useState, useEffect, useMemo, Dispatch, SetStateAction } from "react"
 import Link from "next/link" 
 import { Session } from "@supabase/supabase-js"
 import Header from "@/components/header"
 import Footer from "@/components/footer"
 import { supabase } from "@/lib/supabaseConfig" 
-import { ArrowRight, Rocket, TrendingUp, DollarSign, AlertTriangle, Search, X, Heart, Star } from "lucide-react" 
+import { ArrowRight, Rocket, TrendingUp, DollarSign, AlertTriangle, Search, X, Heart, Star, Globe } from "lucide-react" 
 
-// --- 1. Define the Type for Startup Data ---
+// --- Types ---
 interface FounderProfile {
-  user_id: string; // This is the startup's ID
+  user_id: string;
   company_name: string;
   stage: string | null;
   website: string | null;
@@ -21,18 +20,15 @@ interface FounderProfile {
   earning_status: string | null;
 }
 
-// --- 2. Define Engagement Data ---
-// This is now calculated from live data
 interface StartupEngagement {
   startup_id: string;
-  likes: number; // Total likes
-  rating: number; // Average rating
-  ratingCount: number; // Total number of ratings
-  userLiked: boolean; // Has the current user liked?
-  userRating: number | null; // What did the current user rate?
+  likes: number;
+  rating: number;
+  ratingCount: number;
+  userLiked: boolean;
+  userRating: number | null;
 }
 
-// --- 3. Define Translations ---
 type Translations = {
     title: string;
     subtitle: string;
@@ -51,17 +47,15 @@ type Translations = {
     rating: string;
     rateThis: string;
     alreadyRated: string;
-    changeRating: string; // ⭐ ADDED for new UI
+    changeRating: string;
 };
 
-// --- 4. The Main Page Component ---
 export default function StartupsPage() {
   const [session, setSession] = useState<Session | null>(null);
-  const [isInvestor, setIsInvestor] = useState(false); // ⭐ ADDED: Check for user role
+  const [isInvestor, setIsInvestor] = useState(false); 
   const [language, setLanguage] = useState<"en" | "ar">("en");
   
   const [allStartups, setAllStartups] = useState<FounderProfile[]>([]);
-  // ⭐ CHANGED: This map is now built from live Supabase data
   const [engagementData, setEngagementData] = useState<Map<string, StartupEngagement>>(new Map());
   
   const [loading, setLoading] = useState(true);
@@ -69,75 +63,74 @@ export default function StartupsPage() {
   const [searchTerm, setSearchTerm] = useState("");
 
   const t = useMemo((): Translations => {
-    // ... (translations remain unchanged)
     return language === 'ar' ? {
-        title: "الشركات الناشئة المعتمدة",
-        subtitle: "تصفح و ابحث في نظامنا البيئي للشركات الناشئة المبتكرة.",
-        searchPlaceholder: "ابحث بالاسم، المجال، أو الوصف...",
-        viewDetails: "عرض التفاصيل",
+        title: "الشركات الناشئة",
+        subtitle: "استكشف النظام البيئي للابتكار",
+        searchPlaceholder: "بحث (الاسم، المجال)...",
+        viewDetails: "التفاصيل",
         stage: "المرحلة",
-        earnings: "الإيرادات",
-        loading: "جاري تحميل الشركات الناشئة...",
-        noStartups: "لا توجد شركات ناشئة معتمدة بعد",
-        noStartupsDesc: "يرجى التحقق مرة أخرى لاحقًا، يتم إضافة شركات جديدة يوميًا.",
-        noResults: "لا توجد نتائج مطابقة",
-        noResultsDesc: "لم نتمكن من العثور على أي شركات ناشئة تطابق بحثك.",
-        error: "حدث خطأ",
-        errorDesc: "لم نتمكن من تحميل الشركات الناشئة. يرجى تحديث الصفحة.",
-        likes: "إعجابات",
-        rating: "التقييم",
-        rateThis: "قيّم هذا",
-        alreadyRated: "تم التقييم بالفعل",
-        changeRating: "غيّر تقييمك", // ⭐ ADDED
+        earnings: "الدخل",
+        loading: "تحميل...",
+        noStartups: "لا توجد شركات",
+        noStartupsDesc: "سيتم إضافة شركات قريباً",
+        noResults: "لا توجد نتائج",
+        noResultsDesc: "حاول بكلمات أخرى",
+        error: "خطأ",
+        errorDesc: "فشل التحميل",
+        likes: "إعجاب",
+        rating: "تقييم",
+        rateThis: "قيم",
+        alreadyRated: "مقيّم",
+        changeRating: "تغيير",
     } : {
         title: "Approved Startups",
-        subtitle: "Browse and search our ecosystem of innovative startups.",
-        searchPlaceholder: "Search by name, domain, or description...",
-        viewDetails: "View Details",
+        subtitle: "Explore the innovation ecosystem",
+        searchPlaceholder: "Search (name, domain)...",
+        viewDetails: "Details",
         stage: "Stage",
-        earnings: "Earnings",
-        loading: "Loading approved startups...",
-        noStartups: "No Approved Startups Yet",
-        noStartupsDesc: "Please check back later, new companies are being added daily.",
-        noResults: "No Matching Results",
-        noResultsDesc: "We couldn't find any startups matching your search.",
-        error: "An Error Occurred",
-        errorDesc: "We couldn't load the startups. Please refresh the page.",
+        earnings: "Revenue",
+        loading: "Loading...",
+        noStartups: "No Startups Yet",
+        noStartupsDesc: "Check back later.",
+        noResults: "No Results",
+        noResultsDesc: "Try a different term.",
+        error: "Error",
+        errorDesc: "Failed to load.",
         likes: "Likes",
         rating: "Rating",
-        rateThis: "Rate This",
-        alreadyRated: "Already Rated",
-        changeRating: "Change your rating", // ⭐ ADDED
+        rateThis: "Rate",
+        alreadyRated: "Rated",
+        changeRating: "Change",
     };
   }, [language]);
 
-  // --- ⭐ REBUILT: Data Fetching ---
   useEffect(() => {
     const fetchAllData = async () => {
       setLoading(true);
       setError(null);
       
       // 1. Get Session
-      const { data: { session: currentSession }, error: sessionError } = await supabase.auth.getSession();
+      const { data: { session: currentSession } } = await supabase.auth.getSession();
       setSession(currentSession);
       
-      let currentUserId = currentSession?.user?.id || null;
+      const currentUserId = currentSession?.user?.id || null;
       let investorStatus = false;
 
-      // 2. If logged in, get user profile (to check is_investor)
+      // 2. CHECK INVESTOR STATUS
       if (currentUserId) {
         const { data: profileData } = await supabase
           .from('profiles')
           .select('is_investor')
           .eq('id', currentUserId)
           .single();
-        if (profileData) {
-          investorStatus = profileData.is_investor;
-          setIsInvestor(investorStatus);
+          
+        if (profileData && profileData.is_investor === true) {
+          investorStatus = true;
         }
       }
+      setIsInvestor(investorStatus);
 
-      // 3. Fetch all approved startups
+      // 3. Fetch Startups
       const { data: startupsData, error: startupsError } = await supabase
         .from('founder_profiles')
         .select('user_id, company_name, stage, website, description, domain, earning_status')
@@ -159,62 +152,65 @@ export default function StartupsPage() {
       setAllStartups(startupsData);
       const startupIds = startupsData.map(s => s.user_id);
 
-      // 4. Fetch engagement data IN BULK
-      // 4a. Fetch all likes for these startups
-      const { data: likesData, error: likesError } = await supabase
-        .from('startup_likes')
-        .select('startup_id, user_id')
-        .in('startup_id', startupIds);
-        
-      // 4b. Fetch all ratings for these startups
-      const { data: ratingsData, error: ratingsError } = await supabase
-        .from('startup_ratings')
-        .select('startup_id, user_id, rating')
-        .in('startup_id', startupIds);
-        
-      // 5. Process data into the Engagement Map
-      const engagementMap = new Map<string, StartupEngagement>();
-      for (const startup of startupsData) {
-        const startupId = startup.user_id;
-        
-        // Process likes
-        const allLikesForStartup = likesData ? likesData.filter(l => l.startup_id === startupId) : [];
-        const userHasLiked = currentUserId ? allLikesForStartup.some(l => l.user_id === currentUserId) : false;
-        
-        // Process ratings
-        const allRatingsForStartup = ratingsData ? ratingsData.filter(r => r.startup_id === startupId) : [];
-        const userRatingObj = currentUserId ? allRatingsForStartup.find(r => r.user_id === currentUserId) : null;
-        
-        let averageRating = 0;
-        if (allRatingsForStartup.length > 0) {
-          const sum = allRatingsForStartup.reduce((acc, r) => acc + r.rating, 0);
-          averageRating = parseFloat((sum / allRatingsForStartup.length).toFixed(1));
-        }
+      // 4. Fetch Engagement Data
+      try {
+          const { data: likesData } = await supabase
+            .from('startup_likes')
+            .select('startup_id, user_id')
+            .in('startup_id', startupIds);
+            
+          const { data: ratingsData } = await supabase
+            .from('startup_ratings')
+            .select('startup_id, user_id, rating')
+            .in('startup_id', startupIds);
+            
+          const engagementMap = new Map<string, StartupEngagement>();
+          
+          for (const startup of startupsData) {
+            const startupId = startup.user_id;
+            
+            const allLikes = likesData ? likesData.filter(l => l.startup_id === startupId) : [];
+            const userHasLiked = currentUserId ? allLikes.some(l => l.user_id === currentUserId) : false;
+            
+            const allRatings = ratingsData ? ratingsData.filter(r => r.startup_id === startupId) : [];
+            const userRatingObj = currentUserId ? allRatings.find(r => r.user_id === currentUserId) : null;
+            
+            let averageRating = 0;
+            if (allRatings.length > 0) {
+              const sum = allRatings.reduce((acc, r) => acc + r.rating, 0);
+              averageRating = parseFloat((sum / allRatings.length).toFixed(1));
+            }
 
-        engagementMap.set(startupId, {
-          startup_id: startupId,
-          likes: allLikesForStartup.length,
-          rating: averageRating,
-          ratingCount: allRatingsForStartup.length,
-          userLiked: userHasLiked,
-          userRating: userRatingObj ? userRatingObj.rating : null,
-        });
+            engagementMap.set(startupId, {
+              startup_id: startupId,
+              likes: allLikes.length,
+              rating: averageRating,
+              ratingCount: allRatings.length,
+              userLiked: userHasLiked,
+              userRating: userRatingObj ? userRatingObj.rating : null,
+            });
+          }
+          setEngagementData(engagementMap);
+      } catch (err) {
+          console.error("Engagement tables missing or error:", err);
+          const emptyMap = new Map<string, StartupEngagement>();
+          startupsData.forEach(s => emptyMap.set(s.user_id, {
+             startup_id: s.user_id, likes: 0, rating: 0, ratingCount: 0, userLiked: false, userRating: null
+          }));
+          setEngagementData(emptyMap);
       }
-      
-      setEngagementData(engagementMap);
+
       setLoading(false);
     };
 
     fetchAllData();
-  }, [t.errorDesc, t.changeRating]); // Re-run if translations change
+  }, [t.errorDesc]);
 
 
-  // --- ⭐ UPDATED: Toggle Like ---
   const toggleLike = async (startupId: string, e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
     
-    // Only investors can like
     if (!isInvestor || !session?.user) return;
 
     const current = engagementData.get(startupId);
@@ -223,7 +219,6 @@ export default function StartupsPage() {
     const newLikedState = !current.userLiked;
     const currentUserId = session.user.id;
 
-    // Optimistic Update (for snappy UI)
     const optimisticData = {
       ...current,
       userLiked: newLikedState,
@@ -231,40 +226,19 @@ export default function StartupsPage() {
     };
     setEngagementData(new Map(engagementData.set(startupId, optimisticData)));
 
-    // Database Update
     if (newLikedState) {
-      // Add like
-      const { error } = await supabase
-        .from('startup_likes')
-        .insert({ user_id: currentUserId, startup_id: startupId });
-      
-      if (error) {
-        console.error("Error liking:", error);
-        // Revert optimistic update on error
-        setEngagementData(new Map(engagementData.set(startupId, current)));
-      }
+      const { error } = await supabase.from('startup_likes').insert({ user_id: currentUserId, startup_id: startupId });
+      if (error) setEngagementData(new Map(engagementData.set(startupId, current))); 
     } else {
-      // Remove like
-      const { error } = await supabase
-        .from('startup_likes')
-        .delete()
-        .eq('user_id', currentUserId)
-        .eq('startup_id', startupId);
-        
-      if (error) {
-        console.error("Error unliking:", error);
-        // Revert optimistic update on error
-        setEngagementData(new Map(engagementData.set(startupId, current)));
-      }
+      const { error } = await supabase.from('startup_likes').delete().eq('user_id', currentUserId).eq('startup_id', startupId);
+      if (error) setEngagementData(new Map(engagementData.set(startupId, current))); 
     }
   };
 
-  // --- ⭐ UPDATED: Submit Rating ---
   const submitRating = async (startupId: string, ratingValue: number, e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
     
-    // Only investors can rate
     if (!isInvestor || !session?.user) return;
 
     const current = engagementData.get(startupId);
@@ -272,29 +246,13 @@ export default function StartupsPage() {
     
     const currentUserId = session.user.id;
 
-    // Database Update (Upsert = Insert or Update)
-    // This requires a UNIQUE constraint on (user_id, startup_id) in your table
     const { error } = await supabase
       .from('startup_ratings')
-      .upsert({ 
-        user_id: currentUserId, 
-        startup_id: startupId, 
-        rating: ratingValue 
-      }, { 
-        onConflict: 'user_id, startup_id'
-      });
+      .upsert({ user_id: currentUserId, startup_id: startupId, rating: ratingValue }, { onConflict: 'user_id, startup_id' });
 
-    if (error) {
-      console.error("Error submitting rating:", error);
-      // Show error to user?
-      return;
-    }
+    if (error) return;
 
-    // Success! Now, refetch the average rating for this card
-    const { data: ratingsData, error: ratingsError } = await supabase
-      .from('startup_ratings')
-      .select('rating')
-      .eq('startup_id', startupId);
+    const { data: ratingsData } = await supabase.from('startup_ratings').select('rating').eq('startup_id', startupId);
 
     let newAverageRating = 0;
     let newRatingCount = 0;
@@ -304,21 +262,12 @@ export default function StartupsPage() {
       newRatingCount = ratingsData.length;
     }
 
-    // Update local state with the new correct average
-    const updated = {
-      ...current,
-      userRating: ratingValue,
-      rating: newAverageRating,
-      ratingCount: newRatingCount,
-    };
+    const updated = { ...current, userRating: ratingValue, rating: newAverageRating, ratingCount: newRatingCount };
     setEngagementData(new Map(engagementData.set(startupId, updated)));
   };
 
-  // --- Live Search Logic ---
   const filteredStartups = useMemo(() => {
-    if (!searchTerm) {
-      return allStartups;
-    }
+    if (!searchTerm) return allStartups;
     const lowerSearch = searchTerm.toLowerCase();
     return allStartups.filter(startup => 
       startup.company_name.toLowerCase().includes(lowerSearch) ||
@@ -327,36 +276,22 @@ export default function StartupsPage() {
     );
   }, [allStartups, searchTerm]);
 
-  // --- Render Function for Content ---
   const renderContent = () => {
-    if (loading) {
-        return (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 lg:gap-6">
-                {[...Array(6)].map((_, i) => <StartupCardSkeleton key={i} />)}
-            </div>
-        );
-    }
+    // Dense grid: Mobile (1), Tablet (2/3), Desktop (4/5)
+    const gridClass = "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4";
 
-    if (error) {
-        return <FeedbackCard message={t.error} description={t.errorDesc} icon={AlertTriangle} iconColor="text-red-500" />;
-    }
-
-    if (allStartups.length === 0) {
-        return <FeedbackCard message={t.noStartups} description={t.noStartupsDesc} icon={Rocket} iconColor="text-[#013371]" />;
-    }
-
-    if (filteredStartups.length === 0) {
-        return <FeedbackCard message={t.noResults} description={t.noResultsDesc} icon={Search} iconColor="text-slate-500" />;
-    }
+    if (loading) return <div className={gridClass}>{[...Array(10)].map((_, i) => <StartupCardSkeleton key={i} />)}</div>;
+    if (error) return <FeedbackCard message={t.error} description={t.errorDesc} icon={AlertTriangle} iconColor="text-red-500" />;
+    if (allStartups.length === 0) return <FeedbackCard message={t.noStartups} description={t.noStartupsDesc} icon={Rocket} iconColor="text-[#013371]" />;
+    if (filteredStartups.length === 0) return <FeedbackCard message={t.noResults} description={t.noResultsDesc} icon={Search} iconColor="text-slate-500" />;
 
     return (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 lg:gap-6">
+        <div className={gridClass}>
             {filteredStartups.map((startup) => (
                 <StartupCard 
                   key={startup.user_id} 
                   startup={startup} 
                   t={t}
-                  // ⭐ PASSING NEW PROPS
                   isInvestor={isInvestor} 
                   engagement={engagementData.get(startup.user_id)}
                   onToggleLike={toggleLike}
@@ -368,82 +303,41 @@ export default function StartupsPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-br from-slate-50 via-blue-50/30 to-slate-50">
-      <Header 
-        language={language} 
-        setLanguage={setLanguage as Dispatch<SetStateAction<"en" | "ar">>}
-        userEmail={session?.user?.email} 
-      />
-
-      <main className="flex-1 pt-16 sm:pt-20 pb-12 sm:pb-16">
-        {/* --- Sticky Header w/ Search --- */}
-        <div className="sticky top-[60px] sm:top-[80px] z-30 bg-gradient-to-b from-white/95 to-white/80 backdrop-blur-xl border-b border-slate-200/50">
-            <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 pt-4 sm:pt-6 pb-4 sm:pb-5">
-                {/* Page Title */}
-                <div className="mb-4">
-                    <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent mb-1 sm:mb-2">
-                      {t.title}
-                    </h1>
-                    <p className="text-xs sm:text-sm lg:text-base text-slate-600">{t.subtitle}</p>
-                </div>
-                
-                {/* Search Bar */}
-                <div className="relative">
-                    <input
-                        type="text"
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                        placeholder={t.searchPlaceholder}
-                        className="w-full pl-9 sm:pl-10 pr-9 sm:pr-10 py-2 sm:py-3 text-xs sm:text-sm bg-white border border-slate-300 rounded-lg sm:rounded-xl shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-[#013371] focus:border-transparent transition-all duration-200"
-                    />
-                    <div className="absolute left-3 top-1/2 -translate-y-1/2">
-                        <Search className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-slate-400" />
+    <div className="min-h-screen flex flex-col bg-slate-50/50 font-sans">
+      <Header language={language} setLanguage={setLanguage as Dispatch<SetStateAction<"en" | "ar">>} userEmail={session?.user?.email} />
+      
+      <main className="flex-1 pt-[85px] pb-10">
+        {/* Compact Toolbar */}
+        <div className="sticky top-[70px] z-30 bg-white/80 backdrop-blur-lg border-b border-slate-200 shadow-sm">
+            <div className="max-w-[1600px] mx-auto px-4 sm:px-6 py-3">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div>
+                        <h1 className="text-lg sm:text-xl font-bold text-slate-900 leading-tight">{t.title}</h1>
+                        <p className="text-xs text-slate-500 hidden sm:block">{t.subtitle}</p>
                     </div>
-                    {searchTerm && (
-                        <button
-                            onClick={() => setSearchTerm("")}
-                            className="absolute right-3 top-1/2 -translate-y-1/2 p-1 rounded-full hover:bg-slate-100 transition-colors"
-                        >
-                            <X className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-slate-500" />
-                        </button>
-                    )}
+                    <div className="relative w-full sm:w-72">
+                        <input 
+                            type="text" 
+                            value={searchTerm} 
+                            onChange={(e) => setSearchTerm(e.target.value)} 
+                            placeholder={t.searchPlaceholder} 
+                            className="w-full pl-9 pr-8 py-2 text-xs sm:text-sm bg-slate-100 border border-transparent focus:bg-white focus:border-[#013371] rounded-lg transition-all" 
+                        />
+                        <div className="absolute left-2.5 top-1/2 -translate-y-1/2"><Search className="w-3.5 h-3.5 text-slate-400" /></div>
+                        {searchTerm && (<button onClick={() => setSearchTerm("")} className="absolute right-2 top-1/2 -translate-y-1/2 p-0.5 rounded-full hover:bg-slate-200"><X className="w-3 h-3 text-slate-500" /></button>)}
+                    </div>
                 </div>
             </div>
         </div>
 
-        {/* --- Content Grid --- */}
-        <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 mt-6 sm:mt-8">
-          {renderContent()}
-        </div>
+        <div className="max-w-[1600px] mx-auto px-4 sm:px-6 mt-6">{renderContent()}</div>
       </main>
-
       <Footer language={language} />
-
-      {/* --- Styles --- */}
-      <style jsx global>{`
-        @keyframes fadeIn {
-          from { opacity: 0; transform: translateY(8px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        .animate-fadeIn {
-          animation: fadeIn 0.3s ease-out;
-        }
-        @keyframes scaleIn {
-          from { transform: scale(0.95); opacity: 0; }
-          to { transform: scale(1); opacity: 1; }
-        }
-        .animate-scaleIn {
-          animation: scaleIn 0.2s ease-out;
-        }
-      `}</style>
     </div>
   );
 }
 
-
-
-// --- 5. Single Startup Card Component ---
-// --- 5. Single Startup Card Component ---
+// --- Compact Startup Card ---
 interface StartupCardProps {
     startup: FounderProfile;
     t: Translations;
@@ -453,273 +347,146 @@ interface StartupCardProps {
     onSubmitRating: (startupId: string, ratingValue: number, e: React.MouseEvent) => void;
 }
 
-// ⭐ UPDATED COMPONENT
-const StartupCard: React.FC<StartupCardProps> = ({ 
-    startup, 
-    t, 
-    isInvestor,
-    engagement,
-    onToggleLike,
-    onSubmitRating
-}) => {
+const StartupCard: React.FC<StartupCardProps> = ({ startup, t, isInvestor, engagement, onToggleLike, onSubmitRating }) => {
     const [showRatingMenu, setShowRatingMenu] = useState(false);
     const [hoverRating, setHoverRating] = useState(0);
     
-    // Default engagement data
-    const eng = engagement || {
-      startup_id: startup.user_id,
-      likes: 0,
-      rating: 0,
-      ratingCount: 0,
-      userLiked: false,
-      userRating: null
-    };
-
-    // This is the rating to show (either the hovered one or the saved one)
+    const eng = engagement || { startup_id: startup.user_id, likes: 0, rating: 0, ratingCount: 0, userLiked: false, userRating: null };
     const displayRating = hoverRating || eng.userRating || 0;
 
     return (
-        <Link
-            href={`/startups/${startup.user_id}`} 
-            className="group relative bg-white border border-slate-200 rounded-xl sm:rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden h-full flex flex-col animate-fadeIn"
-        >
-            {/* Gradient overlay on hover */}
-            <div className="absolute inset-0 bg-gradient-to-br from-blue-50/0 to-blue-50/0 group-hover:from-blue-50/50 group-hover:to-blue-50/30 transition-all duration-300 pointer-events-none"></div>
-
-            {/* Main Content Area */}
-            <div className="relative p-3 sm:p-4 lg:p-5 flex flex-col h-full">
-                {/* Header with Logo & Domain */}
-                <div className="flex justify-between items-start gap-2 mb-3 sm:mb-4">
-                    <div className="w-11 h-11 sm:w-12 sm:h-12 lg:w-14 lg:h-14 bg-gradient-to-br from-blue-50 to-slate-100 rounded-lg sm:rounded-xl flex items-center justify-center border border-slate-200 flex-shrink-0 group-hover:shadow-md transition-all">
-                        <Rocket className="w-5 h-5 sm:w-6 sm:h-6 text-[#013371]" />
+        <Link href={`/startups/${startup.user_id}`} className="group relative bg-white border border-slate-200 rounded-xl hover:border-blue-300 hover:shadow-md transition-all duration-200 flex flex-col h-full overflow-visible">
+            <div className="p-3.5 flex flex-col h-full">
+                {/* Header: Icon & Badge */}
+                <div className="flex justify-between items-start gap-3 mb-3">
+                    <div className="w-10 h-10 bg-slate-50 rounded-lg flex items-center justify-center border border-slate-100 flex-shrink-0">
+                        <Rocket className="w-5 h-5 text-[#013371]" />
                     </div>
                     {startup.domain && (
-                        <span className="inline-block bg-blue-50 text-[#013371] border border-blue-200 rounded-full px-2 sm:px-2.5 py-0.5 sm:py-1 text-xs font-medium truncate">
+                        <span className="bg-blue-50/80 text-[#013371] border border-blue-100 rounded-md px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide truncate max-w-[100px]">
                             {startup.domain}
                         </span>
                     )}
                 </div>
                 
-                {/* Title */}
-                <h3 className="text-sm sm:text-base lg:text-lg font-bold text-slate-900 truncate mb-1.5 sm:mb-2 group-hover:text-[#013371] transition-colors" title={startup.company_name}>
-                    {startup.company_name}
-                </h3>
-            
-                {/* Description */}
-                <p className="text-xs sm:text-sm text-slate-600 mb-3 sm:mb-4 line-clamp-2 sm:line-clamp-3 leading-relaxed">
-                    {startup.description || "No description provided."}
-                </p>
+                {/* Content */}
+                <div className="mb-3">
+                    <h3 className="text-sm sm:text-base font-bold text-slate-900 truncate leading-tight mb-1 group-hover:text-[#013371] transition-colors">
+                        {startup.company_name}
+                    </h3>
+                    <p className="text-[11px] sm:text-xs text-slate-500 line-clamp-2 leading-relaxed h-8">
+                        {startup.description || "No description available."}
+                    </p>
+                </div>
 
-                {/* Key Stats */}
-                <div className="space-y-2 mb-4 sm:mb-5 pb-3 sm:pb-4 border-b border-slate-100">
-                    <div className="flex items-center gap-2">
-                        <TrendingUp className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-slate-500 flex-shrink-0" />
-                        <span className="text-xs text-slate-600 font-medium">{t.stage}:</span>
-                        <span className="text-xs sm:text-sm font-semibold text-slate-900">{startup.stage || "N/A"}</span>
+                {/* Mini Stats Row */}
+                <div className="grid grid-cols-2 gap-2 mb-3 pt-2 border-t border-slate-50">
+                    <div>
+                         <p className="text-[10px] text-slate-400 font-medium uppercase">{t.stage}</p>
+                         <div className="flex items-center gap-1 text-slate-700">
+                            <TrendingUp className="w-3 h-3" />
+                            <span className="text-[11px] font-semibold truncate">{startup.stage || "-"}</span>
+                         </div>
                     </div>
-                    <div className="flex items-center gap-2">
-                        <DollarSign className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-slate-500 flex-shrink-0" />
-                        <span className="text-xs text-slate-600 font-medium">{t.earnings}:</span>
-                        <span className="text-xs sm:text-sm font-semibold text-slate-900">{startup.earning_status || "N/A"}</span>
+                    <div>
+                         <p className="text-[10px] text-slate-400 font-medium uppercase">{t.earnings}</p>
+                         <div className="flex items-center gap-1 text-slate-700">
+                            <DollarSign className="w-3 h-3" />
+                            <span className="text-[11px] font-semibold truncate">{startup.earning_status || "-"}</span>
+                         </div>
                     </div>
                 </div>
 
-                {/* Engagement Stats */}
-                <div className="grid grid-cols-2 gap-3 mb-4 sm:mb-5 pb-4 sm:pb-5 border-b border-slate-100">
-                    {/* Likes */}
-                    <div className="bg-slate-50 rounded-lg p-2 sm:p-2.5 text-center group/stat hover:bg-red-50 transition-colors">
-                        <div className="flex items-center justify-center gap-1 mb-1">
-                            <Heart className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-slate-600" />
-                            <span className="text-xs text-slate-600 font-medium">{t.likes}</span>
-                        </div>
-                        <p className="text-sm sm:text-base font-bold text-slate-900">{eng.likes}</p>
+                {/* Footer Actions */}
+                <div className="mt-auto pt-2 border-t border-slate-100 flex items-center justify-between gap-2">
+                    {/* Stats (Left) */}
+                    <div className="flex items-center gap-3">
+                         <div className="flex items-center gap-1" title={`${eng.likes} Likes`}>
+                            <Heart className={`w-3.5 h-3.5 ${eng.userLiked ? 'text-red-500 fill-red-500' : 'text-slate-400'}`} />
+                            <span className="text-[11px] font-medium text-slate-600">{eng.likes}</span>
+                         </div>
+                         <div className="flex items-center gap-1" title={`${eng.rating} Rating`}>
+                            <Star className={`w-3.5 h-3.5 ${eng.rating > 0 ? 'text-amber-400 fill-amber-400' : 'text-slate-400'}`} />
+                            <span className="text-[11px] font-medium text-slate-600">{eng.rating.toFixed(1)}</span>
+                         </div>
                     </div>
 
-                    {/* Rating */}
-                    <div className="bg-slate-50 rounded-lg p-2 sm:p-2.5 text-center group/stat hover:bg-amber-50 transition-colors">
-                        <div className="flex items-center justify-center gap-1 mb-1">
-                            <Star className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-slate-600 fill-slate-400" />
-                            <span className="text-xs text-slate-600 font-medium">{t.rating}</span>
-                        </div>
-                        <p className="text-sm sm:text-base font-bold text-slate-900">
-                            {eng.rating.toFixed(1)} 
-                            <span className="text-xs font-normal text-slate-500"> ({eng.ratingCount})</span>
-                        </p>
-                    </div>
-                </div>
-
-                {/* Action Buttons (Pushed to bottom) */}
-                <div className="mt-auto flex gap-2 sm:gap-2.5">
-                    {isInvestor ? (
-                        <>
-                            {/* Like Button */}
-                            <button
-                                onClick={(e) => onToggleLike(startup.user_id, e)}
-                                title={eng.userLiked ? 'Unlike' : 'Like'}
-                                className={`flex-1 flex items-center justify-center gap-1.5 py-2 sm:py-2.5 px-2 sm:px-3 rounded-lg sm:rounded-xl font-semibold text-xs sm:text-sm transition-all duration-200 border ${
-                                    eng.userLiked
-                                        ? 'bg-red-50 text-red-600 border-red-300 hover:bg-red-100'
-                                        : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100 hover:border-slate-300'
-                                }`}
-                            >
-                                <Heart className={`w-3.5 h-3.5 sm:w-4 sm:h-4 ${eng.userLiked ? 'fill-current' : ''}`} />
-                                <span className="hidden sm:inline">{eng.userLiked ? 'Liked' : 'Like'}</span>
-                            </button>
-
-                            {/* Rating Button */}
-                            <div className="relative flex-1">
+                    {/* Buttons (Right) */}
+                    <div className="flex items-center gap-1.5">
+                        {isInvestor ? (
+                            <>
                                 <button
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        e.stopPropagation();
-                                        setShowRatingMenu(!showRatingMenu);
-                                        setHoverRating(0); // Reset hover when toggling
-                                    }}
-                                    title={eng.userRating ? `You rated ${eng.userRating}/5` : t.rateThis}
-                                    className={`w-full flex items-center justify-center gap-1.5 py-2 sm:py-2.5 px-2 sm:px-3 rounded-lg sm:rounded-xl font-semibold text-xs sm:text-sm transition-all duration-200 border ${
-                                        eng.userRating
-                                            ? 'bg-amber-50 text-amber-600 border-amber-300 hover:bg-amber-100'
-                                            : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100 hover:border-slate-300'
+                                    onClick={(e) => onToggleLike(startup.user_id, e)}
+                                    className={`p-1.5 rounded-md transition-colors ${
+                                        eng.userLiked ? 'bg-red-50 text-red-600' : 'bg-slate-50 text-slate-500 hover:bg-slate-100'
                                     }`}
                                 >
-                                    <Star className={`w-3.5 h-3.5 sm:w-4 sm:h-4 ${eng.userRating ? 'fill-current' : ''}`} />
-                                    <span className="hidden sm:inline">
-                                        {eng.userRating ? `${eng.userRating} ★` : t.rateThis}
-                                    </span>
+                                    <Heart className={`w-3.5 h-3.5 ${eng.userLiked ? 'fill-current' : ''}`} />
                                 </button>
 
-                                {/* Rating Dropdown Menu */}
-                                {showRatingMenu && (
-                                    <div 
-                                        className="absolute bottom-full left-0 right-0 mb-2 bg-white border border-slate-200 rounded-lg shadow-lg p-2 sm:p-3 z-50 animate-scaleIn w-48"
-                                        // Prevent click from bubbling to Link
-                                        onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}
-                                        // Close on mouse leave
-                                        onMouseLeave={() => {
-                                            setShowRatingMenu(false);
-                                            setHoverRating(0); // Reset hover
-                                        }} 
+                                <div className="relative">
+                                    <button
+                                        onClick={(e) => { e.preventDefault(); e.stopPropagation(); setShowRatingMenu(!showRatingMenu); setHoverRating(0); }}
+                                        className={`p-1.5 rounded-md transition-colors ${
+                                            eng.userRating ? 'bg-amber-50 text-amber-600' : 'bg-slate-50 text-slate-500 hover:bg-slate-100'
+                                        }`}
                                     >
-                                        <div className="flex justify-between items-center mb-2">
-                                            <p className="text-xs font-medium text-slate-600 px-1">
-                                                {eng.userRating ? t.changeRating : t.rateThis}
-                                            </p>
-                                            {/* Explicit Close Button for Touch Devices */}
-                                            <button 
-                                                onClick={() => {
-                                                    setShowRatingMenu(false);
-                                                    setHoverRating(0);
-                                                }}
-                                                className="p-1 rounded-full hover:bg-slate-100"
-                                                title="Close"
-                                            >
-                                                <X className="w-3.5 h-3.5 text-slate-500" />
-                                            </button>
-                                        </div>
-                                        
-                                        {/* ⭐ FIX: Responsive Star Buttons */}
-                                        <div className="flex gap-1.5 justify-center">
-                                            {[1, 2, 3, 4, 5].map((starValue) => (
+                                        <Star className={`w-3.5 h-3.5 ${eng.userRating ? 'fill-current' : ''}`} />
+                                    </button>
+                                    
+                                    {/* Rating Popup */}
+                                    {showRatingMenu && (
+                                        <div 
+                                            className="absolute bottom-full right-0 mb-2 bg-white border border-slate-200 rounded-lg shadow-xl p-2 z-50 w-32 flex justify-between animate-in zoom-in-95 duration-100"
+                                            onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}
+                                            onMouseLeave={() => setShowRatingMenu(false)}
+                                        >
+                                            {[1, 2, 3, 4, 5].map((star) => (
                                                 <button
-                                                    key={starValue}
-                                                    title={`Rate ${starValue} star${starValue > 1 ? 's' : ''}`}
-                                                    onMouseEnter={() => setHoverRating(starValue)}
+                                                    key={star}
+                                                    onMouseEnter={() => setHoverRating(star)}
                                                     onMouseLeave={() => setHoverRating(0)}
-                                                    onClick={(e) => {
-                                                        onSubmitRating(startup.user_id, starValue, e);
-                                                        setShowRatingMenu(false);
-                                                        setHoverRating(0);
-                                                    }}
-                                                    // ⭐ FIX: Removed 'flex-1'
-                                                    className="p-2 hover:bg-amber-50 rounded transition-colors group"
+                                                    onClick={(e) => { onSubmitRating(startup.user_id, star, e); setShowRatingMenu(false); }}
+                                                    className="p-0.5 hover:scale-110 transition-transform"
                                                 >
-                                                    <Star 
-                                                        className={`w-5 h-5 sm:w-6 sm:h-6 mx-auto transition-all duration-150 transform group-hover:scale-110 ${
-                                                            starValue <= displayRating
-                                                            ? 'text-amber-400 fill-amber-400'
-                                                            : 'text-slate-300 group-hover:text-amber-300'
-                                                        }`} 
-                                                    />
+                                                    <Star className={`w-4 h-4 ${star <= displayRating ? 'text-amber-400 fill-amber-400' : 'text-slate-200'}`} />
                                                 </button>
                                             ))}
                                         </div>
-                                    </div>
-                                )}
-                            </div>
-
-                            {/* View Details Button (Icon only) */}
-                            <button
-                                onClick={(e) => e.preventDefault()} // Does nothing, card is link
-                                title={t.viewDetails}
-                                className="hidden sm:flex items-center justify-center gap-1.5 py-2 sm:py-2.5 px-3 bg-[#013371] text-white rounded-lg sm:rounded-xl font-semibold text-xs sm:text-sm hover:bg-[#024fa3] transition-all duration-200 border border-[#013371]"
-                            >
-                                <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                            </button>
-                        </>
-                    ) : (
-                        <>
-                            {/* View Details Button (Full Width for non-investors) */}
-                            <button
-                                onClick={(e) => e.preventDefault()} // Does nothing, card is link
-                                className="flex-1 flex items-center justify-center gap-1.5 py-2 sm:py-2.5 px-2 sm:px-3 rounded-lg sm:rounded-xl font-semibold text-xs sm:text-sm bg-slate-50 text-slate-700 border-slate-200"
-                            >
-                                <span className="hidden sm:inline">{t.viewDetails}</span>
-                                <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                            </button>
-                        </>
-                    )}
+                                    )}
+                                </div>
+                            </>
+                        ) : null}
+                        
+                        <button className="text-[10px] font-bold bg-slate-900 text-white px-2.5 py-1.5 rounded-md hover:bg-[#013371] transition-colors flex items-center gap-1">
+                            {t.viewDetails} <ArrowRight className="w-3 h-3" />
+                        </button>
+                    </div>
                 </div>
             </div>
         </Link>
     );
 };
-// --- 6. Skeleton Loading Card ---
-// (Skeleton component remains unchanged)
+
 const StartupCardSkeleton: React.FC = () => {
     return (
-        <div className="bg-white border border-slate-200 rounded-xl sm:rounded-2xl shadow-sm h-full flex flex-col overflow-hidden">
-            <div className="p-3 sm:p-4 lg:p-5 animate-pulse flex flex-col h-full">
-                {/* Header */}
-                <div className="flex justify-between items-start gap-2 mb-3 sm:mb-4">
-                    <div className="w-11 h-11 sm:w-12 sm:h-12 lg:w-14 lg:h-14 bg-slate-200 rounded-lg sm:rounded-xl"></div>
-                    <div className="h-5 w-16 bg-slate-200 rounded-full"></div>
-                </div>
-                
-                {/* Title */}
-                <div className="h-5 w-3/4 bg-slate-200 rounded mb-2"></div>
-            
-                {/* Description */}
-                <div className="space-y-2 mb-4 sm:mb-5">
-                    <div className="h-3 w-full bg-slate-200 rounded"></div>
-                    <div className="h-3 w-5/6 bg-slate-200 rounded"></div>
-                </div>
-
-                {/* Stats */}
-                <div className="space-y-2 mb-4 sm:mb-5 pb-3 sm:pb-4 border-b border-slate-100">
-                    <div className="h-4 w-1/2 bg-slate-200 rounded"></div>
-                    <div className="h-4 w-1T/2 bg-slate-200 rounded"></div>
-                </div>
-
-                {/* Engagement */}
-                <div className="grid grid-cols-2 gap-3 mb-4 sm:mb-5 pb-4 sm:pb-5 border-b border-slate-100">
-                    <div className="h-12 bg-slate-200 rounded-lg"></div>
-                    <div className="h-12 bg-slate-200 rounded-lg"></div>
-                </div>
-
-                {/* Buttons */}
-                <div className="flex gap-2 sm:gap-2.5">
-                    <div className="flex-1 h-9 sm:h-10 bg-slate-200 rounded-lg sm:rounded-xl"></div>
-                    <div className="flex-1 h-9 sm:h-10 bg-slate-200 rounded-lg sm:rounded-xl"></div>
-                    <div className="hidden sm:block flex-1 h-9 sm:h-10 bg-slate-200 rounded-lg sm:rounded-xl"></div>
-                </div>
+        <div className="bg-white border border-slate-200 rounded-xl h-[220px] p-3.5 flex flex-col">
+            <div className="flex justify-between items-start mb-3 animate-pulse">
+                <div className="w-10 h-10 bg-slate-100 rounded-lg"></div>
+                <div className="w-16 h-5 bg-slate-100 rounded-md"></div>
+            </div>
+            <div className="mb-3 space-y-2 animate-pulse">
+                <div className="w-3/4 h-4 bg-slate-100 rounded"></div>
+                <div className="w-full h-3 bg-slate-100 rounded"></div>
+            </div>
+            <div className="mt-auto grid grid-cols-2 gap-2 pt-2 border-t border-slate-50 animate-pulse">
+                 <div className="h-8 bg-slate-100 rounded"></div>
+                 <div className="h-8 bg-slate-100 rounded"></div>
             </div>
         </div>
     );
 };
 
-
-// --- 7. Feedback Card (for Errors, No Results, etc.) ---
-// (FeedbackCard component remains unchanged)
 interface FeedbackCardProps {
     message: string;
     description: string;
@@ -729,12 +496,10 @@ interface FeedbackCardProps {
 
 const FeedbackCard: React.FC<FeedbackCardProps> = ({ message, description, icon: Icon, iconColor }) => {
     return (
-        <div className="col-span-1 sm:col-span-2 lg:col-span-3 flex flex-col items-center justify-center text-center p-8 sm:p-12 bg-white border border-slate-200 rounded-xl sm:rounded-2xl shadow-sm">
-            <div className={`w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 rounded-full flex items-center justify-center bg-slate-100 mb-4 sm:mb-5 ${iconColor}`}>
-                <Icon className="w-6 h-6 sm:w-7 sm:h-7 lg:w-8 lg:h-8" />
-            </div>
-            <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-slate-900 mb-1 sm:mb-2">{message}</h3>
-            <p className="text-xs sm:text-sm lg:text-base text-slate-600 max-w-md">{description}</p>
+        <div className="col-span-full flex flex-col items-center justify-center text-center p-10 bg-white border border-slate-200 rounded-xl shadow-sm border-dashed">
+            <div className={`w-12 h-12 rounded-full flex items-center justify-center bg-slate-50 mb-3 ${iconColor}`}><Icon className="w-6 h-6" /></div>
+            <h3 className="text-base font-bold text-slate-900 mb-1">{message}</h3>
+            <p className="text-xs text-slate-500">{description}</p>
         </div>
     );
 };
