@@ -26,6 +26,7 @@ import Schedule from "@/components/Schedules"
 import MarketingStrategy from "@/components/Markiting"
 import OurTeam from "@/components/Team"
 import SponsorshipPackages from "@/components/Sponser"
+import SpeakerMajid from "@/components/Speaker-majid"
 export default function Home() {
   const [language, setLanguage] = useState<"en" | "ar">("en")
 
@@ -39,6 +40,7 @@ export default function Home() {
       {/* <ApprovedStartupsList language={language}/> */}
       <CoFoundersPage language={language}/>
       <Speaker language={language} />
+      <SpeakerMajid language={language} />
 <EventOverview language={language} />
 <VisionAndGoals language={language} />
 

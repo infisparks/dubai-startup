@@ -918,8 +918,7 @@ const FormView: React.FC<any> = ({ t, step, formData, pitchDeckMode, handleInput
     );
 };
 
-// --- Status View (FIXED: BADGE DOWNLOAD, NO LAB ERRORS, NO TEXT CLIPPING) ---
-// REPLACE THE ENTIRE StatusView COMPONENT WITH THIS
+// --- Status View (VERTICAL FORMAT) ---
 const StatusView: React.FC<any> = ({ t, isApproved, formData, setStep, canEdit, userId }) => {
     const statusColor = isApproved ? "bg-green-50 text-green-700 border-green-200" : "bg-amber-50 text-amber-700 border-amber-200";
     const icon = isApproved ? <CheckCircle2 className="w-5 h-5" /> : <TrendingUp className="w-5 h-5" />;
@@ -930,21 +929,18 @@ const StatusView: React.FC<any> = ({ t, isApproved, formData, setStep, canEdit, 
         if (!badgeRef.current || !isApproved) return;
         
         try {
-            // 1. Wait for styles to settle
             await new Promise(resolve => setTimeout(resolve, 200));
 
             const canvas = await html2canvas(badgeRef.current, {
-                scale: 4, // High resolution
+                scale: 4, 
                 useCORS: true, 
                 allowTaint: true,
                 backgroundColor: null,
                 logging: false,
                 scrollY: -window.scrollY,
-                // 2. This tweak forces html2canvas to render text slightly differently to avoid clipping
                 onclone: (clonedDoc) => {
                     const element = clonedDoc.getElementById('badge-content');
                     if (element) {
-                        // Force visibility and slightly adjust height for capture
                         element.style.height = 'auto';
                         element.style.visibility = 'visible';
                     }
@@ -999,19 +995,14 @@ const StatusView: React.FC<any> = ({ t, isApproved, formData, setStep, canEdit, 
                 </div>
             </div>
 
-            {/* NEW PROFESSIONAL GOLD BADGE */}
+            {/* NEW VERTICAL (PORTRAIT) GOLD BADGE */}
             {isApproved && userId && (
                 <div className="flex flex-col items-center space-y-4 py-4 animate-fadeIn">
                     <div 
                         onClick={handleDownloadBadge}
-                        className="group relative w-full max-w-[420px] cursor-pointer transition-all duration-300 hover:scale-[1.02]"
+                        className="group relative w-full max-w-[320px] cursor-pointer transition-all duration-300 hover:scale-[1.02]"
                         title={t.status.clickToDownload}
                     >
-                        {/* FIXES APPLIED: 
-                            1. Added padding-bottom to text containers 
-                            2. Increased line-height to 1.5 or 1.6 
-                            3. Used display: block with margins to avoid Flexbox clipping issues
-                        */}
                         <div 
                             ref={badgeRef}
                             id="badge-content"
@@ -1021,7 +1012,7 @@ const StatusView: React.FC<any> = ({ t, isApproved, formData, setStep, canEdit, 
                                 border: '4px solid #C5A059',
                                 fontFamily: 'Arial, sans-serif',
                                 width: '100%',
-                                maxWidth: '420px',
+                                maxWidth: '320px', // Portrait width
                                 boxSizing: 'border-box' 
                             }}
                         >
@@ -1033,50 +1024,47 @@ const StatusView: React.FC<any> = ({ t, isApproved, formData, setStep, canEdit, 
                                 borderBottom: '1px solid #d4af37'
                             }}></div>
                             
-                            <div style={{ display: 'flex', padding: '24px 20px', gap: '20px', alignItems: 'center' }}>
+                            {/* VERTICAL LAYOUT CONTENT */}
+                            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '28px 24px', textAlign: 'center' }}>
+                                
+                                {/* Header Row */}
+                                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', marginBottom: '20px' }}>
+                                     <h4 style={{ 
+                                         color: '#b8860b', 
+                                         fontSize: '12px', 
+                                         fontWeight: 'bold', 
+                                         textTransform: 'uppercase', 
+                                         letterSpacing: '0.15em',
+                                         margin: 0,
+                                     }}>
+                                        Founders Pass
+                                     </h4>
+                                     <ScanLine style={{ width: '14px', height: '14px', color: '#b8860b' }} />
+                                </div>
+
                                 {/* QR Section */}
                                 <div style={{ 
                                     backgroundColor: '#ffffff', 
-                                    padding: '6px', 
+                                    padding: '8px', 
                                     border: '1px solid #e2e8f0', 
-                                    borderRadius: '6px',
-                                    flexShrink: 0,
-                                    height: 'fit-content'
+                                    borderRadius: '8px',
+                                    marginBottom: '24px',
+                                    boxShadow: '0 2px 4px rgba(0,0,0,0.05)'
                                 }}>
-                                    <QRCode value={userId} size={90} fgColor="#000000" bgColor="#ffffff" />
+                                    <QRCode value={userId} size={140} fgColor="#000000" bgColor="#ffffff" />
                                 </div>
 
                                 {/* Text Details */}
-                                <div style={{ display: 'flex', flexDirection: 'column', flex: 1, minWidth: 0, justifyContent: 'center' }}>
-                                    
-                                    {/* Header Row */}
-                                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
-                                         <h4 style={{ 
-                                             color: '#b8860b', 
-                                             fontSize: '11px', 
-                                             fontWeight: 'bold', 
-                                             textTransform: 'uppercase', 
-                                             letterSpacing: '0.15em',
-                                             margin: 0,
-                                             lineHeight: '1.2'
-                                         }}>
-                                            Founders Pass
-                                         </h4>
-                                         <ScanLine style={{ width: '14px', height: '14px', color: '#b8860b' }} />
-                                    </div>
-                                    
-                                    {/* Company Name - FIXED: High line-height and explicit padding prevents 'p' from being cut */}
+                                <div style={{ width: '100%', marginBottom: '24px' }}>
+                                    {/* Company Name */}
                                     <h3 style={{ 
                                         color: '#013371', 
-                                        fontSize: '22px', 
+                                        fontSize: '24px', 
                                         fontWeight: '800', 
-                                        lineHeight: '1.5', /* Crucial fix for clipping */
-                                        margin: '0 0 2px 0',
-                                        whiteSpace: 'nowrap', 
-                                        overflow: 'hidden', 
-                                        textOverflow: 'ellipsis',
-                                        paddingBottom: '4px', /* Extra buffer for descenders */
-                                        display: 'block'
+                                        lineHeight: '1.4', 
+                                        margin: '0 0 6px 0',
+                                        paddingBottom: '2px',
+                                        wordWrap: 'break-word'
                                     }}>
                                         {formData.companyName}
                                     </h3>
@@ -1084,37 +1072,33 @@ const StatusView: React.FC<any> = ({ t, isApproved, formData, setStep, canEdit, 
                                     {/* Founder Name */}
                                     <p style={{ 
                                         color: '#64748b', 
-                                        fontSize: '13px', 
+                                        fontSize: '14px', 
                                         fontWeight: '500', 
-                                        lineHeight: '1.6', /* Crucial fix for clipping */
-                                        margin: '0 0 14px 0',
-                                        whiteSpace: 'nowrap', 
-                                        overflow: 'hidden', 
-                                        textOverflow: 'ellipsis',
-                                        paddingBottom: '2px',
-                                        display: 'block'
+                                        lineHeight: '1.5',
+                                        margin: 0,
+                                        paddingBottom: '2px'
                                     }}>
                                         {formData.founderName}
                                     </p>
-                                    
-                                    {/* Footer Row */}
-                                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 'auto' }}>
-                                        <div style={{ 
-                                            background: 'linear-gradient(90deg, #bf953f 0%, #b8860b 100%)',
-                                            color: '#ffffff',
-                                            padding: '6px 12px', /* Increased padding so text doesn't touch edges */
-                                            borderRadius: '4px',
-                                            fontSize: '10px',
-                                            fontWeight: 'bold',
-                                            textTransform: 'uppercase',
-                                            letterSpacing: '0.05em',
-                                            lineHeight: '1.2'
-                                        }}>
-                                            VERIFIED
-                                        </div>
-                                        <div style={{ color: '#94a3b8', fontSize: '10px', fontFamily: 'monospace' }}>
-                                            ID: {userId.slice(0, 8)}
-                                        </div>
+                                </div>
+                                
+                                {/* Footer Row */}
+                                <div style={{ width: '100%', borderTop: '1px solid #f1f5f9', paddingTop: '16px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
+                                    <div style={{ 
+                                        background: 'linear-gradient(90deg, #bf953f 0%, #b8860b 100%)',
+                                        color: '#ffffff',
+                                        padding: '6px 16px', 
+                                        borderRadius: '20px',
+                                        fontSize: '11px',
+                                        fontWeight: 'bold',
+                                        textTransform: 'uppercase',
+                                        letterSpacing: '0.05em',
+                                        lineHeight: '1.2'
+                                    }}>
+                                        VERIFIED
+                                    </div>
+                                    <div style={{ color: '#94a3b8', fontSize: '10px', fontFamily: 'monospace' }}>
+                                        ID: {userId.slice(0, 8)}
                                     </div>
                                 </div>
                             </div>
@@ -1136,7 +1120,7 @@ const StatusView: React.FC<any> = ({ t, isApproved, formData, setStep, canEdit, 
                 </div>
             )}
 
-            {/* Details Section (Unchanged) */}
+            {/* Details Section */}
             <div className="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
                  <div className="px-6 py-4 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
                     <h3 className="font-semibold text-slate-900">{t.status.viewDetails}</h3>
