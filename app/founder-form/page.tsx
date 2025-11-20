@@ -919,6 +919,7 @@ const FormView: React.FC<any> = ({ t, step, formData, pitchDeckMode, handleInput
 };
 
 // --- Status View (VERTICAL FORMAT) ---
+// REPLACE THE ENTIRE StatusView COMPONENT WITH THIS
 const StatusView: React.FC<any> = ({ t, isApproved, formData, setStep, canEdit, userId }) => {
     const statusColor = isApproved ? "bg-green-50 text-green-700 border-green-200" : "bg-amber-50 text-amber-700 border-amber-200";
     const icon = isApproved ? <CheckCircle2 className="w-5 h-5" /> : <TrendingUp className="w-5 h-5" />;
@@ -929,10 +930,11 @@ const StatusView: React.FC<any> = ({ t, isApproved, formData, setStep, canEdit, 
         if (!badgeRef.current || !isApproved) return;
         
         try {
+            // 1. Wait for fonts/styles to settle
             await new Promise(resolve => setTimeout(resolve, 200));
 
             const canvas = await html2canvas(badgeRef.current, {
-                scale: 4, 
+                scale: 4, // High resolution for print
                 useCORS: true, 
                 allowTaint: true,
                 backgroundColor: null,
@@ -943,6 +945,7 @@ const StatusView: React.FC<any> = ({ t, isApproved, formData, setStep, canEdit, 
                     if (element) {
                         element.style.height = 'auto';
                         element.style.visibility = 'visible';
+                        element.style.transform = 'none';
                     }
                 }
             });
@@ -950,7 +953,7 @@ const StatusView: React.FC<any> = ({ t, isApproved, formData, setStep, canEdit, 
             const image = canvas.toDataURL("image/png", 1.0);
             const link = document.createElement("a");
             link.href = image;
-            link.download = `Founders-Pass-${formData.companyName.replace(/\s+/g, '-')}.png`;
+            link.download = `Investarise-Pass-${formData.founderName.replace(/\s+/g, '-')}.png`;
             link.click();
         } catch (error) {
             console.error("Error generating badge:", error);
@@ -995,120 +998,181 @@ const StatusView: React.FC<any> = ({ t, isApproved, formData, setStep, canEdit, 
                 </div>
             </div>
 
-            {/* NEW VERTICAL (PORTRAIT) GOLD BADGE */}
+            {/* NEW PREMIUM EVENT BADGE */}
             {isApproved && userId && (
-                <div className="flex flex-col items-center space-y-4 py-4 animate-fadeIn">
+                <div className="flex flex-col items-center space-y-6 py-6 animate-fadeIn">
                     <div 
                         onClick={handleDownloadBadge}
-                        className="group relative w-full max-w-[320px] cursor-pointer transition-all duration-300 hover:scale-[1.02]"
+                        className="group relative w-full max-w-[340px] cursor-pointer transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl"
                         title={t.status.clickToDownload}
                     >
                         <div 
                             ref={badgeRef}
                             id="badge-content"
-                            className="relative rounded-xl shadow-lg"
+                            className="relative rounded-2xl shadow-2xl overflow-hidden"
                             style={{ 
-                                backgroundColor: '#ffffff', 
-                                border: '4px solid #C5A059',
+                                // Deep Luxury Background
+                                background: 'radial-gradient(circle at top right, #1e293b 0%, #0f172a 100%)',
+                                border: '1px solid #334155',
                                 fontFamily: 'Arial, sans-serif',
                                 width: '100%',
-                                maxWidth: '320px', // Portrait width
-                                boxSizing: 'border-box' 
+                                maxWidth: '340px',
+                                minHeight: '500px', // Portrait Event Badge Height
+                                boxSizing: 'border-box',
+                                position: 'relative',
+                                display: 'flex',
+                                flexDirection: 'column'
                             }}
                         >
-                             {/* Decorative Gold Header */}
-                            <div style={{ 
-                                height: '14px', 
-                                width: '100%', 
-                                background: 'linear-gradient(90deg, #bf953f 0%, #fcf6ba 50%, #bf953f 100%)',
-                                borderBottom: '1px solid #d4af37'
-                            }}></div>
+                            {/* Background Texture/Glow */}
+                            <div style={{ position: 'absolute', top: '-100px', left: '-50px', width: '300px', height: '300px', background: 'radial-gradient(circle, rgba(197,160,89,0.1) 0%, rgba(0,0,0,0) 70%)', borderRadius: '50%', pointerEvents: 'none' }}></div>
                             
-                            {/* VERTICAL LAYOUT CONTENT */}
-                            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '28px 24px', textAlign: 'center' }}>
-                                
-                                {/* Header Row */}
-                                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', marginBottom: '20px' }}>
-                                     <h4 style={{ 
-                                         color: '#b8860b', 
-                                         fontSize: '12px', 
-                                         fontWeight: 'bold', 
-                                         textTransform: 'uppercase', 
-                                         letterSpacing: '0.15em',
-                                         margin: 0,
-                                     }}>
-                                        Founders Pass
-                                     </h4>
-                                     <ScanLine style={{ width: '14px', height: '14px', color: '#b8860b' }} />
-                                </div>
-
-                                {/* QR Section */}
-                                <div style={{ 
-                                    backgroundColor: '#ffffff', 
-                                    padding: '8px', 
-                                    border: '1px solid #e2e8f0', 
-                                    borderRadius: '8px',
-                                    marginBottom: '24px',
-                                    boxShadow: '0 2px 4px rgba(0,0,0,0.05)'
+                            {/* --- TOP SECTION: EVENT BRANDING --- */}
+                            <div style={{ 
+                                padding: '30px 20px 20px 20px', 
+                                textAlign: 'center', 
+                                borderBottom: '1px solid rgba(255,255,255,0.1)',
+                                position: 'relative',
+                                zIndex: 10
+                            }}>
+                                <h5 style={{ 
+                                    color: '#94a3b8', 
+                                    fontSize: '10px', 
+                                    letterSpacing: '0.2em', 
+                                    textTransform: 'uppercase', 
+                                    margin: '0 0 8px 0' 
                                 }}>
-                                    <QRCode value={userId} size={140} fgColor="#000000" bgColor="#ffffff" />
+                                    Official Event Pass
+                                </h5>
+                                <h2 style={{ 
+                                    color: '#C5A059', // Gold
+                                    fontSize: '22px', 
+                                    fontWeight: '900', 
+                                    textTransform: 'uppercase', 
+                                    letterSpacing: '0.05em',
+                                    lineHeight: '1.2',
+                                    margin: 0,
+                                    textShadow: '0 2px 10px rgba(197,160,89,0.3)'
+                                }}>
+                                    INVESTARISE<br/>GLOBAL
+                                </h2>
+                            </div>
+
+                            {/* --- MIDDLE SECTION: ATTENDEE INFO --- */}
+                            <div style={{ 
+                                flex: 1, 
+                                display: 'flex', 
+                                flexDirection: 'column', 
+                                justifyContent: 'center', 
+                                padding: '30px 24px',
+                                textAlign: 'center',
+                                position: 'relative',
+                                zIndex: 10
+                            }}>
+                                {/* Avatar Placeholder / User Icon */}
+                                <div style={{ 
+                                    width: '80px', 
+                                    height: '80px', 
+                                    margin: '0 auto 24px auto', 
+                                    borderRadius: '50%', 
+                                    background: 'linear-gradient(135deg, #334155 0%, #1e293b 100%)',
+                                    display: 'flex', 
+                                    alignItems: 'center', 
+                                    justifyContent: 'center',
+                                    border: '2px solid #C5A059',
+                                    boxShadow: '0 4px 15px rgba(0,0,0,0.3)'
+                                }}>
+                                    <span style={{ fontSize: '32px', fontWeight: 'bold', color: '#fff' }}>
+                                        {formData.founderName.charAt(0).toUpperCase()}
+                                    </span>
                                 </div>
 
-                                {/* Text Details */}
-                                <div style={{ width: '100%', marginBottom: '24px' }}>
-                                    {/* Company Name */}
-                                    <h3 style={{ 
-                                        color: '#013371', 
-                                        fontSize: '24px', 
-                                        fontWeight: '800', 
-                                        lineHeight: '1.4', 
-                                        margin: '0 0 6px 0',
-                                        paddingBottom: '2px',
-                                        wordWrap: 'break-word'
-                                    }}>
-                                        {formData.companyName}
-                                    </h3>
+                                {/* Founder Name (HERO) - UPPERCASE */}
+                                <h1 style={{ 
+                                    color: '#ffffff', 
+                                    fontSize: '28px', 
+                                    fontWeight: '800', 
+                                    margin: '0 0 8px 0', 
+                                    lineHeight: '1.2',
+                                    wordWrap: 'break-word',
+                                    textTransform: 'uppercase' // ADDED UPPERCASE
+                                }}>
+                                    {formData.founderName}
+                                </h1>
 
-                                    {/* Founder Name */}
-                                    <p style={{ 
-                                        color: '#64748b', 
-                                        fontSize: '14px', 
-                                        fontWeight: '500', 
-                                        lineHeight: '1.5',
-                                        margin: 0,
-                                        paddingBottom: '2px'
-                                    }}>
-                                        {formData.founderName}
-                                    </p>
-                                </div>
-                                
-                                {/* Footer Row */}
-                                <div style={{ width: '100%', borderTop: '1px solid #f1f5f9', paddingTop: '16px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
-                                    <div style={{ 
-                                        background: 'linear-gradient(90deg, #bf953f 0%, #b8860b 100%)',
-                                        color: '#ffffff',
-                                        padding: '6px 16px', 
+                                {/* Company Name - UPPERCASE */}
+                                <p style={{ 
+                                    color: '#cbd5e1', 
+                                    fontSize: '16px', 
+                                    fontWeight: '500', 
+                                    margin: '0 0 20px 0',
+                                    opacity: 0.9,
+                                    textTransform: 'uppercase' // ADDED UPPERCASE
+                                }}>
+                                    {formData.companyName}
+                                </p>
+
+                                {/* Role Pill */}
+                                <div style={{ display: 'flex', justifyContent: 'center' }}>
+                                    <span style={{ 
+                                        background: 'rgba(197,160,89,0.15)', 
+                                        border: '1px solid rgba(197,160,89,0.3)',
+                                        color: '#C5A059',
+                                        padding: '6px 16px',
                                         borderRadius: '20px',
                                         fontSize: '11px',
                                         fontWeight: 'bold',
                                         textTransform: 'uppercase',
-                                        letterSpacing: '0.05em',
-                                        lineHeight: '1.2'
+                                        letterSpacing: '0.1em'
                                     }}>
-                                        VERIFIED
-                                    </div>
-                                    <div style={{ color: '#94a3b8', fontSize: '10px', fontFamily: 'monospace' }}>
-                                        ID: {userId.slice(0, 8)}
-                                    </div>
+                                        Founder Access
+                                    </span>
+                                </div>
+                            </div>
+
+                            {/* --- BOTTOM SECTION: QR & FOOTER --- */}
+                            <div style={{ 
+                                background: '#ffffff', 
+                                padding: '25px 20px',
+                                borderTop: '4px solid #C5A059',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'space-between',
+                                position: 'relative',
+                                zIndex: 10
+                            }}>
+                                <div style={{ textAlign: 'left' }}>
+                                    <p style={{ color: '#64748b', fontSize: '9px', textTransform: 'uppercase', fontWeight: 'bold', margin: '0 0 2px 0' }}>
+                                        Event Date
+                                    </p>
+                                    <p style={{ color: '#0f172a', fontSize: '12px', fontWeight: 'bold', margin: '0 0 10px 0' }}>
+                                        NOV 2025
+                                    </p>
+                                    
+                                    <p style={{ color: '#64748b', fontSize: '9px', textTransform: 'uppercase', fontWeight: 'bold', margin: '0 0 2px 0' }}>
+                                        Pass ID
+                                    </p>
+                                    <p style={{ color: '#0f172a', fontSize: '11px', fontFamily: 'monospace', margin: 0 }}>
+                                        {userId.slice(0, 8)}
+                                    </p>
+                                </div>
+
+                                {/* QR Code */}
+                                <div style={{ 
+                                    padding: '4px', 
+                                    border: '1px solid #e2e8f0', 
+                                    borderRadius: '8px'
+                                }}>
+                                    <QRCode value={userId} size={80} fgColor="#000000" bgColor="#ffffff" />
                                 </div>
                             </div>
                         </div>
 
-                        {/* Download Overlay (Visual Only) */}
-                        <div className="absolute inset-0 rounded-xl flex items-center justify-center bg-slate-900/60 opacity-0 transition-opacity duration-200 group-hover:opacity-100 backdrop-blur-[1px]">
-                            <div className="bg-white/20 border border-white/30 backdrop-blur-md px-4 py-2 rounded-full shadow-lg">
-                                <p className="flex items-center gap-2 text-xs font-bold text-white tracking-wide">
-                                    <Download className="h-4 w-4" /> Download PNG
+                        {/* Hover Overlay for Download */}
+                        <div className="absolute inset-0 rounded-2xl flex items-center justify-center bg-slate-900/60 opacity-0 transition-opacity duration-200 group-hover:opacity-100 backdrop-blur-[2px]">
+                            <div className="bg-white/10 border border-white/20 backdrop-blur-md px-6 py-3 rounded-full shadow-2xl">
+                                <p className="flex items-center gap-2 text-sm font-bold text-white tracking-wide">
+                                    <Download className="h-4 w-4" /> Save to Device
                                 </p>
                             </div>
                         </div>
@@ -1120,7 +1184,7 @@ const StatusView: React.FC<any> = ({ t, isApproved, formData, setStep, canEdit, 
                 </div>
             )}
 
-            {/* Details Section */}
+            {/* Details Section (Unchanged) */}
             <div className="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
                  <div className="px-6 py-4 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
                     <h3 className="font-semibold text-slate-900">{t.status.viewDetails}</h3>
