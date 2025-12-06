@@ -1,0 +1,253 @@
+'use client'
+
+import React, { useState, useRef, useEffect, useCallback } from 'react'
+
+function ChevronLeftIcon() {
+    return (
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+            className="w-5 h-5"
+        >
+            <path
+                fillRule="evenodd"
+                d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z"
+                clipRule="evenodd"
+            />
+        </svg>
+    )
+}
+
+function ChevronRightIcon() {
+    return (
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+            className="w-5 h-5"
+        >
+            <path
+                fillRule="evenodd"
+                d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z"
+                clipRule="evenodd"
+            />
+        </svg>
+    )
+}
+
+interface InvestorsSponsorsProps {
+    language: 'en' | 'ar'
+}
+
+const translations = {
+    en: {
+        title: 'Our Investors/Sponsors',
+        subtitle:
+            'Investarise Global Investment Summit 2026 welcome our prestigious speakers to the Event',
+        footer: "Investarise Global Investor Summit - 2026: Shaping Tomorrow's Economy",
+        readMore: 'Read More',
+        readLess: 'Read Less',
+        investors: [
+            {
+                name: 'Mr. Nitin Aggarwal',
+                bio: 'Managing Partner at Gopinath Group of companies. Proactive and result oriented with good experience in Retail Banking, SME Banking, Set up of New Business. Well-disciplined with proven ability to manage multiple assignments efficiently under extreme pressure while meeting tight deadline schedules.',
+                image: '/speaker/2.png',
+            },
+            {
+                name: 'Mr. Randeep Singh Nanda',
+                bio: 'Managing Director at Bonn Metals Const Industries LLC | An accomplished business leader with a strong background in finance and strategic management. As the Managing Director of Bonn Metals Const Industries LLC, he oversees operations for companies values with USD 100 million.',
+                image: '/speaker/6.png',
+            },
+            {
+                name: 'Mr. Puneet Sakhuja',
+                bio: 'Chartered Accountant | Insolvency Professional | Strategic Advisor | Founder – Arthah Group | Director – International Tax & Compliance with 18+ years of experience, invested in 20+ companies so far.',
+                image: '/speaker/5.png',
+            },
+            {
+                name: 'Mr. Manzar Khan',
+                bio: 'Founder of Reham Group It has been in business for more than 18 years. In our extremely exciting journey, we have successfully delivered to more than 1500 companies and boast of a large clientele across UAE, India & other APAC regions. We have been recognized by many key organizations for our quality service, growth and stability.',
+                image: '/speaker/7.png',
+            },
+        ],
+    },
+    ar: {
+        title: 'المستثمرون والرعاة',
+        subtitle:
+            'ترحب قمة إنفستارايز العالمية للاستثمار 2026 بمتحدثينا المتميزين في هذا الحدث',
+        footer: 'قمة إنفستارايز العالمية للمستثمرين - 2026: تشكيل اقتصاد الغد',
+        readMore: 'اقرأ المزيد',
+        readLess: 'اقرأ أقل',
+        investors: [
+            {
+                name: 'السيد نيتين أغاروال',
+                bio: 'الشريك الإداري في مجموعة شركات جوبيناث. استباقي وموجه نحو النتائج ولديه خبرة جيدة في الخدمات المصرفية للأفراد والخدمات المصرفية للمشاريع الصغيرة والمتوسطة وتأسيس الأعمال الجديدة. منضبط جيدًا ولديه قدرة مثبتة على إدارة مهام متعددة بكفاءة تحت ضغط شديد مع الالتزام بجداول زمنية ضيقة.',
+                image: '/speaker/9.png',
+            },
+            {
+                name: 'السيد رانديب سينغ ناندا',
+                bio: 'المدير العام لشركة بون ميتالز كونست اندستريز ذ.م.م | قائد أعمال بارع يتمتع بخلفية قوية في التمويل والإدارة الاستراتيجية. بصفته المدير العام لشركة بون ميتالز كونست اندستريز ذ.م.م، يشرف على عمليات الشركات التي تبلغ قيمتها 100 مليون دولار أمريكي.',
+                image: '/speaker/10.png',
+            },
+            {
+                name: 'السيد بونيت ساخوجا',
+                bio: 'محاسب قانوني | محترف إعسار | مستشار استراتيجي | مؤسس - مجموعة أرثاه | مدير - الضرائب الدولية والامتثال مع أكثر من 18 عامًا من الخبرة، استثمر في أكثر من 20 شركة حتى الآن.',
+                image: '/speaker/11.png',
+            },
+            {
+                name: 'السيد منذر خان',
+                bio: 'مؤسس مجموعة رهام. تعمل في مجال الأعمال منذ أكثر من 18 عامًا. في رحلتنا المثيرة للغاية، نجحنا في التسليم لأكثر من 1500 شركة ونفتخر بقاعدة عملاء كبيرة عبر الإمارات العربية المتحدة والهند ومناطق آسيا والمحيط الهادئ الأخرى. لقد تم تكريمنا من قبل العديد من المنظمات الرئيسية لخدمتنا عالية الجودة ونمونا واستقرارنا.',
+                image: '/speaker/12.png',
+            },
+        ],
+    },
+}
+
+export default function InvestorsSponsors({ language = 'en' }: InvestorsSponsorsProps) {
+    const t = translations[language]
+    const [expandedIds, setExpandedIds] = useState<string[]>([])
+
+    const scrollContainerRef = useRef<HTMLDivElement>(null)
+
+    const [isScrollStart, setIsScrollStart] = useState(true)
+    const [isScrollEnd, setIsScrollEnd] = useState(false)
+
+    const toggleExpand = (name: string) => {
+        setExpandedIds((prev) =>
+            prev.includes(name)
+                ? prev.filter((n) => n !== name)
+                : [...prev, name]
+        )
+    }
+
+    const checkScrollPosition = useCallback(() => {
+        const el = scrollContainerRef.current
+        if (el) {
+            const atStart = el.scrollLeft < 10
+            const atEnd = el.scrollLeft + el.clientWidth >= el.scrollWidth - 10
+            setIsScrollStart(atStart)
+            setIsScrollEnd(atEnd)
+        }
+    }, [])
+
+    useEffect(() => {
+        const el = scrollContainerRef.current
+        if (el) {
+            el.addEventListener('scroll', checkScrollPosition)
+            window.addEventListener('resize', checkScrollPosition)
+
+            checkScrollPosition()
+
+            return () => {
+                el.removeEventListener('scroll', checkScrollPosition)
+                window.removeEventListener('resize', checkScrollPosition)
+            }
+        }
+    }, [checkScrollPosition])
+
+    useEffect(() => {
+        const timer = setTimeout(checkScrollPosition, 100);
+        return () => clearTimeout(timer);
+    }, [t.investors, language, checkScrollPosition]);
+
+    const scroll = (direction: 'left' | 'right') => {
+        const el = scrollContainerRef.current
+        if (el) {
+            const scrollAmount = el.clientWidth * 0.85
+            el.scrollBy({
+                left: direction === 'left' ? -scrollAmount : scrollAmount,
+                behavior: 'smooth',
+            })
+        }
+    }
+
+    return (
+        <section className="relative py-16 sm:py-24 lg:py-32 px-4 sm:px-6 lg:px-8 bg-white overflow-hidden">
+            <div className="max-w-7xl mx-auto relative z-10 w-full">
+                <div className="text-center mb-12 lg:mb-16">
+                    <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 leading-tight">
+                        {t.title}
+                    </h2>
+                    <p className="mt-4 text-lg text-slate-600 max-w-3xl mx-auto">
+                        {t.subtitle}
+                    </p>
+                    <div className="mt-6 h-1.5 w-24 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full mx-auto" />
+                </div>
+
+                <div className="relative -mx-4 px-4 sm:mx-0 sm:px-0">
+
+                    <button
+                        onClick={() => scroll('left')}
+                        className={`absolute top-1/2 -translate-y-1/2 left-0 z-10 p-2 bg-white rounded-full shadow-lg text-blue-600 hover:bg-slate-100 transition-all
+                       sm:hidden ${isScrollStart ? 'opacity-0' : 'opacity-100'}`}
+                        aria-label="Scroll left"
+                    >
+                        <ChevronLeftIcon />
+                    </button>
+
+                    <div
+                        ref={scrollContainerRef}
+                        className="flex flex-nowrap overflow-x-auto scroll-smooth snap-x snap-mandatory gap-4 px-2 py-4
+                       sm:grid sm:grid-cols-2 lg:grid-cols-4 sm:gap-8 sm:p-0 sm:overflow-visible
+                       [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+                    >
+                        {t.investors.map((investor) => {
+                            const isExpanded = expandedIds.includes(investor.name)
+
+                            return (
+                                <div
+                                    key={investor.name}
+                                    className="flex flex-col items-center text-center bg-slate-50 rounded-3xl p-6 shadow-lg
+                             w-[85vw] flex-shrink-0 snap-start
+                             sm:w-auto sm:flex-shrink-1"
+                                >
+                                    <div className="relative w-40 h-40 rounded-full mb-6 overflow-hidden shadow-md flex-shrink-0">
+                                        <img
+                                            src={investor.image}
+                                            alt={investor.name}
+                                            className="w-full h-full object-cover"
+                                        />
+                                    </div>
+                                    <h3 className="text-xl font-bold text-slate-900 mb-2">
+                                        {investor.name}
+                                    </h3>
+
+                                    <div className="flex-grow flex flex-col w-full">
+                                        <p
+                                            className={`text-sm text-slate-600 leading-relaxed flex-grow ${!isExpanded ? 'line-clamp-2' : ''
+                                                }`}
+                                        >
+                                            {investor.bio}
+                                        </p>
+
+                                        <button
+                                            onClick={() => toggleExpand(investor.name)}
+                                            className="text-sm font-semibold text-blue-700 bg-blue-100 hover:bg-blue-200 rounded-full px-4 py-1.5 transition-colors mt-4 self-center flex-shrink-0"
+                                        >
+                                            {isExpanded ? t.readLess : t.readMore}
+                                        </button>
+                                    </div>
+                                </div>
+                            )
+                        })}
+                    </div>
+
+                    <button
+                        onClick={() => scroll('right')}
+                        className={`absolute top-1/2 -translate-y-1/2 right-0 z-10 p-2 bg-white rounded-full shadow-lg text-blue-600 hover:bg-slate-100 transition-all
+                       sm:hidden ${isScrollEnd ? 'opacity-0' : 'opacity-100'}`}
+                        aria-label="Scroll right"
+                    >
+                        <ChevronRightIcon />
+                    </button>
+                </div>
+
+                <div className="text-center mt-16">
+                    <p className="text-sm font-semibold text-slate-500 tracking-wide">
+                        {t.footer}
+                    </p>
+                </div>
+            </div>
+        </section>
+    )
+}

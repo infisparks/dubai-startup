@@ -85,7 +85,7 @@ export default function FounderPage({ language = 'en' }: FounderPageProps) {
             <div className="relative w-full max-w-md sm:max-w-lg p-6 sm:p-8 bg-white rounded-3xl border border-slate-200 shadow-2xl shadow-cyan-500/10 hover:shadow-cyan-500/20 transition-shadow duration-500">
               <div className="relative w-full aspect-square rounded-2xl overflow-hidden border-4 border-cyan-500/30 transform hover:scale-[1.02] transition-transform duration-300">
                 <Image
-                  src="https://placehold.co/600x600/e2e8f0/64748b?text=Kishan+K+Verma"
+                  src="/speaker/4.png"
                   alt={t.name}
                   layout="fill"
                   objectFit="cover"

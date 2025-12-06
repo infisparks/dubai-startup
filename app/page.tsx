@@ -4,6 +4,7 @@ import { useState } from "react"
 import Header from "@/components/header"
 import Hero from "@/components/hero"
 import About from "@/components/about"
+import InvestariseAdvantage from "@/components/investarise-advantage"
 import FeaturedStartups from "@/components/featured-startups"
 import HowItWorks from "@/components/how-it-works"
 import InvestorBenefits from "@/components/investor-benefits"
@@ -27,6 +28,7 @@ import MarketingStrategy from "@/components/Markiting"
 import OurTeam from "@/components/Team"
 import SponsorshipPackages from "@/components/Sponser"
 import SpeakerMajid from "@/components/Speaker-majid"
+import InvestorsSponsors from "@/components/InvestorsSponsors"
 export default function Home() {
   const [language, setLanguage] = useState<"en" | "ar">("en")
 
@@ -38,19 +40,20 @@ export default function Home() {
       <PrincePage language={language} />
       <FounderPage language={language} />
       {/* <ApprovedStartupsList language={language}/> */}
-      <CoFoundersPage language={language}/>
+      <CoFoundersPage language={language} />
       <Speaker language={language} />
-      <SpeakerMajid language={language} />
-<EventOverview language={language} />
-<VisionAndGoals language={language} />
+      <InvestorsSponsors language={language} />
+      {/* <SpeakerMajid language={language} /> */}
+      <EventOverview language={language} />
+      <VisionAndGoals language={language} />
 
- <FocusSectors language={language}/>
-<VenueSection language={language} venueImageSrc={"/taj.jpg"}/>
-<Schedule language={language}/>
-<MarketingStrategy language={language}/>
+      <FocusSectors language={language} />
+      <VenueSection language={language} venueImageSrc={"/taj.jpg"} />
+      <Schedule language={language} />
+      <MarketingStrategy language={language} />
 
-<OurTeam language={language}/>
-<SponsorshipPackages language={language}/>
+      <OurTeam language={language} />
+      <SponsorshipPackages language={language} />
 
       {/* <FeaturedStartups language={language} />
       <HowItWorks language={language} />
@@ -58,6 +61,7 @@ export default function Home() {
       <Testimonials language={language} />
       <Newsletter language={language} />
       <Contact language={language} /> */}
+      <InvestariseAdvantage language={language} />
       <Footer language={language} />
       <ScrollToTop />
     </div>

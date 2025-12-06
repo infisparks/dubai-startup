@@ -18,14 +18,14 @@ const translations = {
         // Added a 'role' for better typographic hierarchy
         role: 'Travel Entrepreneur & Management Consultant',
         bio: 'CEO NoWorryTrip, Travel Entrepreneur, Management Consultant, Specialized In International Business Development. With a proven track record of leadership, strategy, and cross-border collaborations, Specialized in International Business Development while also contributing actively to humanitarian and non-profit sectors.',
-        imagePlaceholder: 'Sanjay Bhambri',
+        image: '/speaker/1.png',
       },
       {
         name: 'Farid Ahmed',
         // Added a 'role' for better typographic hierarchy
         role: 'Oil & Gas Industry Professional',
         bio: 'Mr. Farid Ahmed is a seasoned professional with extensive experience in the oil and gas industry, specializing in business development, strategic partnerships, and investment facilitation. Over the years, he has played a pivotal role in driving growth across multiple sectors by connecting investors with high-potential opportunities in energy, infrastructure, and emerging markets.',
-        imagePlaceholder: 'Farid Ahmed',
+        image: '/speaker/2.png',
       },
     ],
   },
@@ -39,14 +39,14 @@ const translations = {
         // Added a 'role' for better typographic hierarchy
         role: 'رائد أعمال في مجال السفر ومستشار إداري',
         bio: 'الرئيس التنفيذي لشركة NoWorryTrip، رائد أعمال في مجال السفر، مستشار إداري، متخصص في تطوير الأعمال الدولية. يتمتع بسجل حافل في القيادة والاستراتيجية والتعاون عبر الحدود، ومتخصص في تطوير الأعمال الدولية ويساهم بنشاط في القطاعات الإنسانية وغير الربحية.',
-        imagePlaceholder: 'Sanjay Bhambri',
+        image: '/speaker/5.png',
       },
       {
         name: 'فريد أحمد',
         // Added a 'role' for better typographic hierarchy
         role: 'محترف في صناعة النفط والغاز',
         bio: 'السيد فريد أحمد محترف متمرس يتمتع بخبرة واسعة في صناعة النفط والغاز، متخصص في تطوير الأعمال، والشراكات الاستراتيجية، وتسهيل الاستثمار. على مر السنين، لعب دورًا محوريًا في دفع النمو عبر قطاعات متعددة من خلال ربط المستثمرين بفرص عالية الإمكانات في الطاقة والبنية التحتية والأسواق الناشئة.',
-        imagePlaceholder: 'Farid Ahmed',
+        image: '/speaker/6.png',
       },
     ],
   },
@@ -103,10 +103,7 @@ export default function CoFoundersPage({ language = 'en' }: CoFoundersPageProps)
                 {/* UPDATED: Gradient Image Ring */}
                 <div className="relative w-32 h-32 sm:w-40 sm:h-40 rounded-full mb-6 p-1 bg-gradient-to-br from-blue-500 to-cyan-400 shadow-lg transition-transform duration-300 ease-in-out hover:scale-105">
                   <img
-                    src={`https://placehold.co/600x600/e2e8f0/64748b?text=${founder.imagePlaceholder.replace(
-                      / /g,
-                      '+'
-                    )}`}
+                    src={founder.image}
                     alt={founder.name}
                     // UPDATED: Added border for a clean cutout effect
                     className="w-full h-full rounded-full object-cover border-4 border-white"
@@ -125,13 +122,12 @@ export default function CoFoundersPage({ language = 'en' }: CoFoundersPageProps)
                 <div className="flex-grow flex flex-col w-full">
                   <p
                     // UPDATED: Using CSS line-clamp for modern truncation
-                    className={`text-base text-slate-600 leading-relaxed flex-grow ${
-                      !isExpanded ? 'line-clamp-4' : '' // Clamps to 4 lines
-                    }`}
+                    className={`text-base text-slate-600 leading-relaxed flex-grow ${!isExpanded ? 'line-clamp-4' : '' // Clamps to 4 lines
+                      }`}
                   >
                     {founder.bio}
                   </p>
-                  
+
                   {/* UPDATED: Replaced span with a modern button */}
                   <button
                     onClick={() => toggleExpand(founder.name)}

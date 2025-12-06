@@ -54,23 +54,23 @@ const translations = {
     speakers: [
       {
         name: 'Dr. Manav Ahuja',
-        bio: 'Transforming Businesses Success with Modern Approach. 25+ Years of Rich Business & Consultancy Experience, Honored with Doctorate degree in Human Psychology. Nurtured Business of 100 Entrepreneurs, Trained 1000 Candidates on Sales Business.',
-        imagePlaceholder: 'Dr. Manav Ahuja',
+        bio: 'Transforming Businesses Success with Modern Approach 25+ Years of Rich Business & Consultancy Experience, Honored with Doctorate degree in Human Psychology Nurtured Business of 100 Entrepreneurs, Trained 1000 Candidates on sales Business.',
+        image: '/speaker/8.png',
       },
       {
         name: 'Mr. Jatin Bajaj',
-        bio: 'Certified trainer for AML & Fraud, Banking Products and Policies, have achieved 23% increase in the productivity and the retention with the last organization.',
-        imagePlaceholder: 'Mr. Jatin Bajaj',
+        bio: 'Certified trainer for AML & Fraud, Banking Products and Policies, have achieved 23% increase in the productivity and the retention with the last organization',
+        image: '/speaker/6.png',
       },
       {
         name: 'Dr. Alexandru Nedelcu',
         bio: 'Dr. Alexandru Nedelcu has established a reputation for excellence in patient care, innovative treatment approaches, and a compassionate commitment to improving the lives of those affected by cancer.',
-        imagePlaceholder: 'Dr. Alexandru Nedelcu',
+        image: '/speaker/8.png',
       },
       {
-        name: 'Mr. Habeeb Ahmed',
-        bio: 'Leading business development initiatives focused on Investors and startups. His vision bridges traditional energy sectors with innovative investment opportunities, driving growth and fostering global collaborations.',
-        imagePlaceholder: 'Mr. Habeeb Ahmed',
+        name: 'Mr. Abdulmajid Ansari',
+        bio: "Chairman & Global Investment Strategist, A visionary leader redefining the landscape of global finance, over two decades of expertise in cross-border investments and venture capital. As the architect behind some of the region's most transformative deals.",
+        image: '/speaker/3.png',
       },
     ],
   },
@@ -85,22 +85,22 @@ const translations = {
       {
         name: 'د. ماناف أهوجا',
         bio: 'تحويل نجاح الأعمال بنهج حديث. 25+ عامًا من الخبرة الغنية في الأعمال والاستشارات، حاصل على درجة الدكتوراه في علم النفس البشري. قام برعاية أعمال 100 رائد أعمال، ودرب 1000 مرشح على أعمال المبيعات.',
-        imagePlaceholder: 'Dr. Manav Ahuja',
+        image: '/speaker/8.png',
       },
       {
         name: 'السيد جاتين باجاج',
         bio: 'مدرب معتمد في مكافحة غسيل الأموال والاحتيال، والمنتجات والسياسات المصرفية، حقق زيادة بنسبة 23٪ في الإنتاجية والاحتفاظ بالموظفين في المنظمة السابقة.',
-        imagePlaceholder: 'Mr. Jatin Bajaj',
+        image: '/speaker/6.png',
       },
       {
         name: 'د. ألكسندرو نيديلكو',
-        bio: 'أسس الدكتور ألكسندرو نيديلكو سمعة للتميز في رعاية المرضى، والنهج العلاجية المبتكرة، والالتزام الرحيم بتحسين حياة المتأFثرين بالسرطان.',
-        imagePlaceholder: 'Dr. Alexandru Nedelcu',
+        bio: 'أسس الدكتور ألكسندرو نيديلكو سمعة للتميز في رعاية المرضى، والنهج العلاجية المبتكرة، والالتزام الرحيم بتحسين حياة المتأثرين بالسرطان.',
+        image: '/speaker/3.png',
       },
       {
-        name: 'السيد حبيب أحمد',
-        bio: 'يقود مبادرات تطوير الأعمال التي تركز على المستثمرين والشركات الناشئة. تربط رؤيته بين قطاعات الطاقة التقليدية وفرص الاستثمار المبتكرة، مما يدفع النمو ويعزز التعاون العالمي.',
-        imagePlaceholder: 'Mr. Habeeb Ahmed',
+        name: 'السيد عبد المجيد أنصاري',
+        bio: 'رئيس مجلس الإدارة واستراتيجي الاستثمار العالمي، قائد ذو رؤية يعيد تعريف مشهد التمويل العالمي، وأكثر من عقدين من الخبرة في الاستثمارات عبر الحدود ورأس المال الاستثماري. بصفته المهندس وراء بعض أكثر الصفقات تحولًا في المنطقة.',
+        image: '/speaker/4.png',
       },
     ],
   },
@@ -142,7 +142,7 @@ export default function SpeakersPage({ language = 'en' }: SpeakersPageProps) {
     if (el) {
       el.addEventListener('scroll', checkScrollPosition)
       window.addEventListener('resize', checkScrollPosition)
-      
+
       // Run once on mount to set initial state
       checkScrollPosition()
 
@@ -191,7 +191,7 @@ export default function SpeakersPage({ language = 'en' }: SpeakersPageProps) {
           - 'sm:px-0' to remove padding only on mobile
         */}
         <div className="relative -mx-4 px-4 sm:mx-0 sm:px-0">
-          
+
           {/* ADDED: Left Arrow Button */}
           <button
             onClick={() => scroll('left')}
@@ -201,7 +201,7 @@ export default function SpeakersPage({ language = 'en' }: SpeakersPageProps) {
           >
             <ChevronLeftIcon />
           </button>
-          
+
           {/* UPDATED: Speakers Grid
             - Becomes a flex container on mobile
             - 'overflow-x-auto' enables horizontal scrolling
@@ -229,10 +229,7 @@ export default function SpeakersPage({ language = 'en' }: SpeakersPageProps) {
                 >
                   <div className="relative w-40 h-40 rounded-full mb-6 overflow-hidden shadow-md flex-shrink-0">
                     <img
-                      src={`https://placehold.co/400x400/e2e8f0/64748b?text=${speaker.imagePlaceholder.replace(
-                        / /g,
-                        '+'
-                      )}`}
+                      src={speaker.image}
                       alt={speaker.name}
                       className="w-full h-full object-cover"
                     />
@@ -243,9 +240,8 @@ export default function SpeakersPage({ language = 'en' }: SpeakersPageProps) {
 
                   <div className="flex-grow flex flex-col w-full">
                     <p
-                      className={`text-sm text-slate-600 leading-relaxed flex-grow ${
-                        !isExpanded ? 'line-clamp-2' : ''
-                      }`}
+                      className={`text-sm text-slate-600 leading-relaxed flex-grow ${!isExpanded ? 'line-clamp-2' : ''
+                        }`}
                     >
                       {speaker.bio}
                     </p>
@@ -272,7 +268,7 @@ export default function SpeakersPage({ language = 'en' }: SpeakersPageProps) {
             <ChevronRightIcon />
           </button>
         </div>
-        
+
         {/* Footer Text (no change) */}
         <div className="text-center mt-16">
           <p className="text-sm font-semibold text-slate-500 tracking-wide">
