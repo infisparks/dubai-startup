@@ -5,8 +5,8 @@ import { createClient } from "@supabase/supabase-js"
 // Use environment variables in a real application, but for this example,
 // I'll use the provided keys directly.
 
-const supabaseUrl = "https://tiehqudenyssuvosajyu.supabase.co"
-const supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRpZWhxdWRlbnlzc3V2b3Nhanl1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI3NDcyNDUsImV4cCI6MjA3ODMyMzI0NX0.I0TgBtpY79rpKmix21mnJxhQ4qC07u9odaJ5sOUaCSg"
+const supabaseUrl = "https://invest.infispark.in"
+const supabaseAnonKey = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJzdXBhYmFzZSIsImlhdCI6MTc2NTA0MzI4MCwiZXhwIjo0OTIwNzE2ODgwLCJyb2xlIjoiYW5vbiJ9.fZDvmehDKDb11mcxjro4g81OpOgJ1VHKU6hSIp5O4Gw"
 
 // Create a single Supabase client for the application
 export const supabase = createClient(supabaseUrl, supabaseAnonKey)

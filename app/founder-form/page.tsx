@@ -7,12 +7,12 @@ import Header from "@/components/header"
 import Footer from "@/components/footer"
 import AuthPopup from "@/components/AuthPopup"
 import EmailVerificationNotice from "@/components/EmailVerificationNotice"
-import QRCode from "react-qr-code" 
-import html2canvas from "html2canvas" 
-import { 
-  ArrowRight, Upload, CheckCircle2, LogIn, TrendingUp, Edit, 
-  Lock, Save, Link as LinkIcon, XCircle, FileText, Globe, 
-  Linkedin, Phone, Mail, Building2, Calendar, DollarSign, FileCheck, ScanLine, Download 
+import QRCode from "react-qr-code"
+import html2canvas from "html2canvas"
+import {
+    ArrowRight, Upload, CheckCircle2, LogIn, TrendingUp, Edit,
+    Lock, Save, Link as LinkIcon, XCircle, FileText, Globe,
+    Linkedin, Phone, Mail, Building2, Calendar, DollarSign, FileCheck, ScanLine, Download
 } from "lucide-react"
 import { supabase } from "@/lib/supabaseConfig"
 
@@ -191,7 +191,7 @@ export default function FounderFormPage() {
                 website: founderProfile.website || '',
                 description: founderProfile.description || '',
                 founderName: founderProfile.founder_name || '',
-                founderEmail: currentUser.email!,
+                founderEmail: founderProfile.email || currentUser.email!,
                 founderPhone: founderProfile.founder_phone || '',
                 domain: founderProfile.domain || '',
                 domainOtherSpec: founderProfile.domain_other_spec || '',
@@ -461,7 +461,7 @@ export default function FounderFormPage() {
 
     const handlePitchDeckModeChange = (mode: PitchDeckMode) => {
         setPitchDeckMode(mode);
-        if (mode === 'file') { setFormData(prev => ({ ...prev, pitchDeckUrl: null })); } 
+        if (mode === 'file') { setFormData(prev => ({ ...prev, pitchDeckUrl: null })); }
         else { setFormData(prev => ({ ...prev, pitchDeckFile: null })); }
     }
 
@@ -480,9 +480,9 @@ export default function FounderFormPage() {
     const uploadPitchDeck = async (file: File, userId: string) => {
         const fileExt = file.name.split('.').pop();
         const filePath = `${userId}/${Date.now()}.${fileExt}`;
-        const { data, error } = await supabase.storage.from('pitch_decks').upload(filePath, file, { cacheControl: '3600', upsert: false });
+        const { data, error } = await supabase.storage.from('pitchdecks').upload(filePath, file, { cacheControl: '3600', upsert: false });
         if (error) throw error;
-        const { data: urlData } = supabase.storage.from('pitch_decks').getPublicUrl(filePath);
+        const { data: urlData } = supabase.storage.from('pitchdecks').getPublicUrl(filePath);
         return urlData.publicUrl;
     };
 
@@ -518,7 +518,7 @@ export default function FounderFormPage() {
                 net_profit: formData.netProfit,
                 it_returns_filed: formData.itReturnsFiled,
                 is_audited: formData.isAudited,
-                email: user.email!,
+                email: formData.founderEmail,
             }
 
             let error;
@@ -633,7 +633,7 @@ const StyledSelect = (props: React.SelectHTMLAttributes<HTMLSelectElement>) => (
         />
         <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400">
             <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
         </div>
     </div>
@@ -648,13 +648,12 @@ const ToggleSwitch = ({ checked, onChange, disabled, labelOn, labelOff }: { chec
     >
         <span className="sr-only">Use setting</span>
         <span
-            className={`${
-                checked ? 'translate-x-full md:translate-x-[calc(100%-8px)] bg-[#013371]' : 'translate-x-0 bg-slate-300'
-            } inline-block h-6 w-6 transform rounded-md transition-transform duration-200 ease-in-out`}
+            className={`${checked ? 'translate-x-full md:translate-x-[calc(100%-8px)] bg-[#013371]' : 'translate-x-0 bg-slate-300'
+                } inline-block h-6 w-6 transform rounded-md transition-transform duration-200 ease-in-out`}
         />
         <span className="absolute inset-0 flex items-center justify-between px-3 text-xs font-medium">
-             <span className={`${!checked ? 'text-slate-900' : 'text-transparent'} transition-colors`}>{labelOff}</span>
-             <span className={`${checked ? 'text-[#013371]' : 'text-transparent'} transition-colors`}>{labelOn}</span>
+            <span className={`${!checked ? 'text-slate-900' : 'text-transparent'} transition-colors`}>{labelOff}</span>
+            <span className={`${checked ? 'text-[#013371]' : 'text-transparent'} transition-colors`}>{labelOn}</span>
         </span>
     </button>
 );
@@ -669,15 +668,15 @@ const FormView: React.FC<any> = ({ t, step, formData, pitchDeckMode, handleInput
         <>
             {/* Stepper */}
             <div className="flex items-center justify-between mb-8 px-1">
-               <div className="flex items-center gap-3">
+                <div className="flex items-center gap-3">
                     <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-colors ${step >= 1 ? 'bg-[#013371] text-white' : 'bg-white border border-slate-200 text-slate-400'}`}>1</div>
                     <span className={`text-sm font-medium ${step >= 1 ? 'text-slate-900' : 'text-slate-400'}`}>{t.startupInfo}</span>
-               </div>
-               <div className={`flex-1 h-px mx-4 ${step >= 2 ? 'bg-[#013371]' : 'bg-slate-200'}`}></div>
-               <div className="flex items-center gap-3">
+                </div>
+                <div className={`flex-1 h-px mx-4 ${step >= 2 ? 'bg-[#013371]' : 'bg-slate-200'}`}></div>
+                <div className="flex items-center gap-3">
                     <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-colors ${step >= 2 ? 'bg-[#013371] text-white' : 'bg-white border border-slate-200 text-slate-400'}`}>2</div>
                     <span className={`text-sm font-medium ${step >= 2 ? 'text-slate-900' : 'text-slate-400'}`}>{t.founderDetails}</span>
-               </div>
+                </div>
             </div>
 
             <div className="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
@@ -765,7 +764,7 @@ const FormView: React.FC<any> = ({ t, step, formData, pitchDeckMode, handleInput
                                                     )}
                                                 </label>
                                                 {formData.pitchDeckUrl && !isFileSelected && (
-                                                     <p className="text-xs text-green-600 mt-2 flex items-center gap-1"><CheckCircle2 className="w-3 h-3" /> Current file on server.</p>
+                                                    <p className="text-xs text-green-600 mt-2 flex items-center gap-1"><CheckCircle2 className="w-3 h-3" /> Current file on server.</p>
                                                 )}
                                             </div>
                                         ) : (
@@ -801,11 +800,11 @@ const FormView: React.FC<any> = ({ t, step, formData, pitchDeckMode, handleInput
                                         <InputGroup label={t.email} required>
                                             <div className="relative">
                                                 <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-                                                <StyledInput type="email" name="founderEmail" value={formData.founderEmail} disabled className="pl-9 bg-slate-50 cursor-not-allowed" required />
+                                                <StyledInput type="email" name="founderEmail" value={formData.founderEmail} onChange={handleInputChange} className="pl-9" required />
                                             </div>
                                         </InputGroup>
                                         <InputGroup label={t.phone} required>
-                                             <div className="relative">
+                                            <div className="relative">
                                                 <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                                                 <StyledInput type="tel" name="founderPhone" value={formData.founderPhone} onChange={handleInputChange} placeholder={t.placeholder.phone} disabled={isDisabled} className="pl-9" required />
                                             </div>
@@ -829,7 +828,7 @@ const FormView: React.FC<any> = ({ t, step, formData, pitchDeckMode, handleInput
                                                 {t.earnings.map((e: string) => <option key={e} value={e}>{e}</option>)}
                                             </StyledSelect>
                                         </InputGroup>
-                                        
+
                                         {/* Turnover & Profit */}
                                         <InputGroup label={t.turnover} required>
                                             <div className="relative">
@@ -847,23 +846,23 @@ const FormView: React.FC<any> = ({ t, step, formData, pitchDeckMode, handleInput
                                         {/* Toggles */}
                                         <InputGroup label={t.itFiled}>
                                             <div className="flex items-center h-[42px]">
-                                                <ToggleSwitch 
-                                                    checked={formData.itReturnsFiled} 
-                                                    onChange={(val) => handleToggleChange('itReturnsFiled', val)} 
-                                                    disabled={isDisabled} 
-                                                    labelOn={t.yes} 
-                                                    labelOff={t.no} 
+                                                <ToggleSwitch
+                                                    checked={formData.itReturnsFiled}
+                                                    onChange={(val) => handleToggleChange('itReturnsFiled', val)}
+                                                    disabled={isDisabled}
+                                                    labelOn={t.yes}
+                                                    labelOff={t.no}
                                                 />
                                             </div>
                                         </InputGroup>
                                         <InputGroup label={t.audited}>
-                                             <div className="flex items-center h-[42px]">
-                                                <ToggleSwitch 
-                                                    checked={formData.isAudited} 
-                                                    onChange={(val) => handleToggleChange('isAudited', val)} 
-                                                    disabled={isDisabled} 
-                                                    labelOn={t.yes} 
-                                                    labelOff={t.no} 
+                                            <div className="flex items-center h-[42px]">
+                                                <ToggleSwitch
+                                                    checked={formData.isAudited}
+                                                    onChange={(val) => handleToggleChange('isAudited', val)}
+                                                    disabled={isDisabled}
+                                                    labelOn={t.yes}
+                                                    labelOff={t.no}
                                                 />
                                             </div>
                                         </InputGroup>
@@ -923,19 +922,19 @@ const FormView: React.FC<any> = ({ t, step, formData, pitchDeckMode, handleInput
 const StatusView: React.FC<any> = ({ t, isApproved, formData, setStep, canEdit, userId }) => {
     const statusColor = isApproved ? "bg-green-50 text-green-700 border-green-200" : "bg-amber-50 text-amber-700 border-amber-200";
     const icon = isApproved ? <CheckCircle2 className="w-5 h-5" /> : <TrendingUp className="w-5 h-5" />;
-    
+
     const badgeRef = useRef<HTMLDivElement>(null);
 
     const handleDownloadBadge = async () => {
         if (!badgeRef.current || !isApproved) return;
-        
+
         try {
             // 1. Wait for fonts/styles to settle
             await new Promise(resolve => setTimeout(resolve, 200));
 
             const canvas = await html2canvas(badgeRef.current, {
                 scale: 4, // High resolution for print
-                useCORS: true, 
+                useCORS: true,
                 allowTaint: true,
                 backgroundColor: null,
                 logging: false,
@@ -949,7 +948,7 @@ const StatusView: React.FC<any> = ({ t, isApproved, formData, setStep, canEdit, 
                     }
                 }
             });
-            
+
             const image = canvas.toDataURL("image/png", 1.0);
             const link = document.createElement("a");
             link.href = image;
@@ -1001,16 +1000,16 @@ const StatusView: React.FC<any> = ({ t, isApproved, formData, setStep, canEdit, 
             {/* NEW PREMIUM EVENT BADGE */}
             {isApproved && userId && (
                 <div className="flex flex-col items-center space-y-6 py-6 animate-fadeIn">
-                    <div 
+                    <div
                         onClick={handleDownloadBadge}
                         className="group relative w-full max-w-[340px] cursor-pointer transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl"
                         title={t.status.clickToDownload}
                     >
-                        <div 
+                        <div
                             ref={badgeRef}
                             id="badge-content"
                             className="relative rounded-2xl shadow-2xl overflow-hidden"
-                            style={{ 
+                            style={{
                                 // Deep Luxury Background
                                 background: 'radial-gradient(circle at top right, #1e293b 0%, #0f172a 100%)',
                                 border: '1px solid #334155',
@@ -1026,58 +1025,58 @@ const StatusView: React.FC<any> = ({ t, isApproved, formData, setStep, canEdit, 
                         >
                             {/* Background Texture/Glow */}
                             <div style={{ position: 'absolute', top: '-100px', left: '-50px', width: '300px', height: '300px', background: 'radial-gradient(circle, rgba(197,160,89,0.1) 0%, rgba(0,0,0,0) 70%)', borderRadius: '50%', pointerEvents: 'none' }}></div>
-                            
+
                             {/* --- TOP SECTION: EVENT BRANDING --- */}
-                            <div style={{ 
-                                padding: '30px 20px 20px 20px', 
-                                textAlign: 'center', 
+                            <div style={{
+                                padding: '30px 20px 20px 20px',
+                                textAlign: 'center',
                                 borderBottom: '1px solid rgba(255,255,255,0.1)',
                                 position: 'relative',
                                 zIndex: 10
                             }}>
-                                <h5 style={{ 
-                                    color: '#94a3b8', 
-                                    fontSize: '10px', 
-                                    letterSpacing: '0.2em', 
-                                    textTransform: 'uppercase', 
-                                    margin: '0 0 8px 0' 
+                                <h5 style={{
+                                    color: '#94a3b8',
+                                    fontSize: '10px',
+                                    letterSpacing: '0.2em',
+                                    textTransform: 'uppercase',
+                                    margin: '0 0 8px 0'
                                 }}>
                                     Official Event Pass
                                 </h5>
-                                <h2 style={{ 
+                                <h2 style={{
                                     color: '#C5A059', // Gold
-                                    fontSize: '22px', 
-                                    fontWeight: '900', 
-                                    textTransform: 'uppercase', 
+                                    fontSize: '22px',
+                                    fontWeight: '900',
+                                    textTransform: 'uppercase',
                                     letterSpacing: '0.05em',
                                     lineHeight: '1.2',
                                     margin: 0,
                                     textShadow: '0 2px 10px rgba(197,160,89,0.3)'
                                 }}>
-                                    INVESTARISE<br/>GLOBAL
+                                    INVESTARISE<br />GLOBAL
                                 </h2>
                             </div>
 
                             {/* --- MIDDLE SECTION: ATTENDEE INFO --- */}
-                            <div style={{ 
-                                flex: 1, 
-                                display: 'flex', 
-                                flexDirection: 'column', 
-                                justifyContent: 'center', 
+                            <div style={{
+                                flex: 1,
+                                display: 'flex',
+                                flexDirection: 'column',
+                                justifyContent: 'center',
                                 padding: '30px 24px',
                                 textAlign: 'center',
                                 position: 'relative',
                                 zIndex: 10
                             }}>
                                 {/* Avatar Placeholder / User Icon */}
-                                <div style={{ 
-                                    width: '80px', 
-                                    height: '80px', 
-                                    margin: '0 auto 24px auto', 
-                                    borderRadius: '50%', 
+                                <div style={{
+                                    width: '80px',
+                                    height: '80px',
+                                    margin: '0 auto 24px auto',
+                                    borderRadius: '50%',
                                     background: 'linear-gradient(135deg, #334155 0%, #1e293b 100%)',
-                                    display: 'flex', 
-                                    alignItems: 'center', 
+                                    display: 'flex',
+                                    alignItems: 'center',
                                     justifyContent: 'center',
                                     border: '2px solid #C5A059',
                                     boxShadow: '0 4px 15px rgba(0,0,0,0.3)'
@@ -1088,11 +1087,11 @@ const StatusView: React.FC<any> = ({ t, isApproved, formData, setStep, canEdit, 
                                 </div>
 
                                 {/* Founder Name (HERO) - UPPERCASE */}
-                                <h1 style={{ 
-                                    color: '#ffffff', 
-                                    fontSize: '28px', 
-                                    fontWeight: '800', 
-                                    margin: '0 0 8px 0', 
+                                <h1 style={{
+                                    color: '#ffffff',
+                                    fontSize: '28px',
+                                    fontWeight: '800',
+                                    margin: '0 0 8px 0',
                                     lineHeight: '1.2',
                                     wordWrap: 'break-word',
                                     textTransform: 'uppercase' // ADDED UPPERCASE
@@ -1101,10 +1100,10 @@ const StatusView: React.FC<any> = ({ t, isApproved, formData, setStep, canEdit, 
                                 </h1>
 
                                 {/* Company Name - UPPERCASE */}
-                                <p style={{ 
-                                    color: '#cbd5e1', 
-                                    fontSize: '16px', 
-                                    fontWeight: '500', 
+                                <p style={{
+                                    color: '#cbd5e1',
+                                    fontSize: '16px',
+                                    fontWeight: '500',
                                     margin: '0 0 20px 0',
                                     opacity: 0.9,
                                     textTransform: 'uppercase' // ADDED UPPERCASE
@@ -1114,8 +1113,8 @@ const StatusView: React.FC<any> = ({ t, isApproved, formData, setStep, canEdit, 
 
                                 {/* Role Pill */}
                                 <div style={{ display: 'flex', justifyContent: 'center' }}>
-                                    <span style={{ 
-                                        background: 'rgba(197,160,89,0.15)', 
+                                    <span style={{
+                                        background: 'rgba(197,160,89,0.15)',
                                         border: '1px solid rgba(197,160,89,0.3)',
                                         color: '#C5A059',
                                         padding: '6px 16px',
@@ -1131,8 +1130,8 @@ const StatusView: React.FC<any> = ({ t, isApproved, formData, setStep, canEdit, 
                             </div>
 
                             {/* --- BOTTOM SECTION: QR & FOOTER --- */}
-                            <div style={{ 
-                                background: '#ffffff', 
+                            <div style={{
+                                background: '#ffffff',
                                 padding: '25px 20px',
                                 borderTop: '4px solid #C5A059',
                                 display: 'flex',
@@ -1148,7 +1147,7 @@ const StatusView: React.FC<any> = ({ t, isApproved, formData, setStep, canEdit, 
                                     <p style={{ color: '#0f172a', fontSize: '12px', fontWeight: 'bold', margin: '0 0 10px 0' }}>
                                         NOV 2025
                                     </p>
-                                    
+
                                     <p style={{ color: '#64748b', fontSize: '9px', textTransform: 'uppercase', fontWeight: 'bold', margin: '0 0 2px 0' }}>
                                         Pass ID
                                     </p>
@@ -1158,9 +1157,9 @@ const StatusView: React.FC<any> = ({ t, isApproved, formData, setStep, canEdit, 
                                 </div>
 
                                 {/* QR Code */}
-                                <div style={{ 
-                                    padding: '4px', 
-                                    border: '1px solid #e2e8f0', 
+                                <div style={{
+                                    padding: '4px',
+                                    border: '1px solid #e2e8f0',
                                     borderRadius: '8px'
                                 }}>
                                     <QRCode value={userId} size={80} fgColor="#000000" bgColor="#ffffff" />
@@ -1177,7 +1176,7 @@ const StatusView: React.FC<any> = ({ t, isApproved, formData, setStep, canEdit, 
                             </div>
                         </div>
                     </div>
-                    
+
                     <p className="text-xs text-slate-400 flex items-center gap-1">
                         <Download className="w-3 h-3" /> {t.status.clickToDownload}
                     </p>
@@ -1186,7 +1185,7 @@ const StatusView: React.FC<any> = ({ t, isApproved, formData, setStep, canEdit, 
 
             {/* Details Section (Unchanged) */}
             <div className="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
-                 <div className="px-6 py-4 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
+                <div className="px-6 py-4 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
                     <h3 className="font-semibold text-slate-900">{t.status.viewDetails}</h3>
                     {canEdit && (
                         <button onClick={() => setStep(1)} className="text-xs bg-white border border-slate-300 text-slate-700 px-3 py-1.5 rounded hover:bg-slate-50 transition-colors flex items-center gap-2">
@@ -1202,7 +1201,7 @@ const StatusView: React.FC<any> = ({ t, isApproved, formData, setStep, canEdit, 
                         <DataItem label={t.stage} value={formData.stage} />
                         <DataItem label={t.earningStatus} value={formData.earningStatus} />
                         <DataItem label={t.domain} value={formData.domain === 'Other' ? `${formData.domain} (${formData.domainOtherSpec})` : formData.domain} />
-                        
+
                         <div className="md:col-span-2 grid grid-cols-2 md:grid-cols-4 gap-6 bg-slate-50 p-4 rounded-lg border border-slate-100">
                             <DataItem label={t.turnover} value={formData.turnover} />
                             <DataItem label={t.netProfit} value={formData.netProfit} />
@@ -1212,7 +1211,7 @@ const StatusView: React.FC<any> = ({ t, isApproved, formData, setStep, canEdit, 
 
                         <DataItem label={t.founderName} value={formData.founderName} />
                         <DataItem label={t.email} value={formData.founderEmail} />
-                        
+
                         <div className="flex flex-col">
                             <dt className="text-xs text-slate-500 uppercase tracking-wide font-medium mb-1">{t.pitchDeck}</dt>
                             <dd>
