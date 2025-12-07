@@ -1,6 +1,7 @@
 'use client'
 
 import React from 'react'
+import { useRouter } from 'next/navigation'
 import { Facebook, Linkedin, Twitter, Mail, Phone, MapPin, ArrowRight } from 'lucide-react'
 
 interface FooterProps {
@@ -63,6 +64,7 @@ const translations = {
 }
 
 export default function Footer({ language = 'en' }: FooterProps) {
+  const router = useRouter()
   const t = translations[language]
   const isRtl = language === 'ar'
 
@@ -95,7 +97,10 @@ export default function Footer({ language = 'en' }: FooterProps) {
                 <p className="text-slate-300 text-base leading-relaxed mb-6 font-light">
                   {t.description}
                 </p>
-                <button className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 rounded-xl font-bold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+                <button
+                  onClick={() => router.push('/registration')}
+                  className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 rounded-xl font-bold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+                >
                   <span>{t.registerNow}</span>
                   <ArrowRight className="w-5 h-5" />
                 </button>
