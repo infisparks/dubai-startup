@@ -55,12 +55,12 @@ const translations = {
       {
         name: 'Dr. Manav Ahuja',
         bio: 'Transforming Businesses Success with Modern Approach 25+ Years of Rich Business & Consultancy Experience, Honored with Doctorate degree in Human Psychology Nurtured Business of 100 Entrepreneurs, Trained 1000 Candidates on sales Business.',
-        image: '/speaker/8.png',
+        image: '/speaker/11.png',
       },
       {
         name: 'Mr. Jatin Bajaj',
         bio: 'Certified trainer for AML & Fraud, Banking Products and Policies, have achieved 23% increase in the productivity and the retention with the last organization',
-        image: '/speaker/6.png',
+        image: '/speaker/12.png',
       },
       {
         name: 'Dr. Alexandru Nedelcu',

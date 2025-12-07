@@ -18,7 +18,7 @@ const translations = {
         // Added a 'role' for better typographic hierarchy
         role: 'Travel Entrepreneur & Management Consultant',
         bio: 'CEO NoWorryTrip, Travel Entrepreneur, Management Consultant, Specialized In International Business Development. With a proven track record of leadership, strategy, and cross-border collaborations, Specialized in International Business Development while also contributing actively to humanitarian and non-profit sectors.',
-        image: '/speaker/2.png',
+        image: '/speaker/10.png',
       },
       {
         name: 'Farid Ahmed',
