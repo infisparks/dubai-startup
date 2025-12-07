@@ -1,8 +1,10 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { useRouter } from "next/navigation"
 
 export default function ScrollToTop() {
+  const router = useRouter()
   const [isVisible, setIsVisible] = useState(false)
 
   const toggleVisibility = () => {
@@ -37,7 +39,10 @@ export default function ScrollToTop() {
       )}
 
       {/* Floating Invest Button */}
-      <button className="fixed bottom-8 left-8 z-40 px-6 py-3 bg-amber-400 text-slate-900 rounded-full font-semibold shadow-lg hover:bg-amber-300 transition-all hover:shadow-xl hidden md:block">
+      <button
+        onClick={() => router.push('/registration')}
+        className="fixed bottom-8 left-8 z-40 px-6 py-3 bg-amber-400 text-slate-900 rounded-full font-semibold shadow-lg hover:bg-amber-300 transition-all hover:shadow-xl hidden md:block"
+      >
         {typeof window !== "undefined" && window.location.pathname === "/" ? "Invest Now" : "Invest Now"}
       </button>
     </>

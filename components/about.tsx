@@ -36,8 +36,10 @@ const translations = {
 const BrandTicker = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [isPaused, setIsPaused] = useState(false);
-  const logos = [1, 2, 3, 4, 5, 6];
-  const repeatedLogos = [...logos, ...logos, ...logos, ...logos];
+  // Include all 7 logos found in the directory
+  const logos = [1, 2, 3, 4, 5, 6, 7];
+  // Create enough duplicates for smooth infinite scrolling
+  const repeatedLogos = [...logos, ...logos, ...logos, ...logos, ...logos, ...logos];
 
   useEffect(() => {
     const el = scrollRef.current;
@@ -45,9 +47,9 @@ const BrandTicker = () => {
     let animationId: number;
     const animate = () => {
       if (!isPaused) {
-        const speed = 0.8;
-        if (el.scrollLeft >= (el.scrollWidth / 4)) {
-          el.scrollLeft -= (el.scrollWidth / 4);
+        const speed = 0.5; // Slightly slower for a more premium feel
+        if (el.scrollLeft >= (el.scrollWidth / 2)) {
+          el.scrollLeft = 0; // Reset to start for seamless loop
         } else {
           el.scrollLeft += speed;
         }
@@ -59,12 +61,14 @@ const BrandTicker = () => {
   }, [isPaused]);
 
   return (
-    <div className="w-full bg-slate-950 border-b border-slate-800/50 py-6 sm:py-8 overflow-hidden relative z-20">
-      <div className="absolute left-0 top-0 bottom-0 w-12 sm:w-24 bg-gradient-to-r from-slate-950 to-transparent z-10 pointer-events-none"></div>
-      <div className="absolute right-0 top-0 bottom-0 w-12 sm:w-24 bg-gradient-to-l from-slate-950 to-transparent z-10 pointer-events-none"></div>
+    <div className="w-full bg-slate-950 border-b border-slate-800/50 py-10 sm:py-12 overflow-hidden relative z-20">
+      {/* Enhanced Gradient Masks */}
+      <div className="absolute left-0 top-0 bottom-0 w-24 sm:w-40 bg-gradient-to-r from-slate-950 via-slate-950/80 to-transparent z-10 pointer-events-none"></div>
+      <div className="absolute right-0 top-0 bottom-0 w-24 sm:w-40 bg-gradient-to-l from-slate-950 via-slate-950/80 to-transparent z-10 pointer-events-none"></div>
+
       <div
         ref={scrollRef}
-        className="flex items-center overflow-x-auto gap-12 sm:gap-24 px-4 no-scrollbar select-none"
+        className="flex items-center overflow-x-auto gap-16 sm:gap-32 px-4 no-scrollbar select-none"
         style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', WebkitOverflowScrolling: 'touch' }}
         onMouseEnter={() => setIsPaused(true)}
         onMouseLeave={() => setIsPaused(false)}
@@ -72,11 +76,12 @@ const BrandTicker = () => {
         onTouchEnd={() => setIsPaused(false)}
       >
         {repeatedLogos.map((num, i) => (
-          <div key={i} className="flex-shrink-0 group cursor-pointer">
+          <div key={i} className="flex-shrink-0 group cursor-pointer relative">
+            <div className="absolute -inset-4 bg-blue-500/0 group-hover:bg-blue-500/5 rounded-xl transition-colors duration-500" />
             <img
               src={`${BRAND_BASE_PATH}/${num}.png`}
               alt={`Partner Brand ${num}`}
-              className="h-8 sm:h-12 w-auto object-contain transition-all duration-500 transform group-hover:scale-110"
+              className="h-12 sm:h-16 w-auto max-w-none object-contain transition-all duration-500 transform group-hover:scale-110"
               draggable={false}
             />
           </div>
