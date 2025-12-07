@@ -18,14 +18,14 @@ const translations = {
         // Added a 'role' for better typographic hierarchy
         role: 'Travel Entrepreneur & Management Consultant',
         bio: 'CEO NoWorryTrip, Travel Entrepreneur, Management Consultant, Specialized In International Business Development. With a proven track record of leadership, strategy, and cross-border collaborations, Specialized in International Business Development while also contributing actively to humanitarian and non-profit sectors.',
-        image: '/speaker/1.png',
+        image: '/speaker/2.png',
       },
       {
         name: 'Farid Ahmed',
         // Added a 'role' for better typographic hierarchy
         role: 'Oil & Gas Industry Professional',
         bio: 'Mr. Farid Ahmed is a seasoned professional with extensive experience in the oil and gas industry, specializing in business development, strategic partnerships, and investment facilitation. Over the years, he has played a pivotal role in driving growth across multiple sectors by connecting investors with high-potential opportunities in energy, infrastructure, and emerging markets.',
-        image: '/speaker/2.png',
+        image: '/speaker/1.png',
       },
     ],
   },
