@@ -49,9 +49,9 @@ export default function Hero({ language }: HeroProps) {
         poster="/hero-poster.jpg" // Optional: A poster image matching the video
       >
         {/* 🔹 Mobile video (shows on screens up to 767px wide) */}
-        <source src="/hero1.mp4" type="video/mp4" media="(max-width: 767px)" />
+        <source src="https://infisparks.github.io/images/hero1.mp4" type="video/mp4" media="(max-width: 767px)" />
         {/* 🔹 Desktop video (shows on screens 768px and wider) */}
-        <source src="/hero1.mp4" type="video/mp4" media="(min-width: 768px)" />
+        <source src="https://infisparks.github.io/images/hero1.mp4" type="video/mp4" media="(min-width: 768px)" />
         {/* 🔹 Fallback text */}
         Your browser does not support the video tag.
       </video>
