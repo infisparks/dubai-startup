@@ -820,7 +820,7 @@ const FormView: React.FC<any> = ({ t, step, formData, pitchDeckMode, handleInput
                                             <StyledInput name="founderName" value={formData.founderName} onChange={handleInputChange} placeholder={t.placeholder.name} disabled={isDisabled} required />
                                         </InputGroup>
                                         <InputGroup label={t.email} required>
-                                            <StyledInput type="email" name="founderEmail" value={formData.founderEmail} onChange={handleInputChange} placeholder={t.placeholder.email} disabled={true} required />
+                                            <StyledInput type="email" name="founderEmail" value={formData.founderEmail} onChange={handleInputChange} placeholder={t.placeholder.email} disabled={isDisabled} required />
                                         </InputGroup>
                                     </div>
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
