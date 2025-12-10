@@ -24,6 +24,7 @@ interface InvestorProfileData {
     // ⭐ NEW: Added name and email from the SQL table
     name: string | null;
     email: string | null;
+    reference: string | null;
 }
 
 // Define the type for the form's state
@@ -36,6 +37,8 @@ interface InvestorFormData {
     investmentType: string;
     experience: string;
     interests: string[];
+    reference: string;
+    referenceOther: string;
 }
 
 // Define a type for the structure returned by the translations useMemo hook
@@ -82,6 +85,9 @@ type Translations = {
         approvedDesc: string;
         viewDetails: string;
     };
+    reference: string;
+    referenceOther: string;
+    referenceOptions: string[];
 };
 
 export default function InvestorFormPage() {
@@ -106,6 +112,8 @@ export default function InvestorFormPage() {
         investmentType: "",
         experience: "",
         interests: [],
+        reference: "",
+        referenceOther: "",
     })
 
     // --- Supabase Session and Role Management ---
@@ -157,6 +165,8 @@ export default function InvestorFormPage() {
                 investmentType: investorProfile.investment_type || '',
                 experience: investorProfile.experience || '',
                 interests: (investorProfile.interests || []) as string[],
+                reference: investorProfile.reference && ["Kishan Verma", "Sanjay Bhamari", "Farid Ahmed", "Abdulmajid", "Ideabaaz", "Marwadi Catalyst", "Rehbar"].includes(investorProfile.reference) ? investorProfile.reference : (investorProfile.reference ? "Other" : ""),
+                referenceOther: investorProfile.reference && !["Kishan Verma", "Sanjay Bhamari", "Farid Ahmed", "Abdulmajid", "Ideabaaz", "Marwadi Catalyst", "Rehbar"].includes(investorProfile.reference) ? investorProfile.reference : "",
             }));
         } else {
             setHasExistingProfile(false);
@@ -209,6 +219,7 @@ export default function InvestorFormPage() {
                     setFormData({
                         fullName: "", phone: "", email: "", linkedin: "",
                         investmentAmount: "", investmentType: "", experience: "", interests: [],
+                        reference: "", referenceOther: "",
                     });
                 }
             },
@@ -321,9 +332,18 @@ export default function InvestorFormPage() {
                     approvedDesc: "تمت الموافقة على ملفك الاستثماري. لديك الآن حق الوصول الكامل إلى ميزات المنصة.",
                     viewDetails: "تفاصيل ملفك الشخصي (للقراءة فقط)",
                 },
+                reference: "مرجع",
+                referenceOther: "يرجى تحديد المرجع",
+                referenceOptions: ["كيشان فيرما", "سانجاي بهاماري", "فريد أحمد", "عبد المجيد", "أيديا باز", "ماروادي كاتاليست", "رهبار", "أخرى"],
             },
         };
-        return translations[language] as Translations;
+        // Override options for consistent value mapping if needed, but for now we use English values for logic
+        const referenceOptions = ["Kishan Verma", "Sanjay Bhamari", "Farid Ahmed", "Abdulmajid", "Ideabaaz", "Marwadi Catalyst", "Rehbar", "Other"];
+
+        return {
+            ...translations[language],
+            referenceOptions: referenceOptions
+        } as Translations;
     }, [language]);
 
 
@@ -381,6 +401,7 @@ export default function InvestorFormPage() {
             // ⭐ NEW: Save name and email to the investor_profiles table
             name: formData.fullName,
             email: formData.email,
+            reference: formData.reference === "Other" ? formData.referenceOther : formData.reference,
         };
 
         let error;
@@ -616,6 +637,41 @@ const InvestorFormView: React.FC<InvestorFormViewProps> = ({
                                 </div>
                             ))}
 
+                            <div>
+                                <label className="block text-sm font-semibold text-slate-900 mb-2">
+                                    {t.reference}
+                                </label>
+                                <select
+                                    name="reference"
+                                    value={formData.reference}
+                                    onChange={handleInputChange}
+                                    className={`w-full px-4 py-3 border-2 border-slate-200 rounded-lg focus:border-[#013371] focus:outline-none bg-white hover:border-slate-300 transition-colors ${isApproved ? 'bg-slate-100 cursor-not-allowed' : ''}`}
+                                    disabled={isApproved}
+                                >
+                                    <option value="">Select Reference</option>
+                                    {t.referenceOptions.map((opt: string) => (
+                                        <option key={opt} value={opt}>{opt}</option>
+                                    ))}
+                                </select>
+                            </div>
+
+                            {formData.reference === "Other" && (
+                                <div>
+                                    <label className="block text-sm font-semibold text-slate-900 mb-2">
+                                        {t.referenceOther} <span className="text-red-500">*</span>
+                                    </label>
+                                    <input
+                                        type="text"
+                                        name="referenceOther"
+                                        value={formData.referenceOther}
+                                        onChange={handleInputChange}
+                                        className={`w-full px-4 py-3 border-2 border-slate-200 rounded-lg focus:border-[#013371] focus:outline-none bg-white hover:border-slate-300 transition-colors ${isApproved ? 'bg-slate-100 cursor-not-allowed' : ''}`}
+                                        required
+                                        disabled={isApproved}
+                                    />
+                                </div>
+                            )}
+
                             <div className="flex gap-4 pt-6">
                                 <button
                                     type="button"
@@ -748,6 +804,7 @@ const InvestorStatusView: React.FC<InvestorStatusViewProps> = ({ t, isApproved, 
         { label: t.investorType, value: formData.investmentType },
         { label: t.experience, value: formData.experience },
         { label: t.areas, value: formData.interests.join(', ') },
+        { label: t.reference, value: formData.reference === "Other" ? formData.referenceOther : formData.reference },
     ];
 
 

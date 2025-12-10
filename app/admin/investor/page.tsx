@@ -2,14 +2,14 @@
 "use client"
 
 import { useEffect, useState, useMemo, useCallback } from "react"
-import { supabase } from "@/lib/supabaseConfig" 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card" 
-import { Input } from "@/components/ui/input" 
-import { Button } from "@/components/ui/button" 
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select" 
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table" 
-import { Label } from "@/components/ui/label" 
-import { Filter, Search, Users, CheckCircle, Clock, X, Loader2, FilePenLine, Save, User, Phone, TrendingUp, XCircle } from "lucide-react" 
+import { supabase } from "@/lib/supabaseConfig"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { Label } from "@/components/ui/label"
+import { Filter, Search, Users, CheckCircle, Clock, X, Loader2, FilePenLine, Save, User, Phone, TrendingUp, XCircle } from "lucide-react"
 import { useForm, Controller } from 'react-hook-form';
 import { cn } from "@/lib/utils" // Assuming this utility is available for Tailwind classes
 
@@ -28,6 +28,7 @@ interface InvestorProfile {
     interests: string[] | null;
     is_approved: boolean;
     created_at: string;
+    reference: string | null;
 }
 
 // Type for the editable fields in the modal
@@ -39,6 +40,7 @@ interface EditableProfileFields {
     investment_type: string;
     experience: string;
     interests: string[];
+    reference: string;
 }
 
 
@@ -54,7 +56,7 @@ interface InvestorReviewModalProps {
 
 const InvestorReviewModal: React.FC<InvestorReviewModalProps> = ({ profile, onClose, onStatusUpdate, onDataUpdate }) => {
     const [isSubmitting, setIsSubmitting] = useState(false);
-    
+
     // RHF Setup for editing
     const { control, handleSubmit, register, watch, setValue, formState: { isDirty } } = useForm<EditableProfileFields>({
         defaultValues: {
@@ -65,15 +67,16 @@ const InvestorReviewModal: React.FC<InvestorReviewModalProps> = ({ profile, onCl
             investment_type: profile.investment_type,
             experience: profile.experience,
             interests: profile.interests || [],
+            reference: profile.reference || '',
         },
     });
 
     const watchedInterests = watch('interests');
-    
+
     // Hardcoded options (mimicking the client form)
     const options = useMemo(() => ({
         interests: ["Technology", "Healthcare", "FinTech", "E-commerce", "SaaS", "EdTech"],
-        ranges: [ "AED 50,000 - 100,000", "AED 100,000 - 500,000", "AED 500,000 - 1,000,000", "AED 1,000,000 - 5,000,000", "AED 5,000,000+"],
+        ranges: ["AED 50,000 - 100,000", "AED 100,000 - 500,000", "AED 500,000 - 1,000,000", "AED 1,000,000 - 5,000,000", "AED 5,000,000+"],
         types: ["Angel Investor", "Venture Capital", "Institutional", "Family Office"],
         levels: ["Beginner (0-2 years)", "Intermediate (2-5 years)", "Experienced (5-10 years)", "Expert (10+ years)"],
     }), []);
@@ -86,7 +89,7 @@ const InvestorReviewModal: React.FC<InvestorReviewModalProps> = ({ profile, onCl
             setValue('interests', currentInterests.filter(i => i !== interest));
         }
     };
-    
+
     const handleDataSubmission = handleSubmit(async (data) => {
         setIsSubmitting(true);
         await onDataUpdate(profile.user_id, data);
@@ -114,19 +117,19 @@ const InvestorReviewModal: React.FC<InvestorReviewModalProps> = ({ profile, onCl
                 </CardHeader>
                 <CardContent className="p-6">
                     <form onSubmit={handleDataSubmission}>
-                        
+
                         {/* Status Display */}
                         <div className={`mb-6 p-4 rounded-lg font-semibold flex items-center gap-2 ${profile.is_approved ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'}`}>
                             {profile.is_approved ? <CheckCircle className="w-5 h-5" /> : <Clock className="w-5 h-5" />}
                             Status: {profile.is_approved ? 'APPROVED' : 'PENDING'}
                         </div>
-                        
+
                         <div className="grid grid-cols-2 lg:grid-cols-3 gap-6">
-                            
+
                             {/* 1. Personal Details */}
                             <div className="col-span-2 lg:col-span-1 p-4 border rounded-lg bg-gray-50">
                                 <h3 className="text-lg font-bold mb-4 flex items-center gap-2 text-slate-700">
-                                    <User className="w-4 h-4"/> Personal Info
+                                    <User className="w-4 h-4" /> Personal Info
                                 </h3>
                                 <div className="space-y-3">
                                     <div>
@@ -145,13 +148,17 @@ const InvestorReviewModal: React.FC<InvestorReviewModalProps> = ({ profile, onCl
                                         <Label>LinkedIn</Label>
                                         <Input {...register('linkedin')} className="h-9" placeholder="URL" />
                                     </div>
+                                    <div>
+                                        <Label>Reference</Label>
+                                        <Input {...register('reference')} className="h-9" placeholder="Reference source" />
+                                    </div>
                                 </div>
                             </div>
-                            
+
                             {/* 2. Investment Details */}
                             <div className="col-span-2 p-4 border rounded-lg bg-gray-50">
                                 <h3 className="text-lg font-bold mb-4 flex items-center gap-2 text-slate-700">
-                                    <TrendingUp className="w-4 h-4"/> Investment Details
+                                    <TrendingUp className="w-4 h-4" /> Investment Details
                                 </h3>
                                 <div className="grid grid-cols-3 gap-4">
                                     {/* Amount */}
@@ -203,7 +210,7 @@ const InvestorReviewModal: React.FC<InvestorReviewModalProps> = ({ profile, onCl
                                         />
                                     </div>
                                 </div>
-                                
+
                                 {/* Interests */}
                                 <div className="mt-4">
                                     <Label>Areas of Interest</Label>
@@ -223,10 +230,10 @@ const InvestorReviewModal: React.FC<InvestorReviewModalProps> = ({ profile, onCl
                                 </div>
                             </div>
                         </div>
-                        
+
                         {/* Footer Actions - Save Data */}
                         <div className="pt-6 border-t mt-6 flex justify-end">
-                            <Button 
+                            <Button
                                 type="submit"
                                 disabled={isSubmitting || !isDirty}
                                 className="bg-blue-600 hover:bg-blue-700 text-white flex items-center gap-2 shadow-md"
@@ -235,9 +242,9 @@ const InvestorReviewModal: React.FC<InvestorReviewModalProps> = ({ profile, onCl
                                 Save Profile Data Edits
                             </Button>
                         </div>
-                        
+
                         {/* Status Toggle (Optional: for fast status changes within modal) */}
-                         <div className='pt-4 border-t mt-4 flex justify-end gap-2'>
+                        <div className='pt-4 border-t mt-4 flex justify-end gap-2'>
                             {!profile.is_approved && (
                                 <Button
                                     type="button"
@@ -275,10 +282,10 @@ export default function AdminInvestorDashboard() {
     const [error, setError] = useState<string | null>(null);
     const [searchTerm, setSearchTerm] = useState('');
     const [approvalFilter, setApprovalFilter] = useState('all'); // 'all', 'approved', 'pending'
-    
+
     // 🟢 NEW: State for selected profile ID for external actions
     const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
-    
+
     // State for Modal (used only for review/edit)
     const [selectedProfileForModal, setSelectedProfileForModal] = useState<InvestorProfile | null>(null);
 
@@ -291,7 +298,7 @@ export default function AdminInvestorDashboard() {
                 .from('investor_profiles')
                 .select('*')
                 .order('created_at', { ascending: false });
-            
+
             if (approvalFilter === 'approved') {
                 query = query.eq('is_approved', true);
             } else if (approvalFilter === 'pending') {
@@ -322,9 +329,9 @@ export default function AdminInvestorDashboard() {
                 .from('investor_profiles')
                 .update({ is_approved: isApproved })
                 .eq('user_id', userId);
-            
+
             if (updateInvestorProfileError) throw updateInvestorProfileError;
-            
+
             // 2. Update the main user profiles table (assuming table name is 'profiles' and column is 'is_investor')
             const { error: updateMainProfileError } = await supabase
                 .from('profiles') // Adjust table name if necessary (e.g., 'users' or 'app_users')
@@ -336,17 +343,17 @@ export default function AdminInvestorDashboard() {
                 console.error("Error updating main user profile 'is_investor' status:", updateMainProfileError);
                 alert(`Warning: Failed to update main user profile status. (Error: ${updateMainProfileError.message})`);
             }
-            
+
             // Optimistically update local state
-            setProfiles(prev => prev.map(p => 
+            setProfiles(prev => prev.map(p =>
                 p.user_id === userId ? { ...p, is_approved: isApproved } : p
             ));
-            
+
             alert(`Profile successfully ${isApproved ? 'approved' : 'disapproved'}!`);
-            
+
             // Clear selection after action
-            setSelectedUserId(null); 
-            
+            setSelectedUserId(null);
+
         } catch (err: any) {
             console.error("Error updating approval status:", err);
             alert(`Failed to update approval status: ${err.message}`);
@@ -364,6 +371,7 @@ export default function AdminInvestorDashboard() {
                 investment_type: data.investment_type,
                 experience: data.experience,
                 interests: data.interests,
+                reference: data.reference,
             };
 
             const { error: updateError } = await supabase
@@ -372,7 +380,7 @@ export default function AdminInvestorDashboard() {
                 .eq('user_id', userId);
 
             if (updateError) throw updateError;
-            
+
             alert(`Profile data successfully updated!`);
 
             // Force refetch to ensure the dashboard shows the latest data
@@ -394,25 +402,25 @@ export default function AdminInvestorDashboard() {
     const filteredProfiles = useMemo(() => {
         if (!searchTerm) return profiles;
         const lowerSearchTerm = searchTerm.toLowerCase();
-        return profiles.filter(p => 
+        return profiles.filter(p =>
             p.name.toLowerCase().includes(lowerSearchTerm) ||
             p.email.toLowerCase().includes(lowerSearchTerm)
         );
     }, [profiles, searchTerm]);
 
-    const selectedProfileData = useMemo(() => 
-        profiles.find(p => p.user_id === selectedUserId), 
+    const selectedProfileData = useMemo(() =>
+        profiles.find(p => p.user_id === selectedUserId),
         [profiles, selectedUserId]
     );
 
     // --- Render Component ---
-    
+
     return (
         <div className="p-6 lg:p-10 min-h-screen bg-gray-50">
             <h1 className="text-3xl font-extrabold text-slate-900 mb-6 flex items-center gap-3">
                 <Users className="w-8 h-8 text-[#013371]" /> Investor Profile Admin Dashboard
             </h1>
-            
+
             {/* Action Card for Selected Profile */}
             {selectedUserId && selectedProfileData && (
                 <Card className="shadow-lg border-2 border-blue-500 mb-6 sticky top-4 z-10 animate-fadeIn">
@@ -426,7 +434,7 @@ export default function AdminInvestorDashboard() {
                         <div className="flex gap-3">
                             {/* Disapprove Button */}
                             {selectedProfileData.is_approved && (
-                                <Button 
+                                <Button
                                     onClick={() => handleStatusUpdate(selectedUserId, false)}
                                     className="bg-red-500 hover:bg-red-600 text-white"
                                 >
@@ -435,14 +443,14 @@ export default function AdminInvestorDashboard() {
                             )}
                             {/* Approve Button */}
                             {!selectedProfileData.is_approved && (
-                                <Button 
+                                <Button
                                     onClick={() => handleStatusUpdate(selectedUserId, true)}
                                     className="bg-green-600 hover:bg-green-700 text-white"
                                 >
                                     <CheckCircle className="w-4 h-4 mr-2" /> Approve
                                 </Button>
                             )}
-                            
+
                             {/* Clear Selection */}
                             <Button variant="outline" onClick={() => setSelectedUserId(null)}>
                                 Clear Selection
@@ -452,7 +460,7 @@ export default function AdminInvestorDashboard() {
                 </Card>
             )}
 
-            
+
             <Card className="shadow-xl mb-6">
                 <CardHeader>
                     <CardTitle className="text-xl flex items-center gap-2">
@@ -463,8 +471,8 @@ export default function AdminInvestorDashboard() {
                     {/* Approval Filter */}
                     <div>
                         <Label className="block text-sm font-medium text-gray-700 mb-1">Approval Status</Label>
-                        <Select 
-                            value={approvalFilter} 
+                        <Select
+                            value={approvalFilter}
                             onValueChange={(v) => setApprovalFilter(v)}
                         >
                             <SelectTrigger className="h-10"><SelectValue placeholder="Filter by status" /></SelectTrigger>
@@ -480,10 +488,10 @@ export default function AdminInvestorDashboard() {
                     <div className="md:col-span-3">
                         <Label className="block text-sm font-medium text-gray-700 mb-1">Search (Name, Email)</Label>
                         <div className="relative">
-                            <Input 
-                                type="text" 
-                                placeholder="Search by name or email..." 
-                                value={searchTerm} 
+                            <Input
+                                type="text"
+                                placeholder="Search by name or email..."
+                                value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
                                 className="pl-10 h-10"
                             />
@@ -524,14 +532,15 @@ export default function AdminInvestorDashboard() {
                                         <TableHead>Email</TableHead>
                                         <TableHead>Amount</TableHead>
                                         <TableHead>Type</TableHead>
+                                        <TableHead>Reference</TableHead>
                                         <TableHead>Applied On</TableHead>
                                         <TableHead>Action</TableHead>
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
                                     {filteredProfiles.map((p) => (
-                                        <TableRow 
-                                            key={p.user_id} 
+                                        <TableRow
+                                            key={p.user_id}
                                             // 🟢 Highlight selected row and set selection
                                             onClick={() => setSelectedUserId(p.user_id)}
                                             className={cn(
@@ -549,10 +558,11 @@ export default function AdminInvestorDashboard() {
                                             <TableCell className="text-slate-600">{p.email}</TableCell>
                                             <TableCell>{p.investment_amount}</TableCell>
                                             <TableCell>{p.investment_type}</TableCell>
+                                            <TableCell>{p.reference || '-'}</TableCell>
                                             <TableCell>{new Date(p.created_at).toLocaleDateString()}</TableCell>
                                             <TableCell>
-                                                <Button 
-                                                    size="sm" 
+                                                <Button
+                                                    size="sm"
                                                     // 🟢 Open modal to review/edit
                                                     onClick={(e) => { e.stopPropagation(); setSelectedProfileForModal(p); }}
                                                     className="h-8 px-3 bg-[#013371] hover:bg-[#024fa3]"

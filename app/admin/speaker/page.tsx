@@ -3,13 +3,13 @@
 
 import { useEffect, useState, useMemo, useCallback } from "react"
 import { supabase } from "@/lib/supabaseConfig" // Use your config file
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card" 
-import { Input } from "@/components/ui/input" 
-import { Button } from "@/components/ui/button" 
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select" 
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table" 
-import { Label } from "@/components/ui/label" 
-import { Filter, Search, Users, CheckCircle, Clock, X, Loader2, FilePenLine, Save, User, Mic, XCircle, TrendingUp } from "lucide-react" 
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { Label } from "@/components/ui/label"
+import { Filter, Search, Users, CheckCircle, Clock, X, Loader2, FilePenLine, Save, User, Mic, XCircle, TrendingUp } from "lucide-react"
 import { useForm, Controller } from 'react-hook-form';
 import { cn } from "@/lib/utils" // Assuming this utility is available for Tailwind classes
 
@@ -30,6 +30,7 @@ interface SpeakerProfile {
     profile_photo_url: string | null;
     is_approved: boolean;
     created_at: string;
+    reference: string | null;
 }
 
 // Type for the editable fields in the modal
@@ -42,6 +43,7 @@ interface EditableProfileFields {
     speaker_bio: string;
     topic_title: string;
     topic_abstract: string;
+    reference: string;
 }
 
 
@@ -57,7 +59,7 @@ interface SpeakerReviewModalProps {
 
 const SpeakerReviewModal: React.FC<SpeakerReviewModalProps> = ({ profile, onClose, onStatusUpdate, onDataUpdate }) => {
     const [isSubmitting, setIsSubmitting] = useState(false);
-    
+
     // RHF Setup for editing
     const { control, handleSubmit, register, watch, formState: { isDirty } } = useForm<EditableProfileFields>({
         defaultValues: {
@@ -69,13 +71,14 @@ const SpeakerReviewModal: React.FC<SpeakerReviewModalProps> = ({ profile, onClos
             speaker_bio: profile.speaker_bio,
             topic_title: profile.topic_title,
             topic_abstract: profile.topic_abstract,
+            reference: profile.reference || '',
         },
     });
 
     const watchedBio = watch('speaker_bio') || '';
     const watchedAbstract = watch('topic_abstract') || '';
-    
-    
+
+
     const handleDataSubmission = handleSubmit(async (data) => {
         setIsSubmitting(true);
         await onDataUpdate(profile.user_id, data);
@@ -103,24 +106,24 @@ const SpeakerReviewModal: React.FC<SpeakerReviewModalProps> = ({ profile, onClos
                 </CardHeader>
                 <CardContent className="p-6">
                     <form onSubmit={handleDataSubmission}>
-                        
+
                         {/* Status Display */}
                         <div className={`mb-6 p-4 rounded-lg font-semibold flex items-center gap-2 ${profile.is_approved ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'}`}>
                             {profile.is_approved ? <CheckCircle className="w-5 h-5" /> : <Clock className="w-5 h-5" />}
                             Status: {profile.is_approved ? 'APPROVED' : 'PENDING'}
                         </div>
-                        
+
                         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                            
+
                             {/* 1. Personal Details (Col 1) */}
                             <div className="lg:col-span-1 p-4 border rounded-lg bg-gray-50 h-full">
                                 <h3 className="text-lg font-bold mb-4 flex items-center gap-2 text-slate-700">
-                                    <User className="w-4 h-4"/> Personal Info
+                                    <User className="w-4 h-4" /> Personal Info
                                 </h3>
                                 <div className="flex justify-center mb-4">
-                                     <img 
-                                        src={profile.profile_photo_url || '/default-avatar.png'} 
-                                        alt="Headshot" 
+                                    <img
+                                        src={profile.profile_photo_url || '/default-avatar.png'}
+                                        alt="Headshot"
                                         className="w-24 h-24 rounded-full object-cover bg-white border-4 border-white shadow-md"
                                     />
                                 </div>
@@ -131,13 +134,14 @@ const SpeakerReviewModal: React.FC<SpeakerReviewModalProps> = ({ profile, onClos
                                     <div><Label>LinkedIn</Label><Input {...register('linkedin')} className="h-9" placeholder="URL" /></div>
                                     <div><Label>Job Title</Label><Input {...register('job_title', { required: true })} className="h-9" /></div>
                                     <div><Label>Company</Label><Input {...register('company', { required: true })} className="h-9" /></div>
+                                    <div><Label>Reference</Label><Input {...register('reference')} className="h-9" placeholder="Reference source" /></div>
                                 </div>
                             </div>
-                            
+
                             {/* 2. Proposal Details (Col 2 & 3) */}
                             <div className="lg:col-span-2 p-4 border rounded-lg bg-gray-50">
                                 <h3 className="text-lg font-bold mb-4 flex items-center gap-2 text-slate-700">
-                                    <TrendingUp className="w-4 h-4"/> Session Proposal
+                                    <TrendingUp className="w-4 h-4" /> Session Proposal
                                 </h3>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <div className="md:col-span-2">
@@ -155,7 +159,7 @@ const SpeakerReviewModal: React.FC<SpeakerReviewModalProps> = ({ profile, onClos
                                         />
                                         <p className="text-xs text-slate-500 mt-1">{watchedAbstract.length}/250</p>
                                     </div>
-                                    
+
                                     {/* Speaker Bio */}
                                     <div className="md:col-span-2">
                                         <Label>Speaker Bio (Max 150 words)</Label>
@@ -169,10 +173,10 @@ const SpeakerReviewModal: React.FC<SpeakerReviewModalProps> = ({ profile, onClos
                                 </div>
                             </div>
                         </div>
-                        
+
                         {/* Footer Actions - Save Data */}
                         <div className="pt-6 border-t mt-6 flex justify-end">
-                            <Button 
+                            <Button
                                 type="submit"
                                 disabled={isSubmitting || !isDirty}
                                 className="bg-blue-600 hover:bg-blue-700 text-white flex items-center gap-2 shadow-md"
@@ -181,9 +185,9 @@ const SpeakerReviewModal: React.FC<SpeakerReviewModalProps> = ({ profile, onClos
                                 Save Profile Data Edits
                             </Button>
                         </div>
-                        
+
                         {/* Status Toggle (Optional: for fast status changes within modal) */}
-                         <div className='pt-4 border-t mt-4 flex justify-end gap-2'>
+                        <div className='pt-4 border-t mt-4 flex justify-end gap-2'>
                             {!profile.is_approved && (
                                 <Button
                                     type="button"
@@ -221,10 +225,10 @@ export default function AdminSpeakerDashboard() {
     const [error, setError] = useState<string | null>(null);
     const [searchTerm, setSearchTerm] = useState('');
     const [approvalFilter, setApprovalFilter] = useState('all');
-    
+
     // 🟢 State for selected profile ID for external actions
     const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
-    
+
     // State for Modal (used only for review/edit)
     const [selectedProfileForModal, setSelectedProfileForModal] = useState<SpeakerProfile | null>(null);
 
@@ -238,7 +242,7 @@ export default function AdminSpeakerDashboard() {
                 .from('speaker_profiles')
                 .select('*')
                 .order('created_at', { ascending: false });
-            
+
             if (approvalFilter === 'approved') {
                 query = query.eq('is_approved', true);
             } else if (approvalFilter === 'pending') {
@@ -268,19 +272,19 @@ export default function AdminSpeakerDashboard() {
                 .from('speaker_profiles')
                 .update({ is_approved: isApproved })
                 .eq('user_id', userId);
-            
+
             if (updateError) throw updateError;
-            
+
             // Optimistically update local state
-            setProfiles(prev => prev.map(p => 
+            setProfiles(prev => prev.map(p =>
                 p.user_id === userId ? { ...p, is_approved: isApproved } : p
             ));
-            
+
             alert(`Profile successfully ${isApproved ? 'approved' : 'disapproved'}!`);
-            
+
             // Clear selection after action
-            setSelectedUserId(null); 
-            
+            setSelectedUserId(null);
+
         } catch (err: any) {
             console.error("Error updating approval status:", err);
             alert(`Failed to update approval status: ${err.message}`);
@@ -299,6 +303,7 @@ export default function AdminSpeakerDashboard() {
                 speaker_bio: data.speaker_bio,
                 topic_title: data.topic_title,
                 topic_abstract: data.topic_abstract,
+                reference: data.reference,
             };
 
             const { error: updateError } = await supabase
@@ -307,7 +312,7 @@ export default function AdminSpeakerDashboard() {
                 .eq('user_id', userId);
 
             if (updateError) throw updateError;
-            
+
             alert(`Profile data successfully updated!`);
 
             fetchSpeakerProfiles();
@@ -328,26 +333,26 @@ export default function AdminSpeakerDashboard() {
     const filteredProfiles = useMemo(() => {
         if (!searchTerm) return profiles;
         const lowerSearchTerm = searchTerm.toLowerCase();
-        return profiles.filter(p => 
+        return profiles.filter(p =>
             p.name.toLowerCase().includes(lowerSearchTerm) ||
             p.email.toLowerCase().includes(lowerSearchTerm) ||
             p.topic_title.toLowerCase().includes(lowerSearchTerm)
         );
     }, [profiles, searchTerm]);
 
-    const selectedProfileData = useMemo(() => 
-        profiles.find(p => p.user_id === selectedUserId), 
+    const selectedProfileData = useMemo(() =>
+        profiles.find(p => p.user_id === selectedUserId),
         [profiles, selectedUserId]
     );
 
     // --- Render Component ---
-    
+
     return (
         <div className="p-6 lg:p-10 min-h-screen bg-gray-50">
             <h1 className="text-3xl font-extrabold text-slate-900 mb-6 flex items-center gap-3">
                 <Mic className="w-8 h-8 text-[#013371]" /> Speaker Application Admin Dashboard
             </h1>
-            
+
             {/* Action Card for Selected Profile (Sticky Bar) */}
             {selectedUserId && selectedProfileData && (
                 <Card className="shadow-lg border-2 border-blue-500 mb-6 sticky top-4 z-10 animate-fadeIn">
@@ -361,7 +366,7 @@ export default function AdminSpeakerDashboard() {
                         <div className="flex gap-3">
                             {/* Disapprove Button */}
                             {selectedProfileData.is_approved && (
-                                <Button 
+                                <Button
                                     onClick={() => handleStatusUpdate(selectedUserId, false)}
                                     className="bg-red-500 hover:bg-red-600 text-white"
                                 >
@@ -370,14 +375,14 @@ export default function AdminSpeakerDashboard() {
                             )}
                             {/* Approve Button */}
                             {!selectedProfileData.is_approved && (
-                                <Button 
+                                <Button
                                     onClick={() => handleStatusUpdate(selectedUserId, true)}
                                     className="bg-green-600 hover:bg-green-700 text-white"
                                 >
                                     <CheckCircle className="w-4 h-4 mr-2" /> Approve
                                 </Button>
                             )}
-                            
+
                             {/* Clear Selection */}
                             <Button variant="outline" onClick={() => setSelectedUserId(null)}>
                                 Clear Selection
@@ -387,7 +392,7 @@ export default function AdminSpeakerDashboard() {
                 </Card>
             )}
 
-            
+
             <Card className="shadow-xl mb-6">
                 <CardHeader>
                     <CardTitle className="text-xl flex items-center gap-2">
@@ -398,8 +403,8 @@ export default function AdminSpeakerDashboard() {
                     {/* Approval Filter */}
                     <div>
                         <Label className="block text-sm font-medium text-gray-700 mb-1">Approval Status</Label>
-                        <Select 
-                            value={approvalFilter} 
+                        <Select
+                            value={approvalFilter}
                             onValueChange={(v) => setApprovalFilter(v)}
                         >
                             <SelectTrigger className="h-10"><SelectValue placeholder="Filter by status" /></SelectTrigger>
@@ -415,10 +420,10 @@ export default function AdminSpeakerDashboard() {
                     <div className="md:col-span-3">
                         <Label className="block text-sm font-medium text-gray-700 mb-1">Search (Name, Email, Topic)</Label>
                         <div className="relative">
-                            <Input 
-                                type="text" 
-                                placeholder="Search by name, email, or topic..." 
-                                value={searchTerm} 
+                            <Input
+                                type="text"
+                                placeholder="Search by name, email, or topic..."
+                                value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
                                 className="pl-10 h-10"
                             />
@@ -458,14 +463,15 @@ export default function AdminSpeakerDashboard() {
                                         <TableHead>Name / Company</TableHead>
                                         <TableHead>Email</TableHead>
                                         <TableHead>Topic Title</TableHead>
+                                        <TableHead>Reference</TableHead>
                                         <TableHead>Applied On</TableHead>
                                         <TableHead>Action</TableHead>
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
                                     {filteredProfiles.map((p) => (
-                                        <TableRow 
-                                            key={p.user_id} 
+                                        <TableRow
+                                            key={p.user_id}
                                             // 🟢 Highlight selected row and set selection
                                             onClick={() => setSelectedUserId(p.user_id)}
                                             className={cn(
@@ -482,10 +488,11 @@ export default function AdminSpeakerDashboard() {
                                             <TableCell className="font-medium">{p.name}<div className="text-xs text-slate-500">{p.job_title} @ {p.company}</div></TableCell>
                                             <TableCell className="text-slate-600">{p.email}</TableCell>
                                             <TableCell>{p.topic_title}</TableCell>
+                                            <TableCell>{p.reference || '-'}</TableCell>
                                             <TableCell>{new Date(p.created_at).toLocaleDateString()}</TableCell>
                                             <TableCell>
-                                                <Button 
-                                                    size="sm" 
+                                                <Button
+                                                    size="sm"
                                                     // 🟢 Open modal to review/edit
                                                     onClick={(e) => { e.stopPropagation(); setSelectedProfileForModal(p); }}
                                                     className="h-8 px-3 bg-[#013371] hover:bg-[#024fa3]"

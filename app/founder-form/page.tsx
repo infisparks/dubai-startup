@@ -37,6 +37,7 @@ interface FounderProfileData {
     is_audited: boolean;
     is_approved: boolean;
     email: string;
+    reference: string | null;
 }
 
 type Translations = {
@@ -123,6 +124,9 @@ type Translations = {
         step1: string;
         pitchDeckChoice: string;
     };
+    reference: string;
+    referenceOther: string;
+    referenceOptions: string[];
 };
 
 type PitchDeckMode = 'file' | 'url';
@@ -162,6 +166,8 @@ export default function FounderFormPage() {
         netProfit: "",
         itReturnsFiled: false,
         isAudited: false,
+        reference: "",
+        referenceOther: "",
     })
 
     // --- Effects & Fetching ---
@@ -202,6 +208,8 @@ export default function FounderFormPage() {
                 netProfit: founderProfile.net_profit || '',
                 itReturnsFiled: founderProfile.it_returns_filed || false,
                 isAudited: founderProfile.is_audited || false,
+                reference: founderProfile.reference && ["Kishan Verma", "Sanjay Bhamari", "Farid Ahmed", "Abdulmajid", "Ideabaaz", "Marwadi Catalyst", "Rehbar"].includes(founderProfile.reference) ? founderProfile.reference : (founderProfile.reference ? "Other" : ""),
+                referenceOther: founderProfile.reference && !["Kishan Verma", "Sanjay Bhamari", "Farid Ahmed", "Abdulmajid", "Ideabaaz", "Marwadi Catalyst", "Rehbar"].includes(founderProfile.reference) ? founderProfile.reference : "",
             }));
         } else {
             setHasExistingProfile(false);
@@ -251,7 +259,8 @@ export default function FounderFormPage() {
                         founderName: "", founderEmail: "", founderPhone: "",
                         domain: "", domainOtherSpec: "", problemDescription: "",
                         earningStatus: "",
-                        establishmentYear: "", turnover: "", netProfit: "", itReturnsFiled: false, isAudited: false
+                        establishmentYear: "", turnover: "", netProfit: "", itReturnsFiled: false, isAudited: false,
+                        reference: "", referenceOther: ""
                     });
                 }
             }
@@ -345,7 +354,10 @@ export default function FounderFormPage() {
                 validation: {
                     step1: "Please complete all required fields.",
                     pitchDeckChoice: "Please provide a pitch deck file or URL.",
-                }
+                },
+                reference: "Reference",
+                referenceOther: "Please specify reference",
+                referenceOptions: ["Kishan Verma", "Sanjay Bhamari", "Farid Ahmed", "Abdulmajid", "Ideabaaz", "Marwadi Catalyst", "Rehbar", "Other"],
             },
             ar: {
                 title: "طلب الشركة الناشئة",
@@ -430,10 +442,19 @@ export default function FounderFormPage() {
                 validation: {
                     step1: "يرجى ملء جميع الحقول.",
                     pitchDeckChoice: "يرجى تقديم عرض الملعب.",
-                }
+                },
+                reference: "مرجع",
+                referenceOther: "يرجى تحديد المرجع",
+                referenceOptions: ["كيشان فيرما", "سانجاي بهاماري", "فريد أحمد", "عبد المجيد", "أيديا باز", "ماروادي كاتاليست", "رهبار", "أخرى"],
             },
-        }
-        return translations[language] as Translations;
+        };
+        // Override options for consistent value mapping if needed, but for now we use English values for logic
+        const referenceOptions = ["Kishan Verma", "Sanjay Bhamari", "Farid Ahmed", "Abdulmajid", "Ideabaaz", "Marwadi Catalyst", "Rehbar", "Other"];
+
+        return {
+            ...translations[language],
+            referenceOptions: referenceOptions
+        } as Translations;
     }, [language]);
 
     // --- Handlers ---
@@ -519,6 +540,7 @@ export default function FounderFormPage() {
                 it_returns_filed: formData.itReturnsFiled,
                 is_audited: formData.isAudited,
                 email: formData.founderEmail,
+                reference: formData.reference === "Other" ? formData.referenceOther : formData.reference,
             }
 
             let error;
@@ -798,18 +820,25 @@ const FormView: React.FC<any> = ({ t, step, formData, pitchDeckMode, handleInput
                                             <StyledInput name="founderName" value={formData.founderName} onChange={handleInputChange} placeholder={t.placeholder.name} disabled={isDisabled} required />
                                         </InputGroup>
                                         <InputGroup label={t.email} required>
-                                            <div className="relative">
-                                                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-                                                <StyledInput type="email" name="founderEmail" value={formData.founderEmail} onChange={handleInputChange} className="pl-9" required />
-                                            </div>
-                                        </InputGroup>
-                                        <InputGroup label={t.phone} required>
-                                            <div className="relative">
-                                                <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-                                                <StyledInput type="tel" name="founderPhone" value={formData.founderPhone} onChange={handleInputChange} placeholder={t.placeholder.phone} disabled={isDisabled} className="pl-9" required />
-                                            </div>
+                                            <StyledInput type="email" name="founderEmail" value={formData.founderEmail} onChange={handleInputChange} placeholder={t.placeholder.email} disabled={true} required />
                                         </InputGroup>
                                     </div>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                                        <InputGroup label={t.phone} required>
+                                            <StyledInput type="tel" name="founderPhone" value={formData.founderPhone} onChange={handleInputChange} placeholder={t.placeholder.phone} disabled={isDisabled} required />
+                                        </InputGroup>
+                                        <InputGroup label="Reference">
+                                            <StyledSelect name="reference" value={formData.reference} onChange={handleInputChange} disabled={isDisabled}>
+                                                <option value="">Select Reference</option>
+                                                {t.referenceOptions.map((opt: string) => <option key={opt} value={opt}>{opt}</option>)}
+                                            </StyledSelect>
+                                        </InputGroup>
+                                    </div>
+                                    {formData.reference === "Other" && (
+                                        <InputGroup label={t.referenceOther} required>
+                                            <StyledInput name="referenceOther" value={formData.referenceOther} onChange={handleInputChange} placeholder="Enter reference name" disabled={isDisabled} required />
+                                        </InputGroup>
+                                    )}
                                 </div>
 
                                 {/* Financial & Legal Section */}
@@ -910,9 +939,9 @@ const FormView: React.FC<any> = ({ t, step, formData, pitchDeckMode, handleInput
                                 </div>
                             </div>
                         )}
-                    </form>
-                </div>
-            </div>
+                    </form >
+                </div >
+            </div >
         </>
     );
 };

@@ -24,6 +24,7 @@ interface ExhibitorProfileData {
     email: string | null;
     // ⭐ ADDED contact_personname HERE
     contact_personname: string | null;
+    reference: string | null;
 }
 
 // Define the type for the form's state
@@ -37,6 +38,8 @@ interface ExhibitorFormData {
     companyDescription: string;
     companyLogo: File | null;
     companyLogoUrl: string | null;
+    reference: string;
+    referenceOther: string;
 }
 
 // Define a type for the structure returned by the translations useMemo hook
@@ -82,6 +85,9 @@ type Translations = {
     validation: {
         logo: string;
     };
+    reference: string;
+    referenceOther: string;
+    referenceOptions: string[];
 };
 
 export default function ExhibitorFormPage() {
@@ -106,6 +112,8 @@ export default function ExhibitorFormPage() {
         companyDescription: "",
         companyLogo: null,
         companyLogoUrl: null,
+        reference: "",
+        referenceOther: "",
     })
 
     // --- Supabase Session and Role Management ---
@@ -148,6 +156,8 @@ export default function ExhibitorFormPage() {
                 // ⭐ RETRIEVING THE SAVED CONTACT NAME
                 contactName: exhibitorProfile.contact_personname || profileData?.full_name || '',
                 contactEmail: exhibitorProfile.email || currentUser.email!,
+                reference: exhibitorProfile.reference && ["Kishan Verma", "Sanjay Bhamari", "Farid Ahmed", "Abdulmajid", "Ideabaaz", "Marwadi Catalyst", "Rehbar"].includes(exhibitorProfile.reference) ? exhibitorProfile.reference : (exhibitorProfile.reference ? "Other" : ""),
+                referenceOther: exhibitorProfile.reference && !["Kishan Verma", "Sanjay Bhamari", "Farid Ahmed", "Abdulmajid", "Ideabaaz", "Marwadi Catalyst", "Rehbar"].includes(exhibitorProfile.reference) ? exhibitorProfile.reference : "",
             }));
         } else {
             setHasExistingProfile(false);
@@ -194,6 +204,7 @@ export default function ExhibitorFormPage() {
                         companyName: "", companyWebsite: "", contactName: "",
                         contactEmail: "", contactPhone: "", boothType: "",
                         companyDescription: "", companyLogo: null, companyLogoUrl: null,
+                        reference: "", referenceOther: "",
                     });
                 }
             },
@@ -246,6 +257,9 @@ export default function ExhibitorFormPage() {
                 validation: {
                     logo: "A company logo is required to submit.",
                 },
+                reference: "Reference",
+                referenceOther: "Please specify reference",
+                referenceOptions: ["Kishan Verma", "Sanjay Bhamari", "Farid Ahmed", "Abdulmajid", "Ideabaaz", "Marwadi Catalyst", "Rehbar", "Other"],
             },
             ar: {
                 title: "تسجيل العارضين",
@@ -289,9 +303,18 @@ export default function ExhibitorFormPage() {
                 validation: {
                     logo: "شعار الشركة مطلوب للإرسال.",
                 },
+                reference: "مرجع",
+                referenceOther: "يرجى تحديد المرجع",
+                referenceOptions: ["كيشان فيرما", "سانجاي بهاماري", "فريد أحمد", "عبد المجيد", "أيديا باز", "ماروادي كاتاليست", "رهبار", "أخرى"],
             },
         };
-        return translations[language] as Translations;
+        // Override options for consistent value mapping if needed, but for now we use English values for logic
+        const referenceOptions = ["Kishan Verma", "Sanjay Bhamari", "Farid Ahmed", "Abdulmajid", "Ideabaaz", "Marwadi Catalyst", "Rehbar", "Other"];
+
+        return {
+            ...translations[language],
+            referenceOptions: referenceOptions
+        } as Translations;
     }, [language]);
 
 
@@ -354,6 +377,7 @@ export default function ExhibitorFormPage() {
                 email: formData.contactEmail,
                 // ⭐ SAVING CONTACT NAME TO THE DATABASE
                 contact_personname: formData.contactName,
+                reference: formData.reference === "Other" ? formData.referenceOther : formData.reference,
             };
 
             let error;
@@ -547,6 +571,42 @@ const ExhibitorFormView: React.FC<ExhibitorFormViewProps> = ({
                         </select>
                     </div>
 
+                    {/* Reference */}
+                    <div>
+                        <label className="block text-sm font-semibold text-slate-900 mb-2">
+                            {t.reference}
+                        </label>
+                        <select
+                            name="reference"
+                            value={formData.reference}
+                            onChange={handleInputChange}
+                            className={`w-full px-4 py-3 border-2 border-slate-200 rounded-lg focus:border-[#013371] focus:outline-none bg-white hover:border-slate-300 transition-colors ${isApproved ? 'bg-slate-100 cursor-not-allowed' : ''}`}
+                            disabled={isApproved}
+                        >
+                            <option value="">Select Reference</option>
+                            {t.referenceOptions.map((opt: string) => (
+                                <option key={opt} value={opt}>{opt}</option>
+                            ))}
+                        </select>
+                    </div>
+
+                    {formData.reference === "Other" && (
+                        <div>
+                            <label className="block text-sm font-semibold text-slate-900 mb-2">
+                                {t.referenceOther} <span className="text-red-500">*</span>
+                            </label>
+                            <input
+                                type="text"
+                                name="referenceOther"
+                                value={formData.referenceOther}
+                                onChange={handleInputChange}
+                                className={`w-full px-4 py-3 border-2 border-slate-200 rounded-lg focus:border-[#013371] focus:outline-none bg-white hover:border-slate-300 transition-colors ${isApproved ? 'bg-slate-100 cursor-not-allowed' : ''}`}
+                                required
+                                disabled={isApproved}
+                            />
+                        </div>
+                    )}
+
                     {/* Company Description */}
                     <div>
                         <label className="block text-sm font-semibold text-slate-900 mb-2">
@@ -606,8 +666,8 @@ const ExhibitorFormView: React.FC<ExhibitorFormViewProps> = ({
                             {hasExistingProfile ? t.update : t.submit} {hasExistingProfile && <Save className="w-4 h-4" />}
                         </button>
                     </div>
-                </form>
-            </div>
+                </form >
+            </div >
 
             <div
                 className="mt-8 bg-blue-50 border-2 border-blue-200 rounded-xl p-6 animate-slideInUp"
@@ -640,7 +700,9 @@ const ExhibitorStatusView: React.FC<ExhibitorStatusViewProps> = ({ t, isApproved
         { label: t.contactName, value: formData.contactName },
         { label: t.contactEmail, value: formData.contactEmail },
         { label: t.contactPhone, value: formData.contactPhone },
+        { label: t.contactPhone, value: formData.contactPhone },
         { label: t.companyWebsite, value: formData.companyWebsite, link: true },
+        { label: t.reference, value: formData.reference === "Other" ? formData.referenceOther : formData.reference },
     ];
 
     return (

@@ -4,13 +4,13 @@ import type React from "react"
 import { useState, useEffect, useMemo, Dispatch, SetStateAction } from "react"
 import { Session } from "@supabase/supabase-js"
 // Assuming you have these components.
-import Header from "@/components/header" 
-import Footer from "@/components/footer" 
+import Header from "@/components/header"
+import Footer from "@/components/footer"
 import { supabase } from "@/lib/supabaseConfig"
 import {
-    AlertTriangle, Check, Edit, Trash2, X, Shield,
-    CheckCircle, Clock, Search, ExternalLink, FileText, XCircle,
-    DollarSign, Calendar, FileCheck
+  AlertTriangle, Check, Edit, Trash2, X, Shield,
+  CheckCircle, Clock, Search, ExternalLink, FileText, XCircle,
+  DollarSign, Calendar, FileCheck
 } from "lucide-react"
 
 // --- 1. Define Types ---
@@ -30,7 +30,7 @@ interface FounderProfile {
   domain_other_spec: string | null;
   problem_description: string | null;
   earning_status: string | null;
-  
+
   // New Financial Fields
   establishment_year: number | null;
   turnover: string | null;
@@ -41,6 +41,7 @@ interface FounderProfile {
   is_approved: boolean | null;
   created_at: string | null;
   updated_at: string | null;
+  reference: string | null;
 }
 
 // Define fields allowed to be edited
@@ -49,53 +50,54 @@ type EditableFounderProfile = Pick<
   'email' | 'company_name' | 'founder_name' | 'founder_phone' | 'website' | 'stage' |
   'description' | 'domain' | 'domain_other_spec' | 'earning_status' | 'is_approved' |
   'pitch_deck_url' | 'company_linkedin' | 'problem_description' |
-  'establishment_year' | 'turnover' | 'net_profit' | 'it_returns_filed' | 'is_audited'
+  'pitch_deck_url' | 'company_linkedin' | 'problem_description' |
+  'establishment_year' | 'turnover' | 'net_profit' | 'it_returns_filed' | 'is_audited' | 'reference'
 >;
 
 type Translations = {
-    title: string;
-    subtitle: string;
-    loading: string;
-    notAuthorized: string;
-    notAuthorizedDesc: string;
-    error: string;
-    errorDesc: string;
-    searchPlaceholder: string;
-    company: string;
-    founder: string;
-    email: string;
-    pitchDeck: string;
-    status: string;
-    actions: string;
-    approved: string;
-    pending: string;
-    disapproved: string;
-    edit: string;
-    delete: string;
-    approve: string;
-    disapprove: string;
-    noStartups: string;
-    noStartupsDesc: string;
-    noResults: string;
-    noResultsDesc: string;
-    // Modals
-    editStartup: string;
-    sectionGeneral: string; // New
-    sectionFinancial: string; // New
-    save: string;
-    cancel: string;
-    deleteStartup: string;
-    deleteWarning: string;
-    deleteConfirmText: string;
-    deleteButton: string;
-    // Field Labels
-    establishmentYear: string;
-    turnover: string;
-    netProfit: string;
-    itReturns: string;
-    audited: string;
-    yes: string;
-    no: string;
+  title: string;
+  subtitle: string;
+  loading: string;
+  notAuthorized: string;
+  notAuthorizedDesc: string;
+  error: string;
+  errorDesc: string;
+  searchPlaceholder: string;
+  company: string;
+  founder: string;
+  email: string;
+  pitchDeck: string;
+  status: string;
+  actions: string;
+  approved: string;
+  pending: string;
+  disapproved: string;
+  edit: string;
+  delete: string;
+  approve: string;
+  disapprove: string;
+  noStartups: string;
+  noStartupsDesc: string;
+  noResults: string;
+  noResultsDesc: string;
+  // Modals
+  editStartup: string;
+  sectionGeneral: string; // New
+  sectionFinancial: string; // New
+  save: string;
+  cancel: string;
+  deleteStartup: string;
+  deleteWarning: string;
+  deleteConfirmText: string;
+  deleteButton: string;
+  // Field Labels
+  establishmentYear: string;
+  turnover: string;
+  netProfit: string;
+  itReturns: string;
+  audited: string;
+  yes: string;
+  no: string;
 };
 
 // --- 2. The Main Page Component ---
@@ -116,89 +118,89 @@ export default function AdminStartupsPage() {
 
   const t = useMemo((): Translations => {
     return language === 'ar' ? {
-        title: "إدارة الشركات الناشئة 🚀",
-        subtitle: "مراجعة وتعديل وحذف ملفات الشركات الناشئة.",
-        loading: "جاري التحميل...",
-        notAuthorized: "غير مصرح لك 🔒",
-        notAuthorizedDesc: "يجب أن تكون مسؤولاً للوصول إلى هذه الصفحة.",
-        error: "حدث خطأ ⚠️",
-        errorDesc: "لم نتمكن من تحميل البيانات. يرجى المحاولة مرة أخرى.",
-        searchPlaceholder: "ابحث باسم الشركة أو المؤسس...",
-        company: "الشركة",
-        founder: "المؤسس",
-        email: "البريد الإلكتروني",
-        pitchDeck: "ملف العرض",
-        status: "الحالة",
-        actions: "الإجراءات",
-        approved: "مقبول ✅",
-        pending: "قيد الانتظار ⏳",
-        disapproved: "مرفوض ❌",
-        edit: "تعديل",
-        delete: "حذف",
-        approve: "قبول",
-        disapprove: "رفض",
-        noStartups: "لا توجد شركات ناشئة",
-        noStartupsDesc: "لا توجد شركات ناشئة في النظام حتى الآن.",
-        noResults: "لا توجد نتائج",
-        noResultsDesc: "لم يتم العثور على شركات تطابق بحثك.",
-        editStartup: "تعديل الشركة الناشئة",
-        sectionGeneral: "معلومات عامة",
-        sectionFinancial: "التفاصيل المالية والقانونية",
-        save: "حفظ",
-        cancel: "إلغاء",
-        deleteStartup: "حذف الشركة الناشئة",
-        deleteWarning: "هذا الإجراء لا يمكن التراجع عنه. سيتم حذف الملف الشخصي للشركة نهائيًا.",
-        deleteConfirmText: "لحذف، اكتب 'CONFIRM' في المربع أدناه:",
-        deleteButton: "حذف",
-        establishmentYear: "سنة التأسيس",
-        turnover: "دوران السنوي",
-        netProfit: "صافي الربح",
-        itReturns: "الإقرارات الضريبية؟",
-        audited: "حسابات مدققة؟",
-        yes: "نعم",
-        no: "لا"
+      title: "إدارة الشركات الناشئة 🚀",
+      subtitle: "مراجعة وتعديل وحذف ملفات الشركات الناشئة.",
+      loading: "جاري التحميل...",
+      notAuthorized: "غير مصرح لك 🔒",
+      notAuthorizedDesc: "يجب أن تكون مسؤولاً للوصول إلى هذه الصفحة.",
+      error: "حدث خطأ ⚠️",
+      errorDesc: "لم نتمكن من تحميل البيانات. يرجى المحاولة مرة أخرى.",
+      searchPlaceholder: "ابحث باسم الشركة أو المؤسس...",
+      company: "الشركة",
+      founder: "المؤسس",
+      email: "البريد الإلكتروني",
+      pitchDeck: "ملف العرض",
+      status: "الحالة",
+      actions: "الإجراءات",
+      approved: "مقبول ✅",
+      pending: "قيد الانتظار ⏳",
+      disapproved: "مرفوض ❌",
+      edit: "تعديل",
+      delete: "حذف",
+      approve: "قبول",
+      disapprove: "رفض",
+      noStartups: "لا توجد شركات ناشئة",
+      noStartupsDesc: "لا توجد شركات ناشئة في النظام حتى الآن.",
+      noResults: "لا توجد نتائج",
+      noResultsDesc: "لم يتم العثور على شركات تطابق بحثك.",
+      editStartup: "تعديل الشركة الناشئة",
+      sectionGeneral: "معلومات عامة",
+      sectionFinancial: "التفاصيل المالية والقانونية",
+      save: "حفظ",
+      cancel: "إلغاء",
+      deleteStartup: "حذف الشركة الناشئة",
+      deleteWarning: "هذا الإجراء لا يمكن التراجع عنه. سيتم حذف الملف الشخصي للشركة نهائيًا.",
+      deleteConfirmText: "لحذف، اكتب 'CONFIRM' في المربع أدناه:",
+      deleteButton: "حذف",
+      establishmentYear: "سنة التأسيس",
+      turnover: "دوران السنوي",
+      netProfit: "صافي الربح",
+      itReturns: "الإقرارات الضريبية؟",
+      audited: "حسابات مدققة؟",
+      yes: "نعم",
+      no: "لا"
     } : {
-        title: "Startup Management 🚀",
-        subtitle: "Review, approve, edit, and delete startup profiles.",
-        loading: "Loading...",
-        notAuthorized: "Not Authorized 🔒",
-        notAuthorizedDesc: "You must be an admin to access this page.",
-        error: "An Error Occurred ⚠️",
-        errorDesc: "We couldn't load the data. Please try again.",
-        searchPlaceholder: "Search by company name or founder...",
-        company: "Company",
-        founder: "Founder",
-        email: "Email",
-        pitchDeck: "Pitch Deck",
-        status: "Status",
-        actions: "Actions",
-        approved: "Approved ✅",
-        pending: "Pending ⏳",
-        disapproved: "Disapproved ❌",
-        edit: "Edit",
-        delete: "Delete",
-        approve: "Approve",
-        disapprove: "Disapprove",
-        noStartups: "No Startups Found",
-        noStartupsDesc: "There are no startups in the system yet.",
-        noResults: "No Results Found",
-        noResultsDesc: "No startups match your search criteria.",
-        editStartup: "Edit Startup",
-        sectionGeneral: "General Information",
-        sectionFinancial: "Financial & Legal Details",
-        save: "Save",
-        cancel: "Cancel",
-        deleteStartup: "Delete Startup",
-        deleteWarning: "This action cannot be undone. This will permanently delete the startup's profile.",
-        deleteConfirmText: "To delete, type 'CONFIRM' in the box below:",
-        deleteButton: "Delete",
-        establishmentYear: "Establishment Year",
-        turnover: "Annual Turnover",
-        netProfit: "Net Profit",
-        itReturns: "IT Returns Filed?",
-        audited: "Accounts Audited?",
-        yes: "Yes",
-        no: "No"
+      title: "Startup Management 🚀",
+      subtitle: "Review, approve, edit, and delete startup profiles.",
+      loading: "Loading...",
+      notAuthorized: "Not Authorized 🔒",
+      notAuthorizedDesc: "You must be an admin to access this page.",
+      error: "An Error Occurred ⚠️",
+      errorDesc: "We couldn't load the data. Please try again.",
+      searchPlaceholder: "Search by company name or founder...",
+      company: "Company",
+      founder: "Founder",
+      email: "Email",
+      pitchDeck: "Pitch Deck",
+      status: "Status",
+      actions: "Actions",
+      approved: "Approved ✅",
+      pending: "Pending ⏳",
+      disapproved: "Disapproved ❌",
+      edit: "Edit",
+      delete: "Delete",
+      approve: "Approve",
+      disapprove: "Disapprove",
+      noStartups: "No Startups Found",
+      noStartupsDesc: "There are no startups in the system yet.",
+      noResults: "No Results Found",
+      noResultsDesc: "No startups match your search criteria.",
+      editStartup: "Edit Startup",
+      sectionGeneral: "General Information",
+      sectionFinancial: "Financial & Legal Details",
+      save: "Save",
+      cancel: "Cancel",
+      deleteStartup: "Delete Startup",
+      deleteWarning: "This action cannot be undone. This will permanently delete the startup's profile.",
+      deleteConfirmText: "To delete, type 'CONFIRM' in the box below:",
+      deleteButton: "Delete",
+      establishmentYear: "Establishment Year",
+      turnover: "Annual Turnover",
+      netProfit: "Net Profit",
+      itReturns: "IT Returns Filed?",
+      audited: "Accounts Audited?",
+      yes: "Yes",
+      no: "No"
     };
   }, [language]);
 
@@ -240,8 +242,8 @@ export default function AdminStartupsPage() {
         setError(t.errorDesc);
       } else {
         const processedData = (startupsData || []).map(s => ({
-            ...s,
-            is_approved: s.is_approved ?? false,
+          ...s,
+          is_approved: s.is_approved ?? false,
         }))
         setAllStartups(processedData);
       }
@@ -264,7 +266,7 @@ export default function AdminStartupsPage() {
       alert(`Error: ` + error.message);
       return null;
     }
-    
+
     const { error: profileError } = await supabase
       .from('profiles')
       .update({ is_startup: isApproved, updated_at: new Date().toISOString() })
@@ -310,7 +312,7 @@ export default function AdminStartupsPage() {
     if (isApproved === false) return <span className="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-800"><XCircle className="w-3.5 h-3.5" />{t.disapproved}</span>;
     return isApproved ? <span className="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800"><CheckCircle className="w-3.5 h-3.5" />{t.approved}</span> : <span className="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800"><Clock className="w-3.5 h-3.5" />{t.pending}</span>;
   };
-  
+
   const renderContent = () => {
     if (loading) return <div className="text-center p-12 text-slate-600 font-medium">{t.loading}</div>;
     if (!isAdmin) return <FeedbackCard message={t.notAuthorized} description={t.notAuthorizedDesc} icon={Shield} iconColor="text-red-500" />;
@@ -326,6 +328,7 @@ export default function AdminStartupsPage() {
               <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600 uppercase">{t.company}</th>
               <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600 uppercase hidden sm:table-cell">{t.founder}</th>
               <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600 uppercase hidden md:table-cell">{t.email}</th>
+              <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600 uppercase hidden lg:table-cell">Reference</th>
               <th className="px-6 py-3 text-center text-xs font-semibold text-slate-600 uppercase hidden md:table-cell">{t.pitchDeck}</th>
               <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600 uppercase">{t.status}</th>
               <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600 uppercase">{t.actions}</th>
@@ -343,14 +346,15 @@ export default function AdminStartupsPage() {
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap hidden sm:table-cell text-sm text-slate-600">{startup.founder_name || "N/A"}</td>
                 <td className="px-6 py-4 whitespace-nowrap hidden md:table-cell text-sm text-slate-600">{startup.email || "N/A"}</td>
+                <td className="px-6 py-4 whitespace-nowrap hidden lg:table-cell text-sm text-slate-600">{startup.reference || "-"}</td>
                 <td className="px-6 py-4 whitespace-nowrap text-center hidden md:table-cell">
                   {startup.pitch_deck_url ? <a href={startup.pitch_deck_url} target="_blank" className="text-indigo-600 hover:text-indigo-800 p-2 inline-block rounded-full bg-indigo-50 hover:bg-indigo-100"><FileText className="w-4 h-4" /></a> : <span className="text-slate-400">-</span>}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">{renderStatusBadge(startup.is_approved)}</td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium flex flex-col sm:flex-row gap-1">
-                  {startup.is_approved === false ? 
-                    <button onClick={() => handleApprove(startup.user_id)} className="inline-flex items-center justify-center gap-1 px-3 py-1.5 rounded-lg text-white bg-green-600 hover:bg-green-700 transition"><Check className="w-4 h-4" /><span className="hidden sm:inline">{t.approve}</span></button> 
-                    : 
+                  {startup.is_approved === false ?
+                    <button onClick={() => handleApprove(startup.user_id)} className="inline-flex items-center justify-center gap-1 px-3 py-1.5 rounded-lg text-white bg-green-600 hover:bg-green-700 transition"><Check className="w-4 h-4" /><span className="hidden sm:inline">{t.approve}</span></button>
+                    :
                     <button onClick={() => handleDisapprove(startup.user_id)} className="inline-flex items-center justify-center gap-1 px-3 py-1.5 rounded-lg text-white bg-red-600 hover:bg-red-700 transition"><X className="w-4 h-4" /><span className="hidden sm:inline">{t.disapprove}</span></button>
                   }
                   <button onClick={() => { setSelectedStartup(startup); setEditModalOpen(true); }} className="inline-flex items-center justify-center gap-1 px-3 py-1.5 border border-slate-300 rounded-lg text-slate-700 bg-white hover:bg-slate-50 transition"><Edit className="w-4 h-4" /><span className="hidden sm:inline">{t.edit}</span></button>
@@ -417,6 +421,7 @@ const EditModal: React.FC<EditModalProps> = ({ startup, onClose, onSave, t }) =>
     net_profit: startup.net_profit || '',
     it_returns_filed: startup.it_returns_filed ?? false,
     is_audited: startup.is_audited ?? false,
+    reference: startup.reference || '',
   });
   const [isSaving, setIsSaving] = useState(false);
 
@@ -426,18 +431,18 @@ const EditModal: React.FC<EditModalProps> = ({ startup, onClose, onSave, t }) =>
   };
 
   const handleToggleChange = (name: keyof EditableFounderProfile, checked: boolean) => {
-     setFormData(prev => ({ ...prev, [name]: checked }));
+    setFormData(prev => ({ ...prev, [name]: checked }));
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSaving(true);
-    
+
     // Parse number field
     const submissionData = {
-        ...formData,
-        establishment_year: formData.establishment_year ? Number(formData.establishment_year) : null,
-        updated_at: new Date().toISOString()
+      ...formData,
+      establishment_year: formData.establishment_year ? Number(formData.establishment_year) : null,
+      updated_at: new Date().toISOString()
     }
 
     const { data, error } = await supabase
@@ -452,9 +457,9 @@ const EditModal: React.FC<EditModalProps> = ({ startup, onClose, onSave, t }) =>
     if (error) {
       alert("Error: " + error.message);
     } else if (data) {
-        if ((startup.is_approved ?? false) !== (data.is_approved ?? false)) {
-             await supabase.from('profiles').update({ is_startup: data.is_approved, updated_at: new Date().toISOString() }).eq('id', startup.user_id);
-        }
+      if ((startup.is_approved ?? false) !== (data.is_approved ?? false)) {
+        await supabase.from('profiles').update({ is_startup: data.is_approved, updated_at: new Date().toISOString() }).eq('id', startup.user_id);
+      }
       onSave(data);
     }
   };
@@ -469,90 +474,91 @@ const EditModal: React.FC<EditModalProps> = ({ startup, onClose, onSave, t }) =>
           </div>
 
           <div className="p-6 space-y-8">
-            
+
             {/* General Information Section */}
             <div>
-                <h4 className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-4 border-b pb-2">{t.sectionGeneral}</h4>
-                <div className="space-y-4">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-                        <FormInput name="company_name" label="Company Name" value={formData.company_name} onChange={handleChange} required />
-                        <FormInput name="founder_name" label="Founder Name" value={formData.founder_name || ''} onChange={handleChange} />
-                    </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-                        <FormInput name="email" label="Email" type="email" value={formData.email || ''} onChange={handleChange} required />
-                        <FormInput name="founder_phone" label="Founder Phone" type="tel" value={formData.founder_phone || ''} onChange={handleChange} />
-                    </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-                        <FormInput name="website" label="Website URL" value={formData.website || ''} onChange={handleChange} placeholder="https://example.com" />
-                        <FormInput name="company_linkedin" label="Company LinkedIn URL" value={formData.company_linkedin || ''} onChange={handleChange} />
-                    </div>
-                    <FormInput name="pitch_deck_url" label="Pitch Deck URL" value={formData.pitch_deck_url || ''} onChange={handleChange} placeholder="https://..." />
-                    <FormTextArea name="description" label="Short Description" value={formData.description || ''} onChange={handleChange} rows={2} />
-                    <FormTextArea name="problem_description" label="Problem Description" value={formData.problem_description || ''} onChange={handleChange} rows={3} />
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-                        <FormInput name="domain" label="Domain / Industry" value={formData.domain || ''} onChange={handleChange} />
-                        <FormInput name="domain_other_spec" label="Domain (Other)" value={formData.domain_other_spec || ''} onChange={handleChange} />
-                    </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-                        <FormInput name="stage" label="Stage" value={formData.stage || ''} onChange={handleChange} />
-                        <FormInput name="earning_status" label="Earning Status" value={formData.earning_status || ''} onChange={handleChange} />
-                    </div>
+              <h4 className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-4 border-b pb-2">{t.sectionGeneral}</h4>
+              <div className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+                  <FormInput name="company_name" label="Company Name" value={formData.company_name} onChange={handleChange} required />
+                  <FormInput name="founder_name" label="Founder Name" value={formData.founder_name || ''} onChange={handleChange} />
                 </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+                  <FormInput name="email" label="Email" type="email" value={formData.email || ''} onChange={handleChange} required />
+                  <FormInput name="founder_phone" label="Founder Phone" type="tel" value={formData.founder_phone || ''} onChange={handleChange} />
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+                  <FormInput name="website" label="Website URL" value={formData.website || ''} onChange={handleChange} placeholder="https://example.com" />
+                  <FormInput name="company_linkedin" label="Company LinkedIn URL" value={formData.company_linkedin || ''} onChange={handleChange} />
+                </div>
+                <FormInput name="pitch_deck_url" label="Pitch Deck URL" value={formData.pitch_deck_url || ''} onChange={handleChange} placeholder="https://..." />
+                <FormTextArea name="description" label="Short Description" value={formData.description || ''} onChange={handleChange} rows={2} />
+                <FormTextArea name="problem_description" label="Problem Description" value={formData.problem_description || ''} onChange={handleChange} rows={3} />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+                  <FormInput name="domain" label="Domain / Industry" value={formData.domain || ''} onChange={handleChange} />
+                  <FormInput name="domain_other_spec" label="Domain (Other)" value={formData.domain_other_spec || ''} onChange={handleChange} />
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+                  <FormInput name="stage" label="Stage" value={formData.stage || ''} onChange={handleChange} />
+                  <FormInput name="earning_status" label="Earning Status" value={formData.earning_status || ''} onChange={handleChange} />
+                </div>
+                <FormInput name="reference" label="Reference" value={formData.reference || ''} onChange={handleChange} placeholder="Reference source" />
+              </div>
             </div>
 
             {/* Financial & Legal Section (NEW) */}
             <div>
-                <h4 className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-4 border-b pb-2">{t.sectionFinancial}</h4>
-                <div className="space-y-6">
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
-                        <FormInput 
-                            name="establishment_year" 
-                            label={t.establishmentYear} 
-                            type="number" 
-                            value={String(formData.establishment_year || '')} 
-                            onChange={handleChange} 
-                            icon={<Calendar className="w-4 h-4" />}
-                        />
-                        <FormInput 
-                            name="turnover" 
-                            label={t.turnover} 
-                            value={formData.turnover || ''} 
-                            onChange={handleChange} 
-                            icon={<DollarSign className="w-4 h-4" />}
-                        />
-                        <FormInput 
-                            name="net_profit" 
-                            label={t.netProfit} 
-                            value={formData.net_profit || ''} 
-                            onChange={handleChange} 
-                            icon={<DollarSign className="w-4 h-4" />}
-                        />
-                    </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-                        <SwitchInput 
-                            label={t.itReturns} 
-                            checked={!!formData.it_returns_filed} 
-                            onChange={(val) => handleToggleChange('it_returns_filed', val)}
-                            t={t}
-                        />
-                        <SwitchInput 
-                            label={t.audited} 
-                            checked={!!formData.is_audited} 
-                            onChange={(val) => handleToggleChange('is_audited', val)}
-                            t={t}
-                        />
-                    </div>
+              <h4 className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-4 border-b pb-2">{t.sectionFinancial}</h4>
+              <div className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+                  <FormInput
+                    name="establishment_year"
+                    label={t.establishmentYear}
+                    type="number"
+                    value={String(formData.establishment_year || '')}
+                    onChange={handleChange}
+                    icon={<Calendar className="w-4 h-4" />}
+                  />
+                  <FormInput
+                    name="turnover"
+                    label={t.turnover}
+                    value={formData.turnover || ''}
+                    onChange={handleChange}
+                    icon={<DollarSign className="w-4 h-4" />}
+                  />
+                  <FormInput
+                    name="net_profit"
+                    label={t.netProfit}
+                    value={formData.net_profit || ''}
+                    onChange={handleChange}
+                    icon={<DollarSign className="w-4 h-4" />}
+                  />
                 </div>
-            </div>
-            
-            <div className="pt-4 border-t border-slate-200">
-                <ToggleSwitch 
-                    name="is_approved"
-                    label="Startup Approval Status"
-                    checked={!!formData.is_approved}
-                    onChange={(checked) => handleToggleChange('is_approved', checked)}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+                  <SwitchInput
+                    label={t.itReturns}
+                    checked={!!formData.it_returns_filed}
+                    onChange={(val) => handleToggleChange('it_returns_filed', val)}
                     t={t}
-                />
+                  />
+                  <SwitchInput
+                    label={t.audited}
+                    checked={!!formData.is_audited}
+                    onChange={(val) => handleToggleChange('is_audited', val)}
+                    t={t}
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="pt-4 border-t border-slate-200">
+              <ToggleSwitch
+                name="is_approved"
+                label="Startup Approval Status"
+                checked={!!formData.is_approved}
+                onChange={(checked) => handleToggleChange('is_approved', checked)}
+                t={t}
+              />
             </div>
           </div>
 
@@ -620,8 +626,8 @@ const FormInput: React.FC<{ name: string, label: string, value: string, onChange
   <div>
     <label htmlFor={name} className="block text-sm font-medium text-slate-700 mb-1">{label} {required && <span className="text-red-500">*</span>}</label>
     <div className="relative">
-        {icon && <div className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">{icon}</div>}
-        <input type={type} id={name} name={name} value={value} onChange={onChange} required={required} placeholder={placeholder} className={`block w-full ${icon ? 'pl-9' : 'px-4'} pr-4 py-2 bg-white border border-slate-300 rounded-lg shadow-sm text-sm focus:outline-none focus:ring-indigo-600 focus:border-indigo-600 transition`} />
+      {icon && <div className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">{icon}</div>}
+      <input type={type} id={name} name={name} value={value} onChange={onChange} required={required} placeholder={placeholder} className={`block w-full ${icon ? 'pl-9' : 'px-4'} pr-4 py-2 bg-white border border-slate-300 rounded-lg shadow-sm text-sm focus:outline-none focus:ring-indigo-600 focus:border-indigo-600 transition`} />
     </div>
   </div>
 );
@@ -635,24 +641,24 @@ const FormTextArea: React.FC<{ name: string, label: string, value: string, onCha
 
 // Toggle for Approval (Big colored toggle)
 const ToggleSwitch: React.FC<{ name: string, label: string, checked: boolean, onChange: (checked: boolean) => void, t: Translations }> = ({ name, label, checked, onChange, t }) => (
-    <div className="flex items-center justify-between p-3 border border-slate-200 rounded-lg bg-slate-50">
-        <label htmlFor={name} className="text-sm font-medium text-slate-700 flex flex-col">{label}<span className={`text-xs mt-0.5 font-bold ${checked ? 'text-green-600' : 'text-red-600'}`}>{checked ? t.approved : t.disapproved}</span></label>
-        <button type="button" onClick={() => onChange(!checked)} className={`${checked ? 'bg-green-600' : 'bg-red-600'} relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none`} role="switch" aria-checked={checked}>
-            <span aria-hidden="true" className={`${checked ? 'translate-x-5' : 'translate-x-0'} pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out`} />
-        </button>
-    </div>
+  <div className="flex items-center justify-between p-3 border border-slate-200 rounded-lg bg-slate-50">
+    <label htmlFor={name} className="text-sm font-medium text-slate-700 flex flex-col">{label}<span className={`text-xs mt-0.5 font-bold ${checked ? 'text-green-600' : 'text-red-600'}`}>{checked ? t.approved : t.disapproved}</span></label>
+    <button type="button" onClick={() => onChange(!checked)} className={`${checked ? 'bg-green-600' : 'bg-red-600'} relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none`} role="switch" aria-checked={checked}>
+      <span aria-hidden="true" className={`${checked ? 'translate-x-5' : 'translate-x-0'} pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out`} />
+    </button>
+  </div>
 );
 
 // Simple switch for boolean fields (IT Filed, Audited)
 const SwitchInput: React.FC<{ label: string, checked: boolean, onChange: (val: boolean) => void, t: Translations }> = ({ label, checked, onChange, t }) => (
-    <div className="flex items-center justify-between p-3 border border-slate-200 rounded-lg bg-white">
-        <div className="flex flex-col">
-            <span className="text-sm font-medium text-slate-700">{label}</span>
-        </div>
-        <button type="button" onClick={() => onChange(!checked)} className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${checked ? 'bg-indigo-600' : 'bg-slate-200'}`} role="switch">
-            <span aria-hidden="true" className={`${checked ? 'translate-x-5' : 'translate-x-0'} pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out`} />
-        </button>
+  <div className="flex items-center justify-between p-3 border border-slate-200 rounded-lg bg-white">
+    <div className="flex flex-col">
+      <span className="text-sm font-medium text-slate-700">{label}</span>
     </div>
+    <button type="button" onClick={() => onChange(!checked)} className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${checked ? 'bg-indigo-600' : 'bg-slate-200'}`} role="switch">
+      <span aria-hidden="true" className={`${checked ? 'translate-x-5' : 'translate-x-0'} pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out`} />
+    </button>
+  </div>
 );
 
 interface FeedbackCardProps {
@@ -663,9 +669,9 @@ interface FeedbackCardProps {
 }
 
 const FeedbackCard: React.FC<FeedbackCardProps> = ({ message, description, icon: Icon, iconColor }) => (
-    <div className="flex flex-col items-center justify-center text-center p-8 sm:p-12 bg-white border border-slate-200 rounded-xl shadow-lg">
-        <div className={`w-12 h-12 sm:w-14 sm:h-14 rounded-full flex items-center justify-center bg-slate-100 mb-4 ${iconColor}`}><Icon className="w-6 h-6 sm:w-7 h-7" /></div>
-        <h3 className="text-lg sm:text-xl font-extrabold text-slate-900 mb-2">{message}</h3>
-        <p className="text-sm sm:text-base text-slate-600 max-w-sm">{description}</p>
-    </div>
+  <div className="flex flex-col items-center justify-center text-center p-8 sm:p-12 bg-white border border-slate-200 rounded-xl shadow-lg">
+    <div className={`w-12 h-12 sm:w-14 sm:h-14 rounded-full flex items-center justify-center bg-slate-100 mb-4 ${iconColor}`}><Icon className="w-6 h-6 sm:w-7 h-7" /></div>
+    <h3 className="text-lg sm:text-xl font-extrabold text-slate-900 mb-2">{message}</h3>
+    <p className="text-sm sm:text-base text-slate-600 max-w-sm">{description}</p>
+  </div>
 );

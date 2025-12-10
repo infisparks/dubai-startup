@@ -26,6 +26,7 @@ interface SpeakerProfileData {
     // ⭐ NEW: Added name and email from the SQL table
     name: string | null;
     email: string | null;
+    reference: string | null;
 }
 
 // Define the type for the form's state
@@ -41,6 +42,8 @@ interface SpeakerFormData {
     topicAbstract: string;
     profilePhoto: File | null;
     profilePhotoUrl: string | null;
+    reference: string;
+    referenceOther: string;
 }
 
 // Define a type for the structure returned by the translations useMemo hook
@@ -94,6 +97,9 @@ type Translations = {
         step1: string;
         headshot: string;
     };
+    reference: string;
+    referenceOther: string;
+    referenceOptions: string[];
 };
 
 export default function SpeakerFormPage() {
@@ -120,6 +126,8 @@ export default function SpeakerFormPage() {
         topicAbstract: "",
         profilePhoto: null,
         profilePhotoUrl: null,
+        reference: "",
+        referenceOther: "",
     })
 
     // --- Supabase Session and Role Management ---
@@ -167,6 +175,8 @@ export default function SpeakerFormPage() {
                 topicTitle: speakerProfile.topic_title || '',
                 topicAbstract: speakerProfile.topic_abstract || '',
                 profilePhotoUrl: speakerProfile.profile_photo_url,
+                reference: speakerProfile.reference && ["Kishan Verma", "Sanjay Bhamari", "Farid Ahmed", "Abdulmajid", "Ideabaaz", "Marwadi Catalyst", "Rehbar"].includes(speakerProfile.reference) ? speakerProfile.reference : (speakerProfile.reference ? "Other" : ""),
+                referenceOther: speakerProfile.reference && !["Kishan Verma", "Sanjay Bhamari", "Farid Ahmed", "Abdulmajid", "Ideabaaz", "Marwadi Catalyst", "Rehbar"].includes(speakerProfile.reference) ? speakerProfile.reference : "",
             }));
         } else {
             setHasExistingProfile(false);
@@ -214,6 +224,7 @@ export default function SpeakerFormPage() {
                         jobTitle: "", company: "", speakerBio: "",
                         topicTitle: "", topicAbstract: "",
                         profilePhoto: null, profilePhotoUrl: null,
+                        reference: "", referenceOther: "",
                     });
                 }
             },
@@ -274,6 +285,9 @@ export default function SpeakerFormPage() {
                     step1: "Please fill in all required personal information fields.",
                     headshot: "A headshot is required to submit.",
                 },
+                reference: "Reference",
+                referenceOther: "Please specify reference",
+                referenceOptions: ["Kishan Verma", "Sanjay Bhamari", "Farid Ahmed", "Abdulmajid", "Ideabaaz", "Marwadi Catalyst", "Rehbar", "Other"],
             },
             ar: {
                 title: "تسجيل المتحدثين",
@@ -325,9 +339,18 @@ export default function SpeakerFormPage() {
                     step1: "يرجى ملء جميع حقول المعلومات الشخصية المطلوبة.",
                     headshot: "الصورة الشخصية مطلوبة للإرسال.",
                 },
+                reference: "مرجع",
+                referenceOther: "يرجى تحديد المرجع",
+                referenceOptions: ["كيشان فيرما", "سانجاي بهاماري", "فريد أحمد", "عبد المجيد", "أيديا باز", "ماروادي كاتاليست", "رهبار", "أخرى"],
             },
         };
-        return translations[language] as Translations;
+        // Override options for consistent value mapping if needed, but for now we use English values for logic
+        const referenceOptions = ["Kishan Verma", "Sanjay Bhamari", "Farid Ahmed", "Abdulmajid", "Ideabaaz", "Marwadi Catalyst", "Rehbar", "Other"];
+
+        return {
+            ...translations[language],
+            referenceOptions: referenceOptions
+        } as Translations;
     }, [language]);
 
 
@@ -404,6 +427,7 @@ export default function SpeakerFormPage() {
                 // ⭐ NEW: Save name and email to the speaker_profiles table
                 name: formData.fullName,
                 email: formData.email,
+                reference: formData.reference === "Other" ? formData.referenceOther : formData.reference,
             };
 
             let error;
@@ -605,6 +629,41 @@ const SpeakerFormView: React.FC<SpeakerFormViewProps> = ({
                                 </div>
                             ))}
 
+                            <div>
+                                <label className="block text-sm font-semibold text-slate-900 mb-2">
+                                    {t.reference}
+                                </label>
+                                <select
+                                    name="reference"
+                                    value={formData.reference}
+                                    onChange={handleInputChange}
+                                    className={`w-full px-4 py-3 border-2 border-slate-200 rounded-lg focus:border-[#013371] focus:outline-none bg-white hover:border-slate-300 transition-colors ${isApproved ? 'bg-slate-100 cursor-not-allowed' : ''}`}
+                                    disabled={isApproved}
+                                >
+                                    <option value="">Select Reference</option>
+                                    {t.referenceOptions.map((opt: string) => (
+                                        <option key={opt} value={opt}>{opt}</option>
+                                    ))}
+                                </select>
+                            </div>
+
+                            {formData.reference === "Other" && (
+                                <div>
+                                    <label className="block text-sm font-semibold text-slate-900 mb-2">
+                                        {t.referenceOther} <span className="text-red-500">*</span>
+                                    </label>
+                                    <input
+                                        type="text"
+                                        name="referenceOther"
+                                        value={formData.referenceOther}
+                                        onChange={handleInputChange}
+                                        className={`w-full px-4 py-3 border-2 border-slate-200 rounded-lg focus:border-[#013371] focus:outline-none bg-white hover:border-slate-300 transition-colors ${isApproved ? 'bg-slate-100 cursor-not-allowed' : ''}`}
+                                        required
+                                        disabled={isApproved}
+                                    />
+                                </div>
+                            )}
+
                             {/* Bio */}
                             <div>
                                 <label className="block text-sm font-semibold text-slate-900 mb-2">
@@ -770,6 +829,7 @@ const SpeakerStatusView: React.FC<SpeakerStatusViewProps> = ({ t, isApproved, fo
         { label: t.company, value: formData.company },
         { label: t.linkedin, value: formData.linkedin, link: true },
         { label: t.topicTitle, value: formData.topicTitle },
+        { label: t.reference, value: formData.reference === "Other" ? formData.referenceOther : formData.reference },
     ];
 
     return (
