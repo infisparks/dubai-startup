@@ -29,14 +29,15 @@ const AgendaIconMap: { [key: string]: React.ElementType } = {
 const agendaData = {
     en: {
         title: 'Summit Agenda',
-        subtitle: '"Fundraiser & Pitch Battle"',
-        intro: 'Showcasing innovation and facilitating investment.',
+        subtitle: 'The Summit',
+        intro: 'Provides a comprehensive platform for knowledge exchange and strategic engagement.',
         events: [
-            { iconKey: 'Pitch', title: 'Startup Pitch Competition', description: 'Over 50 startups present their ventures to investors and judges.', },
-            { iconKey: 'Lounge', title: 'Investor Connect Lounge', description: 'Dedicated space for one-on-one meetings and private networking.', },
-            { iconKey: 'Exhibition', title: 'Exhibition Zone', description: 'Booths for startups to showcase innovations and engage with attendees.', },
-            { iconKey: 'Awards', title: 'Awards Ceremony', description: 'Recognizing outstanding startups and contributions to the ecosystem.', },
-            { iconKey: 'Media', title: 'Media & PR Coverage', description: 'Ensuring widespread visibility for the event and its participants.', },
+            { iconKey: 'Awards', title: 'Opening Ceremony', description: 'Kicking off the event with official welcomes and setting the tone for the summit.', },
+            { iconKey: 'Keynote', title: 'Keynote Addresses', description: 'Insights from prominent figures across various industries.', },
+            { iconKey: 'Panel', title: 'Industry Panels', description: 'Focused discussions on AI, Real Estate, Fintech, Crypto, and Healthcare.', },
+            { iconKey: 'Lunch', title: 'Networking Lunch', description: 'An opportunity for informal connections and discussions among participants.', },
+            { iconKey: 'Roundtables', title: 'Investor-Startup Roundtables', description: 'Structured sessions facilitating direct interaction between investors and startups.', },
+            { iconKey: 'Dinner', title: 'Gala Dinner', description: 'A formal evening event designed for high-level networking and relationship building.', },
         ],
         highlights: [
             { iconKey: 'StartupAwards', title: 'Startup awards' },
@@ -47,14 +48,15 @@ const agendaData = {
     },
     ar: {
         title: 'جدول أعمال القمة',
-        subtitle: '"جمع التبرعات ومعركة العروض"',
-        intro: 'عرض الابتكار وتسهيل الاستثمار.',
+        subtitle: 'القمة',
+        intro: 'توفر منصة شاملة لتبادل المعرفة والمشاركة الاستراتيجية.',
         events: [
-            { iconKey: 'Pitch', title: 'مسابقة عرض الشركات الناشئة', description: 'أكثر من 50 شركة ناشئة تقدم مشاريعها للمستثمرين والمحكمين.', },
-            { iconKey: 'Lounge', title: 'صالة تواصل المستثمرين', description: 'مساحة مخصصة للاجتماعات الفردية والتواصل الخاص.', },
-            { iconKey: 'Exhibition', title: 'منطقة المعرض', description: 'أكشاك للشركات الناشئة لعرض الابتكارات والتفاعل مع الحضور.', },
-            { iconKey: 'Awards', title: 'حفل توزيع الجوائز', description: 'تكريم الشركات الناشئة والمساهمات البارزة في النظام البيئي.', },
-            { iconKey: 'Media', title: 'تغطية إعلامية وعلاقات عامة', description: 'ضمان انتشار واسع للحدث والمشاركين فيه.', },
+            { iconKey: 'Awards', title: 'حفل الافتتاح', description: 'انطلاق الحدث بترحيب رسمي وتحديد نغمة القمة.', },
+            { iconKey: 'Keynote', title: 'الخطابات الرئيسية', description: 'رؤى من شخصيات بارزة في مختلف الصناعات.', },
+            { iconKey: 'Panel', title: 'حلقات نقاش صناعية', description: 'مناقشات مركزة حول الذكاء الاصطناعي والعقارات والتكنولوجيا المالية والعملات المشفرة والرعاية الصحية.', },
+            { iconKey: 'Lunch', title: 'غداء التواصل', description: 'فرصة للتواصل غير الرسمي والمناقشات بين المشاركين.', },
+            { iconKey: 'Roundtables', title: 'طاولات مستديرة للمستثمرين والشركات الناشئة', description: 'جلسات منظمة تسهل التفاعل المباشر بين المستثمرين والشركات الناشئة.', },
+            { iconKey: 'Dinner', title: 'حفل العشاء', description: 'حدث مسائي رسمي مصمم للتواصل رفيع المستوى وبناء العلاقات.', },
         ],
         highlights: [
             { iconKey: 'StartupAwards', title: 'جوائز الشركات الناشئة' },

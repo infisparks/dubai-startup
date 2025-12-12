@@ -32,15 +32,15 @@ const translations = {
   en: {
     title: 'Event Overview',
     intro:
-      'Investarise Global Investment Summit 2026 is a premier international platform designed to unite over 100 investors, 200 startups, and 10 speakers, alongside global partners. We bridge traditional sectors with innovative investment opportunities.',
+      "Investarise Global Investment Summit 2026 is a premier international platform designed to unite over 50 investors, 250 startups and SME's, and 10 speakers, alongside global partners.",
     dateLabel: 'Summit Dates',
-    date: 'February 5th & 6th, 2026',
+    date: 'February 5th 2026',
     venueLabel: 'Location',
-    venue: 'Taj Exotica Resort and Spa, Palm Jumeirah, Dubai',
+    venue: 'Taj Exotica Resort and Spa Palm Jumeirah Dubai',
     keyStakeholders: 'Key Stakeholders',
     stakeholders: [
-      { count: '100+', label: 'Investors' },
-      { count: '200+', label: 'Startups' },
+      { count: '50+', label: 'Investors' },
+      { count: '250+', label: "Startups and SME's" },
       { count: '10+', label: 'Speakers' },
     ],
     summitTheme: 'Summit Theme',
@@ -55,15 +55,15 @@ const translations = {
   ar: {
     title: 'نظرة عامة على الحدث',
     intro:
-      'قمة إنفستارايز العالمية للاستثمار 2026 هي منصة دولية رائدة تهدف إلى جمع أكثر من 100 مستثمر و 200 شركة ناشئة و 10 متحدثين، بالإضافة إلى الشركاء العالميين. نحن نربط القطاعات التقليدية بفرص الاستثمار المبتكرة.',
+      'قمة إنفستارايز العالمية للاستثمار 2026 هي منصة دولية رائدة تهدف إلى جمع أكثر من 50 مستثمر و 250 شركة ناشئة وشركات صغيرة ومتوسطة و 10 متحدثين، بالإضافة إلى الشركاء العالميين.',
     dateLabel: 'تواريخ القمة',
-    date: '5 و 6 فبراير 2026',
+    date: '5 فبراير 2026',
     venueLabel: 'الموقع',
     venue: 'منتجع وسبا تاج إكزوتيكا، نخلة جميرا، دبي',
     keyStakeholders: 'أصحاب المصلحة الرئيسيون',
     stakeholders: [
-      { count: '100+', label: 'مستثمر' },
-      { count: '200+', label: 'شركة ناشئة' },
+      { count: '50+', label: 'مستثمر' },
+      { count: '250+', label: 'شركة ناشئة وشركات صغيرة ومتوسطة' },
       { count: '10+', label: 'متحدث' },
     ],
     summitTheme: 'شعار القمة',
@@ -166,19 +166,19 @@ export default function EventOverview({ language = 'en' }: EventOverviewProps) {
                 </div>
               </div>
             </div>
-            
+
             {/* Small divider */}
             <div className="mt-6 pt-4 border-t border-slate-100">
               <p className="text-xs text-slate-400">Palm Jumeirah, Dubai</p>
             </div>
           </div>
-          
+
           {/* Column 2: Core Objectives (Icon-Rich List) */}
           <div className="lg:col-span-2 bg-white p-6 rounded-2xl shadow-lg border border-slate-100">
             <h4 className="text-xl font-bold text-slate-900 mb-6 border-b border-slate-100 pb-3">
               {t.coreObjectives}
             </h4>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-8">
               {t.objectives.map((obj, index) => {
                 const IconComponent = obj.icon
