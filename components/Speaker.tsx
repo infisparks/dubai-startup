@@ -47,14 +47,14 @@ const translations = {
   en: {
     title: 'Our Speakers',
     subtitle:
-      'Investarise Global Investment Summit 2026 welcome our prestigious speakers to the Event',
+      'Investarise Global Investment Summit 2026 welcome our prestigious speakers.',
     footer: "Investarise Global Investor Summit - 2026: Shaping Tomorrow's Economy",
     readMore: 'Read More',
     readLess: 'Read Less',
     speakers: [
       {
         name: 'Dr. Manav Ahuja',
-        bio: 'Transforming Businesses Success with Modern Approach 25+ Years of Rich Business & Consultancy Experience, Honored with Doctorate degree in Human Psychology Nurtured Business of 100 Entrepreneurs, Trained 1000 Candidates on sales Business.',
+        bio: 'Driving business success with modern strategies, backed by 25+ years in business and consultancy, and a doctorate in Human Psychology. Supported 100 entrepreneurs and trained 1,000 sales professionals.',
         image: '/speaker/11.png',
       },
       {
@@ -64,12 +64,12 @@ const translations = {
       },
       {
         name: 'Dr. Alexandru Nedelcu',
-        bio: 'Dr. Alexandru Nedelcu has established a reputation for excellence in patient care, innovative treatment approaches, and a compassionate commitment to improving the lives of those affected by cancer.',
+        bio: 'Dr. Alexandru Nedelcu is known for excellent patient care, innovative treatments, and a compassionate dedication to helping cancer patients.',
         image: '/speaker/8.png',
       },
       {
         name: 'Mr. Abdulmajid Ansari',
-        bio: "Chairman & Global Investment Strategist, A visionary leader redefining the landscape of global finance, over two decades of expertise in cross-border investments and venture capital. As the architect behind some of the region's most transformative deals.",
+        bio: 'Chairman and Global Investment Strategist with over 20 years of experience in cross-border investments and venture capital, known for leading transformative regional deals.',
         image: '/speaker/3.png',
       },
     ],

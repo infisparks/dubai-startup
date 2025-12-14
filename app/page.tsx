@@ -52,7 +52,7 @@ export default function Home() {
       <Schedule language={language} />
       <MarketingStrategy language={language} />
 
-      <OurTeam language={language} />
+      {/* <OurTeam language={language} /> */}
       <SponsorshipPackages language={language} />
 
       {/* <FeaturedStartups language={language} />
@@ -61,7 +61,7 @@ export default function Home() {
       <Testimonials language={language} />
       <Newsletter language={language} />
       <Contact language={language} /> */}
-      <InvestariseAdvantage language={language} />
+      {/* <InvestariseAdvantage language={language} /> */}
       <Footer language={language} />
       <ScrollToTop />
     </div>

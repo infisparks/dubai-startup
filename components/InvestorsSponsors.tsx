@@ -42,7 +42,7 @@ interface InvestorsSponsorsProps {
 
 const translations = {
     en: {
-        title: 'Our Investors/Sponsors',
+        title: 'Our Investors / Sponsors',
         subtitle:
             'Investarise Global Investment Summit 2026 welcome our prestigious speakers to the Event',
         footer: "Investarise Global Investor Summit - 2026: Shaping Tomorrow's Economy",
@@ -51,22 +51,22 @@ const translations = {
         investors: [
             {
                 name: 'Mr. Nitin Aggarwal',
-                bio: 'Managing Partner at Gopinath Group of companies. Proactive and result oriented with good experience in Retail Banking, SME Banking, Set up of New Business. Well-disciplined with proven ability to manage multiple assignments efficiently under extreme pressure while meeting tight deadline schedules.',
+                bio: 'Managing Partner at Gopinath Group with experience in Retail and SME Banking, new business setup, and strong skills in handling multiple tasks efficiently under pressure and tight deadlines.',
                 image: '/speaker/2.png',
             },
             {
                 name: 'Mr. Randeep Singh Nanda',
-                bio: 'Managing Director at Bonn Metals Const Industries LLC | An accomplished business leader with a strong background in finance and strategic management. As the Managing Director of Bonn Metals Const Industries LLC, he oversees operations for companies values with USD 100 million.',
+                bio: 'Managing Director at Bonn Metals Const Industries LLC, overseeing operations of companies worth USD 100 million with strong expertise in finance and strategic leadership.',
                 image: '/speaker/6.png',
             },
             {
                 name: 'Mr. Puneet Sakhuja',
-                bio: 'Chartered Accountant | Insolvency Professional | Strategic Advisor | Founder – Arthah Group | Director – International Tax & Compliance with 18+ years of experience, invested in 20+ companies so far.',
+                bio: 'Chartered Accountant, Insolvency Professional, Strategic Advisor, Founder of Arthah Group, and Director of International Tax & Compliance with over 18 years of experience and investments in more than 20 companies.',
                 image: '/speaker/5.png',
             },
             {
                 name: 'Mr. Manzar Khan',
-                bio: 'Founder of Reham Group It has been in business for more than 18 years. In our extremely exciting journey, we have successfully delivered to more than 1500 companies and boast of a large clientele across UAE, India & other APAC regions. We have been recognized by many key organizations for our quality service, growth and stability.',
+                bio: "Reham Group's founder has led the company for over 18 years, serving more than 1500 clients across the UAE, India, and APAC. The group is recognized for its quality service, growth, and stability.",
                 image: '/speaker/7.png',
             },
         ],

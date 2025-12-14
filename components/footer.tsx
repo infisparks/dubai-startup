@@ -2,7 +2,7 @@
 
 import React from 'react'
 import { useRouter } from 'next/navigation'
-import { Facebook, Linkedin, Twitter, Mail, Phone, MapPin, ArrowRight } from 'lucide-react'
+import { Facebook, Linkedin, Instagram, Mail, Phone, MapPin, ArrowRight } from 'lucide-react'
 
 interface FooterProps {
   language?: 'en' | 'ar'
@@ -196,9 +196,9 @@ export default function Footer({ language = 'en' }: FooterProps) {
               <h4 className="font-bold text-white mb-5 text-sm uppercase tracking-wider">{t.followUs}</h4>
               <div className="flex gap-3">
                 {[
-                  { icon: Facebook, label: 'Facebook', href: '#' },
-                  { icon: Twitter, label: 'Twitter', href: '#' },
-                  { icon: Linkedin, label: 'LinkedIn', href: '#' },
+                  { icon: Facebook, label: 'Facebook', href: 'https://www.facebook.com/profile.php?id=61585203620830&sk=about' },
+                  { icon: Instagram, label: 'Instagram', href: 'https://www.instagram.com/investariseglobal/' },
+                  { icon: Linkedin, label: 'LinkedIn', href: 'https://www.linkedin.com/company/investarise-global/?viewAsMember=true' },
                 ].map((social) => {
                   const Icon = social.icon
                   return (

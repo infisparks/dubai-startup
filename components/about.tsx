@@ -14,20 +14,40 @@ const BRAND_BASE_PATH = '/brand'
 
 const translations = {
   en: {
-    aboutUsTitle: 'About Us',
-    investorsTitle: 'Investarise Global Investors',
-    aboutPartial: 'Investarise Global Investors Summit connects visionary founders with elite investors, venture capital firms, and family offices worldwide. Our mission is to empower innovation by creating a seamless bridge between ambition and capital. With 90% of our features free, we remain committed to accessibility, transparency, and trust.',
-    aboutDescription: 'Investarise Global Investors Summit connects visionary founders with elite investors, venture capital firms, and family offices worldwide. Our mission is to empower innovation by creating a seamless bridge between ambition and capital. Today, Investarise drives deal flow for over 100+ global investment networks, helping startups secure the right partnerships to scale. With 90% of our features free, we remain committed to accessibility, transparency, and trust. Through Investarise Premium, we go beyond the digital — hosting exclusive global Investment summits, pitch sessions, and networking events. Join us at the Investarise Global Summit – Dubai 2026, where ideas meet opportunity.',
+    aboutUsTitle: 'Raising the curtain..',
+    investorsTitle: 'Investarise Global Investors Summit',
+    aboutPartial: 'Investarise Global Investors Summit connects visionary founders with elite investors, venture capital firms, and family offices worldwide. Our mission is to empower innovation/dreams/new ideas by creating a seamless bridge between ambition and capital.',
+    aboutDescription: 'Investarise Global Investors Summit connects visionary founders with elite investors, venture capital firms, and family offices worldwide. Our mission is to empower innovation/dreams/new ideas by creating a seamless bridge between ambition and capital. The summit aims to empower entrepreneurs and high-potential businesses, particularly those from underrepresented or emerging markets, by providing them with direct access to investors, funding opportunities, and strategic guidance. By cultivating an environment where ambition meets investment, the summit seeks to unlock new avenues for innovation, job creation, and economic progress on a global scale. Today, Investarise drives deal flow for over 100+ global investment networks, helping startups secure the right partnerships to scale. Through Investarise service platform, we remain committed to accessibility, transparency, and trust and go beyond the digital-hosting exclusive global investment summits, pitch sessions, and networking events.\n\nJoin us at the Investarise Global Summit – Dubai 2026, where ideas meet opportunity and the below mentioned follows.',
     readMore: 'Read Full Story',
     readLess: 'Show Less',
+    features: [
+      { title: 'Access High-Growth Opportunities', desc: 'Invest early in ventures with huge potential.' },
+      { title: 'Smart Matchmaking', desc: 'Connect with the right founders and investors.' },
+      { title: 'Global Reach & Exposure', desc: 'Boost your brand across industries and markets.' },
+      { title: 'Proven Expertise', desc: 'Work with a team that consistently delivers results.' },
+      { title: 'Exclusive Events & Summits', desc: 'Network, collaborate, and discover deals.' },
+      { title: 'Data-Driven Insights', desc: 'Make confident, informed investment decisions.' },
+      { title: 'Secure & Transparent Process', desc: 'Invest with clarity and trust.' },
+      { title: 'Impactful Opportunities', desc: 'Grow your portfolio while making a difference.' },
+    ]
   },
   ar: {
-    aboutUsTitle: 'عنّا',
-    investorsTitle: 'مستثمرو إنفسترايز العالميون',
-    aboutPartial: 'تجمع قمة إنفسترايز العالمية للمستثمرين المؤسسين ذوي الرؤى مع المستثمرين النخبة وشركات رأس المال الاستثماري والمكاتب العائلية في جميع أنحاء العالم. مهمتنا هي تمكين الابتكار من خلال إنشاء جسر سلس بين الطموح ورأس المال. مع 90% من ميزاتنا المجانية، نبقى ملتزمين بإمكانية الوصول والشفافية والثقة.',
-    aboutDescription: 'تجمع قمة إنفسترايز العالمية للمستثمرين المؤسسين ذوي الرؤى مع المستثمرين النخبة وشركات رأس المال الاستثماري والمكاتب العائلية في جميع أنحاء العالم. مهمتنا هي تمكين الابتكار من خلال إنشاء جسر سلس بين الطموح ورأس المال. اليوم، تدفع إنفسترايز تدفق الصفقات لأكثر من 100 شبكة استثمار عالمية، مما يساعد الشركات الناشئة على تأمين الشراكات الصحيحة للتوسع. مع 90% من ميزاتنا المجانية، نبقى ملتزمون بإمكانية الوصول والشفافية والثقة. من خلال إنفسترايز بريميوم، نتجاوز الرقمي – نستضيف قمم استثمار عالمية حصرية، وجلسات عرض، وفعاليات تواصل. انضم إلينا في قمة إنفسترايز العالمية – دبي 2026، حيث تلتقي الأفكار بالفرص.',
+    aboutUsTitle: 'رفع الستار..',
+    investorsTitle: 'قمة إنفسترايز العالمية للمستثمرين',
+    aboutPartial: 'تجمع قمة إنفسترايز العالمية للمستثمرين المؤسسين ذوي الرؤى مع المستثمرين النخبة وشركات رأس المال الاستثماري والمكاتب العائلية في جميع أنحاء العالم. مهمتنا هي تمكين الابتكار من خلال إنشاء جسر سلس بين الطموح ورأس المال.',
+    aboutDescription: 'تجمع قمة إنفسترايز العالمية للمستثمرين المؤسسين ذوي الرؤى مع المستثمرين النخبة وشركات رأس المال الاستثماري والمكاتب العائلية في جميع أنحاء العالم. مهمتنا هي تمكين الابتكار من خلال إنشاء جسر سلس بين الطموح ورأس المال. تهدف القمة إلى تمكين رواد الأعمال والشركات ذات الإمكانات العالية، وخاصة تلك من الأسواق الممثلة تمثيلاً ناقصاً أو الناشئة، من خلال تزويدهم بالوصول المباشر إلى المستثمرين وفرص التمويل والتوجيه الاستراتيجي. من خلال تنمية بيئة يلتقي فيها الطموح بالاستثمار، تسعى القمة لفتح آفاق جديدة للابتكار وخلق فرص العمل والتقدم الاقتصادي على نطاق عالمي. اليوم، تدفع إنفسترايز تدفق الصفقات لأكثر من 100 شبكة استثمار عالمية، مما يساعد الشركات الناشئة على تأمين الشراكات الصحيحة للتوسع. من خلال منصة خدمات إنفسترايز، نبقى ملتزمين بإمكانية الوصول والشفافية والثقة ونتجاوز الرقمي – نستضيف قمم استثمار عالمية حصرية، وجلسات عرض، وفعاليات تواصل.\n\nانضم إلينا في قمة إنفسترايز العالمية – دبي 2026، حيث تلتقي الأفكار بالفرص وما يلي مذكور أدناه.',
     readMore: 'اقرأ القصة الكاملة',
     readLess: 'إظهار أقل',
+    features: [
+      { title: 'الوصول إلى فرص عالية النمو', desc: 'استثمر مبكراً في مشاريع ذات إمكانات هائلة.' },
+      { title: 'التوفيق الذكي', desc: 'تواصل مع المؤسسين والمستثمرين المناسبين.' },
+      { title: 'الوصول العالمي والتعرض', desc: 'عزز علامتك التجارية عبر الصناعات والأسواق.' },
+      { title: 'خبرة مثبتة', desc: 'اعمل مع فريق يقدم نتائج باستمرار.' },
+      { title: 'فعاليات وقمم حصرية', desc: 'تواصل، تعاون، واكتشف الصفقات.' },
+      { title: 'رؤى مدعومة بالبيانات', desc: 'اتخذ قرارات استثمارية واثقة ومستنيرة.' },
+      { title: 'عملية آمنة وشفافة', desc: 'استثمر بوضوح وثقة.' },
+      { title: 'فرص مؤثرة', desc: 'نمِّ محفظتك بينما تحدث فرقاً.' },
+    ]
   },
 }
 
@@ -91,6 +111,69 @@ const BrandTicker = () => {
   );
 };
 
+const FeaturesTicker = ({ features, isRtl }: { features: { title: string; desc: string }[]; isRtl: boolean }) => {
+  const scrollRef = useRef<HTMLDivElement>(null)
+  const [isPaused, setIsPaused] = useState(false)
+  // Duplicate features for smooth infinite scrolling
+  const repeatedFeatures = [...features, ...features, ...features, ...features]
+
+  useEffect(() => {
+    const el = scrollRef.current
+    if (!el) return
+    let animationId: number
+    const animate = () => {
+      if (!isPaused) {
+        const speed = 0.5 // Consistent speed
+        if (el.scrollLeft >= el.scrollWidth / 2) {
+          el.scrollLeft = 0 // Reset to start
+        } else {
+          el.scrollLeft += speed
+        }
+      }
+      animationId = requestAnimationFrame(animate)
+    }
+    animationId = requestAnimationFrame(animate)
+    return () => cancelAnimationFrame(animationId)
+  }, [isPaused])
+
+  return (
+    <div className="w-full py-8 overflow-hidden relative z-20 mt-8">
+      {/* Gradient Masks */}
+      <div className="absolute left-0 top-0 bottom-0 w-12 sm:w-24 bg-gradient-to-r from-slate-950 to-transparent z-10 pointer-events-none"></div>
+      <div className="absolute right-0 top-0 bottom-0 w-12 sm:w-24 bg-gradient-to-l from-slate-950 to-transparent z-10 pointer-events-none"></div>
+
+      <div
+        ref={scrollRef}
+        className="flex items-stretch overflow-x-auto gap-6 no-scrollbar select-none"
+        style={{
+          scrollbarWidth: 'none',
+          msOverflowStyle: 'none',
+          WebkitOverflowScrolling: 'touch',
+        }}
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}
+        onTouchStart={() => setIsPaused(true)}
+        onTouchEnd={() => setIsPaused(false)}
+      >
+        {repeatedFeatures.map((feature, i) => (
+          <div
+            key={i}
+            className={`flex-shrink-0 w-72 sm:w-80 p-6 bg-slate-800/30 border border-slate-700/50 rounded-xl hover:bg-slate-800/50 transition-all duration-300 hover:border-blue-500/30 group ${isRtl ? 'text-right' : 'text-left'
+              }`}
+          >
+            <h4 className="text-lg font-bold text-white mb-3 group-hover:text-blue-400 transition-colors">
+              {feature.title}
+            </h4>
+            <p className="text-sm text-slate-400 leading-relaxed group-hover:text-slate-300 transition-colors">
+              {feature.desc}
+            </p>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+};
+
 // --- Main Component ---
 
 export default function About({ language = 'en' }: AboutProps) {
@@ -148,7 +231,7 @@ export default function About({ language = 'en' }: AboutProps) {
 
           {/* Description Text */}
           <div className="relative bg-slate-800/40 border border-slate-700/60 rounded-xl p-8 shadow-2xl hover:border-blue-500/50 transition-all duration-500 backdrop-blur-md">
-            <p className="text-base lg:text-lg text-slate-200 leading-relaxed font-light">
+            <p className="text-base lg:text-lg text-slate-200 leading-relaxed font-light whitespace-pre-line">
               {expandedText ? t.aboutDescription : t.aboutPartial}
               {!expandedText && <span className="text-cyan-400 font-semibold">...</span>}
             </p>
@@ -178,7 +261,21 @@ export default function About({ language = 'en' }: AboutProps) {
               </button>
             )}
           </div>
+
         </div>
+
+        {/* Features Ticker */}
+        <div className="-mx-4 sm:-mx-6 lg:-mx-8">
+          <FeaturesTicker features={t.features} isRtl={isRtl} />
+        </div>
+
+        <div className="max-w-7xl mx-auto relative z-10">
+          {/* Footer Note */}
+          <div className="mt-12 text-center">
+            <p className="text-sm text-slate-500">Investarise Global Investor Summit – 2026: Shaping Tomorrow's Economy</p>
+          </div>
+        </div>
+
       </section>
 
       <style>{`

@@ -13,9 +13,9 @@ interface Feature {
 }
 
 interface SponsorshipPackageData {
-    title: string;
-    mainTitle: string;
-    tiers: Feature[];
+  title: string;
+  mainTitle: string;
+  tiers: Feature[];
 }
 
 interface SponsorshipPackageProps {
@@ -32,13 +32,11 @@ const translations: { [key: string]: SponsorshipPackageData } = {
         price: '500,000 AED',
         icon: FiAward,
         color: 'gold',
-        subtitle: 'Premium Partnership',
         features: [
-          'Premium 6m² exhibition booth',
-          '10 exclusive VIP passes',
-          'Keynote speaking slot',
-          'Logo on all event materials',
-          'Full attendee database access',
+          '6m² premium exhibition booth located in the VIP section.',
+          '10 VIP passes reserved for investors and executives.',
+          '20-minute keynote speech plus panel involvement',
+          'Logo displayed on all event materials plus a dedicated PR feature.',
         ],
       },
       {
@@ -46,13 +44,11 @@ const translations: { [key: string]: SponsorshipPackageData } = {
         price: '300,000 AED',
         icon: FiShield,
         color: 'cyan',
-        subtitle: 'Standard Partnership',
         features: [
-          'Standard 4m² exhibition booth',
-          '6 VIP passes',
-          'Panel participation',
-          'Logo on website & materials',
-          'Attendee database access',
+          '4m² exhibition booth in a prime location',
+          'Six VIP passes allocated for company representatives.',
+          'Panel discussion with a sponsored networking event',
+          'Logo displayed on event website and materials.',
         ],
       },
       {
@@ -60,13 +56,11 @@ const translations: { [key: string]: SponsorshipPackageData } = {
         price: '200,000 AED',
         icon: FiPocket,
         color: 'blue',
-        subtitle: 'Essential Partnership',
         features: [
-          'Compact exhibition booth',
-          '4 VIP passes',
-          'Brand visibility on screens',
-          'Social media mentions',
-          'Logo on event website',
+          'Small 3m² exhibition booth',
+          'Four VIP passes available for networking events.',
+          'Brand exposure on event programs and digital displays',
+          'Access to social media mentions and the attendee database.',
         ],
       },
     ],
@@ -170,7 +164,7 @@ export default function SponsorshipPackages({ language = 'en' }: SponsorshipPack
       const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current
       setCanScrollLeft(scrollLeft > 0)
       // Added a small buffer to avoid flickering near the end
-      setCanScrollRight(scrollLeft + clientWidth < scrollWidth - 10) 
+      setCanScrollRight(scrollLeft + clientWidth < scrollWidth - 10)
     }
   }
 
@@ -182,7 +176,7 @@ export default function SponsorshipPackages({ language = 'en' }: SponsorshipPack
         behavior: 'smooth'
       })
       // Give a slight delay to allow scroll animation to finish before checking
-      setTimeout(checkScroll, 300) 
+      setTimeout(checkScroll, 300)
     }
   }
 
@@ -203,8 +197,8 @@ export default function SponsorshipPackages({ language = 'en' }: SponsorshipPack
   }, []);
 
   return (
-    <section 
-      className="relative py-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-white via-slate-50 to-white overflow-hidden" 
+    <section
+      className="relative py-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-white via-slate-50 to-white overflow-hidden"
       dir={isRtl ? 'rtl' : 'ltr'}
     >
       {/* Premium Background Elements */}
@@ -222,7 +216,7 @@ export default function SponsorshipPackages({ language = 'en' }: SponsorshipPack
       />
 
       <div className="max-w-7xl mx-auto relative z-10">
-        
+
         {/* Premium Header Section */}
         <div className="mb-12 lg:mb-14 text-center">
           {/* Pre-title Badge */}
