@@ -367,9 +367,14 @@ export default function ExhibitorFormPage() {
                 throw new Error(t.validation.logo);
             }
 
+            let formattedWebsite = formData.companyWebsite.trim();
+            if (formattedWebsite && !/^https?:\/\//i.test(formattedWebsite)) {
+                formattedWebsite = `https://${formattedWebsite}`;
+            }
+
             const profileData: Omit<ExhibitorProfileData, 'is_approved'> = {
                 company_name: formData.companyName,
-                company_website: formData.companyWebsite,
+                company_website: formattedWebsite,
                 contact_phone: formData.contactPhone,
                 booth_type: formData.boothType,
                 company_description: formData.companyDescription,
@@ -527,7 +532,7 @@ const ExhibitorFormView: React.FC<ExhibitorFormViewProps> = ({
 
                     {[
                         { label: t.companyName, name: "companyName", type: "text", placeholder: t.placeholder.companyName, required: true, disabled: isApproved },
-                        { label: t.companyWebsite, name: "companyWebsite", type: "url", placeholder: t.placeholder.companyWebsite, required: true, disabled: isApproved },
+                        { label: t.companyWebsite, name: "companyWebsite", type: "text", placeholder: t.placeholder.companyWebsite, required: true, disabled: isApproved },
                         // Contact Name is now editable (if not approved)
                         { label: t.contactName, name: "contactName", type: "text", placeholder: t.placeholder.contactName, required: true, disabled: isApproved },
                         // Contact Email remains disabled as it's the user's login ID
