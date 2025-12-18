@@ -600,7 +600,7 @@ const DeleteModal: React.FC<DeleteModalProps> = ({ startup, onClose, onDelete, t
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50 backdrop-blur-sm" onClick={onClose}>
-      <div className="bg-white rounded-xl shadow-2xl w-full max-w-lg">
+      <div className="bg-white rounded-xl shadow-2xl w-full max-w-lg" onClick={(e) => e.stopPropagation()}>
         <div className="flex justify-between items-center p-6 border-b">
           <h3 className="text-xl font-bold text-slate-900">{t.deleteStartup}</h3>
           <button type="button" onClick={onClose} className="p-1.5 rounded-full text-slate-400 hover:bg-slate-100"><X className="w-6 h-6" /></button>

@@ -13,7 +13,7 @@ const content = {
     title: 'Founder',
     name: 'Kishan Kumar Verma',
     role: 'Chief Executive Officer',
-    shortTagline: 'Banking professional armed with over 25 years',
+    shortTagline: '',
     bio: [
       "An accomplished retail & business banking leader with over 25 years of diversified experience across the UAE and India, specializing in Sales & Distribution Management, Payroll Acquisition, Credit Cards, Personal Finance, Mortgage, SME, and Strategic Business Growth.",
       "A fiercely driven start-up catalyst, he excels in launching new business lines, leading digital transformation, and building high-performing, cross-functional teams. With a proven track record in driving bank-wide digital strategy, he has played a pivotal role in shaping organizational roadmaps, strengthening revenue models, and accelerating digital adoption.",
