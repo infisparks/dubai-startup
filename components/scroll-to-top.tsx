@@ -43,7 +43,7 @@ export default function ScrollToTop() {
         onClick={() => router.push('/registration')}
         className="fixed bottom-8 left-8 z-40 px-6 py-3 bg-amber-400 text-slate-900 rounded-full font-semibold shadow-lg hover:bg-amber-300 transition-all hover:shadow-xl hidden md:block"
       >
-        {typeof window !== "undefined" && window.location.pathname === "/" ? "Register Now" : ""}
+        {typeof window !== "undefined" && window.location.pathname === "/" ? "Register Now" : "Register Now"}
       </button>
     </>
   )

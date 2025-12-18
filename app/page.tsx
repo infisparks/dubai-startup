@@ -14,6 +14,7 @@ import Contact from "@/components/contact"
 import Footer from "@/components/footer"
 import ScrollToTop from "@/components/scroll-to-top"
 import PrincePage from "@/components/PrincePage"
+import DrBuAbdullah from "@/components/DrBuAbdullah"
 import FounderPage from "@/components/Founder"
 import CoFoundersPage from "@/components/Cofounder"
 import ApprovedStartupsList from "@/components/ApprovedStartupsList"
@@ -38,6 +39,7 @@ export default function Home() {
       <Hero language={language} />
       <About language={language} />
       <PrincePage language={language} />
+      <DrBuAbdullah language={language} />
       <FounderPage language={language} />
       {/* <ApprovedStartupsList language={language}/> */}
       <CoFoundersPage language={language} />
