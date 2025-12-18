@@ -39,7 +39,7 @@ export default function Home() {
       <Hero language={language} />
       <About language={language} />
       <PrincePage language={language} />
-      <DrBuAbdullah language={language} />
+      {/* <DrBuAbdullah language={language} /> */}
       <FounderPage language={language} />
       {/* <ApprovedStartupsList language={language}/> */}
       <CoFoundersPage language={language} />
