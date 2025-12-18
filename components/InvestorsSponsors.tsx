@@ -69,6 +69,11 @@ const translations = {
                 bio: "Reham Group's founder has led the company for over 18 years, serving more than 1500 clients across the UAE, India, and APAC. The group is recognized for its quality service, growth, and stability.",
                 image: '/speaker/7.png',
             },
+            {
+                name: 'Mr. Ariz',
+                bio: 'CEO of Everest DG and Co-founder at EIT Global. 13+ years in engineering and tech. Investor with 3M+ AED in startups, specializing in scaling businesses globally.',
+                image: '/speaker/13.png',
+            },
         ],
     },
     ar: {
@@ -98,6 +103,11 @@ const translations = {
                 name: 'السيد منذر خان',
                 bio: 'مؤسس مجموعة رهام. تعمل في مجال الأعمال منذ أكثر من 18 عامًا. في رحلتنا المثيرة للغاية، نجحنا في التسليم لأكثر من 1500 شركة ونفتخر بقاعدة عملاء كبيرة عبر الإمارات العربية المتحدة والهند ومناطق آسيا والمحيط الهادئ الأخرى. لقد تم تكريمنا من قبل العديد من المنظمات الرئيسية لخدمتنا عالية الجودة ونمونا واستقرارنا.',
                 image: '/speaker/7.png',
+            },
+            {
+                name: 'السيد أريز',
+                bio: 'الرئيس التنفيذي لشركة Everest DG والمؤسس المشارك في EIT Global. أكثر من 13 عامًا في الهندسة والتكنولوجيا. مستثمر بأكثر من 3 ملايين درهم في الشركات الناشئة، متخصص في توسيع نطاق الأعمال عالميًا.',
+                image: '/speaker/13.png',
             },
         ],
     },
@@ -188,7 +198,7 @@ export default function InvestorsSponsors({ language = 'en' }: InvestorsSponsors
                     <div
                         ref={scrollContainerRef}
                         className="flex flex-nowrap overflow-x-auto scroll-smooth snap-x snap-mandatory gap-4 px-2 py-4
-                       sm:grid sm:grid-cols-2 lg:grid-cols-4 sm:gap-8 sm:p-0 sm:overflow-visible
+                       sm:grid sm:grid-cols-2 lg:grid-cols-5 sm:gap-8 sm:p-0 sm:overflow-visible
                        [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
                     >
                         {t.investors.map((investor) => {
