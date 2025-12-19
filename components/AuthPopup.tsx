@@ -2,8 +2,9 @@
 
 import type React from "react"
 import { useState } from "react"
-import { X, Mail, Lock, User, LogIn, UserPlus, Send } from "lucide-react" 
-import { supabase } from "@/lib/supabaseConfig" 
+import { X, Mail, Lock, User, LogIn, UserPlus, Send } from "lucide-react"
+import { supabase } from "@/lib/supabaseConfig"
+import Link from "next/link"
 
 // Define the possible views/screens for the popup
 type AuthView = "login" | "signup" | "forgotPassword"
@@ -16,7 +17,7 @@ interface AuthPopupProps {
 
 export default function AuthPopup({ onClose, onSuccess, language }: AuthPopupProps) {
   // Use 'view' state to manage the current screen (login, signup, or forgotPassword)
-  const [view, setView] = useState<AuthView>("login") 
+  const [view, setView] = useState<AuthView>("login")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [fullName, setFullName] = useState("")
@@ -81,7 +82,7 @@ export default function AuthPopup({ onClose, onSuccess, language }: AuthPopupPro
         onSuccess()
       } else if (view === "signup") {
         // --- Signup Logic (removed email verification step) ---
-        
+
         // Use signUp for a simple sign-up that doesn't require email verification 
         // if the Supabase project is configured to allow it, or use the 
         // signInWithPassword after a successful signUp to auto-log them in.
@@ -92,9 +93,9 @@ export default function AuthPopup({ onClose, onSuccess, language }: AuthPopupPro
           password,
           options: {
             // Save full name in user metadata
-            data: { 
-                full_name: fullName,
-            }, 
+            data: {
+              full_name: fullName,
+            },
             // NOTE: The 'redirectTo' option is typically used for email verification,
             // but we are removing the user-facing need to check email. 
             // In a production environment, you would ensure your Supabase config 
@@ -102,16 +103,16 @@ export default function AuthPopup({ onClose, onSuccess, language }: AuthPopupPro
             // Since we are removing the 'Check your email' message, this reflects the user's request.
           },
         })
-        
+
         if (signUpError) throw signUpError
-        
+
         // Log the user in immediately after successful signup (optional, depends on flow)
         // Since the prompt is to remove verification, we'll assume a direct login or success message.
         const { error: signInError } = await supabase.auth.signInWithPassword({ email, password })
         if (signInError) throw signInError
-        
+
         alert(t.loginSuccess) // Show login success, as they are now logged in
-        onSuccess() 
+        onSuccess()
       }
     } catch (err: any) {
       console.error("Auth Error:", err)
@@ -132,13 +133,13 @@ export default function AuthPopup({ onClose, onSuccess, language }: AuthPopupPro
       // Send a password reset email
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
         // Set your desired redirect URL for the password reset page
-        redirectTo: `${window.location.origin}/update-password`, 
+        redirectTo: `${window.location.origin}/reset-password`,
       })
 
       if (error) throw error
-      
+
       setMessage(t.resetSent)
-      setEmail("") // Clear email input after success
+      // Optional: Don't clear email so they can see it
     } catch (err: any) {
       console.error("Password Reset Error:", err)
       setError(err.message || "Failed to send reset email.")
@@ -190,7 +191,7 @@ export default function AuthPopup({ onClose, onSuccess, language }: AuthPopupPro
       )}
     </>
   )
-  
+
   // Helper to render the footer buttons
   const renderFooter = () => (
     <p className="mt-4 text-center text-sm text-slate-600 space-y-2">
@@ -245,7 +246,7 @@ export default function AuthPopup({ onClose, onSuccess, language }: AuthPopupPro
             <p>{error}</p>
           </div>
         )}
-        
+
         {message && (
           <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4" role="alert">
             <p>{message}</p>
@@ -272,7 +273,7 @@ export default function AuthPopup({ onClose, onSuccess, language }: AuthPopupPro
                 </div>
               </div>
             )}
-            
+
             {renderAuthFields()}
 
             <button
@@ -299,7 +300,7 @@ export default function AuthPopup({ onClose, onSuccess, language }: AuthPopupPro
         {view === "forgotPassword" && (
           <form onSubmit={handleForgotPassword} className="space-y-5">
             {/* We only need the email field here */}
-            {renderAuthFields()} 
+            {renderAuthFields()}
 
             <button
               type="submit"
@@ -314,6 +315,12 @@ export default function AuthPopup({ onClose, onSuccess, language }: AuthPopupPro
                 </>
               )}
             </button>
+
+            <div className="text-center mt-2">
+              <Link href="/reset-password" className="text-sm text-[#013371] hover:underline" onClick={onClose}>
+                Have a code? Enter it here
+              </Link>
+            </div>
           </form>
         )}
 
