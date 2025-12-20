@@ -1,18 +1,14 @@
 // @/app/admin/exhibitor-dashboard/page.tsx
 "use client"
 
-import { useEffect, useState, useMemo, useCallback } from "react"
+import React, { useEffect, useState, useMemo, useCallback } from "react"
 import { supabase } from "@/lib/supabaseConfig"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { Label } from "@/components/ui/label"
-import { Filter, Search, Users, CheckCircle, Clock, X, Loader2, FilePenLine, Save, Store, XCircle, User, Link as LinkIcon } from "lucide-react"
+import {
+    Filter, Search, Users, CheckCircle, Clock, X, Loader2,
+    Save, Store, XCircle, User, Link as LinkIcon, Phone, Mail, FileText
+} from "lucide-react"
 import { useForm, Controller } from 'react-hook-form';
-import { cn } from "@/lib/utils" // Assuming this utility is available for Tailwind classes
-
+import { cn } from "@/lib/utils"
 
 // --- Types ---
 
@@ -31,7 +27,7 @@ interface ExhibitorProfile {
     reference: string | null;
 }
 
-// Type for the editable fields in the modal
+// Type for the editable fields
 interface EditableProfileFields {
     company_name: string;
     company_website: string;
@@ -40,180 +36,279 @@ interface EditableProfileFields {
     booth_type: string;
     company_description: string;
     reference: string;
-    // Note: Logo update requires file handling which is complex inside the modal RHF, 
-    // so we'll leave it as a visual link/note in the admin view.
+    is_approved: boolean;
 }
 
+// --- Helper Components (FIXED WITH FORWARD REF) ---
 
-// --- Components ---
+const FormInput = React.forwardRef<HTMLInputElement, any>(({ label, icon, ...props }, ref) => (
+    <div>
+        <label className="block text-sm font-medium text-slate-700 mb-1">{label}</label>
+        <div className="relative">
+            {icon && <div className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">{icon}</div>}
+            <input
+                ref={ref}
+                {...props}
+                className={`block w-full ${icon ? 'pl-9' : 'px-4'} pr-4 py-2 bg-white border border-slate-300 rounded-lg shadow-sm text-sm focus:outline-none focus:ring-indigo-600 focus:border-indigo-600 transition`}
+            />
+        </div>
+    </div>
+));
+FormInput.displayName = "FormInput";
 
-// 1. Exhibitor Review Modal (Component to approve/view/edit details)
+const FormSelect = React.forwardRef<HTMLSelectElement, any>(({ label, options, value, onChange, ...props }, ref) => (
+    <div>
+        <label className="block text-sm font-medium text-slate-700 mb-1">{label}</label>
+        <select
+            ref={ref}
+            value={value}
+            onChange={onChange}
+            {...props}
+            className="block w-full px-4 py-2 bg-white border border-slate-300 rounded-lg shadow-sm text-sm focus:outline-none focus:ring-indigo-600 focus:border-indigo-600 transition"
+        >
+            <option value="" disabled>Select an option</option>
+            {options.map((opt: string) => (
+                <option key={opt} value={opt}>{opt}</option>
+            ))}
+        </select>
+    </div>
+));
+FormSelect.displayName = "FormSelect";
+
+const FormTextarea = React.forwardRef<HTMLTextAreaElement, any>(({ label, ...props }, ref) => (
+    <div>
+        <label className="block text-sm font-medium text-slate-700 mb-1">{label}</label>
+        <textarea
+            ref={ref}
+            {...props}
+            className="block w-full px-4 py-2 bg-white border border-slate-300 rounded-lg shadow-sm text-sm focus:outline-none focus:ring-indigo-600 focus:border-indigo-600 transition resize-none"
+        />
+    </div>
+));
+FormTextarea.displayName = "FormTextarea";
+
+const ToggleSwitch = ({ label, checked, onChange }: any) => (
+    <div className="flex items-center justify-between p-3 border border-slate-200 rounded-lg bg-slate-50">
+        <label className="text-sm font-medium text-slate-700 flex flex-col">
+            {label}
+            <span className={`text-xs mt-0.5 font-bold ${checked ? 'text-green-600' : 'text-red-600'}`}>
+                {checked ? 'APPROVED' : 'PENDING / DISAPPROVED'}
+            </span>
+        </label>
+        <button
+            type="button"
+            onClick={() => onChange(!checked)}
+            className={`${checked ? 'bg-green-600' : 'bg-red-600'} relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none`}
+        >
+            <span aria-hidden="true" className={`${checked ? 'translate-x-5' : 'translate-x-0'} pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out`} />
+        </button>
+    </div>
+);
+
+
+// --- 1. Exhibitor Review Modal ---
+
 interface ExhibitorReviewModalProps {
     profile: ExhibitorProfile;
-    onClose: (updated: boolean) => void;
-    onStatusUpdate: (userId: string, isApproved: boolean) => Promise<void>;
-    onDataUpdate: (userId: string, data: EditableProfileFields) => Promise<void>;
-    // Pass booth options for select field translation
+    onClose: () => void;
+    onSave: (updatedProfile: ExhibitorProfile) => void;
     boothOptions: string[];
 }
 
-const ExhibitorReviewModal: React.FC<ExhibitorReviewModalProps> = ({ profile, onClose, onStatusUpdate, onDataUpdate, boothOptions }) => {
+const ExhibitorReviewModal: React.FC<ExhibitorReviewModalProps> = ({ profile, onClose, onSave, boothOptions }) => {
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    // RHF Setup for editing
-    const { control, handleSubmit, register, watch, formState: { isDirty } } = useForm<EditableProfileFields>({
+    // RHF Setup
+    const { control, handleSubmit, register, watch, setValue, reset } = useForm<EditableProfileFields>({
         defaultValues: {
-            company_name: profile.company_name,
-            company_website: profile.company_website,
-            contact_personname: profile.contact_personname,
-            contact_phone: profile.contact_phone,
-            booth_type: profile.booth_type,
-            company_description: profile.company_description,
-            reference: profile.reference || '',
+            company_name: '',
+            company_website: '',
+            contact_personname: '',
+            contact_phone: '',
+            booth_type: '',
+            company_description: '',
+            reference: '',
+            is_approved: false
         },
     });
 
     const watchedDescription = watch('company_description') || '';
 
+    // 🟢 CRITICAL FIX: Reset form values when profile prop changes
+    useEffect(() => {
+        if (profile) {
+            console.log("Loading exhibitor data:", profile);
+            reset({
+                company_name: profile.company_name || '',
+                company_website: profile.company_website || '',
+                contact_personname: profile.contact_personname || '',
+                contact_phone: profile.contact_phone || '',
+                booth_type: profile.booth_type || '',
+                company_description: profile.company_description || '',
+                reference: profile.reference || '',
+                is_approved: profile.is_approved || false
+            });
+        }
+    }, [profile, reset]);
 
-    const handleDataSubmission = handleSubmit(async (data) => {
+    const onSubmit = async (data: EditableProfileFields) => {
         setIsSubmitting(true);
-        await onDataUpdate(profile.user_id, data);
-        setIsSubmitting(false);
-        onClose(true);
-    });
+        try {
+            // 1. Update Exhibitor Profile Table
+            const { data: updatedData, error } = await supabase
+                .from('exhibitor_profiles')
+                .update({
+                    company_name: data.company_name,
+                    company_website: data.company_website,
+                    contact_personname: data.contact_personname,
+                    contact_phone: data.contact_phone,
+                    booth_type: data.booth_type,
+                    company_description: data.company_description,
+                    reference: data.reference,
+                    is_approved: data.is_approved
+                })
+                .eq('user_id', profile.user_id)
+                .select()
+                .single();
 
-    const handleStatusUpdate = async (approved: boolean) => {
-        setIsSubmitting(true);
-        await onStatusUpdate(profile.user_id, approved);
-        setIsSubmitting(false);
-        onClose(true);
+            if (error) throw error;
+
+            // 2. Sync with Main Profiles Table (if needed)
+            if (profile.is_approved !== data.is_approved) {
+                await supabase
+                    .from('profiles')
+                    .update({ is_exhibitor: data.is_approved })
+                    .eq('id', profile.user_id);
+            }
+
+            onSave(updatedData);
+            onClose();
+
+        } catch (err: any) {
+            console.error("Error updating profile:", err);
+            alert(`Failed to save: ${err.message}`);
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     return (
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-            <Card className="w-full max-w-5xl max-h-[90vh] overflow-y-auto">
-                <CardHeader className="flex flex-row justify-between items-center border-b p-4">
-                    <CardTitle className="text-2xl flex items-center gap-2">
-                        <FilePenLine className="w-6 h-6 text-[#013371]" /> Review/Edit Exhibitor: {profile.company_name}
-                    </CardTitle>
-                    <Button variant="ghost" onClick={() => onClose(false)} className="p-2 h-auto">
-                        <X className="w-5 h-5" />
-                    </Button>
-                </CardHeader>
-                <CardContent className="p-6">
-                    <form onSubmit={handleDataSubmission}>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50 backdrop-blur-sm" onClick={onClose}>
+            <div className="bg-white rounded-xl shadow-2xl w-full max-w-5xl max-h-[90vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
+                <form onSubmit={handleSubmit(onSubmit)}>
+                    
+                    {/* Header */}
+                    <div className="sticky top-0 z-10 flex justify-between items-center p-6 border-b bg-white rounded-t-xl">
+                        <h3 className="text-xl font-bold text-slate-900 flex items-center gap-2">
+                            <Store className="w-5 h-5 text-blue-600" /> Review Exhibitor: {profile.company_name}
+                        </h3>
+                        <button type="button" onClick={onClose} className="p-1.5 rounded-full text-slate-400 hover:bg-slate-100">
+                            <X className="w-6 h-6" />
+                        </button>
+                    </div>
 
-                        {/* Status Display */}
-                        <div className={`mb-6 p-4 rounded-lg font-semibold flex items-center gap-2 ${profile.is_approved ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'}`}>
-                            {profile.is_approved ? <CheckCircle className="w-5 h-5" /> : <Clock className="w-5 h-5" />}
-                            Status: {profile.is_approved ? 'APPROVED' : 'PENDING'}
-                        </div>
-
+                    <div className="p-6">
                         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
-                            {/* 1. Company & Contact Details (Col 1) */}
-                            <div className="lg:col-span-1 p-4 border rounded-lg bg-gray-50 h-full">
-                                <h3 className="text-lg font-bold mb-4 flex items-center gap-2 text-slate-700">
-                                    <Store className="w-4 h-4" /> Company Info
-                                </h3>
+                            {/* Col 1: Company Info */}
+                            <div className="lg:col-span-1 space-y-4">
+                                <h4 className="text-sm font-bold text-slate-400 uppercase tracking-wider border-b pb-2">Company Info</h4>
+                                
                                 <div className="flex justify-center mb-4">
-                                    <a href={profile.company_logo_url || '#'} target="_blank" rel="noopener noreferrer" className="block">
-                                        <img
-                                            src={profile.company_logo_url || '/default-logo.png'}
-                                            alt="Company Logo"
-                                            className="w-24 h-24 rounded-lg object-contain bg-white border border-slate-300 p-2 shadow-md"
-                                        />
-                                    </a>
+                                    <div className="w-32 h-32 rounded-lg bg-slate-50 border border-slate-200 flex items-center justify-center p-2">
+                                         {profile.company_logo_url ? (
+                                            <img src={profile.company_logo_url} alt="Logo" className="w-full h-full object-contain" />
+                                         ) : (
+                                            <Store className="w-10 h-10 text-slate-300" />
+                                         )}
+                                    </div>
                                 </div>
-                                <div className="space-y-3">
-                                    <div><Label>Company Name</Label><Input {...register('company_name', { required: true })} className="h-9" /></div>
-                                    <div><Label>Website</Label><Input {...register('company_website', { required: true })} className="h-9" type="url" /></div>
-                                    <h4 className="text-sm font-semibold pt-2 border-t mt-3">Contact</h4>
-                                    <div><Label>Contact Name</Label><Input {...register('contact_personname', { required: true })} className="h-9" /></div>
-                                    <div><Label>Contact Email (Read-Only)</Label><Input value={profile.email} disabled className="h-9 bg-slate-100" /></div>
-                                    <div><Label>Contact Phone</Label><Input {...register('contact_phone', { required: true })} className="h-9" type="tel" /></div>
-                                    <div><Label>Reference</Label><Input {...register('reference')} className="h-9" placeholder="Reference source" /></div>
+
+                                <FormInput label="Company Name" {...register('company_name', { required: true })} icon={<Store className="w-4 h-4"/>} />
+                                <FormInput label="Website" {...register('company_website')} icon={<LinkIcon className="w-4 h-4"/>} />
+                                
+                                <div className="border-t pt-4 mt-4">
+                                    <h4 className="text-xs font-bold text-slate-400 uppercase mb-3">Contact Person</h4>
+                                    <div className="space-y-4">
+                                        <FormInput label="Name" {...register('contact_personname', { required: true })} icon={<User className="w-4 h-4"/>} />
+                                        <div>
+                                            <label className="block text-sm font-medium text-slate-700 mb-1">Email (Read-only)</label>
+                                            <div className="relative">
+                                                <div className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"><Mail className="w-4 h-4"/></div>
+                                                <input value={profile.email} disabled className="block w-full pl-9 pr-4 py-2 bg-slate-100 border border-slate-300 rounded-lg shadow-sm text-sm text-slate-500 cursor-not-allowed" />
+                                            </div>
+                                        </div>
+                                        <FormInput label="Phone" {...register('contact_phone', { required: true })} icon={<Phone className="w-4 h-4"/>} />
+                                        <FormInput label="Reference" {...register('reference')} icon={<FileText className="w-4 h-4"/>} />
+                                    </div>
                                 </div>
                             </div>
 
-                            {/* 2. Description & Booth (Col 2 & 3) */}
-                            <div className="lg:col-span-2 p-4 border rounded-lg bg-gray-50">
-                                <h3 className="text-lg font-bold mb-4 flex items-center gap-2 text-slate-700">
-                                    <User className="w-4 h-4" /> Exhibition Details
-                                </h3>
+                            {/* Col 2: Exhibition Details */}
+                            <div className="lg:col-span-2 space-y-4">
+                                <h4 className="text-sm font-bold text-slate-400 uppercase tracking-wider border-b pb-2">Exhibition Details</h4>
+                                
+                                <Controller
+                                    name="booth_type"
+                                    control={control}
+                                    render={({ field }) => (
+                                        <FormSelect 
+                                            label="Booth Package" 
+                                            options={boothOptions} 
+                                            {...field} 
+                                        />
+                                    )}
+                                />
 
-                                {/* Booth Type */}
-                                <div className="mb-4">
-                                    <Label>Booth Type / Package</Label>
-                                    <Controller
-                                        name="booth_type"
-                                        control={control}
-                                        rules={{ required: true }}
-                                        render={({ field }) => (
-                                            <Select value={field.value} onValueChange={field.onChange}>
-                                                <SelectTrigger className="h-10"><SelectValue placeholder="Select Booth Package" /></SelectTrigger>
-                                                <SelectContent className="max-h-48 overflow-y-auto">
-                                                    {boothOptions.map(opt => <SelectItem key={opt} value={opt}>{opt}</SelectItem>)}
-                                                </SelectContent>
-                                            </Select>
-                                        )}
+                                <div>
+                                    <FormTextarea 
+                                        label="Company Description" 
+                                        {...register('company_description', { required: true, maxLength: 300 })} 
+                                        rows={6}
                                     />
-                                </div>
-
-                                {/* Company Description */}
-                                <div className="mb-4">
-                                    <Label>Company Description (Max 150 words)</Label>
-                                    <textarea
-                                        {...register('company_description', { required: true, maxLength: 150 })}
-                                        rows={5}
-                                        className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#013371] resize-none"
-                                    />
-                                    <p className="text-xs text-slate-500 mt-1">{watchedDescription.length}/150</p>
-                                </div>
-
-                                {/* Action Buttons - Save Data */}
-                                <div className="pt-6 border-t mt-6 flex justify-end">
-                                    <Button
-                                        type="submit"
-                                        disabled={isSubmitting || !isDirty}
-                                        className="bg-blue-600 hover:bg-blue-700 text-white flex items-center gap-2 shadow-md"
-                                    >
-                                        {isSubmitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
-                                        Save Profile Data Edits
-                                    </Button>
+                                    <div className="flex justify-end mt-1 text-xs text-slate-400">{watchedDescription.length} chars</div>
                                 </div>
 
                                 {/* Status Toggle */}
-                                <div className='pt-4 border-t mt-4 flex justify-end gap-2'>
-                                    {!profile.is_approved && (
-                                        <Button
-                                            type="button"
-                                            onClick={() => handleStatusUpdate(true)}
-                                            disabled={isSubmitting}
-                                            className="bg-green-600 hover:bg-green-700 text-white flex items-center gap-2"
-                                        >
-                                            <CheckCircle className="w-4 h-4" /> Approve Now
-                                        </Button>
-                                    )}
-                                    {profile.is_approved && (
-                                        <Button
-                                            type="button"
-                                            onClick={() => handleStatusUpdate(false)}
-                                            disabled={isSubmitting}
-                                            variant="outline"
-                                            className="border-red-500 text-red-500 hover:bg-red-50"
-                                        >
-                                            <XCircle className="w-4 h-4" /> Disapprove
-                                        </Button>
-                                    )}
+                                <div className="pt-6 border-t border-slate-200 mt-6">
+                                    <Controller
+                                        name="is_approved"
+                                        control={control}
+                                        render={({ field }) => (
+                                            <ToggleSwitch 
+                                                label="Exhibitor Approval Status" 
+                                                checked={field.value} 
+                                                onChange={field.onChange} 
+                                            />
+                                        )}
+                                    />
                                 </div>
                             </div>
                         </div>
+                    </div>
 
-                    </form>
-                </CardContent>
-            </Card>
+                    {/* Footer */}
+                    <div className="sticky bottom-0 z-10 flex justify-end items-center gap-3 p-6 bg-slate-50 border-t rounded-b-xl">
+                        <button 
+                            type="button" 
+                            onClick={onClose} 
+                            disabled={isSubmitting} 
+                            className="px-5 py-2.5 border border-slate-300 text-sm font-medium rounded-xl shadow-sm text-slate-700 bg-white hover:bg-slate-100 transition"
+                        >
+                            Cancel
+                        </button>
+                        <button 
+                            type="submit" 
+                            disabled={isSubmitting} 
+                            className="px-5 py-2.5 rounded-xl shadow-md text-white bg-indigo-600 hover:bg-indigo-700 disabled:bg-indigo-300 transition flex items-center gap-2"
+                        >
+                            {isSubmitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
+                            Save Changes
+                        </button>
+                    </div>
+
+                </form>
+            </div>
         </div>
     );
 };
@@ -223,43 +318,30 @@ const ExhibitorReviewModal: React.FC<ExhibitorReviewModalProps> = ({ profile, on
 export default function AdminExhibitorDashboard() {
     const [profiles, setProfiles] = useState<ExhibitorProfile[]>([]);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
     const [searchTerm, setSearchTerm] = useState('');
     const [approvalFilter, setApprovalFilter] = useState('all');
-
-    // 🟢 State for selected profile ID for external actions
-    const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
-
-    // State for Modal (used only for review/edit)
+    
+    // Modal State
     const [selectedProfileForModal, setSelectedProfileForModal] = useState<ExhibitorProfile | null>(null);
 
-    // --- Hardcoded Booth Options (should match client form) ---
+    // Hardcoded Booth Options
     const BOOTH_OPTIONS = useMemo(() => ["Startup Pod (2x2m)", "Standard Shell (3x3m)", "Premium Booth (6x3m)", "Custom Build (Space only)"], []);
-
 
     const fetchExhibitorProfiles = useCallback(async () => {
         setLoading(true);
-        setError(null);
-        setSelectedUserId(null);
         try {
             let query = supabase
                 .from('exhibitor_profiles')
                 .select('*')
                 .order('created_at', { ascending: false });
 
-            if (approvalFilter === 'approved') {
-                query = query.eq('is_approved', true);
-            } else if (approvalFilter === 'pending') {
-                query = query.eq('is_approved', false);
-            }
+            if (approvalFilter === 'approved') query = query.eq('is_approved', true);
+            else if (approvalFilter === 'pending') query = query.eq('is_approved', false);
 
-            const { data, error: fetchError } = await query;
-
-            if (fetchError) {
-                throw new Error(fetchError.message || "Failed to fetch profiles. Check RLS or admin permissions.");
-            }
-
-            // Ensure email and contact name are present for display
+            const { data, error } = await query;
+            if (error) throw error;
+            
+            // Format data
             const formattedData = (data || []).map(p => ({
                 ...p,
                 email: p.email || 'N/A',
@@ -268,265 +350,158 @@ export default function AdminExhibitorDashboard() {
 
             setProfiles(formattedData);
         } catch (err: any) {
-            console.error("Error fetching profiles:", err);
-            setError(err.message || "An unexpected error occurred.");
+            console.error("Error fetching:", err);
         } finally {
             setLoading(false);
         }
     }, [approvalFilter]);
 
-
-    // --- Status Update Handler (Shared by Modal and External Buttons) ---
-    const handleStatusUpdate = useCallback(async (userId: string, isApproved: boolean) => {
-        try {
-            const { error: updateError } = await supabase
-                .from('exhibitor_profiles')
-                .update({ is_approved: isApproved })
-                .eq('user_id', userId);
-
-            if (updateError) throw updateError;
-
-            // Optimistically update local state
-            setProfiles(prev => prev.map(p =>
-                p.user_id === userId ? { ...p, is_approved: isApproved } : p
-            ));
-
-            alert(`Application successfully ${isApproved ? 'approved' : 'disapproved'}!`);
-
-            setSelectedUserId(null);
-
-        } catch (err: any) {
-            console.error("Error updating approval status:", err);
-            alert(`Failed to update approval status: ${err.message}`);
-        }
-    }, []);
-
-    // --- Data Update Handler (From Modal) ---
-    const handleDataUpdate = useCallback(async (userId: string, data: EditableProfileFields) => {
-        try {
-            const payload = {
-                company_name: data.company_name,
-                company_website: data.company_website,
-                contact_phone: data.contact_phone,
-                booth_type: data.booth_type,
-                company_description: data.company_description,
-                contact_personname: data.contact_personname,
-                reference: data.reference,
-                // Logo update is handled separately on the client form and not expected here
-            };
-
-            const { error: updateError } = await supabase
-                .from('exhibitor_profiles')
-                .update(payload)
-                .eq('user_id', userId);
-
-            if (updateError) throw updateError;
-
-            alert(`Profile data successfully updated!`);
-
-            fetchExhibitorProfiles();
-
-        } catch (err: any) {
-            console.error("Error updating profile data:", err);
-            alert(`Failed to update profile data: ${err.message}`);
-        }
-    }, [fetchExhibitorProfiles]);
-
-
     useEffect(() => {
         fetchExhibitorProfiles();
     }, [fetchExhibitorProfiles]);
 
+    const handleModalSave = (updatedProfile: ExhibitorProfile) => {
+        setProfiles(prev => prev.map(p => p.user_id === updatedProfile.user_id ? updatedProfile : p));
+        fetchExhibitorProfiles(); // Refresh to be safe
+    };
 
-    // --- Filtering and Searching ---
+    // Filtering
     const filteredProfiles = useMemo(() => {
         if (!searchTerm) return profiles;
-        const lowerSearchTerm = searchTerm.toLowerCase();
+        const lowerSearch = searchTerm.toLowerCase();
         return profiles.filter(p =>
-            p.company_name.toLowerCase().includes(lowerSearchTerm) ||
-            p.email.toLowerCase().includes(lowerSearchTerm) ||
-            p.contact_personname.toLowerCase().includes(lowerSearchTerm)
+            p.company_name.toLowerCase().includes(lowerSearch) ||
+            p.email.toLowerCase().includes(lowerSearch) ||
+            p.contact_personname.toLowerCase().includes(lowerSearch)
         );
     }, [profiles, searchTerm]);
 
-    const selectedProfileData = useMemo(() =>
-        profiles.find(p => p.user_id === selectedUserId),
-        [profiles, selectedUserId]
-    );
-
-    // --- Render Component ---
+    const renderStatusBadge = (isApproved: boolean) => {
+        if (isApproved) return <span className="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800"><CheckCircle className="w-3.5 h-3.5" /> Approved</span>;
+        return <span className="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800"><Clock className="w-3.5 h-3.5" /> Pending</span>;
+    };
 
     return (
-        <div className="p-6 lg:p-10 min-h-screen bg-gray-50">
-            <h1 className="text-3xl font-extrabold text-slate-900 mb-6 flex items-center gap-3">
-                <Store className="w-8 h-8 text-[#013371]" /> Exhibitor Application Admin Dashboard
-            </h1>
+        <div className="min-h-screen bg-slate-50 p-6 lg:p-10">
+            <div className="max-w-7xl mx-auto">
+                
+                {/* Header */}
+                <div className="mb-8">
+                    <h1 className="text-3xl font-extrabold text-slate-900 flex items-center gap-3">
+                        <Store className="w-8 h-8 text-indigo-600" /> Exhibitor Management
+                    </h1>
+                    <p className="text-slate-600 mt-1">Review and manage exhibitor applications and booth assignments.</p>
+                </div>
 
-            {/* Action Card for Selected Profile (Sticky Bar) */}
-            {selectedUserId && selectedProfileData && (
-                <Card className="shadow-lg border-2 border-blue-500 mb-6 sticky top-4 z-10 animate-fadeIn">
-                    <CardContent className="p-4 flex justify-between items-center bg-blue-50">
-                        <div className="flex items-center gap-4">
-                            <span className="font-semibold text-blue-700">Selected: {selectedProfileData.company_name} (Contact: {selectedProfileData.contact_personname})</span>
-                            <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium ${selectedProfileData.is_approved ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}`}>
-                                {selectedProfileData.is_approved ? 'APPROVED' : 'PENDING'}
-                            </span>
-                        </div>
-                        <div className="flex gap-3">
-                            {/* Disapprove Button */}
-                            {selectedProfileData.is_approved && (
-                                <Button
-                                    onClick={() => handleStatusUpdate(selectedUserId, false)}
-                                    className="bg-red-500 hover:bg-red-600 text-white"
-                                >
-                                    <XCircle className="w-4 h-4 mr-2" /> Disapprove
-                                </Button>
-                            )}
-                            {/* Approve Button */}
-                            {!selectedProfileData.is_approved && (
-                                <Button
-                                    onClick={() => handleStatusUpdate(selectedUserId, true)}
-                                    className="bg-green-600 hover:bg-green-700 text-white"
-                                >
-                                    <CheckCircle className="w-4 h-4 mr-2" /> Approve
-                                </Button>
-                            )}
+                {/* Filters */}
+                <div className="bg-white p-4 rounded-xl shadow-sm border border-slate-200 mb-6 flex flex-col md:flex-row gap-4 justify-between items-center">
+                    <div className="relative w-full md:w-96">
+                        <input 
+                            type="text" 
+                            placeholder="Search company, contact, email..." 
+                            value={searchTerm} 
+                            onChange={(e) => setSearchTerm(e.target.value)} 
+                            className="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                        />
+                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                    </div>
 
-                            {/* Clear Selection */}
-                            <Button variant="outline" onClick={() => setSelectedUserId(null)}>
-                                Clear Selection
-                            </Button>
-                        </div>
-                    </CardContent>
-                </Card>
-            )}
-
-
-            <Card className="shadow-xl mb-6">
-                <CardHeader>
-                    <CardTitle className="text-xl flex items-center gap-2">
-                        <Filter className="w-5 h-5" /> Filters
-                    </CardTitle>
-                </CardHeader>
-                <CardContent className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                    {/* Approval Filter */}
-                    <div>
-                        <Label className="block text-sm font-medium text-gray-700 mb-1">Approval Status</Label>
-                        <Select
-                            value={approvalFilter}
-                            onValueChange={(v) => setApprovalFilter(v)}
+                    <div className="flex gap-2 w-full md:w-auto">
+                        <select 
+                            value={approvalFilter} 
+                            onChange={(e) => setApprovalFilter(e.target.value)}
+                            className="px-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
                         >
-                            <SelectTrigger className="h-10"><SelectValue placeholder="Filter by status" /></SelectTrigger>
-                            <SelectContent>
-                                <SelectItem value="all">All Applications</SelectItem>
-                                <SelectItem value="pending">Pending Review</SelectItem>
-                                <SelectItem value="approved">Approved</SelectItem>
-                            </SelectContent>
-                        </Select>
+                            <option value="all">All Status</option>
+                            <option value="pending">Pending</option>
+                            <option value="approved">Approved</option>
+                        </select>
+                        <button onClick={fetchExhibitorProfiles} className="p-2 bg-slate-100 rounded-lg hover:bg-slate-200 text-slate-600 transition">
+                            <Filter className="w-5 h-5" />
+                        </button>
                     </div>
+                </div>
 
-                    {/* Search Bar */}
-                    <div className="md:col-span-3">
-                        <Label className="block text-sm font-medium text-gray-700 mb-1">Search (Company, Contact, Email)</Label>
-                        <div className="relative">
-                            <Input
-                                type="text"
-                                placeholder="Search by company name or contact email..."
-                                value={searchTerm}
-                                onChange={(e) => setSearchTerm(e.target.value)}
-                                className="pl-10 h-10"
-                            />
-                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-                        </div>
-                    </div>
-                </CardContent>
-            </Card>
-
-            <Card className="shadow-xl">
-                <CardHeader>
-                    <CardTitle className="text-xl flex justify-between items-center">
-                        Exhibitor Applications ({filteredProfiles.length})
-                        <Button onClick={fetchExhibitorProfiles} disabled={loading} variant="outline" className="h-8">
-                            {loading ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : 'Refresh'}
-                        </Button>
-                    </CardTitle>
-                </CardHeader>
-                <CardContent>
-                    {error && (
-                        <div className="p-4 mb-4 text-sm font-medium text-red-800 rounded-lg bg-red-50 border border-red-300">
-                            {error}
-                        </div>
-                    )}
+                {/* Table */}
+                <div className="bg-white rounded-xl shadow-lg border border-slate-100 overflow-hidden">
                     {loading ? (
-                        <div className="text-center py-10 flex items-center justify-center gap-2 text-slate-600">
-                            <Loader2 className="w-5 h-5 animate-spin" /> Fetching data...
+                        <div className="p-12 text-center text-slate-500 flex justify-center items-center gap-2">
+                            <Loader2 className="w-5 h-5 animate-spin" /> Loading profiles...
                         </div>
                     ) : filteredProfiles.length === 0 ? (
-                        <div className="text-center py-10 text-gray-500">No exhibitor applications found matching the criteria.</div>
+                        <div className="p-12 text-center text-slate-500">No exhibitor profiles found.</div>
                     ) : (
                         <div className="overflow-x-auto">
-                            <Table>
-                                <TableHeader>
-                                    <TableRow className="bg-gray-100">
-                                        <TableHead>Status</TableHead>
-                                        <TableHead>Company</TableHead>
-                                        <TableHead>Contact Person</TableHead>
-                                        <TableHead>Booth Type</TableHead>
-                                        <TableHead>Website</TableHead>
-                                        <TableHead>Reference</TableHead>
-                                        <TableHead>Applied On</TableHead>
-                                        <TableHead>Action</TableHead>
-                                    </TableRow>
-                                </TableHeader>
-                                <TableBody>
+                            <table className="min-w-full divide-y divide-slate-200">
+                                <thead className="bg-slate-50">
+                                    <tr>
+                                        <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600 uppercase">Company</th>
+                                        <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600 uppercase hidden md:table-cell">Contact</th>
+                                        <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600 uppercase hidden lg:table-cell">Booth Type</th>
+                                        <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600 uppercase hidden lg:table-cell">Reference</th>
+                                        <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600 uppercase">Status</th>
+                                        <th className="px-6 py-3 text-right text-xs font-semibold text-slate-600 uppercase">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody className="bg-white divide-y divide-slate-100">
                                     {filteredProfiles.map((p) => (
-                                        <TableRow
-                                            key={p.user_id}
-                                            onClick={() => setSelectedUserId(p.user_id)}
-                                            className={cn(
-                                                "cursor-pointer hover:bg-slate-50 transition-colors",
-                                                selectedUserId === p.user_id && "bg-blue-100 hover:bg-blue-200 border-l-4 border-blue-600"
-                                            )}
-                                        >
-                                            <TableCell>
-                                                <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium ${p.is_approved ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}`}>
-                                                    {p.is_approved ? <CheckCircle className="w-3 h-3" /> : <Clock className="w-3 h-3" />}
-                                                    {p.is_approved ? 'Approved' : 'Pending'}
+                                        <tr key={p.user_id} className="hover:bg-slate-50 transition duration-150 group">
+                                            <td className="px-6 py-4">
+                                                <div className="flex items-center gap-3">
+                                                     <div className="w-10 h-10 rounded-lg bg-slate-50 border border-slate-200 p-1 flex-shrink-0 flex items-center justify-center">
+                                                        {p.company_logo_url ? (
+                                                            <img src={p.company_logo_url} className="w-full h-full object-contain" alt="logo"/>
+                                                        ) : <Store className="w-5 h-5 text-slate-400" />}
+                                                     </div>
+                                                    <div className="flex flex-col">
+                                                        <span className="text-sm font-medium text-slate-900">{p.company_name}</span>
+                                                        <a href={p.company_website} target="_blank" className="text-xs text-blue-600 hover:underline flex items-center gap-1" onClick={e => e.stopPropagation()}>
+                                                            View Website
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td className="px-6 py-4 hidden md:table-cell">
+                                                <div className="flex flex-col text-sm text-slate-600">
+                                                    <span className="font-medium text-slate-800">{p.contact_personname}</span>
+                                                    <span className="text-xs text-slate-500">{p.email}</span>
+                                                    <span className="text-xs text-slate-400">{p.contact_phone}</span>
+                                                </div>
+                                            </td>
+                                            <td className="px-6 py-4 hidden lg:table-cell">
+                                                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-50 text-indigo-700 border border-indigo-100">
+                                                    {p.booth_type || 'Not Selected'}
                                                 </span>
-                                            </TableCell>
-                                            <TableCell className="font-medium">{p.company_name}</TableCell>
-                                            <TableCell className="text-slate-600">{p.contact_personname}</TableCell>
-                                            <TableCell>{p.booth_type}</TableCell>
-                                            <TableCell className="text-blue-600 hover:underline">
-                                                <a href={p.company_website} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()}><LinkIcon className="w-4 h-4 inline mr-1" /> Visit</a>
-                                            </TableCell>
-                                            <TableCell>{p.reference || '-'}</TableCell>
-                                            <TableCell>{new Date(p.created_at).toLocaleDateString()}</TableCell>
-                                            <TableCell>
-                                                <Button
-                                                    size="sm"
-                                                    onClick={(e) => { e.stopPropagation(); setSelectedProfileForModal(p); }}
-                                                    className="h-8 px-3 bg-[#013371] hover:bg-[#024fa3]"
+                                            </td>
+                                            <td className="px-6 py-4 hidden lg:table-cell text-sm text-slate-600">
+                                                {p.reference || '-'}
+                                            </td>
+                                            <td className="px-6 py-4">
+                                                {renderStatusBadge(p.is_approved)}
+                                            </td>
+                                            <td className="px-6 py-4 text-right">
+                                                <button 
+                                                    onClick={() => setSelectedProfileForModal(p)}
+                                                    className="inline-flex items-center justify-center gap-1 px-3 py-1.5 border border-indigo-200 rounded-lg text-indigo-700 bg-indigo-50 hover:bg-indigo-100 transition text-sm font-medium"
                                                 >
                                                     Review
-                                                </Button>
-                                            </TableCell>
-                                        </TableRow>
+                                                </button>
+                                            </td>
+                                        </tr>
                                     ))}
-                                </TableBody>
-                            </Table>
+                                </tbody>
+                            </table>
                         </div>
                     )}
-                </CardContent>
-            </Card>
+                </div>
+            </div>
 
-            {/* Modal Renderer */}
+            {/* Modal */}
             {selectedProfileForModal && (
                 <ExhibitorReviewModal
                     profile={selectedProfileForModal}
                     onClose={() => setSelectedProfileForModal(null)}
-                    onStatusUpdate={handleStatusUpdate}
-                    onDataUpdate={handleDataUpdate}
+                    onSave={handleModalSave}
                     boothOptions={BOOTH_OPTIONS}
                 />
             )}

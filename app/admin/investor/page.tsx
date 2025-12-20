@@ -1,18 +1,13 @@
 // @/app/admin/investor-dashboard/page.tsx
 "use client"
 
-import { useEffect, useState, useMemo, useCallback } from "react"
+import React, { useEffect, useState, useMemo, useCallback } from "react"
 import { supabase } from "@/lib/supabaseConfig"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { Label } from "@/components/ui/label"
-import { Filter, Search, Users, CheckCircle, Clock, X, Loader2, FilePenLine, Save, User, Phone, TrendingUp, XCircle } from "lucide-react"
+import {
+    Filter, Search, Users, CheckCircle, Clock, X, Loader2,
+    Save, User, Phone, TrendingUp, XCircle, Linkedin, Mail, FileText
+} from "lucide-react"
 import { useForm, Controller } from 'react-hook-form';
-import { cn } from "@/lib/utils" // Assuming this utility is available for Tailwind classes
-
 
 // --- Types ---
 
@@ -31,7 +26,7 @@ interface InvestorProfile {
     reference: string | null;
 }
 
-// Type for the editable fields in the modal
+// Type for the editable fields
 interface EditableProfileFields {
     name: string;
     phone: string;
@@ -41,235 +36,311 @@ interface EditableProfileFields {
     experience: string;
     interests: string[];
     reference: string;
+    is_approved: boolean;
 }
 
+// --- Helper Components (FIXED WITH FORWARD REF) ---
 
-// --- Components (Investor Review Modal) ---
+// 🟢 FIX 1: Wrapped in forwardRef so React Hook Form can control the input value
+const FormInput = React.forwardRef<HTMLInputElement, any>(({ label, icon, ...props }, ref) => (
+    <div>
+        <label className="block text-sm font-medium text-slate-700 mb-1">{label}</label>
+        <div className="relative">
+            {icon && <div className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">{icon}</div>}
+            <input
+                ref={ref}
+                {...props}
+                className={`block w-full ${icon ? 'pl-9' : 'px-4'} pr-4 py-2 bg-white border border-slate-300 rounded-lg shadow-sm text-sm focus:outline-none focus:ring-indigo-600 focus:border-indigo-600 transition`}
+            />
+        </div>
+    </div>
+));
+FormInput.displayName = "FormInput";
 
-// 1. Investor Review Modal (Component to approve/view/edit details)
+// 🟢 FIX 2: Wrapped in forwardRef for Select inputs too
+const FormSelect = React.forwardRef<HTMLSelectElement, any>(({ label, options, value, onChange, ...props }, ref) => (
+    <div>
+        <label className="block text-sm font-medium text-slate-700 mb-1">{label}</label>
+        <select
+            ref={ref}
+            value={value}
+            onChange={onChange}
+            {...props}
+            className="block w-full px-4 py-2 bg-white border border-slate-300 rounded-lg shadow-sm text-sm focus:outline-none focus:ring-indigo-600 focus:border-indigo-600 transition"
+        >
+            <option value="" disabled>Select an option</option>
+            {options.map((opt: string) => (
+                <option key={opt} value={opt}>{opt}</option>
+            ))}
+        </select>
+    </div>
+));
+FormSelect.displayName = "FormSelect";
+
+const ToggleSwitch = ({ label, checked, onChange }: any) => (
+    <div className="flex items-center justify-between p-3 border border-slate-200 rounded-lg bg-slate-50">
+        <label className="text-sm font-medium text-slate-700 flex flex-col">
+            {label}
+            <span className={`text-xs mt-0.5 font-bold ${checked ? 'text-green-600' : 'text-red-600'}`}>
+                {checked ? 'APPROVED' : 'PENDING / DISAPPROVED'}
+            </span>
+        </label>
+        <button
+            type="button"
+            onClick={() => onChange(!checked)}
+            className={`${checked ? 'bg-green-600' : 'bg-red-600'} relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none`}
+        >
+            <span aria-hidden="true" className={`${checked ? 'translate-x-5' : 'translate-x-0'} pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out`} />
+        </button>
+    </div>
+);
+
+
+// --- 1. Investor Review Modal ---
+
 interface InvestorReviewModalProps {
     profile: InvestorProfile;
-    onClose: (updated: boolean) => void;
-    onStatusUpdate: (userId: string, isApproved: boolean) => Promise<void>;
-    onDataUpdate: (userId: string, data: EditableProfileFields) => Promise<void>;
+    onClose: () => void;
+    onSave: (updatedProfile: InvestorProfile) => void;
 }
 
-const InvestorReviewModal: React.FC<InvestorReviewModalProps> = ({ profile, onClose, onStatusUpdate, onDataUpdate }) => {
+const InvestorReviewModal: React.FC<InvestorReviewModalProps> = ({ profile, onClose, onSave }) => {
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    // RHF Setup for editing
-    const { control, handleSubmit, register, watch, setValue, formState: { isDirty } } = useForm<EditableProfileFields>({
+    // RHF Setup
+    const { control, handleSubmit, register, watch, setValue, reset } = useForm<EditableProfileFields>({
         defaultValues: {
-            name: profile.name,
-            phone: profile.phone,
-            linkedin: profile.linkedin,
-            investment_amount: profile.investment_amount,
-            investment_type: profile.investment_type,
-            experience: profile.experience,
-            interests: profile.interests || [],
-            reference: profile.reference || '',
+            name: '',
+            phone: '',
+            linkedin: '',
+            reference: '',
+            investment_amount: '',
+            investment_type: '',
+            experience: '',
+            interests: [],
+            is_approved: false
         },
     });
 
-    const watchedInterests = watch('interests');
+    // 🟢 FIX 3: Robust Reset Logic
+    useEffect(() => {
+        if (profile) {
+            console.log("🟢 Resetting form with:", profile);
+            reset({
+                name: profile.name || '',
+                phone: profile.phone || '',
+                linkedin: profile.linkedin || '',
+                reference: profile.reference || '',
+                investment_amount: profile.investment_amount || '',
+                investment_type: profile.investment_type || '',
+                experience: profile.experience || '',
+                interests: profile.interests || [],
+                is_approved: profile.is_approved || false
+            });
+        }
+    }, [profile, reset]);
 
-    // Hardcoded options (mimicking the client form)
-    const options = useMemo(() => ({
-        interests: ["Technology", "Healthcare", "FinTech", "E-commerce", "SaaS", "EdTech"],
+    const watchedInterests = watch('interests') || [];
+
+    // Static Options
+    const options = {
+        interests: ["Technology", "Healthcare", "FinTech", "E-commerce", "SaaS", "EdTech", "AI/ML"],
         ranges: ["AED 50,000 - 100,000", "AED 100,000 - 500,000", "AED 500,000 - 1,000,000", "AED 1,000,000 - 5,000,000", "AED 5,000,000+"],
         types: ["Angel Investor", "Venture Capital", "Institutional", "Family Office"],
         levels: ["Beginner (0-2 years)", "Intermediate (2-5 years)", "Experienced (5-10 years)", "Expert (10+ years)"],
-    }), []);
+    };
 
     const handleCheckboxChange = (interest: string, isChecked: boolean) => {
-        const currentInterests = watchedInterests || [];
+        const current = watchedInterests;
         if (isChecked) {
-            setValue('interests', [...currentInterests, interest]);
+            setValue('interests', [...current, interest]);
         } else {
-            setValue('interests', currentInterests.filter(i => i !== interest));
+            setValue('interests', current.filter(i => i !== interest));
         }
     };
 
-    const handleDataSubmission = handleSubmit(async (data) => {
+    const onSubmit = async (data: EditableProfileFields) => {
         setIsSubmitting(true);
-        await onDataUpdate(profile.user_id, data);
-        setIsSubmitting(false);
-        onClose(true);
-    });
+        try {
+            // 1. Update Investor Profile Table
+            const { data: updatedData, error } = await supabase
+                .from('investor_profiles')
+                .update({
+                    name: data.name,
+                    phone: data.phone,
+                    linkedin: data.linkedin,
+                    reference: data.reference,
+                    investment_amount: data.investment_amount,
+                    investment_type: data.investment_type,
+                    experience: data.experience,
+                    interests: data.interests,
+                    is_approved: data.is_approved
+                })
+                .eq('user_id', profile.user_id)
+                .select()
+                .single();
 
-    const handleStatusUpdate = async (approved: boolean) => {
-        setIsSubmitting(true);
-        await onStatusUpdate(profile.user_id, approved);
-        setIsSubmitting(false);
-        onClose(true);
+            if (error) throw error;
+
+            // 2. Sync with Main Profiles Table (for permissions)
+            if (profile.is_approved !== data.is_approved) {
+                await supabase
+                    .from('profiles')
+                    .update({ is_investor: data.is_approved })
+                    .eq('id', profile.user_id);
+            }
+
+            onSave(updatedData);
+            onClose();
+
+        } catch (err: any) {
+            console.error("Error updating profile:", err);
+            alert(`Failed to save: ${err.message}`);
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     return (
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-            <Card className="w-full max-w-4xl max-h-[90vh] overflow-y-auto">
-                <CardHeader className="flex flex-row justify-between items-center border-b p-4">
-                    <CardTitle className="text-2xl flex items-center gap-2">
-                        <FilePenLine className="w-6 h-6 text-[#013371]" /> Review/Edit Investor: {profile.name}
-                    </CardTitle>
-                    <Button variant="ghost" onClick={() => onClose(false)} className="p-2 h-auto">
-                        <X className="w-5 h-5" />
-                    </Button>
-                </CardHeader>
-                <CardContent className="p-6">
-                    <form onSubmit={handleDataSubmission}>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50 backdrop-blur-sm" onClick={onClose}>
+            <div className="bg-white rounded-xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
+                <form onSubmit={handleSubmit(onSubmit)}>
+                    
+                    {/* Header */}
+                    <div className="sticky top-0 z-10 flex justify-between items-center p-6 border-b bg-white rounded-t-xl">
+                        <h3 className="text-xl font-bold text-slate-900 flex items-center gap-2">
+                            <User className="w-5 h-5 text-blue-600" /> Review Investor: {profile.name}
+                        </h3>
+                        <button type="button" onClick={onClose} className="p-1.5 rounded-full text-slate-400 hover:bg-slate-100">
+                            <X className="w-6 h-6" />
+                        </button>
+                    </div>
 
-                        {/* Status Display */}
-                        <div className={`mb-6 p-4 rounded-lg font-semibold flex items-center gap-2 ${profile.is_approved ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'}`}>
-                            {profile.is_approved ? <CheckCircle className="w-5 h-5" /> : <Clock className="w-5 h-5" />}
-                            Status: {profile.is_approved ? 'APPROVED' : 'PENDING'}
-                        </div>
-
-                        <div className="grid grid-cols-2 lg:grid-cols-3 gap-6">
-
-                            {/* 1. Personal Details */}
-                            <div className="col-span-2 lg:col-span-1 p-4 border rounded-lg bg-gray-50">
-                                <h3 className="text-lg font-bold mb-4 flex items-center gap-2 text-slate-700">
-                                    <User className="w-4 h-4" /> Personal Info
-                                </h3>
-                                <div className="space-y-3">
-                                    <div>
-                                        <Label>Name</Label>
-                                        <Input {...register('name', { required: true })} className="h-9" />
-                                    </div>
-                                    <div>
-                                        <Label>Email (Read-Only)</Label>
-                                        <Input value={profile.email} disabled className="h-9 bg-slate-100" />
-                                    </div>
-                                    <div>
-                                        <Label>Phone</Label>
-                                        <Input {...register('phone', { required: true })} className="h-9" type="tel" />
-                                    </div>
-                                    <div>
-                                        <Label>LinkedIn</Label>
-                                        <Input {...register('linkedin')} className="h-9" placeholder="URL" />
-                                    </div>
-                                    <div>
-                                        <Label>Reference</Label>
-                                        <Input {...register('reference')} className="h-9" placeholder="Reference source" />
+                    <div className="p-6 space-y-8">
+                        
+                        {/* Section 1: Personal Info */}
+                        <div>
+                            <h4 className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-4 border-b pb-2">Personal Information</h4>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+                                <FormInput 
+                                    label="Full Name" 
+                                    {...register('name', { required: true })} 
+                                    icon={<User className="w-4 h-4"/>}
+                                />
+                                <div>
+                                    <label className="block text-sm font-medium text-slate-700 mb-1">Email (Read-only)</label>
+                                    <div className="relative">
+                                        <div className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"><Mail className="w-4 h-4"/></div>
+                                        <input value={profile.email} disabled className="block w-full pl-9 pr-4 py-2 bg-slate-100 border border-slate-300 rounded-lg shadow-sm text-sm text-slate-500 cursor-not-allowed" />
                                     </div>
                                 </div>
-                            </div>
-
-                            {/* 2. Investment Details */}
-                            <div className="col-span-2 p-4 border rounded-lg bg-gray-50">
-                                <h3 className="text-lg font-bold mb-4 flex items-center gap-2 text-slate-700">
-                                    <TrendingUp className="w-4 h-4" /> Investment Details
-                                </h3>
-                                <div className="grid grid-cols-3 gap-4">
-                                    {/* Amount */}
-                                    <div>
-                                        <Label>Investment Amount</Label>
-                                        <Controller
-                                            name="investment_amount"
-                                            control={control}
-                                            render={({ field }) => (
-                                                <Select value={field.value} onValueChange={field.onChange}>
-                                                    <SelectTrigger className="h-9"><SelectValue /></SelectTrigger>
-                                                    <SelectContent className="max-h-48 overflow-y-auto">
-                                                        {options.ranges.map(opt => <SelectItem key={opt} value={opt}>{opt}</SelectItem>)}
-                                                    </SelectContent>
-                                                </Select>
-                                            )}
-                                        />
-                                    </div>
-                                    {/* Type */}
-                                    <div>
-                                        <Label>Investor Type</Label>
-                                        <Controller
-                                            name="investment_type"
-                                            control={control}
-                                            render={({ field }) => (
-                                                <Select value={field.value} onValueChange={field.onChange}>
-                                                    <SelectTrigger className="h-9"><SelectValue /></SelectTrigger>
-                                                    <SelectContent className="max-h-48 overflow-y-auto">
-                                                        {options.types.map(opt => <SelectItem key={opt} value={opt}>{opt}</SelectItem>)}
-                                                    </SelectContent>
-                                                </Select>
-                                            )}
-                                        />
-                                    </div>
-                                    {/* Experience */}
-                                    <div>
-                                        <Label>Experience</Label>
-                                        <Controller
-                                            name="experience"
-                                            control={control}
-                                            render={({ field }) => (
-                                                <Select value={field.value} onValueChange={field.onChange}>
-                                                    <SelectTrigger className="h-9"><SelectValue /></SelectTrigger>
-                                                    <SelectContent className="max-h-48 overflow-y-auto">
-                                                        {options.levels.map(opt => <SelectItem key={opt} value={opt}>{opt}</SelectItem>)}
-                                                    </SelectContent>
-                                                </Select>
-                                            )}
-                                        />
-                                    </div>
-                                </div>
-
-                                {/* Interests */}
-                                <div className="mt-4">
-                                    <Label>Areas of Interest</Label>
-                                    <div className="grid grid-cols-3 gap-2 mt-1">
-                                        {options.interests.map((interest) => (
-                                            <label key={interest} className="flex items-center gap-2 cursor-pointer p-2 rounded-md bg-white border">
-                                                <input
-                                                    type="checkbox"
-                                                    checked={watchedInterests.includes(interest)}
-                                                    onChange={(e) => handleCheckboxChange(interest, e.target.checked)}
-                                                    className="w-4 h-4 accent-[#013371]"
-                                                />
-                                                <span className="text-sm">{interest}</span>
-                                            </label>
-                                        ))}
-                                    </div>
+                                <FormInput 
+                                    label="Phone Number" 
+                                    {...register('phone')} 
+                                    icon={<Phone className="w-4 h-4"/>}
+                                />
+                                <FormInput 
+                                    label="LinkedIn URL" 
+                                    {...register('linkedin')} 
+                                    placeholder="https://linkedin.com/in/..."
+                                    icon={<Linkedin className="w-4 h-4"/>}
+                                />
+                                <div className="md:col-span-2">
+                                    <FormInput 
+                                        label="Reference Source" 
+                                        {...register('reference')} 
+                                        placeholder="Who referred them?"
+                                        icon={<FileText className="w-4 h-4"/>}
+                                    />
                                 </div>
                             </div>
                         </div>
 
-                        {/* Footer Actions - Save Data */}
-                        <div className="pt-6 border-t mt-6 flex justify-end">
-                            <Button
-                                type="submit"
-                                disabled={isSubmitting || !isDirty}
-                                className="bg-blue-600 hover:bg-blue-700 text-white flex items-center gap-2 shadow-md"
-                            >
-                                {isSubmitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
-                                Save Profile Data Edits
-                            </Button>
+                        {/* Section 2: Investment Details */}
+                        <div>
+                            <h4 className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-4 border-b pb-2">Investment Criteria</h4>
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+                                <Controller
+                                    name="investment_amount"
+                                    control={control}
+                                    render={({ field }) => (
+                                        <FormSelect label="Investment Range" options={options.ranges} {...field} />
+                                    )}
+                                />
+                                <Controller
+                                    name="investment_type"
+                                    control={control}
+                                    render={({ field }) => (
+                                        <FormSelect label="Investor Type" options={options.types} {...field} />
+                                    )}
+                                />
+                                <Controller
+                                    name="experience"
+                                    control={control}
+                                    render={({ field }) => (
+                                        <FormSelect label="Experience Level" options={options.levels} {...field} />
+                                    )}
+                                />
+                            </div>
+
+                            {/* Interests Checkboxes */}
+                            <div className="mt-6">
+                                <label className="block text-sm font-medium text-slate-700 mb-2">Areas of Interest</label>
+                                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                                    {options.interests.map((interest) => (
+                                        <label key={interest} className={`flex items-center gap-2 cursor-pointer p-3 rounded-lg border transition-all ${watchedInterests.includes(interest) ? 'bg-indigo-50 border-indigo-200' : 'bg-white border-slate-200 hover:bg-slate-50'}`}>
+                                            <input
+                                                type="checkbox"
+                                                checked={watchedInterests.includes(interest)}
+                                                onChange={(e) => handleCheckboxChange(interest, e.target.checked)}
+                                                className="w-4 h-4 text-indigo-600 rounded focus:ring-indigo-500"
+                                            />
+                                            <span className="text-sm text-slate-700">{interest}</span>
+                                        </label>
+                                    ))}
+                                </div>
+                            </div>
                         </div>
 
-                        {/* Status Toggle (Optional: for fast status changes within modal) */}
-                        <div className='pt-4 border-t mt-4 flex justify-end gap-2'>
-                            {!profile.is_approved && (
-                                <Button
-                                    type="button"
-                                    onClick={() => handleStatusUpdate(true)}
-                                    disabled={isSubmitting}
-                                    className="bg-green-600 hover:bg-green-700 text-white flex items-center gap-2"
-                                >
-                                    <CheckCircle className="w-4 h-4" /> Approve Now
-                                </Button>
-                            )}
-                            {profile.is_approved && (
-                                <Button
-                                    type="button"
-                                    onClick={() => handleStatusUpdate(false)}
-                                    disabled={isSubmitting}
-                                    variant="outline"
-                                    className="border-red-500 text-red-500 hover:bg-red-50"
-                                >
-                                    <XCircle className="w-4 h-4" /> Disapprove
-                                </Button>
-                            )}
+                        {/* Section 3: Status Action */}
+                        <div className="pt-4 border-t border-slate-200">
+                             <Controller
+                                name="is_approved"
+                                control={control}
+                                render={({ field }) => (
+                                    <ToggleSwitch 
+                                        label="Account Approval Status" 
+                                        checked={field.value} 
+                                        onChange={field.onChange} 
+                                    />
+                                )}
+                            />
                         </div>
-                    </form>
-                </CardContent>
-            </Card>
+
+                    </div>
+
+                    {/* Footer */}
+                    <div className="sticky bottom-0 z-10 flex justify-end items-center gap-3 p-6 bg-slate-50 border-t rounded-b-xl">
+                        <button 
+                            type="button" 
+                            onClick={onClose} 
+                            disabled={isSubmitting} 
+                            className="px-5 py-2.5 border border-slate-300 text-sm font-medium rounded-xl shadow-sm text-slate-700 bg-white hover:bg-slate-100 transition"
+                        >
+                            Cancel
+                        </button>
+                        <button 
+                            type="submit" 
+                            disabled={isSubmitting} 
+                            className="px-5 py-2.5 rounded-xl shadow-md text-white bg-indigo-600 hover:bg-indigo-700 disabled:bg-indigo-300 transition flex items-center gap-2"
+                        >
+                            {isSubmitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
+                            Save Changes
+                        </button>
+                    </div>
+
+                </form>
+            </div>
         </div>
     );
 };
@@ -279,313 +350,170 @@ const InvestorReviewModal: React.FC<InvestorReviewModalProps> = ({ profile, onCl
 export default function AdminInvestorDashboard() {
     const [profiles, setProfiles] = useState<InvestorProfile[]>([]);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
     const [searchTerm, setSearchTerm] = useState('');
-    const [approvalFilter, setApprovalFilter] = useState('all'); // 'all', 'approved', 'pending'
-
-    // 🟢 NEW: State for selected profile ID for external actions
-    const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
-
-    // State for Modal (used only for review/edit)
+    const [approvalFilter, setApprovalFilter] = useState('all');
+    
+    // Modal State
     const [selectedProfileForModal, setSelectedProfileForModal] = useState<InvestorProfile | null>(null);
 
     const fetchInvestorProfiles = useCallback(async () => {
         setLoading(true);
-        setError(null);
-        setSelectedUserId(null); // Clear selection on refresh
         try {
             let query = supabase
                 .from('investor_profiles')
                 .select('*')
                 .order('created_at', { ascending: false });
 
-            if (approvalFilter === 'approved') {
-                query = query.eq('is_approved', true);
-            } else if (approvalFilter === 'pending') {
-                query = query.eq('is_approved', false);
-            }
+            if (approvalFilter === 'approved') query = query.eq('is_approved', true);
+            else if (approvalFilter === 'pending') query = query.eq('is_approved', false);
 
-            const { data, error: fetchError } = await query;
-
-            if (fetchError) {
-                throw new Error(fetchError.message || "Failed to fetch profiles. Check RLS or admin permissions.");
-            }
-
+            const { data, error } = await query;
+            if (error) throw error;
             setProfiles((data || []) as InvestorProfile[]);
         } catch (err: any) {
-            console.error("Error fetching profiles:", err);
-            setError(err.message || "An unexpected error occurred.");
+            console.error("Error fetching:", err);
         } finally {
             setLoading(false);
         }
     }, [approvalFilter]);
 
-
-    // --- Status Update Handler (Shared by Modal and External Buttons) ---
-    const handleStatusUpdate = useCallback(async (userId: string, isApproved: boolean) => {
-        try {
-            // 1. Update the investor_profiles table
-            const { error: updateInvestorProfileError } = await supabase
-                .from('investor_profiles')
-                .update({ is_approved: isApproved })
-                .eq('user_id', userId);
-
-            if (updateInvestorProfileError) throw updateInvestorProfileError;
-
-            // 2. Update the main user profiles table (assuming table name is 'profiles' and column is 'is_investor')
-            const { error: updateMainProfileError } = await supabase
-                .from('profiles') // Adjust table name if necessary (e.g., 'users' or 'app_users')
-                .update({ is_investor: isApproved }) // Set is_investor to true/false based on approval
-                .eq('id', userId); // Assuming the user_id matches the 'id' column in the profiles table
-
-            if (updateMainProfileError) {
-                // Log and alert the error, but don't stop the optimistic update of the local state
-                console.error("Error updating main user profile 'is_investor' status:", updateMainProfileError);
-                alert(`Warning: Failed to update main user profile status. (Error: ${updateMainProfileError.message})`);
-            }
-
-            // Optimistically update local state
-            setProfiles(prev => prev.map(p =>
-                p.user_id === userId ? { ...p, is_approved: isApproved } : p
-            ));
-
-            alert(`Profile successfully ${isApproved ? 'approved' : 'disapproved'}!`);
-
-            // Clear selection after action
-            setSelectedUserId(null);
-
-        } catch (err: any) {
-            console.error("Error updating approval status:", err);
-            alert(`Failed to update approval status: ${err.message}`);
-        }
-    }, []);
-
-    // --- Data Update Handler (From Modal) ---
-    const handleDataUpdate = useCallback(async (userId: string, data: EditableProfileFields) => {
-        try {
-            const payload = {
-                name: data.name.toUpperCase(),
-                phone: data.phone,
-                linkedin: data.linkedin,
-                investment_amount: data.investment_amount,
-                investment_type: data.investment_type,
-                experience: data.experience,
-                interests: data.interests,
-                reference: data.reference,
-            };
-
-            const { error: updateError } = await supabase
-                .from('investor_profiles')
-                .update(payload)
-                .eq('user_id', userId);
-
-            if (updateError) throw updateError;
-
-            alert(`Profile data successfully updated!`);
-
-            // Force refetch to ensure the dashboard shows the latest data
-            fetchInvestorProfiles();
-
-        } catch (err: any) {
-            console.error("Error updating profile data:", err);
-            alert(`Failed to update profile data: ${err.message}`);
-        }
-    }, [fetchInvestorProfiles]);
-
-
     useEffect(() => {
         fetchInvestorProfiles();
     }, [fetchInvestorProfiles]);
 
+    const handleModalSave = (updatedProfile: InvestorProfile) => {
+        setProfiles(prev => prev.map(p => p.user_id === updatedProfile.user_id ? updatedProfile : p));
+        // Also refresh list to be safe
+        fetchInvestorProfiles();
+    };
 
-    // --- Filtering and Searching ---
+    // Filtering
     const filteredProfiles = useMemo(() => {
         if (!searchTerm) return profiles;
-        const lowerSearchTerm = searchTerm.toLowerCase();
+        const lowerSearch = searchTerm.toLowerCase();
         return profiles.filter(p =>
-            p.name.toLowerCase().includes(lowerSearchTerm) ||
-            p.email.toLowerCase().includes(lowerSearchTerm)
+            p.name.toLowerCase().includes(lowerSearch) ||
+            p.email.toLowerCase().includes(lowerSearch)
         );
     }, [profiles, searchTerm]);
 
-    const selectedProfileData = useMemo(() =>
-        profiles.find(p => p.user_id === selectedUserId),
-        [profiles, selectedUserId]
-    );
-
-    // --- Render Component ---
+    const renderStatusBadge = (isApproved: boolean) => {
+        if (isApproved) return <span className="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800"><CheckCircle className="w-3.5 h-3.5" /> Approved</span>;
+        return <span className="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800"><Clock className="w-3.5 h-3.5" /> Pending</span>;
+    };
 
     return (
-        <div className="p-6 lg:p-10 min-h-screen bg-gray-50">
-            <h1 className="text-3xl font-extrabold text-slate-900 mb-6 flex items-center gap-3">
-                <Users className="w-8 h-8 text-[#013371]" /> Investor Profile Admin Dashboard
-            </h1>
+        <div className="min-h-screen bg-slate-50 p-6 lg:p-10">
+            <div className="max-w-7xl mx-auto">
+                
+                {/* Header */}
+                <div className="mb-8">
+                    <h1 className="text-3xl font-extrabold text-slate-900 flex items-center gap-3">
+                        <Users className="w-8 h-8 text-indigo-600" /> Investor Management
+                    </h1>
+                    <p className="text-slate-600 mt-1">Review and manage investor applications and profiles.</p>
+                </div>
 
-            {/* Action Card for Selected Profile */}
-            {selectedUserId && selectedProfileData && (
-                <Card className="shadow-lg border-2 border-blue-500 mb-6 sticky top-4 z-10 animate-fadeIn">
-                    <CardContent className="p-4 flex justify-between items-center bg-blue-50">
-                        <div className="flex items-center gap-4">
-                            <span className="font-semibold text-blue-700">Selected: {selectedProfileData.name} ({selectedProfileData.email})</span>
-                            <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium ${selectedProfileData.is_approved ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}`}>
-                                {selectedProfileData.is_approved ? 'APPROVED' : 'PENDING'}
-                            </span>
-                        </div>
-                        <div className="flex gap-3">
-                            {/* Disapprove Button */}
-                            {selectedProfileData.is_approved && (
-                                <Button
-                                    onClick={() => handleStatusUpdate(selectedUserId, false)}
-                                    className="bg-red-500 hover:bg-red-600 text-white"
-                                >
-                                    <XCircle className="w-4 h-4 mr-2" /> Disapprove
-                                </Button>
-                            )}
-                            {/* Approve Button */}
-                            {!selectedProfileData.is_approved && (
-                                <Button
-                                    onClick={() => handleStatusUpdate(selectedUserId, true)}
-                                    className="bg-green-600 hover:bg-green-700 text-white"
-                                >
-                                    <CheckCircle className="w-4 h-4 mr-2" /> Approve
-                                </Button>
-                            )}
+                {/* Filters */}
+                <div className="bg-white p-4 rounded-xl shadow-sm border border-slate-200 mb-6 flex flex-col md:flex-row gap-4 justify-between items-center">
+                    <div className="relative w-full md:w-96">
+                        <input 
+                            type="text" 
+                            placeholder="Search by name or email..." 
+                            value={searchTerm} 
+                            onChange={(e) => setSearchTerm(e.target.value)} 
+                            className="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                        />
+                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                    </div>
 
-                            {/* Clear Selection */}
-                            <Button variant="outline" onClick={() => setSelectedUserId(null)}>
-                                Clear Selection
-                            </Button>
-                        </div>
-                    </CardContent>
-                </Card>
-            )}
-
-
-            <Card className="shadow-xl mb-6">
-                <CardHeader>
-                    <CardTitle className="text-xl flex items-center gap-2">
-                        <Filter className="w-5 h-5" /> Filters
-                    </CardTitle>
-                </CardHeader>
-                <CardContent className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                    {/* Approval Filter */}
-                    <div>
-                        <Label className="block text-sm font-medium text-gray-700 mb-1">Approval Status</Label>
-                        <Select
-                            value={approvalFilter}
-                            onValueChange={(v) => setApprovalFilter(v)}
+                    <div className="flex gap-2 w-full md:w-auto">
+                        <select 
+                            value={approvalFilter} 
+                            onChange={(e) => setApprovalFilter(e.target.value)}
+                            className="px-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
                         >
-                            <SelectTrigger className="h-10"><SelectValue placeholder="Filter by status" /></SelectTrigger>
-                            <SelectContent>
-                                <SelectItem value="all">All Profiles</SelectItem>
-                                <SelectItem value="pending">Pending Review</SelectItem>
-                                <SelectItem value="approved">Approved</SelectItem>
-                            </SelectContent>
-                        </Select>
+                            <option value="all">All Status</option>
+                            <option value="pending">Pending</option>
+                            <option value="approved">Approved</option>
+                        </select>
+                        <button onClick={fetchInvestorProfiles} className="p-2 bg-slate-100 rounded-lg hover:bg-slate-200 text-slate-600 transition">
+                            <Filter className="w-5 h-5" />
+                        </button>
                     </div>
+                </div>
 
-                    {/* Search Bar */}
-                    <div className="md:col-span-3">
-                        <Label className="block text-sm font-medium text-gray-700 mb-1">Search (Name, Email)</Label>
-                        <div className="relative">
-                            <Input
-                                type="text"
-                                placeholder="Search by name or email..."
-                                value={searchTerm}
-                                onChange={(e) => setSearchTerm(e.target.value)}
-                                className="pl-10 h-10"
-                            />
-                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-                        </div>
-                    </div>
-                </CardContent>
-            </Card>
-
-            <Card className="shadow-xl">
-                <CardHeader>
-                    <CardTitle className="text-xl flex justify-between items-center">
-                        Investor Profiles ({filteredProfiles.length})
-                        <Button onClick={fetchInvestorProfiles} disabled={loading} variant="outline" className="h-8">
-                            {loading ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : 'Refresh'}
-                        </Button>
-                    </CardTitle>
-                </CardHeader>
-                <CardContent>
-                    {error && (
-                        <div className="p-4 mb-4 text-sm font-medium text-red-800 rounded-lg bg-red-50 border border-red-300">
-                            {error}
-                        </div>
-                    )}
+                {/* Table */}
+                <div className="bg-white rounded-xl shadow-lg border border-slate-100 overflow-hidden">
                     {loading ? (
-                        <div className="text-center py-10 flex items-center justify-center gap-2 text-slate-600">
-                            <Loader2 className="w-5 h-5 animate-spin" /> Fetching data...
+                        <div className="p-12 text-center text-slate-500 flex justify-center items-center gap-2">
+                            <Loader2 className="w-5 h-5 animate-spin" /> Loading profiles...
                         </div>
                     ) : filteredProfiles.length === 0 ? (
-                        <div className="text-center py-10 text-gray-500">No investor profiles found matching the criteria.</div>
+                        <div className="p-12 text-center text-slate-500">No profiles found matching your criteria.</div>
                     ) : (
                         <div className="overflow-x-auto">
-                            <Table>
-                                <TableHeader>
-                                    <TableRow className="bg-gray-100">
-                                        <TableHead>Status</TableHead>
-                                        <TableHead>Name</TableHead>
-                                        <TableHead>Email</TableHead>
-                                        <TableHead>Amount</TableHead>
-                                        <TableHead>Type</TableHead>
-                                        <TableHead>Reference</TableHead>
-                                        <TableHead>Applied On</TableHead>
-                                        <TableHead>Action</TableHead>
-                                    </TableRow>
-                                </TableHeader>
-                                <TableBody>
+                            <table className="min-w-full divide-y divide-slate-200">
+                                <thead className="bg-slate-50">
+                                    <tr>
+                                        <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600 uppercase">Investor</th>
+                                        <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600 uppercase hidden md:table-cell">Contact</th>
+                                        <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600 uppercase hidden lg:table-cell">Investment</th>
+                                        <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600 uppercase hidden lg:table-cell">Reference</th>
+                                        <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600 uppercase">Status</th>
+                                        <th className="px-6 py-3 text-right text-xs font-semibold text-slate-600 uppercase">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody className="bg-white divide-y divide-slate-100">
                                     {filteredProfiles.map((p) => (
-                                        <TableRow
-                                            key={p.user_id}
-                                            // 🟢 Highlight selected row and set selection
-                                            onClick={() => setSelectedUserId(p.user_id)}
-                                            className={cn(
-                                                "cursor-pointer hover:bg-slate-50 transition-colors",
-                                                selectedUserId === p.user_id && "bg-blue-100 hover:bg-blue-200 border-l-4 border-blue-600"
-                                            )}
-                                        >
-                                            <TableCell>
-                                                <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium ${p.is_approved ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}`}>
-                                                    {p.is_approved ? <CheckCircle className="w-3 h-3" /> : <Clock className="w-3 h-3" />}
-                                                    {p.is_approved ? 'Approved' : 'Pending'}
-                                                </span>
-                                            </TableCell>
-                                            <TableCell className="font-medium">{p.name}</TableCell>
-                                            <TableCell className="text-slate-600">{p.email}</TableCell>
-                                            <TableCell>{p.investment_amount}</TableCell>
-                                            <TableCell>{p.investment_type}</TableCell>
-                                            <TableCell>{p.reference || '-'}</TableCell>
-                                            <TableCell>{new Date(p.created_at).toLocaleDateString()}</TableCell>
-                                            <TableCell>
-                                                <Button
-                                                    size="sm"
-                                                    // 🟢 Open modal to review/edit
-                                                    onClick={(e) => { e.stopPropagation(); setSelectedProfileForModal(p); }}
-                                                    className="h-8 px-3 bg-[#013371] hover:bg-[#024fa3]"
+                                        <tr key={p.user_id} className="hover:bg-slate-50 transition duration-150 group">
+                                            <td className="px-6 py-4">
+                                                <div className="flex flex-col">
+                                                    <span className="text-sm font-medium text-slate-900">{p.name}</span>
+                                                    <span className="text-xs text-slate-500 md:hidden">{p.email}</span>
+                                                </div>
+                                            </td>
+                                            <td className="px-6 py-4 hidden md:table-cell">
+                                                <div className="flex flex-col text-sm text-slate-600">
+                                                    <span>{p.email}</span>
+                                                    <span className="text-xs text-slate-400">{p.phone || 'No phone'}</span>
+                                                </div>
+                                            </td>
+                                            <td className="px-6 py-4 hidden lg:table-cell">
+                                                <div className="flex flex-col text-sm">
+                                                    <span className="font-medium text-slate-700">{p.investment_amount}</span>
+                                                    <span className="text-xs text-slate-500">{p.investment_type}</span>
+                                                </div>
+                                            </td>
+                                            <td className="px-6 py-4 hidden lg:table-cell text-sm text-slate-600">
+                                                {p.reference || '-'}
+                                            </td>
+                                            <td className="px-6 py-4">
+                                                {renderStatusBadge(p.is_approved)}
+                                            </td>
+                                            <td className="px-6 py-4 text-right">
+                                                <button 
+                                                    onClick={() => setSelectedProfileForModal(p)}
+                                                    className="inline-flex items-center justify-center gap-1 px-3 py-1.5 border border-indigo-200 rounded-lg text-indigo-700 bg-indigo-50 hover:bg-indigo-100 transition text-sm font-medium"
                                                 >
-                                                    Review
-                                                </Button>
-                                            </TableCell>
-                                        </TableRow>
+                                                    Review & Edit
+                                                </button>
+                                            </td>
+                                        </tr>
                                     ))}
-                                </TableBody>
-                            </Table>
+                                </tbody>
+                            </table>
                         </div>
                     )}
-                </CardContent>
-            </Card>
+                </div>
+            </div>
 
-            {/* Modal Renderer */}
+            {/* Modal */}
             {selectedProfileForModal && (
                 <InvestorReviewModal
                     profile={selectedProfileForModal}
                     onClose={() => setSelectedProfileForModal(null)}
-                    onStatusUpdate={handleStatusUpdate}
-                    onDataUpdate={handleDataUpdate}
+                    onSave={handleModalSave}
                 />
             )}
         </div>
