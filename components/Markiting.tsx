@@ -1,9 +1,8 @@
 'use client'
 
 import React from 'react'
+import Link from 'next/link' // Imported Link for navigation
 import { FiCheck, FiMail, FiGlobe, FiBriefcase, FiArrowRight } from 'react-icons/fi'
-
-// ... (other imports and translations remain the same) ...
 
 interface MarketingStrategyProps {
   language: 'en' | 'ar'
@@ -112,7 +111,7 @@ const GridCta = ({ language }: { language: 'en' | 'ar' }) => {
       <div className="relative h-full p-4 rounded-lg border border-slate-200 overflow-hidden">
         {/* Background Image */}
         <img
-          src="https://images.unsplash.com/photo-1517245381831-f11a437e56b8?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" // Replace with your desired image URL
+          src="https://images.unsplash.com/photo-1517245381831-f11a437e56b8?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
           alt="Abstract background"
           className="absolute inset-0 w-full h-full object-cover z-0"
         />
@@ -128,9 +127,14 @@ const GridCta = ({ language }: { language: 'en' | 'ar' }) => {
               {t.subtitle}
             </p>
           </div>
-          <button className="flex-shrink-0 px-5 py-2 text-sm bg-white text-blue-600 font-semibold rounded-lg transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 whitespace-nowrap">
+          
+          {/* Replaced button with Next.js Link */}
+          <Link 
+            href="/registration"
+            className="flex-shrink-0 px-5 py-2 text-sm bg-white text-blue-600 font-semibold rounded-lg transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 whitespace-nowrap inline-block text-center"
+          >
             {t.button}
-          </button>
+          </Link>
         </div>
       </div>
     </div>
@@ -172,13 +176,11 @@ export default function MarketingStrategy({ language = 'en' }: MarketingStrategy
           </p>
         </div>
 
-        {/* Strategy Grid - Updated to lg:grid-cols-4 */}
+        {/* Strategy Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
           {t.strategies.map((strategy, index) => {
             const IconComponent = StrategyIconMap[strategy.iconKey] || FiBriefcase;
-            const isDescriptionType = strategy.type === 'description';
             const spanCol = strategy.title.includes('Post-Event') || strategy.title.includes('تأثير ما بعد الحدث') ? 'lg:col-span-2' : 'lg:col-span-1';
-
 
             return (
               <div 
@@ -248,7 +250,7 @@ export default function MarketingStrategy({ language = 'en' }: MarketingStrategy
             );
           })}
           
-          {/* CTA Section - Now integrated as a grid item, with image background and white text */}
+          {/* CTA Section */}
           <GridCta language={language} />
 
         </div>
