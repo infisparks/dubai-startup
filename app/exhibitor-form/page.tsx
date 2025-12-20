@@ -11,6 +11,8 @@ import AuthPopup from "@/components/AuthPopup"
 import EmailVerificationNotice from "@/components/EmailVerificationNotice"
 import { CheckCircle2, LogIn, Edit, Save, Lock, TrendingUp, Link as LinkIcon, Upload, Store } from "lucide-react"
 import { supabase } from "@/lib/supabaseConfig"
+import PhoneInput, { isValidPhoneNumber } from 'react-phone-number-input'
+import 'react-phone-number-input/style.css'
 
 // Define the type for the specific profile data fetched from the database
 interface ExhibitorProfileData {
@@ -326,6 +328,13 @@ export default function ExhibitorFormPage() {
         }))
     }
 
+    const handlePhoneChange = (value: string | undefined) => {
+        setFormData((prev) => ({
+            ...prev,
+            contactPhone: value || "",
+        }))
+    }
+
     const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0]
         if (file) {
@@ -365,6 +374,10 @@ export default function ExhibitorFormPage() {
                 finalLogoUrl = await uploadFile(formData.companyLogo, user.id, 'companylogos');
             } else if (!finalLogoUrl) {
                 throw new Error(t.validation.logo);
+            }
+
+            if (formData.contactPhone && !isValidPhoneNumber(formData.contactPhone)) {
+                throw new Error("Please enter a valid phone number.");
             }
 
             let formattedWebsite = formData.companyWebsite.trim();
@@ -462,6 +475,7 @@ export default function ExhibitorFormPage() {
                     t={t}
                     formData={formData}
                     handleInputChange={handleInputChange}
+                    handlePhoneChange={handlePhoneChange}
                     handleFileUpload={handleFileUpload}
                     handleSubmit={handleSubmit}
                     hasExistingProfile={hasExistingProfile}
@@ -515,6 +529,7 @@ interface ExhibitorFormViewProps {
     t: Translations;
     formData: ExhibitorFormData;
     handleInputChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => void;
+    handlePhoneChange: (value: string | undefined) => void;
     handleFileUpload: (e: React.ChangeEvent<HTMLInputElement>) => void;
     handleSubmit: (e: React.FormEvent) => void;
     hasExistingProfile: boolean;
@@ -522,7 +537,7 @@ interface ExhibitorFormViewProps {
 }
 
 const ExhibitorFormView: React.FC<ExhibitorFormViewProps> = ({
-    t, formData, handleInputChange, handleFileUpload, handleSubmit, hasExistingProfile, isApproved
+    t, formData, handleInputChange, handlePhoneChange, handleFileUpload, handleSubmit, hasExistingProfile, isApproved
 }) => {
     return (
         <>
@@ -537,7 +552,6 @@ const ExhibitorFormView: React.FC<ExhibitorFormViewProps> = ({
                         { label: t.contactName, name: "contactName", type: "text", placeholder: t.placeholder.contactName, required: true, disabled: isApproved },
                         // Contact Email remains disabled as it's the user's login ID
                         { label: t.contactEmail, name: "contactEmail", type: "email", placeholder: t.placeholder.contactEmail, required: true, disabled: isApproved },
-                        { label: t.contactPhone, name: "contactPhone", type: "tel", placeholder: t.placeholder.contactPhone, required: true, disabled: isApproved },
                     ].map((field) => (
                         <div key={field.name}>
                             <label className="block text-sm font-semibold text-slate-900 mb-2">
@@ -555,6 +569,21 @@ const ExhibitorFormView: React.FC<ExhibitorFormViewProps> = ({
                             />
                         </div>
                     ))}
+
+                    {/* Contact Phone with Validation */}
+                    <div>
+                        <label className="block text-sm font-semibold text-slate-900 mb-2">
+                            {t.contactPhone} <span className="text-red-500">*</span>
+                        </label>
+                        <PhoneInput
+                            placeholder={t.placeholder.contactPhone}
+                            value={formData.contactPhone}
+                            onChange={handlePhoneChange}
+                            defaultCountry="AE"
+                            disabled={isApproved}
+                            className={`w-full px-4 py-3 border-2 border-slate-200 rounded-lg focus-within:border-[#013371] bg-white hover:border-slate-300 transition-colors ${isApproved ? 'bg-slate-100 cursor-not-allowed' : ''} [&>input]:outline-none [&>input]:bg-transparent [&>input]:w-full`}
+                        />
+                    </div>
 
                     {/* Booth Type */}
                     <div>
