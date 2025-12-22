@@ -2,7 +2,7 @@
 
 import Image from 'next/image'
 import React from 'react'
-import { Crown, Star, Globe, TrendingUp } from 'lucide-react'
+import { Crown, Star, Globe } from 'lucide-react'
 
 interface PrincePageProps {
   language: 'en' | 'ar'
@@ -143,21 +143,7 @@ export default function PrincePage({ language = 'en' }: PrincePageProps) {
                 ))}
               </div>
 
-              {/* Action Button */}
-              <div className={`pt-4 ${isRtl ? 'flex justify-end' : 'flex justify-start'}`}>
-                <a
-                  href="https://hrhprinceebrahim.com/about-prince-ebrahim/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group relative px-8 py-4 bg-white text-slate-900 font-bold rounded-full overflow-hidden shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:shadow-[0_0_40px_rgba(255,255,255,0.5)] transition-all duration-300 inline-block"
-                >
-                  <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  <span className="relative flex items-center gap-2 group-hover:text-slate-900 transition-colors">
-                    {isRtl ? 'اكتشف المزيد' : 'Discover More'}
-                    <TrendingUp className={`w-5 h-5 ${isRtl ? 'rotate-180' : ''}`} />
-                  </span>
-                </a>
-              </div>
+
 
             </div>
           </div>
