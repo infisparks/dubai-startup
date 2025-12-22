@@ -42,9 +42,9 @@ interface InvestorsSponsorsProps {
 
 const translations = {
     en: {
-        title: 'Our Investors / Sponsors',
+        title: 'Our Investors',
         subtitle:
-            'Investarise Global Investment Summit 2026 welcome our prestigious speakers to the Event',
+            'Investors Global Investment Summit 2026 welcome our prestigious speakers to the Event',
         footer: "Investarise Global Investor Summit - 2026: Shaping Tomorrow's Economy",
         readMore: 'Read More',
         readLess: 'Read Less',
@@ -74,10 +74,15 @@ const translations = {
                 bio: 'CEO of Everest DG and Co-founder at EIT Global. 13+ years in engineering and tech. Investor with 3M+ AED in startups, specializing in scaling businesses globally.',
                 image: '/speaker/13.png',
             },
+            {
+                name: 'Mr. Sushil Sharma',
+                bio: 'Founder and CEO of Marwari Catalysts, fueling the startup ecosystem in Tier 2 & 3 cities. Angel investor in 100+ startups, with a focus on gender diversity and innovation.',
+                image: '/speaker/14.png',
+            },
         ],
     },
     ar: {
-        title: 'المستثمرون والرعاة',
+        title: 'المستثمرون لدينا',
         subtitle:
             'ترحب قمة إنفستارايز العالمية للاستثمار 2026 بمتحدثينا المتميزين في هذا الحدث',
         footer: 'قمة إنفستارايز العالمية للمستثمرين - 2026: تشكيل اقتصاد الغد',
@@ -108,6 +113,11 @@ const translations = {
                 name: 'السيد أريز',
                 bio: 'الرئيس التنفيذي لشركة Everest DG والمؤسس المشارك في EIT Global. أكثر من 13 عامًا في الهندسة والتكنولوجيا. مستثمر بأكثر من 3 ملايين درهم في الشركات الناشئة، متخصص في توسيع نطاق الأعمال عالميًا.',
                 image: '/speaker/13.png',
+            },
+            {
+                name: 'السيد سوشيل شارما',
+                bio: 'المؤسس والرئيس التنفيذي لشركة Marwari Catalysts، التي تغذي نظام الشركات الناشئة في مدن المستوى 2 و 3. مستثمر ملاك في أكثر من 100 شركة ناشئة، مع التركيز على التنوع بين الجنسين والابتكار.',
+                image: '/speaker/14.png',
             },
         ],
     },
@@ -189,7 +199,7 @@ export default function InvestorsSponsors({ language = 'en' }: InvestorsSponsors
                     <button
                         onClick={() => scroll('left')}
                         className={`absolute top-1/2 -translate-y-1/2 left-0 z-10 p-2 bg-white rounded-full shadow-lg text-blue-600 hover:bg-slate-100 transition-all
-                       sm:hidden ${isScrollStart ? 'opacity-0' : 'opacity-100'}`}
+                        ${isScrollStart ? 'opacity-0' : 'opacity-100'}`}
                         aria-label="Scroll left"
                     >
                         <ChevronLeftIcon />
@@ -198,7 +208,7 @@ export default function InvestorsSponsors({ language = 'en' }: InvestorsSponsors
                     <div
                         ref={scrollContainerRef}
                         className="flex flex-nowrap overflow-x-auto scroll-smooth snap-x snap-mandatory gap-4 px-2 py-4
-                       sm:grid sm:grid-cols-2 lg:grid-cols-5 sm:gap-8 sm:p-0 sm:overflow-visible
+                       sm:gap-8 sm:p-4
                        [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
                     >
                         {t.investors.map((investor) => {
@@ -209,7 +219,7 @@ export default function InvestorsSponsors({ language = 'en' }: InvestorsSponsors
                                     key={investor.name}
                                     className="flex flex-col items-center text-center bg-slate-50 rounded-3xl p-6 shadow-lg
                              w-[85vw] flex-shrink-0 snap-start
-                             sm:w-auto sm:flex-shrink-1"
+                             sm:w-[300px]"
                                 >
                                     <div className="relative w-40 h-40 rounded-full mb-6 overflow-hidden shadow-md flex-shrink-0">
                                         <img
@@ -245,7 +255,7 @@ export default function InvestorsSponsors({ language = 'en' }: InvestorsSponsors
                     <button
                         onClick={() => scroll('right')}
                         className={`absolute top-1/2 -translate-y-1/2 right-0 z-10 p-2 bg-white rounded-full shadow-lg text-blue-600 hover:bg-slate-100 transition-all
-                       sm:hidden ${isScrollEnd ? 'opacity-0' : 'opacity-100'}`}
+                        ${isScrollEnd ? 'opacity-0' : 'opacity-100'}`}
                         aria-label="Scroll right"
                     >
                         <ChevronRightIcon />

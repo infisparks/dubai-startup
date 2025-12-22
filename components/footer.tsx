@@ -11,7 +11,7 @@ interface FooterProps {
 const translations = {
   en: {
     tagline: 'Where innovation meets capital',
-    description: 'Join the Investarise Global Investment Summit 2026 — a premier event for connecting visionary founders with high-net-worth investors and venture capital networks.',
+    description: 'Join the Investors Global Investment Summit 2026 — a premier event for connecting visionary founders with high-net-worth investors and venture capital networks.',
     registerNow: 'Register Now',
     company: 'Company',
     platform: 'Platform',

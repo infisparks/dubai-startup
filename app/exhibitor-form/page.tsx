@@ -338,6 +338,13 @@ export default function ExhibitorFormPage() {
     const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0]
         if (file) {
+            // Validate file type
+            if (!['image/png', 'image/jpeg', 'image/jpg'].includes(file.type)) {
+                alert("Please upload a PNG or JPG image.");
+                e.target.value = ''; // Reset input
+                return;
+            }
+
             setFormData((prev) => ({
                 ...prev,
                 companyLogo: file,
@@ -374,6 +381,10 @@ export default function ExhibitorFormPage() {
                 finalLogoUrl = await uploadFile(formData.companyLogo, user.id, 'companylogos');
             } else if (!finalLogoUrl) {
                 throw new Error(t.validation.logo);
+            }
+
+            if (!formData.reference) {
+                throw new Error("Reference is required.");
             }
 
             if (formData.contactPhone && !isValidPhoneNumber(formData.contactPhone)) {
@@ -608,13 +619,14 @@ const ExhibitorFormView: React.FC<ExhibitorFormViewProps> = ({
                     {/* Reference */}
                     <div>
                         <label className="block text-sm font-semibold text-slate-900 mb-2">
-                            {t.reference}
+                            {t.reference} <span className="text-red-500">*</span>
                         </label>
                         <select
                             name="reference"
                             value={formData.reference}
                             onChange={handleInputChange}
                             className={`w-full px-4 py-3 border-2 border-slate-200 rounded-lg focus:border-[#013371] focus:outline-none bg-white hover:border-slate-300 transition-colors ${isApproved ? 'bg-slate-100 cursor-not-allowed' : ''}`}
+                            required
                             disabled={isApproved}
                         >
                             <option value="">Select Reference</option>

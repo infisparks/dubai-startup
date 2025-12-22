@@ -47,20 +47,20 @@ const translations = {
   en: {
     title: 'Our Speakers',
     subtitle:
-      'Investarise Global Investment Summit 2026 welcome our prestigious speakers.',
+      'Investors Global Investment Summit 2026 welcome our prestigious speakers.',
     footer: "Investarise Global Investor Summit - 2026: Shaping Tomorrow's Economy",
     readMore: 'Read More',
     readLess: 'Read Less',
     speakers: [
       {
+        name: 'Mr. Sushil Sharma',
+        bio: 'Founder and CEO of Marwari Catalysts, fueling the startup ecosystem in Tier 2 & 3 cities. Angel investor in 100+ startups, with a focus on gender diversity and innovation.',
+        image: '/speaker/14.png',
+      },
+      {
         name: 'Dr. Manav Ahuja',
         bio: 'Driving business success with modern strategies, backed by 25+ years in business and consultancy, and a doctorate in Human Psychology. Supported 100 entrepreneurs and trained 1,000 sales professionals.',
         image: '/speaker/11.png',
-      },
-      {
-        name: 'Mr. Jatin Bajaj',
-        bio: 'Certified trainer for AML & Fraud, Banking Products and Policies, have achieved 23% increase in the productivity and the retention with the last organization',
-        image: '/speaker/12.png',
       },
       {
         name: 'Dr. Alexandru Nedelcu',
@@ -73,9 +73,9 @@ const translations = {
         image: '/speaker/3.png',
       },
       {
-        name: 'Mr. Sushil Sharma',
-        bio: 'Founder and CEO of Marwari Catalysts, fueling the startup ecosystem in Tier 2 & 3 cities. Angel investor in 100+ startups, with a focus on gender diversity and innovation.',
-        image: '/speaker/14.png',
+        name: 'Mr. Jatin Bajaj',
+        bio: 'Certified trainer for AML & Fraud, Banking Products and Policies, have achieved 23% increase in the productivity and the retention with the last organization',
+        image: '/speaker/12.png',
       },
     ],
   },
@@ -88,14 +88,14 @@ const translations = {
     readLess: 'اقرأ أقل',
     speakers: [
       {
+        name: 'السيد سوشيل شارما',
+        bio: 'المؤسس والرئيس التنفيذي لشركة Marwari Catalysts، التي تغذي نظام الشركات الناشئة في مدن المستوى 2 و 3. مستثمر ملاك في أكثر من 100 شركة ناشئة، مع التركيز على التنوع بين الجنسين والابتكار.',
+        image: '/speaker/14.png',
+      },
+      {
         name: 'د. ماناف أهوجا',
         bio: 'تحويل نجاح الأعمال بنهج حديث. 25+ عامًا من الخبرة الغنية في الأعمال والاستشارات، حاصل على درجة الدكتوراه في علم النفس البشري. قام برعاية أعمال 100 رائد أعمال، ودرب 1000 مرشح على أعمال المبيعات.',
         image: '/speaker/11.png',
-      },
-      {
-        name: 'السيد جاتين باجاج',
-        bio: 'مدرب معتمد في مكافحة غسيل الأموال والاحتيال، والمنتجات والسياسات المصرفية، حقق زيادة بنسبة 23٪ في الإنتاجية والاحتفاظ بالموظفين في المنظمة السابقة.',
-        image: '/speaker/12.png',
       },
       {
         name: 'د. ألكسندرو نيديلكو',
@@ -108,9 +108,9 @@ const translations = {
         image: '/speaker/3.png',
       },
       {
-        name: 'السيد سوشيل شارما',
-        bio: 'المؤسس والرئيس التنفيذي لشركة Marwari Catalysts، التي تغذي نظام الشركات الناشئة في مدن المستوى 2 و 3. مستثمر ملاك في أكثر من 100 شركة ناشئة، مع التركيز على التنوع بين الجنسين والابتكار.',
-        image: '/speaker/14.png',
+        name: 'السيد جاتين باجاج',
+        bio: 'مدرب معتمد في مكافحة غسيل الأموال والاحتيال، والمنتجات والسياسات المصرفية، حقق زيادة بنسبة 23٪ في الإنتاجية والاحتفاظ بالموظفين في المنظمة السابقة.',
+        image: '/speaker/12.png',
       },
     ],
   },

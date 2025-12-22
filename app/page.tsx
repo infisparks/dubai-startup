@@ -51,7 +51,7 @@ export default function Home() {
 
       <FocusSectors language={language} />
       <VenueSection language={language} venueImageSrc={"/taj.jpg"} />
-      <Schedule language={language} />
+      {/* <Schedule language={language} /> */}
       <MarketingStrategy language={language} />
 
       {/* <OurTeam language={language} /> */}

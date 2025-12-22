@@ -379,6 +379,10 @@ export default function InvestorFormPage() {
             alert("Please fill in all required personal information fields.")
             return
         }
+        if (!formData.reference) {
+            alert("Reference is required.")
+            return
+        }
         if (step < 2) setStep(step + 1)
     }
 
@@ -639,7 +643,7 @@ const InvestorFormView: React.FC<InvestorFormViewProps> = ({
 
                             <div>
                                 <label className="block text-sm font-semibold text-slate-900 mb-2">
-                                    {t.reference}
+                                    {t.reference} <span className="text-red-500">*</span>
                                 </label>
                                 <select
                                     name="reference"
@@ -647,6 +651,7 @@ const InvestorFormView: React.FC<InvestorFormViewProps> = ({
                                     onChange={handleInputChange}
                                     className={`w-full px-4 py-3 border-2 border-slate-200 rounded-lg focus:border-[#013371] focus:outline-none bg-white hover:border-slate-300 transition-colors ${isApproved ? 'bg-slate-100 cursor-not-allowed' : ''}`}
                                     disabled={isApproved}
+                                    required
                                 >
                                     <option value="">Select Reference</option>
                                     {t.referenceOptions.map((opt: string) => (

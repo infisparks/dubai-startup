@@ -491,6 +491,11 @@ export default function FounderFormPage() {
         if (formData.domain === 'Other' && !formData.domainOtherSpec) isStep1Valid = false;
         const isPitchDeckValid = !!formData.pitchDeckFile || !!formData.pitchDeckUrl;
 
+        if (formData.establishmentYear && Number(formData.establishmentYear) < 2000) {
+            alert("Year of Establishment cannot be earlier than 2000.");
+            return;
+        }
+
         if (!isStep1Valid) { alert(t.validation.step1); return; }
         if (!isPitchDeckValid) { alert(t.validation.pitchDeckChoice); return; }
         if (step < 2) setStep(step + 1)
@@ -519,6 +524,12 @@ export default function FounderFormPage() {
                 finalPitchUrl = await uploadPitchDeck(formData.pitchDeckFile, user.id);
             } else if (!finalPitchUrl) {
                 throw new Error(t.pitchDeckRequiredError);
+            }
+
+            if (!formData.reference) {
+                alert("Reference is required.");
+                setLoadingData(false);
+                return;
             }
 
             const submissionData: Omit<FounderProfileData, 'is_approved'> = {
@@ -827,8 +838,8 @@ const FormView: React.FC<any> = ({ t, step, formData, pitchDeckMode, handleInput
                                         <InputGroup label={t.phone} required>
                                             <StyledInput type="tel" name="founderPhone" value={formData.founderPhone} onChange={handleInputChange} placeholder={t.placeholder.phone} disabled={isDisabled} required />
                                         </InputGroup>
-                                        <InputGroup label="Reference">
-                                            <StyledSelect name="reference" value={formData.reference} onChange={handleInputChange} disabled={isDisabled}>
+                                        <InputGroup label="Reference" required>
+                                            <StyledSelect name="reference" value={formData.reference} onChange={handleInputChange} disabled={isDisabled} required>
                                                 <option value="">Select Reference</option>
                                                 {t.referenceOptions.map((opt: string) => <option key={opt} value={opt}>{opt}</option>)}
                                             </StyledSelect>

@@ -9,14 +9,14 @@ interface HeroProps {
 
 const translations = {
   en: {
-    headline: "Investarise Global Investment",
+    headline: "Investors Global Investment",
     headline2: "Summit 2026",
     tagline: "PITCH. CONNECT. PROSPER.",
     location: "Taj Exotica Resort & Spa The Palm",
     date: "February 5th 2026",
-    statsInvestors: "50+ Investors",
+    statsInvestors: "100+ Investors",
     statsStartups: "250+ Startups and SME's",
-    statsSpeakers: "10+ Speakers",
+    statsSpeakers: "20+ Speakers",
   },
   ar: {
     headline: "قمة إنفسترايز العالمية للاستثمار",
@@ -24,9 +24,9 @@ const translations = {
     tagline: "اعرض. تواصل. ازدهر.",
     location: "منتجع وسبا تاج إكزوتيكا النخلة",
     date: "5 فبراير 2026",
-    statsInvestors: "50+ مستثمر",
+    statsInvestors: "100+ مستثمر",
     statsStartups: "250+ شركة ناشئة والشركات الصغيرة والمتوسطة",
-    statsSpeakers: "10+ متحدثين",
+    statsSpeakers: "20+ متحدثين",
   },
 }
 

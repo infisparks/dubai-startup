@@ -18,38 +18,38 @@ const StrategyIconMap: { [key: string]: React.ElementType } = {
 
 const translations = {
   en: {
-    title: "Marketing & Promotion",
-    subtitle: "Comprehensive promotional framework designed to maximize market penetration and stakeholder engagement.",
+    title: "Marketing & Promotion Strategy",
+    subtitle: "A comprehensive promotional plan designed to ensure widespread reach and engagement for the Investarise Global Investment Summit 2026.",
     strategies: [
       {
         iconKey: 'Press',
         title: 'Press & Media',
         type: 'list',
-        items: ['Gulf News', 'Khaleej Times', 'Forbes ME', 'Nabd'],
+        items: ['Gulf News', 'Khaleej Times', 'Forbes Middle East'],
       },
       {
         iconKey: 'Digital',
         title: 'Digital Marketing',
         type: 'list',
-        items: ['LinkedIn Ads', 'Meta Campaigns', 'Social Media'],
+        items: ['LinkedIn Ads', 'Meta Campaigns', 'Targeted Social Media'],
       },
       {
         iconKey: 'Partnerships',
         title: 'Strategic Partnerships',
         type: 'list',
-        items: ['Accelerators', 'Incubators', 'VC Firms'],
+        items: ['Startup Accelerators', 'Incubators', 'Venture Capital Firms'],
       },
       {
         iconKey: 'Influencer',
-        title: 'Influencer Collab.',
+        title: 'Influencer Collaborations',
         type: 'description',
-        description: 'Industry thought leaders to enhance visibility and credibility.',
+        description: 'Collaborations with industry thought leaders to enhance visibility and credibility',
       },
       {
         iconKey: 'PostEvent',
         title: 'Post-Event Impact',
         type: 'description',
-        description: 'Highlight film production to extend event impact and reach.',
+        description: "Production of a highlight film to extend the event's impact and reach",
       },
     ],
     cta: {
@@ -59,38 +59,38 @@ const translations = {
     }
   },
   ar: {
-    title: "التسويق والترويج",
-    subtitle: "إطار عمل ترويجي شامل لتعظيم اختراق السوق ومشاركة أصحاب المصلحة.",
+    title: "استراتيجية التسويق والترويج",
+    subtitle: "خطة ترويجية شاملة مصممة لضمان الوصول الواسع والمشاركة لقمة إنفستارايز العالمية للاستثمار 2026.",
     strategies: [
       {
         iconKey: 'Press',
         title: 'الصحافة والإعلام',
         type: 'list',
-        items: ['جلف نيوز', 'الخليج تايمز', 'فوربس ME', 'نبض'],
+        items: ['جلف نيوز', 'الخليج تايمز', 'فوربس الشرق الأوسط'],
       },
       {
         iconKey: 'Digital',
         title: 'التسويق الرقمي',
         type: 'list',
-        items: ['LinkedIn', 'Meta', 'وسائل التواصل'],
+        items: ['إعلانات LinkedIn', 'حملات Meta', 'وسائل التواصل المستهدفة'],
       },
       {
         iconKey: 'Partnerships',
-        title: 'الشراكات',
+        title: 'الشراكات الاستراتيجية',
         type: 'list',
-        items: ['مسرعات', 'حاضنات', 'رأس المال'],
+        items: ['مسرعات الشركات الناشئة', 'حاضنات الأعمال', 'شركات رأس المال الجريء'],
       },
       {
         iconKey: 'Influencer',
         title: 'تعاون المؤثرين',
         type: 'description',
-        description: 'قادة الفكر لتعزيز الرؤية والمصداقية.',
+        description: 'التعاون مع قادة الفكر في الصناعة لتعزيز الرؤية والمصداقية',
       },
       {
         iconKey: 'PostEvent',
         title: 'تأثير ما بعد الحدث',
         type: 'description',
-        description: 'فيلم تسليطي لتوسيع تأثير الحدث.',
+        description: 'إنتاج فيلم تسليط الضوء لتوسيع تأثير الحدث ونطاقه',
       },
     ],
     cta: {
@@ -111,13 +111,13 @@ const GridCta = ({ language }: { language: 'en' | 'ar' }) => {
       <div className="relative h-full p-4 rounded-lg border border-slate-200 overflow-hidden">
         {/* Background Image */}
         <img
-          src="https://images.unsplash.com/photo-1517245381831-f11a437e56b8?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
+          src="https://images.unsplash.com/photo-1517245381831-f11a437e56b8?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
           alt="Abstract background"
           className="absolute inset-0 w-full h-full object-cover z-0"
         />
         {/* Overlay for text readability */}
         <div className="absolute inset-0 bg-blue-800 bg-opacity-70 group-hover:bg-opacity-80 transition-all duration-300 z-10" />
-        
+
         <div className="relative z-20 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 h-full">
           <div className={isRtl ? 'text-right' : ''}>
             <h4 className="text-sm font-bold text-white mb-0.5">
@@ -127,9 +127,9 @@ const GridCta = ({ language }: { language: 'en' | 'ar' }) => {
               {t.subtitle}
             </p>
           </div>
-          
+
           {/* Replaced button with Next.js Link */}
-          <Link 
+          <Link
             href="/registration"
             className="flex-shrink-0 px-5 py-2 text-sm bg-white text-blue-600 font-semibold rounded-lg transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 whitespace-nowrap inline-block text-center"
           >
@@ -147,7 +147,7 @@ export default function MarketingStrategy({ language = 'en' }: MarketingStrategy
   const isRtl = language === 'ar'
 
   return (
-    <section 
+    <section
       className="relative py-12 lg:py-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-slate-50 to-white overflow-hidden"
       dir={isRtl ? 'rtl' : 'ltr'}
     >
@@ -159,7 +159,7 @@ export default function MarketingStrategy({ language = 'en' }: MarketingStrategy
 
       {/* Main Content */}
       <div className="w-full max-w-7xl mx-auto relative z-10">
-        
+
         {/* Header - Compact */}
         <div className="mb-8">
           <div className="inline-flex items-center gap-2 mb-2">
@@ -183,7 +183,7 @@ export default function MarketingStrategy({ language = 'en' }: MarketingStrategy
             const spanCol = strategy.title.includes('Post-Event') || strategy.title.includes('تأثير ما بعد الحدث') ? 'lg:col-span-2' : 'lg:col-span-1';
 
             return (
-              <div 
+              <div
                 key={strategy.title}
                 className={`
                   group relative overflow-hidden rounded-lg transition-all duration-300
@@ -192,7 +192,7 @@ export default function MarketingStrategy({ language = 'en' }: MarketingStrategy
               >
                 {/* Card Background */}
                 <div className="absolute inset-0 bg-white border border-slate-200 rounded-lg transition-all duration-300 group-hover:border-slate-300 group-hover:shadow-md" />
-                
+
                 {/* Subtle Hover Gradient */}
                 <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg"
                   style={{
@@ -202,7 +202,7 @@ export default function MarketingStrategy({ language = 'en' }: MarketingStrategy
 
                 {/* Card Content - Tight Padding */}
                 <div className="relative p-4">
-                  
+
                   {/* Icon + Title Row */}
                   <div className="flex items-start gap-2.5 mb-3">
                     <div className="relative flex-shrink-0">
@@ -249,7 +249,7 @@ export default function MarketingStrategy({ language = 'en' }: MarketingStrategy
               </div>
             );
           })}
-          
+
           {/* CTA Section */}
           <GridCta language={language} />
 

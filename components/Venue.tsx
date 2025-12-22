@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react'
-import { FiStar, FiSun, FiUsers } from 'react-icons/fi' 
+import { FiStar, FiSun, FiUsers } from 'react-icons/fi'
 
 interface VenueSectionProps {
   language: 'en' | 'ar'
@@ -12,7 +12,7 @@ interface VenueSectionProps {
 const translations = {
   en: {
     title: 'The Venue: Taj Exotica Resort & Spa The Palm',
-    mainDescription: `Investarise Global Investment Summit 2026 will be hosted at the prestigious Taj Exotica Resort & Spa The Palm, sophisticated and distinctive venues includes two stunning Royale Ballrooms and eight contemporary meeting rooms`,
+    mainDescription: `Investors Global Investment Summit 2026 will be hosted at the prestigious Taj Exotica Resort & Spa The Palm, sophisticated and distinctive venues includes two stunning Royale Ballrooms and eight contemporary meeting rooms`,
     imageCaption: 'The iconic Taj Exotica Resort & Spa The Palm',
     highlightsTitle: 'Venue Highlights',
     highlights: [
@@ -60,7 +60,7 @@ const translations = {
 
 const IconMap: { [key: string]: React.ElementType } = {
   Luxury: FiStar,
-  Backdrop: FiSun, 
+  Backdrop: FiSun,
   Atmosphere: FiUsers,
 }
 
@@ -70,15 +70,15 @@ export default function VenueSection({
 }: VenueSectionProps) {
   const t = translations[language]
   const isRtl = language === 'ar'
-  
+
   // NOTE: Hardcoded the path to '/tag.png' as requested.
-  const backgroundImageSrc = '/taj.jpg'; 
+  const backgroundImageSrc = '/taj.jpg';
 
   return (
-    <section 
+    <section
       // ADJUSTMENT 1: Minimized vertical padding
       className="relative w-full min-h-screen flex items-center justify-center py-8 lg:py-16"
-      style={{ 
+      style={{
         backgroundImage: `url(${backgroundImageSrc})`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
@@ -89,7 +89,7 @@ export default function VenueSection({
       <div className="absolute inset-0 bg-black/70 backdrop-blur-sm"></div>
 
       {/* Content Container (Slightly narrower maximum width) */}
-      <div 
+      <div
         className={`relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 
                    grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center`}
         dir={isRtl ? 'rtl' : 'ltr'}
@@ -107,7 +107,7 @@ export default function VenueSection({
         </div>
 
         {/* Right Side: Text Content - Frosted Glass Card (Minimized padding and spacing) */}
-        <div 
+        <div
           // ADJUSTMENT 2: Minimized padding on the card
           className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-lg p-5 md:p-6 lg:p-7
                      shadow-2xl shadow-cyan-500/20 transform hover:scale-[1.005] transition-transform duration-300
@@ -133,7 +133,7 @@ export default function VenueSection({
             {/* ADJUSTMENT 4: Smaller Highlight Title */}
             <h3 className="text-xl font-bold text-white mb-3 flex items-center gap-2">
               <span className="text-blue-400">
-                <FiStar className="w-5 h-5" /> 
+                <FiStar className="w-5 h-5" />
               </span>
               {t.highlightsTitle}
             </h3>

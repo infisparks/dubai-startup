@@ -46,7 +46,7 @@ const agendaData = {
             description: 'Showcasing innovation and facilitating investment',
             image: '/day1.png',
             list: [
-                { title: 'Startup Pitch Competition', description: 'Over 50 startups present their ventures to investors and judges' },
+
                 { title: 'Investor Connect Lounge', description: 'Dedicated space for one-on-one meetings and private networking' },
                 { title: 'Exhibition Zone', description: 'Booths for startups to showcase innovations and engage with attendees' },
                 { title: 'Awards Ceremony', description: 'Recognizing outstanding startups and contributions to the ecosystem' },
@@ -81,7 +81,7 @@ const agendaData = {
             description: 'عرض الابتكار وتسهيل الاستثمار',
             image: '/day1.png',
             list: [
-                { title: 'مسابقة عرض الشركات الناشئة', description: 'أكثر من 50 شركة ناشئة تقدم مشاريعها للمستثمرين والحكام' },
+
                 { title: 'صالة تواصل المستثمرين', description: 'مساحة مخصصة للاجتماعات الفردية والتواصل الخاص' },
                 { title: 'منطقة المعرض', description: 'أكشاك للشركات الناشئة لعرض الابتكارات والتفاعل مع الحضور' },
                 { title: 'حفل توزيع الجوائز', description: 'تكريم الشركات الناشئة المتميزة والمساهمات في النظام البيئي' },

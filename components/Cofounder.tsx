@@ -17,7 +17,7 @@ const translations = {
         name: 'Sanjay Bhambri',
         // Added a 'role' for better typographic hierarchy
         role: 'Travel Entrepreneur & Management Consultant',
-        bio: 'CEO NoWorryTrip, Travel Entrepreneur, Management Consultant, Specialized In International Business Development. With a proven track record of leadership, strategy, and cross-border collaborations, Specialized in International Business Development while also contributing actively to humanitarian and non-profit sectors.',
+        bio: 'Travel Entrepreneur, Management Consultant, Specialized In International Business Development. With a proven track record of leadership, strategy, and cross-border collaborations, Specialized in International Business Development while also contributing actively to humanitarian and non-profit sectors.',
         image: '/speaker/10.png',
       },
       {
@@ -38,7 +38,7 @@ const translations = {
         name: 'سانجاي بهامبري',
         // Added a 'role' for better typographic hierarchy
         role: 'رائد أعمال في مجال السفر ومستشار إداري',
-        bio: 'الرئيس التنفيذي لشركة NoWorryTrip، رائد أعمال في مجال السفر، مستشار إداري، متخصص في تطوير الأعمال الدولية. يتمتع بسجل حافل في القيادة والاستراتيجية والتعاون عبر الحدود، ومتخصص في تطوير الأعمال الدولية ويساهم بنشاط في القطاعات الإنسانية وغير الربحية.',
+        bio: 'رائد أعمال في مجال السفر، مستشار إداري، متخصص في تطوير الأعمال الدولية. يتمتع بسجل حافل في القيادة والاستراتيجية والتعاون عبر الحدود، ومتخصص في تطوير الأعمال الدولية ويساهم بنشاط في القطاعات الإنسانية وغير الربحية.',
         image: '/speaker/5.png',
       },
       {

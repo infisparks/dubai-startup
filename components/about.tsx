@@ -15,11 +15,11 @@ const BRAND_BASE_PATH = '/brand'
 const translations = {
   en: {
     aboutUsTitle: 'Raising the curtain..',
-    investorsTitle: 'Investarise Global Investment Summit',
-    aboutPartial: 'Investarise Global Investment Summit connects visionary founders with elite investors, venture capital firms, and family offices worldwide.Our mission is to empower innovation/ dreams / new ideas by creating a seamless bridge between ambition and capital.',
-    aboutDescription: 'Investarise Global Investment Summit connects visionary founders with elite investors, venture capital firms, and family offices worldwide.Our mission is to empower innovation/ dreams / new ideas by creating a seamless bridge between ambition and capital.The summit aims to empower entrepreneurs and high-potential businesses, particularly those from underrepresented or emerging markets, by providing them with direct access to investors, funding opportunities, and strategic guidance.By cultivating an environment where ambition meets investment, the summit seeks to unlock new avenues for innovation, job creation, and economic progress on a global scale.Today, Investarise drives deal flow for over 100 + global investment networks, helping startups secure the right partnerships to scale.Through Investarise service platform, we remain committed to accessibility, transparency, and trust and go beyond the digital - hosting exclusive global investment summits, pitch sessions, and networking events.\n\nJoin us at the Investarise Global Summit – Dubai 2026, where ideas meet opportunity and the below mentioned follows.',
-readMore: 'Read Full Story',
-  readLess: 'Show Less',
+    investorsTitle: 'Investors Global Investment Summit',
+    aboutPartial: 'Investors Global Investment Summit connects visionary founders with elite investors, venture capital firms, and family offices worldwide.Our mission is to empower innovation/ dreams / new ideas by creating a seamless bridge between ambition and capital.',
+    aboutDescription: 'Investors Global Investment Summit connects visionary founders with elite investors, venture capital firms, and family offices worldwide.Our mission is to empower innovation/ dreams / new ideas by creating a seamless bridge between ambition and capital.The summit aims to empower entrepreneurs and high-potential businesses, particularly those from underrepresented or emerging markets, by providing them with direct access to investors, funding opportunities, and strategic guidance.By cultivating an environment where ambition meets investment, the summit seeks to unlock new avenues for innovation, job creation, and economic progress on a global scale.Today, Investarise drives deal flow for over 100 + global investment networks, helping startups secure the right partnerships to scale.Through Investarise service platform, we remain committed to accessibility, transparency, and trust and go beyond the digital - hosting exclusive global investment summits, pitch sessions, and networking events.\n\nJoin us at the Investarise Global Summit – Dubai 2026, where ideas meet opportunity and the below mentioned follows.',
+    readMore: 'Read Full Story',
+    readLess: 'Show Less',
     features: [
       { title: 'Access High-Growth Opportunities', desc: 'Invest early in ventures with huge potential.' },
       { title: 'Smart Matchmaking', desc: 'Connect with the right founders and investors.' },
@@ -31,24 +31,24 @@ readMore: 'Read Full Story',
       { title: 'Impactful Opportunities', desc: 'Grow your portfolio while making a difference.' },
     ]
   },
-ar: {
-  aboutUsTitle: 'رفع الستار..',
+  ar: {
+    aboutUsTitle: 'رفع الستار..',
     investorsTitle: 'قمة إنفسترايز العالمية للمستثمرين',
-      aboutPartial: 'تجمع قمة إنفسترايز العالمية للمستثمرين المؤسسين ذوي الرؤى مع المستثمرين النخبة وشركات رأس المال الاستثماري والمكاتب العائلية في جميع أنحاء العالم. مهمتنا هي تمكين الابتكار من خلال إنشاء جسر سلس بين الطموح ورأس المال.',
-        aboutDescription: 'تجمع قمة إنفسترايز العالمية للمستثمرين المؤسسين ذوي الرؤى مع المستثمرين النخبة وشركات رأس المال الاستثماري والمكاتب العائلية في جميع أنحاء العالم. مهمتنا هي تمكين الابتكار من خلال إنشاء جسر سلس بين الطموح ورأس المال. تهدف القمة إلى تمكين رواد الأعمال والشركات ذات الإمكانات العالية، وخاصة تلك من الأسواق الممثلة تمثيلاً ناقصاً أو الناشئة، من خلال تزويدهم بالوصول المباشر إلى المستثمرين وفرص التمويل والتوجيه الاستراتيجي. من خلال تنمية بيئة يلتقي فيها الطموح بالاستثمار، تسعى القمة لفتح آفاق جديدة للابتكار وخلق فرص العمل والتقدم الاقتصادي على نطاق عالمي. اليوم، تدفع إنفسترايز تدفق الصفقات لأكثر من 100 شبكة استثمار عالمية، مما يساعد الشركات الناشئة على تأمين الشراكات الصحيحة للتوسع. من خلال منصة خدمات إنفسترايز، نبقى ملتزمين بإمكانية الوصول والشفافية والثقة ونتجاوز الرقمي – نستضيف قمم استثمار عالمية حصرية، وجلسات عرض، وفعاليات تواصل.\n\nانضم إلينا في قمة إنفسترايز العالمية – دبي 2026، حيث تلتقي الأفكار بالفرص وما يلي مذكور أدناه.',
-          readMore: 'اقرأ القصة الكاملة',
-            readLess: 'إظهار أقل',
-              features: [
-                { title: 'الوصول إلى فرص عالية النمو', desc: 'استثمر مبكراً في مشاريع ذات إمكانات هائلة.' },
-                { title: 'التوفيق الذكي', desc: 'تواصل مع المؤسسين والمستثمرين المناسبين.' },
-                { title: 'الوصول العالمي والتعرض', desc: 'عزز علامتك التجارية عبر الصناعات والأسواق.' },
-                { title: 'خبرة مثبتة', desc: 'اعمل مع فريق يقدم نتائج باستمرار.' },
-                { title: 'فعاليات وقمم حصرية', desc: 'تواصل، تعاون، واكتشف الصفقات.' },
-                { title: 'رؤى مدعومة بالبيانات', desc: 'اتخذ قرارات استثمارية واثقة ومستنيرة.' },
-                { title: 'عملية آمنة وشفافة', desc: 'استثمر بوضوح وثقة.' },
-                { title: 'فرص مؤثرة', desc: 'نمِّ محفظتك بينما تحدث فرقاً.' },
-              ]
-},
+    aboutPartial: 'تجمع قمة إنفسترايز العالمية للمستثمرين المؤسسين ذوي الرؤى مع المستثمرين النخبة وشركات رأس المال الاستثماري والمكاتب العائلية في جميع أنحاء العالم. مهمتنا هي تمكين الابتكار من خلال إنشاء جسر سلس بين الطموح ورأس المال.',
+    aboutDescription: 'تجمع قمة إنفسترايز العالمية للمستثمرين المؤسسين ذوي الرؤى مع المستثمرين النخبة وشركات رأس المال الاستثماري والمكاتب العائلية في جميع أنحاء العالم. مهمتنا هي تمكين الابتكار من خلال إنشاء جسر سلس بين الطموح ورأس المال. تهدف القمة إلى تمكين رواد الأعمال والشركات ذات الإمكانات العالية، وخاصة تلك من الأسواق الممثلة تمثيلاً ناقصاً أو الناشئة، من خلال تزويدهم بالوصول المباشر إلى المستثمرين وفرص التمويل والتوجيه الاستراتيجي. من خلال تنمية بيئة يلتقي فيها الطموح بالاستثمار، تسعى القمة لفتح آفاق جديدة للابتكار وخلق فرص العمل والتقدم الاقتصادي على نطاق عالمي. اليوم، تدفع إنفسترايز تدفق الصفقات لأكثر من 100 شبكة استثمار عالمية، مما يساعد الشركات الناشئة على تأمين الشراكات الصحيحة للتوسع. من خلال منصة خدمات إنفسترايز، نبقى ملتزمين بإمكانية الوصول والشفافية والثقة ونتجاوز الرقمي – نستضيف قمم استثمار عالمية حصرية، وجلسات عرض، وفعاليات تواصل.\n\nانضم إلينا في قمة إنفسترايز العالمية – دبي 2026، حيث تلتقي الأفكار بالفرص وما يلي مذكور أدناه.',
+    readMore: 'اقرأ القصة الكاملة',
+    readLess: 'إظهار أقل',
+    features: [
+      { title: 'الوصول إلى فرص عالية النمو', desc: 'استثمر مبكراً في مشاريع ذات إمكانات هائلة.' },
+      { title: 'التوفيق الذكي', desc: 'تواصل مع المؤسسين والمستثمرين المناسبين.' },
+      { title: 'الوصول العالمي والتعرض', desc: 'عزز علامتك التجارية عبر الصناعات والأسواق.' },
+      { title: 'خبرة مثبتة', desc: 'اعمل مع فريق يقدم نتائج باستمرار.' },
+      { title: 'فعاليات وقمم حصرية', desc: 'تواصل، تعاون، واكتشف الصفقات.' },
+      { title: 'رؤى مدعومة بالبيانات', desc: 'اتخذ قرارات استثمارية واثقة ومستنيرة.' },
+      { title: 'عملية آمنة وشفافة', desc: 'استثمر بوضوح وثقة.' },
+      { title: 'فرص مؤثرة', desc: 'نمِّ محفظتك بينما تحدث فرقاً.' },
+    ]
+  },
 }
 
 // --- Sub Components ---

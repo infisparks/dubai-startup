@@ -32,7 +32,7 @@ const translations = {
   en: {
     title: 'Event Overview',
     intro:
-      "Investarise Global Investment Summit 2026 is a premier international platform designed to unite over 50 investors, 250 startups and SME's, and 10 speakers, alongside global partners.",
+      "Investors Global Investment Summit 2026 is a premier international platform designed to unite over 50 investors, 250 startups and SME's, and 10 speakers, alongside global partners.",
     dateLabel: 'Summit Dates',
     date: 'February 5th 2026',
     venueLabel: 'Location',
