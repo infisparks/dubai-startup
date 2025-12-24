@@ -32,7 +32,7 @@ const translations = {
   en: {
     title: 'Event Overview',
     intro:
-      "Investarise Global Investors Summit 2026 is a premier international platform designed to unite over 50 investors, 250 startups and SME's, and 10 speakers, alongside global partners.",
+      "Investarise Global Investors Summit 2026 is a premier international platform designed to unite over 100 investors, 250 startups and SME's, and 20 speakers, alongside global partners.",
     dateLabel: 'Summit Dates',
     date: 'February 5th 2026',
     venueLabel: 'Location',
@@ -55,7 +55,7 @@ const translations = {
   ar: {
     title: 'نظرة عامة على الحدث',
     intro:
-      'قمة إنفستارايز العالمية للاستثمار 2026 هي منصة دولية رائدة تهدف إلى جمع أكثر من 50 مستثمر و 250 شركة ناشئة وشركات صغيرة ومتوسطة و 10 متحدثين، بالإضافة إلى الشركاء العالميين.',
+      'قمة إنفستارايز العالمية للاستثمار 2026 هي منصة دولية رائدة تهدف إلى جمع أكثر من 50 مستثمر و 250 شركة ناشئة وشركات صغيرة ومتوسطة و 20 متحدثين، بالإضافة إلى الشركاء العالميين.',
     dateLabel: 'تواريخ القمة',
     date: '5 فبراير 2026',
     venueLabel: 'الموقع',
