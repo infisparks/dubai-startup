@@ -11,7 +11,7 @@ interface FooterProps {
 const translations = {
   en: {
     tagline: 'Where innovation meets capital',
-    description: 'Join the Investors Global Investment Summit 2026 — a premier event for connecting visionary founders with high-net-worth investors and venture capital networks.',
+    description: 'Join the Investarise Global Investors Summit 2026 — a premier event for connecting visionary founders with high-net-worth investors and venture capital networks.',
     registerNow: 'Register Now',
     company: 'Company',
     platform: 'Platform',
@@ -19,9 +19,10 @@ const translations = {
     followUs: 'Follow Us',
     getInTouch: 'Get In Touch',
     about: 'About',
-    careers: 'Careers',
-    blog: 'Blog',
-    press: 'Press',
+    vision: 'Vision',
+    speakers: 'Speakers',
+    sponsorship: 'Sponsorship',
+    venue: 'Venue',
     forInvestors: 'For Investors',
     forStartups: 'For Startups',
     contact: 'Contact',
@@ -45,9 +46,10 @@ const translations = {
     followUs: 'تابعنا',
     getInTouch: 'تواصل معنا',
     about: 'حول',
-    careers: 'الوظائف',
-    blog: 'مدونة',
-    press: 'صحافة',
+    vision: 'الرؤية',
+    speakers: 'المتحدثون',
+    sponsorship: 'الرعاية',
+    venue: 'المكان',
     forInvestors: 'للمستثمرين',
     forStartups: 'للشركات الناشئة',
     contact: 'تواصل',
@@ -153,10 +155,15 @@ export default function Footer({ language = 'en' }: FooterProps) {
             <div>
               <h4 className="font-bold text-white mb-5 text-sm uppercase tracking-wider">{t.company}</h4>
               <ul className="space-y-3">
-                {[t.about, t.careers, t.blog, t.press].map((link) => (
-                  <li key={link}>
-                    <a href="#" className="text-slate-400 hover:text-cyan-400 transition-colors text-sm font-light">
-                      {link}
+                {[
+                  { label: t.about, href: '/#about' },
+                  { label: t.vision, href: '/#vision' },
+                  { label: t.venue, href: '/#venue' },
+                  { label: t.speakers, href: '/#speakers' }
+                ].map((link) => (
+                  <li key={link.label}>
+                    <a href={link.href} className="text-slate-400 hover:text-cyan-400 transition-colors text-sm font-light">
+                      {link.label}
                     </a>
                   </li>
                 ))}
@@ -167,10 +174,14 @@ export default function Footer({ language = 'en' }: FooterProps) {
             <div>
               <h4 className="font-bold text-white mb-5 text-sm uppercase tracking-wider">{t.platform}</h4>
               <ul className="space-y-3">
-                {[t.forInvestors, t.forStartups, t.contact].map((link) => (
-                  <li key={link}>
-                    <a href="#" className="text-slate-400 hover:text-cyan-400 transition-colors text-sm font-light">
-                      {link}
+                {[
+                  { label: t.forInvestors, href: '/investors' },
+                  { label: t.forStartups, href: '/startups' },
+                  { label: t.sponsorship, href: '/#sponsorship' }
+                ].map((link) => (
+                  <li key={link.label}>
+                    <a href={link.href} className="text-slate-400 hover:text-cyan-400 transition-colors text-sm font-light">
+                      {link.label}
                     </a>
                   </li>
                 ))}
@@ -181,10 +192,14 @@ export default function Footer({ language = 'en' }: FooterProps) {
             <div>
               <h4 className="font-bold text-white mb-5 text-sm uppercase tracking-wider">{t.support}</h4>
               <ul className="space-y-3">
-                {[t.contact, t.privacy, t.terms].map((link) => (
-                  <li key={link}>
-                    <a href="#" className="text-slate-400 hover:text-cyan-400 transition-colors text-sm font-light">
-                      {link}
+                {[
+                  { label: t.contact, href: '/contact' },
+                  { label: t.privacy, href: '/privacy-policy' },
+                  { label: t.terms, href: '/terms-of-service' }
+                ].map((link) => (
+                  <li key={link.label}>
+                    <a href={link.href} className="text-slate-400 hover:text-cyan-400 transition-colors text-sm font-light">
+                      {link.label}
                     </a>
                   </li>
                 ))}
@@ -221,11 +236,11 @@ export default function Footer({ language = 'en' }: FooterProps) {
             <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400 font-light">
               <p>{t.copyright}</p>
               <div className="flex gap-6">
-                <a href="#" className="hover:text-cyan-400 transition-colors">
+                <a href="/privacy-policy" className="hover:text-cyan-400 transition-colors">
                   {t.privacy}
                 </a>
                 <div className="w-px bg-slate-800" />
-                <a href="#" className="hover:text-cyan-400 transition-colors">
+                <a href="/terms-of-service" className="hover:text-cyan-400 transition-colors">
                   {t.terms}
                 </a>
               </div>

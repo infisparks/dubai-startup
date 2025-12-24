@@ -44,7 +44,7 @@ const translations = {
     en: {
         title: 'Our Investors',
         subtitle:
-            'Investors Global Investment Summit 2026 welcome our prestigious speakers to the Event',
+            'Investarise Global Investors Summit 2026 welcome our prestigious speakers to the Event',
         footer: "Investarise Global Investor Summit - 2026: Shaping Tomorrow's Economy",
         readMore: 'Read More',
         readLess: 'Read Less',

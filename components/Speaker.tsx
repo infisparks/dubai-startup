@@ -47,7 +47,7 @@ const translations = {
   en: {
     title: 'Our Speakers',
     subtitle:
-      'Investors Global Investment Summit 2026 welcome our prestigious speakers.',
+      'Investarise Global Investors Summit 2026 welcome our prestigious speakers.',
     footer: "Investarise Global Investor Summit - 2026: Shaping Tomorrow's Economy",
     readMore: 'Read More',
     readLess: 'Read Less',
@@ -183,7 +183,7 @@ export default function SpeakersPage({ language = 'en' }: SpeakersPageProps) {
   }
 
   return (
-    <section className="relative py-16 sm:py-24 lg:py-32 px-4 sm:px-6 lg:px-8 bg-white overflow-hidden">
+    <section id="speakers" className="relative py-16 sm:py-24 lg:py-32 px-4 sm:px-6 lg:px-8 bg-white overflow-hidden">
       <div className="max-w-7xl mx-auto relative z-10 w-full">
         {/* Page Title */}
         <div className="text-center mb-12 lg:mb-16">

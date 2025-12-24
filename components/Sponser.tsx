@@ -198,6 +198,7 @@ export default function SponsorshipPackages({ language = 'en' }: SponsorshipPack
 
   return (
     <section
+      id="sponsorship"
       className="relative py-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-white via-slate-50 to-white overflow-hidden"
       dir={isRtl ? 'rtl' : 'ltr'}
     >

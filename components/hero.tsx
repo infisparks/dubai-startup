@@ -9,7 +9,7 @@ interface HeroProps {
 
 const translations = {
   en: {
-    headline: "Investors Global Investment",
+    headline: "Investarise Global Investors",
     headline2: "Summit 2026",
     tagline: "PITCH. CONNECT. PROSPER.",
     location: "Taj Exotica Resort & Spa The Palm",

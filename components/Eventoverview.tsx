@@ -32,16 +32,16 @@ const translations = {
   en: {
     title: 'Event Overview',
     intro:
-      "Investors Global Investment Summit 2026 is a premier international platform designed to unite over 50 investors, 250 startups and SME's, and 10 speakers, alongside global partners.",
+      "Investarise Global Investors Summit 2026 is a premier international platform designed to unite over 50 investors, 250 startups and SME's, and 10 speakers, alongside global partners.",
     dateLabel: 'Summit Dates',
     date: 'February 5th 2026',
     venueLabel: 'Location',
     venue: 'Taj Exotica Resort and Spa Palm Jumeirah Dubai',
     keyStakeholders: 'Key Stakeholders',
     stakeholders: [
-      { count: '50+', label: 'Investors' },
+      { count: '100+', label: 'Investors' },
       { count: '250+', label: "Startups and SME's" },
-      { count: '10+', label: 'Speakers' },
+      { count: '20+', label: 'Speakers' },
     ],
     summitTheme: 'Summit Theme',
     themePhrase: '"Pitch. Connect. Prosper."',

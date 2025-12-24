@@ -12,7 +12,7 @@ interface VenueSectionProps {
 const translations = {
   en: {
     title: 'The Venue: Taj Exotica Resort & Spa The Palm',
-    mainDescription: `Investors Global Investment Summit 2026 will be hosted at the prestigious Taj Exotica Resort & Spa The Palm, sophisticated and distinctive venues includes two stunning Royale Ballrooms and eight contemporary meeting rooms`,
+    mainDescription: `Investarise Global Investors Summit 2026 will be hosted at the prestigious Taj Exotica Resort & Spa The Palm, sophisticated and distinctive venues includes two stunning Royale Ballrooms and eight contemporary meeting rooms`,
     imageCaption: 'The iconic Taj Exotica Resort & Spa The Palm',
     highlightsTitle: 'Venue Highlights',
     highlights: [
@@ -76,6 +76,7 @@ export default function VenueSection({
 
   return (
     <section
+      id="venue"
       // ADJUSTMENT 1: Minimized vertical padding
       className="relative w-full min-h-screen flex items-center justify-center py-8 lg:py-16"
       style={{

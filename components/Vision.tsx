@@ -139,7 +139,7 @@ export default function VisionAndGoals({ language = 'en' }: VisionAndGoalsProps)
   }, [checkScrollPosition])
 
   return (
-    <section className="relative py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 bg-slate-950 text-white overflow-hidden">
+    <section id="vision" className="relative py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 bg-slate-950 text-white overflow-hidden">
       {/* Sophisticated Background Effects */}
       <div className="absolute inset-0 opacity-5 pointer-events-none">
         <div className="absolute -top-1/3 -left-1/4 w-1/2 h-1/2 bg-blue-600 rounded-full blur-[120px]" />
@@ -189,7 +189,7 @@ export default function VisionAndGoals({ language = 'en' }: VisionAndGoalsProps)
 
         {/* Goals Carousel Container */}
         <div className="relative -mx-4 px-4 md:mx-0 md:px-0">
-          
+
           {/* Left Arrow */}
           <button
             onClick={() => scroll('left')}
@@ -222,11 +222,10 @@ export default function VisionAndGoals({ language = 'en' }: VisionAndGoalsProps)
                   <div className="flex items-start gap-3">
                     {/* Icon Container */}
                     <div
-                      className={`flex-shrink-0 p-2.5 rounded-lg shadow-md ${
-                        isBlue
+                      className={`flex-shrink-0 p-2.5 rounded-lg shadow-md ${isBlue
                           ? 'bg-gradient-to-br from-blue-600 to-cyan-500'
                           : 'bg-gradient-to-br from-cyan-500 to-blue-600'
-                      } text-white`}
+                        } text-white`}
                     >
                       <IconComponent />
                     </div>
