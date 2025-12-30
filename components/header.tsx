@@ -18,18 +18,14 @@ const translations = {
   en: {
     home: "Home",
     about: "About",
-    investors: "Investors",
     agenda: "Agenda 2026",
-    startup: "Startups",
     register: "Register",
     logout: "Logout",
   },
   ar: {
     home: "الرئيسية",
     about: "حول",
-    investors: "المستثمرون",
     agenda: "أجندة 2026",
-    startup: "للشركات الناشئة",
     register: "التسجيل",
     logout: "تسجيل الخروج",
   },
@@ -37,13 +33,10 @@ const translations = {
 
 // Define the navigation items
 // 'home' and 'about' will use anchor links (/#...)
-// 'startup' will use a page link (/startup)
 const navItems: { key: keyof typeof translations.en; href: string }[] = [
   { key: "home", href: "/#home" },
   { key: "about", href: "/#about" },
   { key: "agenda", href: "/agenda-2026" },
-  { key: "investors", href: "/investors" },
-  { key: "startup", href: "/startups" },
 ]
 
 export default function Header({ language = "en", setLanguage, userEmail }: HeaderProps) {
@@ -95,8 +88,8 @@ export default function Header({ language = "en", setLanguage, userEmail }: Head
   return (
     <header
       className={`fixed w-full top-0 z-50 transition-all duration-500 ${effectiveScrolled
-          ? "bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm"
-          : "bg-transparent border-transparent"
+        ? "bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm"
+        : "bg-transparent border-transparent"
         }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -159,8 +152,8 @@ export default function Header({ language = "en", setLanguage, userEmail }: Head
             <Link
               href="/registration"
               className={`hidden sm:flex px-4 py-2 rounded-lg font-medium text-sm shadow-md transition-colors ${effectiveScrolled
-                  ? "bg-[#013371] text-white hover:bg-[#024fa3]"
-                  : "bg-white text-[#013371] hover:bg-[#013371] hover:text-white"
+                ? "bg-[#013371] text-white hover:bg-[#024fa3]"
+                : "bg-white text-[#013371] hover:bg-[#013371] hover:text-white"
                 }`}
             >
               {t.register}
@@ -180,8 +173,8 @@ export default function Header({ language = "en", setLanguage, userEmail }: Head
         {mobileMenuOpen && (
           <nav
             className={`lg:hidden pb-4 space-y-2 animate-slideInDown ${effectiveScrolled
-                ? "bg-white/95 border-t border-slate-200"
-                : "bg-black/50 backdrop-blur-md"
+              ? "bg-white/95 border-t border-slate-200"
+              : "bg-black/50 backdrop-blur-md"
               } rounded-b-xl`}
           >
             {navItems.map((item) => (
@@ -211,8 +204,8 @@ export default function Header({ language = "en", setLanguage, userEmail }: Head
               <Link
                 href="/registration"
                 className={`block px-4 py-2 rounded-lg text-center font-medium text-sm ${effectiveScrolled
-                    ? "bg-[#013371] text-white hover:bg-[#024fa3]"
-                    : "bg-white text-[#013371] hover:bg-[#013371] hover:text-white"
+                  ? "bg-[#013371] text-white hover:bg-[#024fa3]"
+                  : "bg-white text-[#013371] hover:bg-[#013371] hover:text-white"
                   }`}
                 onClick={() => setMobileMenuOpen(false)} // Close menu on click
               >

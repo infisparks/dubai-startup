@@ -12,9 +12,13 @@ import html2canvas from "html2canvas"
 import {
     ArrowRight, Upload, CheckCircle2, LogIn, TrendingUp, Edit,
     Lock, Save, Link as LinkIcon, XCircle, FileText, Globe,
-    Linkedin, Phone, Mail, Building2, Calendar, DollarSign, FileCheck, ScanLine, Download
+    Linkedin, Phone, Building2, Calendar, DollarSign, FileCheck, Download, CreditCard
 } from "lucide-react"
 import { supabase } from "@/lib/supabaseConfig"
+
+// --- Constants ---
+// CHANGE THIS TO YOUR DEPLOYED BACKEND URL IN PRODUCTION
+const API_URL = "https://pay.infispark.in";
 
 // --- Types ---
 interface FounderProfileData {
@@ -38,6 +42,7 @@ interface FounderProfileData {
     is_approved: boolean;
     email: string;
     reference: string | null;
+    payment_status: string; // Added payment_status
 }
 
 type Translations = {
@@ -141,7 +146,12 @@ export default function FounderFormPage() {
     const [showAuthPopup, setShowAuthPopup] = useState(false)
     const [needsVerification, setNeedsVerification] = useState(false)
     const [hasExistingProfile, setHasExistingProfile] = useState(false)
+
+    // Status & Payment States
     const [isApproved, setIsApproved] = useState(false)
+    const [paymentStatus, setPaymentStatus] = useState<string>('unpaid')
+    const [paymentSessionId, setPaymentSessionId] = useState<string | null>(null)
+    const [paidAt, setPaidAt] = useState<string | null>(null)
 
     const [step, setStep] = useState(1)
     const [language, setLanguage] = useState<"en" | "ar">("en")
@@ -181,6 +191,9 @@ export default function FounderFormPage() {
         if (founderProfile) {
             setHasExistingProfile(true);
             setIsApproved(founderProfile.is_approved);
+            setPaymentStatus(founderProfile.payment_status || 'unpaid'); // Set Payment Status
+            setPaymentSessionId(founderProfile.stripe_session_id || null);
+            setPaidAt(founderProfile.paid_at || null);
             setStep(0);
             const storedUrl = founderProfile.pitch_deck_url;
             if (storedUrl && storedUrl.startsWith('http') && !storedUrl.includes(process.env.NEXT_PUBLIC_SUPABASE_URL || '')) {
@@ -225,6 +238,13 @@ export default function FounderFormPage() {
             setSession(session);
             setUser(currentUser);
 
+            // Check if returned from Stripe successfully
+            const params = new URLSearchParams(window.location.search);
+            if (params.get('success') === 'true') {
+                // You might want to show a toast/alert here
+                console.log("Payment successful, refreshing data...");
+            }
+
             if (currentUser) {
                 setFormData(prev => ({ ...prev, founderEmail: currentUser.email! }));
                 if (!currentUser.email_confirmed_at) {
@@ -250,18 +270,11 @@ export default function FounderFormPage() {
                     setNeedsVerification(false);
                     setUserRole(null);
                     setIsApproved(false);
+                    setPaymentStatus('unpaid');
                     setHasExistingProfile(false);
                     setStep(1);
                     setPitchDeckMode('file');
-                    setFormData({
-                        companyName: "", stage: "", pitchDeckFile: null, pitchDeckUrl: null,
-                        companyLinkedin: "", website: "", description: "",
-                        founderName: "", founderEmail: "", founderPhone: "",
-                        domain: "", domainOtherSpec: "", problemDescription: "",
-                        earningStatus: "",
-                        establishmentYear: "", turnover: "", netProfit: "", itReturnsFiled: false, isAudited: false,
-                        reference: "", referenceOther: ""
-                    });
+                    // Reset form...
                 }
             }
         );
@@ -448,9 +461,7 @@ export default function FounderFormPage() {
                 referenceOptions: ["كيشان فيرما", "سانجاي بهاماري", "فريد أحمد", "عبد المجيد", "أيديا باز", "ماروادي كاتاليست", "رهبار", "أخرى"],
             },
         };
-        // Override options for consistent value mapping if needed, but for now we use English values for logic
         const referenceOptions = ["Kishan Verma", "Sanjay Bhamari", "Farid Ahmed", "Abdulmajid", "Ideabaaz", "Marwadi Catalyst", "Rehbar", "Other"];
-
         return {
             ...translations[language],
             referenceOptions: referenceOptions
@@ -532,7 +543,7 @@ export default function FounderFormPage() {
                 return;
             }
 
-            const submissionData: Omit<FounderProfileData, 'is_approved'> = {
+            const submissionData: Omit<FounderProfileData, 'is_approved' | 'payment_status'> = {
                 company_name: formData.companyName,
                 stage: formData.stage,
                 pitch_deck_url: finalPitchUrl,
@@ -568,6 +579,7 @@ export default function FounderFormPage() {
             setHasExistingProfile(true);
             setFormData(prev => ({ ...prev, pitchDeckUrl: finalPitchUrl, pitchDeckFile: null }));
             setStep(0);
+            window.location.reload();
         } catch (err: any) {
             alert(t.submitError + (err.message || ''));
             console.error("Submission error:", err);
@@ -602,7 +614,20 @@ export default function FounderFormPage() {
         }
 
         if (hasExistingProfile && step === 0) {
-            return <StatusView t={t} isApproved={isApproved} formData={formData} setStep={setStep} canEdit={!isApproved} userId={user.id} />;
+            return (
+                <StatusView
+                    t={t}
+                    isApproved={isApproved}
+                    paymentStatus={paymentStatus}
+                    formData={formData}
+                    setStep={setStep}
+                    canEdit={!isApproved}
+                    userId={user.id}
+                    userEmail={user.email!}
+                    paymentSessionId={paymentSessionId}
+                    paidAt={paidAt}
+                />
+            );
         }
 
         if (step === 1 || step === 2) {
@@ -699,7 +724,6 @@ const FormView: React.FC<any> = ({ t, step, formData, pitchDeckMode, handleInput
 
     return (
         <>
-            {/* Stepper */}
             <div className="flex items-center justify-between mb-8 px-1">
                 <div className="flex items-center gap-3">
                     <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-colors ${step >= 1 ? 'bg-[#013371] text-white' : 'bg-white border border-slate-200 text-slate-400'}`}>1</div>
@@ -761,7 +785,6 @@ const FormView: React.FC<any> = ({ t, step, formData, pitchDeckMode, handleInput
                                     )}
                                 </div>
 
-                                {/* Pitch Deck Section */}
                                 <div className="pt-2">
                                     <InputGroup label={t.pitchDeck} required>
                                         <div className="bg-slate-50 p-1 rounded-lg flex mb-4 w-full md:w-fit border border-slate-200">
@@ -823,7 +846,6 @@ const FormView: React.FC<any> = ({ t, step, formData, pitchDeckMode, handleInput
 
                         {step === 2 && (
                             <div className="space-y-8 animate-fadeIn">
-                                {/* Founder Details Section */}
                                 <div className="space-y-5">
                                     <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wider border-b pb-2">{t.founderDetails}</h3>
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
@@ -852,7 +874,6 @@ const FormView: React.FC<any> = ({ t, step, formData, pitchDeckMode, handleInput
                                     )}
                                 </div>
 
-                                {/* Financial & Legal Section */}
                                 <div className="space-y-5">
                                     <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wider border-b pb-2">{t.financialDetails}</h3>
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
@@ -868,8 +889,6 @@ const FormView: React.FC<any> = ({ t, step, formData, pitchDeckMode, handleInput
                                                 {t.earnings.map((e: string) => <option key={e} value={e}>{e}</option>)}
                                             </StyledSelect>
                                         </InputGroup>
-
-                                        {/* Turnover & Profit */}
                                         <InputGroup label={t.turnover} required>
                                             <div className="relative">
                                                 <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
@@ -882,8 +901,6 @@ const FormView: React.FC<any> = ({ t, step, formData, pitchDeckMode, handleInput
                                                 <StyledInput name="netProfit" value={formData.netProfit} onChange={handleInputChange} placeholder={t.placeholder.netProfit} disabled={isDisabled} className="pl-9" required />
                                             </div>
                                         </InputGroup>
-
-                                        {/* Toggles */}
                                         <InputGroup label={t.itFiled}>
                                             <div className="flex items-center h-[42px]">
                                                 <ToggleSwitch
@@ -909,7 +926,6 @@ const FormView: React.FC<any> = ({ t, step, formData, pitchDeckMode, handleInput
                                     </div>
                                 </div>
 
-                                {/* Descriptions */}
                                 <div className="space-y-5">
                                     <InputGroup label={t.problemDescription} required>
                                         <textarea
@@ -957,23 +973,70 @@ const FormView: React.FC<any> = ({ t, step, formData, pitchDeckMode, handleInput
     );
 };
 
-// --- Status View (VERTICAL FORMAT) ---
-// REPLACE THE ENTIRE StatusView COMPONENT WITH THIS
-const StatusView: React.FC<any> = ({ t, isApproved, formData, setStep, canEdit, userId }) => {
-    const statusColor = isApproved ? "bg-green-50 text-green-700 border-green-200" : "bg-amber-50 text-amber-700 border-amber-200";
-    const icon = isApproved ? <CheckCircle2 className="w-5 h-5" /> : <TrendingUp className="w-5 h-5" />;
+// --- Status View (Vertical + Payment Logic) ---
+const StatusView: React.FC<any> = ({ t, isApproved, paymentStatus, formData, setStep, canEdit, userId, userEmail, paymentSessionId, paidAt }) => {
+    const isPaid = paymentStatus === 'paid';
+
+    // Status Logic
+    let statusColor = "bg-amber-50 text-amber-700 border-amber-200";
+    let statusIcon = <TrendingUp className="w-5 h-5" />;
+    let statusTitle = t.status.pending;
+    let statusDesc = t.status.notApprovedDesc;
+
+    if (isApproved) {
+        if (isPaid) {
+            statusColor = "bg-green-50 text-green-700 border-green-200";
+            statusIcon = <CheckCircle2 className="w-5 h-5" />;
+            statusTitle = t.status.approved;
+            statusDesc = t.status.approvedDesc;
+        } else {
+            statusColor = "bg-blue-50 text-blue-700 border-blue-200";
+            statusIcon = <DollarSign className="w-5 h-5" />;
+            statusTitle = "Application Approved - Payment Required";
+            statusDesc = "Your application has been accepted. Please complete the payment to receive your Founder Pass.";
+        }
+    }
 
     const badgeRef = useRef<HTMLDivElement>(null);
+    const [processingPayment, setProcessingPayment] = useState(false);
+
+    // --- Payment Handler ---
+    const handlePayNow = async () => {
+        setProcessingPayment(true);
+        try {
+            const response = await fetch(`${API_URL}/create-checkout-session`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    userId: userId,
+                    email: userEmail,
+                    companyName: formData.companyName,
+                    success_url: "https://www.investariseglobal.com/founder-form-page?success=true",
+                    cancel_url: "https://www.investariseglobal.com/founder-form-page?canceled=true"
+                }),
+            });
+            const data = await response.json();
+            if (data.url) {
+                window.location.href = data.url;
+            } else {
+                alert("Failed to initiate payment");
+            }
+        } catch (error) {
+            console.error(error);
+            alert("Error connecting to payment server. Make sure the Node.js backend is running.");
+        } finally {
+            setProcessingPayment(false);
+        }
+    };
 
     const handleDownloadBadge = async () => {
         if (!badgeRef.current || !isApproved) return;
 
         try {
-            // 1. Wait for fonts/styles to settle
             await new Promise(resolve => setTimeout(resolve, 200));
 
             const canvas = await html2canvas(badgeRef.current, {
-                scale: 4, // High resolution for print
+                scale: 4,
                 useCORS: true,
                 allowTaint: true,
                 backgroundColor: null,
@@ -1000,7 +1063,6 @@ const StatusView: React.FC<any> = ({ t, isApproved, formData, setStep, canEdit, 
         }
     };
 
-    // ... DataItem and BooleanItem helpers ...
     const DataItem = ({ label, value, link }: { label: string, value: string, link?: boolean }) => (
         <div className="flex flex-col">
             <dt className="text-xs text-slate-500 uppercase tracking-wide font-medium mb-1">{label}</dt>
@@ -1020,7 +1082,7 @@ const StatusView: React.FC<any> = ({ t, isApproved, formData, setStep, canEdit, 
             <dd className="flex items-center gap-2">
                 <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${value ? 'bg-green-100 text-green-800' : 'bg-slate-100 text-slate-600'}`}>
                     {value ? <FileCheck className="w-3 h-3 mr-1" /> : <XCircle className="w-3 h-3 mr-1" />}
-                    {value ? 'Yes' : 'No'}
+                    {value ? t.yes : t.no}
                 </span>
             </dd>
         </div>
@@ -1028,17 +1090,27 @@ const StatusView: React.FC<any> = ({ t, isApproved, formData, setStep, canEdit, 
 
     return (
         <div className="space-y-6">
-            {/* Status Card */}
-            <div className={`p-6 rounded-xl border ${statusColor} flex items-start gap-4`}>
-                <div className="mt-1">{icon}</div>
-                <div>
-                    <h3 className="font-bold text-base mb-1">{isApproved ? t.status.approved : t.status.pending}</h3>
-                    <p className="text-sm opacity-90">{isApproved ? t.status.approvedDesc : t.status.notApprovedDesc}</p>
+            <div className={`p-6 rounded-xl border ${statusColor} flex flex-col md:flex-row items-start md:items-center gap-4`}>
+                <div className="mt-1">{statusIcon}</div>
+                <div className="flex-1">
+                    <h3 className="font-bold text-base mb-1">{statusTitle}</h3>
+                    <p className="text-sm opacity-90">{statusDesc}</p>
                 </div>
+                {/* Pay Button Logic */}
+                {isApproved && !isPaid && (
+                    <button
+                        onClick={handlePayNow}
+                        disabled={processingPayment}
+                        className="bg-[#013371] text-white px-5 py-2.5 rounded-lg text-sm font-bold hover:bg-[#024fa3] transition-colors shadow-md flex items-center gap-2 w-full md:w-auto justify-center"
+                    >
+                        {processingPayment ? <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div> : <CreditCard className="w-4 h-4" />}
+                        Pay $500.00
+                    </button>
+                )}
             </div>
 
-            {/* NEW PREMIUM EVENT BADGE */}
-            {isApproved && userId && (
+            {/* ONLY SHOW BADGE IF PAID */}
+            {isApproved && isPaid && userId && (
                 <div className="flex flex-col items-center space-y-6 py-6 animate-fadeIn">
                     <div
                         onClick={handleDownloadBadge}
@@ -1050,23 +1122,19 @@ const StatusView: React.FC<any> = ({ t, isApproved, formData, setStep, canEdit, 
                             id="badge-content"
                             className="relative rounded-2xl shadow-2xl overflow-hidden"
                             style={{
-                                // Deep Luxury Background
                                 background: 'radial-gradient(circle at top right, #1e293b 0%, #0f172a 100%)',
                                 border: '1px solid #334155',
                                 fontFamily: 'Arial, sans-serif',
                                 width: '100%',
                                 maxWidth: '340px',
-                                minHeight: '500px', // Portrait Event Badge Height
+                                minHeight: '500px',
                                 boxSizing: 'border-box',
                                 position: 'relative',
                                 display: 'flex',
                                 flexDirection: 'column'
                             }}
                         >
-                            {/* Background Texture/Glow */}
                             <div style={{ position: 'absolute', top: '-100px', left: '-50px', width: '300px', height: '300px', background: 'radial-gradient(circle, rgba(197,160,89,0.1) 0%, rgba(0,0,0,0) 70%)', borderRadius: '50%', pointerEvents: 'none' }}></div>
-
-                            {/* --- TOP SECTION: EVENT BRANDING --- */}
                             <div style={{
                                 padding: '30px 20px 20px 20px',
                                 textAlign: 'center',
@@ -1084,7 +1152,7 @@ const StatusView: React.FC<any> = ({ t, isApproved, formData, setStep, canEdit, 
                                     Official Event Pass
                                 </h5>
                                 <h2 style={{
-                                    color: '#C5A059', // Gold
+                                    color: '#C5A059',
                                     fontSize: '22px',
                                     fontWeight: '900',
                                     textTransform: 'uppercase',
@@ -1096,8 +1164,6 @@ const StatusView: React.FC<any> = ({ t, isApproved, formData, setStep, canEdit, 
                                     INVESTARISE<br />GLOBAL
                                 </h2>
                             </div>
-
-                            {/* --- MIDDLE SECTION: ATTENDEE INFO --- */}
                             <div style={{
                                 flex: 1,
                                 display: 'flex',
@@ -1108,25 +1174,28 @@ const StatusView: React.FC<any> = ({ t, isApproved, formData, setStep, canEdit, 
                                 position: 'relative',
                                 zIndex: 10
                             }}>
-                                {/* Avatar Placeholder / User Icon */}
                                 <div style={{
-                                    width: '80px',
-                                    height: '80px',
+                                    width: '180px',
+                                    padding: '12px',
                                     margin: '0 auto 24px auto',
-                                    borderRadius: '50%',
-                                    background: 'linear-gradient(135deg, #334155 0%, #1e293b 100%)',
+                                    borderRadius: '12px',
+                                    border: '2px solid #C5A059',
+                                    background: 'rgba(255, 255, 255, 0.03)',
                                     display: 'flex',
                                     alignItems: 'center',
                                     justifyContent: 'center',
-                                    border: '2px solid #C5A059',
-                                    boxShadow: '0 4px 15px rgba(0,0,0,0.3)'
+                                    boxShadow: '0 4px 20px rgba(0,0,0,0.2)'
                                 }}>
-                                    <span style={{ fontSize: '32px', fontWeight: 'bold', color: '#fff' }}>
-                                        {formData.founderName.charAt(0).toUpperCase()}
-                                    </span>
+                                    <img
+                                        src="/logo-white.png"
+                                        alt="Logo"
+                                        style={{
+                                            width: '100%',
+                                            height: 'auto',
+                                            objectFit: 'contain'
+                                        }}
+                                    />
                                 </div>
-
-                                {/* Founder Name (HERO) - UPPERCASE */}
                                 <h1 style={{
                                     color: '#ffffff',
                                     fontSize: '28px',
@@ -1134,42 +1203,32 @@ const StatusView: React.FC<any> = ({ t, isApproved, formData, setStep, canEdit, 
                                     margin: '0 0 8px 0',
                                     lineHeight: '1.2',
                                     wordWrap: 'break-word',
-                                    textTransform: 'uppercase' // ADDED UPPERCASE
+                                    textTransform: 'uppercase'
                                 }}>
                                     {formData.founderName}
                                 </h1>
-
-                                {/* Company Name - UPPERCASE */}
                                 <p style={{
                                     color: '#cbd5e1',
                                     fontSize: '16px',
                                     fontWeight: '500',
                                     margin: '0 0 20px 0',
                                     opacity: 0.9,
-                                    textTransform: 'uppercase' // ADDED UPPERCASE
+                                    textTransform: 'uppercase'
                                 }}>
                                     {formData.companyName}
                                 </p>
-
-                                {/* Role Pill */}
                                 <div style={{ display: 'flex', justifyContent: 'center' }}>
                                     <span style={{
-                                        background: 'rgba(197,160,89,0.15)',
-                                        border: '1px solid rgba(197,160,89,0.3)',
                                         color: '#C5A059',
-                                        padding: '6px 16px',
-                                        borderRadius: '20px',
-                                        fontSize: '11px',
+                                        fontSize: '14px',
                                         fontWeight: 'bold',
                                         textTransform: 'uppercase',
-                                        letterSpacing: '0.1em'
+                                        letterSpacing: '0.05em'
                                     }}>
                                         Founder Access
                                     </span>
                                 </div>
                             </div>
-
-                            {/* --- BOTTOM SECTION: QR & FOOTER --- */}
                             <div style={{
                                 background: '#ffffff',
                                 padding: '25px 20px',
@@ -1185,9 +1244,8 @@ const StatusView: React.FC<any> = ({ t, isApproved, formData, setStep, canEdit, 
                                         Event Date
                                     </p>
                                     <p style={{ color: '#0f172a', fontSize: '12px', fontWeight: 'bold', margin: '0 0 10px 0' }}>
-                                        NOV 2025
+                                        FEB 2026
                                     </p>
-
                                     <p style={{ color: '#64748b', fontSize: '9px', textTransform: 'uppercase', fontWeight: 'bold', margin: '0 0 2px 0' }}>
                                         Pass ID
                                     </p>
@@ -1195,8 +1253,6 @@ const StatusView: React.FC<any> = ({ t, isApproved, formData, setStep, canEdit, 
                                         {userId.slice(0, 8)}
                                     </p>
                                 </div>
-
-                                {/* QR Code */}
                                 <div style={{
                                     padding: '4px',
                                     border: '1px solid #e2e8f0',
@@ -1207,7 +1263,6 @@ const StatusView: React.FC<any> = ({ t, isApproved, formData, setStep, canEdit, 
                             </div>
                         </div>
 
-                        {/* Hover Overlay for Download */}
                         <div className="absolute inset-0 rounded-2xl flex items-center justify-center bg-slate-900/60 opacity-0 transition-opacity duration-200 group-hover:opacity-100 backdrop-blur-[2px]">
                             <div className="bg-white/10 border border-white/20 backdrop-blur-md px-6 py-3 rounded-full shadow-2xl">
                                 <p className="flex items-center gap-2 text-sm font-bold text-white tracking-wide">
@@ -1223,7 +1278,6 @@ const StatusView: React.FC<any> = ({ t, isApproved, formData, setStep, canEdit, 
                 </div>
             )}
 
-            {/* Details Section (Unchanged) */}
             <div className="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
                 <div className="px-6 py-4 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
                     <h3 className="font-semibold text-slate-900">{t.status.viewDetails}</h3>
@@ -1251,6 +1305,27 @@ const StatusView: React.FC<any> = ({ t, isApproved, formData, setStep, canEdit, 
 
                         <DataItem label={t.founderName} value={formData.founderName} />
                         <DataItem label={t.email} value={formData.founderEmail} />
+                        <DataItem label="Payment Status" value={paymentStatus.toUpperCase()} />
+                        {isPaid && paidAt && <DataItem label="Payment Date" value={new Date(paidAt).toLocaleString()} />}
+                        {isPaid && paymentSessionId && (
+                            <div className="flex flex-col">
+                                <dt className="text-xs text-slate-500 uppercase tracking-wide font-medium mb-1">Transaction ID</dt>
+                                <dd className="flex items-center gap-2">
+                                    <span className="text-sm font-medium text-slate-900 font-mono bg-slate-100 px-2 py-1 rounded">
+                                        {paymentSessionId.slice(0, 10)}...
+                                    </span>
+                                    <button
+                                        onClick={() => {
+                                            navigator.clipboard.writeText(paymentSessionId);
+                                            alert("Transaction ID Copied!");
+                                        }}
+                                        className="text-xs text-indigo-600 hover:text-indigo-800 font-medium border border-indigo-200 px-2 py-1 rounded hover:bg-indigo-50 transition-colors"
+                                    >
+                                        Copy
+                                    </button>
+                                </dd>
+                            </div>
+                        )}
 
                         <div className="flex flex-col">
                             <dt className="text-xs text-slate-500 uppercase tracking-wide font-medium mb-1">{t.pitchDeck}</dt>

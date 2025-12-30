@@ -42,6 +42,9 @@ interface FounderProfile {
   created_at: string | null;
   updated_at: string | null;
   reference: string | null;
+  payment_status: string;
+  stripe_session_id: string | null;
+  paid_at: string | null;
 }
 
 // Define fields allowed to be edited
@@ -329,7 +332,8 @@ export default function AdminStartupsPage() {
               <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600 uppercase hidden sm:table-cell">{t.founder}</th>
               <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600 uppercase hidden md:table-cell">{t.email}</th>
               <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600 uppercase hidden lg:table-cell">Reference</th>
-              <th className="px-6 py-3 text-center text-xs font-semibold text-slate-600 uppercase hidden md:table-cell">{t.pitchDeck}</th>
+              <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600 uppercase hidden md:table-cell">{t.pitchDeck}</th>
+              <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600 uppercase">Payment</th>
               <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600 uppercase">{t.status}</th>
               <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600 uppercase">{t.actions}</th>
             </tr>
@@ -349,6 +353,27 @@ export default function AdminStartupsPage() {
                 <td className="px-6 py-4 whitespace-nowrap hidden lg:table-cell text-sm text-slate-600">{startup.reference || "-"}</td>
                 <td className="px-6 py-4 whitespace-nowrap text-center hidden md:table-cell">
                   {startup.pitch_deck_url ? <a href={startup.pitch_deck_url} target="_blank" className="text-indigo-600 hover:text-indigo-800 p-2 inline-block rounded-full bg-indigo-50 hover:bg-indigo-100"><FileText className="w-4 h-4" /></a> : <span className="text-slate-400">-</span>}
+                </td>
+                <td className="px-6 py-4">
+                  {startup.payment_status === 'paid' ? (
+                    <div className="flex flex-col">
+                      <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 w-fit">
+                        <CheckCircle className="w-3 h-3" /> Paid
+                      </span>
+                      <span className="text-[10px] text-slate-400 mt-1 font-mono" title={startup.stripe_session_id || ''}>
+                        ID: {(startup.stripe_session_id || 'N/A').slice(0, 8)}...
+                      </span>
+                      {startup.paid_at && (
+                        <span className="text-[10px] text-slate-400">
+                          {new Date(startup.paid_at).toLocaleDateString()}
+                        </span>
+                      )}
+                    </div>
+                  ) : (
+                    <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-600">
+                      <Clock className="w-3 h-3" /> Unpaid
+                    </span>
+                  )}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">{renderStatusBadge(startup.is_approved)}</td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium flex flex-col sm:flex-row gap-1">
@@ -372,7 +397,7 @@ export default function AdminStartupsPage() {
     <div className="min-h-screen flex flex-col bg-slate-50">
       <Header language={language} setLanguage={setLanguage as Dispatch<SetStateAction<"en" | "ar">>} userEmail={session?.user?.email} />
       <main className="flex-1 pt-20 pb-12 sm:pt-24 sm:pb-16 px-3 sm:px-4">
-        <div className="max-w-7xl mx-auto">
+        <div className="w-full px-4">
           <div className="mb-6"><h1 className="text-3xl font-extrabold text-slate-900">{t.title}</h1><p className="text-md text-slate-600 mt-1">{t.subtitle}</p></div>
           {isAdmin && allStartups.length > 0 && (
             <div className="relative mb-6">
@@ -559,6 +584,46 @@ const EditModal: React.FC<EditModalProps> = ({ startup, onClose, onSave, t }) =>
                 onChange={(checked) => handleToggleChange('is_approved', checked)}
                 t={t}
               />
+            </div>
+
+            {/* Payment Information Section (NEW) */}
+            <div className="pt-6 border-t border-slate-200 mt-6 bg-slate-50 p-4 rounded-lg">
+              <h4 className="text-sm font-bold text-slate-700 uppercase tracking-wider mb-3">Payment Information</h4>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-medium text-slate-500 mb-1">Payment Status</label>
+                  <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-semibold ${startup.payment_status === 'paid' ? 'bg-green-100 text-green-800' : 'bg-slate-200 text-slate-700'}`}>
+                    {startup.payment_status === 'paid' ? <CheckCircle className="w-3.5 h-3.5" /> : <Clock className="w-3.5 h-3.5" />}
+                    {startup.payment_status === 'paid' ? 'PAID' : 'UNPAID'}
+                  </span>
+                </div>
+                <div>
+                  <label className="block text-xs font-medium text-slate-500 mb-1">Payment Date</label>
+                  <p className="text-sm font-mono text-slate-900 border border-slate-200 bg-white px-2 py-1 rounded">
+                    {startup.paid_at ? new Date(startup.paid_at).toLocaleString() : '-'}
+                  </p>
+                </div>
+              </div>
+              <div className="mt-3">
+                <label className="block text-xs font-medium text-slate-500 mb-1">Stripe Session ID</label>
+                <div className="flex">
+                  <code className="flex-1 block w-full px-3 py-1.5 bg-white border border-slate-300 rounded-l-md text-xs text-slate-600 font-mono overflow-x-auto whitespace-nowrap">
+                    {startup.stripe_session_id || 'No transaction ID'}
+                  </code>
+                  {startup.stripe_session_id && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        navigator.clipboard.writeText(startup.stripe_session_id!);
+                        alert("Copied Session ID!");
+                      }}
+                      className="px-3 py-1 bg-indigo-50 border border-l-0 border-indigo-200 rounded-r-md text-indigo-600 hover:bg-indigo-100 text-xs font-medium"
+                    >
+                      Copy
+                    </button>
+                  )}
+                </div>
+              </div>
             </div>
           </div>
 

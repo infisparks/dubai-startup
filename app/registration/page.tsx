@@ -43,8 +43,8 @@ export default function RegistrationSelectionPage() {
         const translations = {
             en: {
                 title: "Register Your Interest",
-                // subtitle: "Join the Investarise ecosystem. Choose your role to get started.",
-                subtitle: "Registration starts from 20 Dec 2025",
+                subtitle: "Join the Investarise ecosystem. Choose your role to get started.",
+                // subtitle: "Registration starts from 20 Dec 2025",
                 startup: {
                     title: "Startup Registration",
                     desc: "Apply for funding, gain visibility, and connect with investors.",
