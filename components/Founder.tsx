@@ -45,88 +45,79 @@ export default function FounderPage({ language = 'en' }: FounderPageProps) {
   const isRtl = language === 'ar'
 
   return (
-    <section className="w-full flex flex-col lg:flex-row bg-[#0b1120] overflow-hidden" dir={isRtl ? 'rtl' : 'ltr'}>
-      {/* Left Panel (Profile) */}
-      <div className="w-full lg:w-[35%] bg-[#4a4a4a] text-white p-10 flex flex-col items-center justify-center text-center relative z-10">
+    <section className="w-full bg-white border-b border-slate-100" dir={isRtl ? 'rtl' : 'ltr'}>
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 py-10 sm:py-12 lg:py-20">
 
-        {/* Decorative Arrow for Desktop */}
-        <div className={`hidden lg:block absolute top-1/2 -translate-y-1/2 w-0 h-0 border-t-[20px] border-t-transparent border-b-[20px] border-b-transparent ${isRtl ? 'left-0 border-l-[20px] border-l-[#4a4a4a] translate-x-full' : 'right-0 border-r-[20px] border-r-[#4a4a4a] translate-x-1/2'} z-20`}></div>
+        {/* Compact Grid Layout */}
+        <div className="grid grid-cols-1 md:grid-cols-[160px_1fr] gap-6 md:gap-8 items-start">
 
-        <div className="relative w-48 h-48 sm:w-56 sm:h-56 rounded-full border-4 border-white shadow-2xl mb-6 overflow-hidden transform hover:scale-105 transition-transform duration-500">
-          <Image
-            src="/speaker/4.png"
-            alt={t.name}
-            layout="fill"
-            objectFit="cover"
-            className="hover:scale-110 transition-transform duration-700"
-          />
-        </div>
-
-        <h2 className="text-2xl sm:text-3xl font-bold mb-2">{t.name}</h2>
-        <div className="h-1 w-16 bg-yellow-500 mb-4 rounded-full"></div>
-        <p className="text-gray-300 font-medium mb-6 text-lg">{t.role}</p>
-
-        <p className="text-sm text-gray-200 max-w-xs mx-auto mb-10 italic opacity-80">
-          {t.shortTagline}
-        </p>
-
-        <div className="flex flex-wrap justify-center gap-4 sm:gap-6 mt-auto">
-          <a href="#" className="flex items-center gap-2 group cursor-pointer">
-            <div className="bg-[#1877F2] p-2 rounded-full group-hover:scale-110 transition-transform">
-              <Facebook size={18} className="text-white" />
+          {/* Left Column: Image & Socials */}
+          <div className="flex flex-col items-center md:items-start gap-3">
+            <div className="relative w-32 h-32 md:w-40 md:h-40 rounded-xl overflow-hidden shadow-sm border border-slate-200 bg-slate-50">
+              <Image
+                src="/speaker/4.png"
+                alt={t.name}
+                fill
+                className="object-cover"
+              />
             </div>
-            <span className="text-xs font-semibold text-gray-300 group-hover:text-white transition-colors">Facebook</span>
-          </a>
-          <a href="#" className="flex items-center gap-2 group cursor-pointer">
-            <div className="bg-[#1DA1F2] p-2 rounded-full group-hover:scale-110 transition-transform">
-              <Twitter size={18} className="text-white" />
+
+            {/* Socials - Compact Row */}
+            <div className="flex gap-2 justify-center md:justify-start w-full">
+              <a href="#" className="p-1.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50/50 rounded transition-all">
+                <Facebook size={14} />
+              </a>
+              <a href="#" className="p-1.5 text-slate-400 hover:text-blue-400 hover:bg-blue-50/50 rounded transition-all">
+                <Twitter size={14} />
+              </a>
+              <a href="#" className="p-1.5 text-slate-400 hover:text-blue-700 hover:bg-blue-50/50 rounded transition-all">
+                <Linkedin size={14} />
+              </a>
             </div>
-            <span className="text-xs font-semibold text-gray-300 group-hover:text-white transition-colors">Twitter</span>
-          </a>
-          <a href="#" className="flex items-center gap-2 group cursor-pointer">
-            <div className="bg-[#0A66C2] p-2 rounded-full group-hover:scale-110 transition-transform">
-              <Linkedin size={18} className="text-white" />
+          </div>
+
+          {/* Right Column: Header & Bio */}
+          <div className="flex flex-col min-w-0">
+            {/* Header Area */}
+            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start border-b border-slate-100 pb-3 mb-3 gap-3">
+              <div>
+                <h4 className="text-[10px] font-bold tracking-widest text-blue-600 uppercase mb-1">{t.title}</h4>
+                <h2 className="text-xl sm:text-2xl font-bold text-slate-900 leading-none mb-1">{t.name}</h2>
+                <p className="text-xs font-medium text-slate-500">{t.role}</p>
+              </div>
+              <div className="hidden sm:block opacity-100">
+                <Image src="/logo-white.png" width={80} height={30} alt="Logo" className="object-contain filter invert opacity-80" />
+              </div>
             </div>
-            <span className="text-xs font-semibold text-gray-300 group-hover:text-white transition-colors">LinkedIn</span>
-          </a>
-        </div>
-      </div>
 
-      {/* Right Panel (Content) */}
-      <div className="w-full lg:w-[65%] bg-[#0b1120] text-white p-8 sm:p-12 lg:p-20 flex flex-col justify-center">
-        <div className="flex justify-between items-start mb-8 sm:mb-12">
-          <div>
-            <h1 className="text-3xl sm:text-4xl font-bold tracking-wide">{t.title}</h1>
-            <div className="h-1.5 w-12 bg-yellow-500 mt-3 rounded-full"></div>
+            {/* Bio Content */}
+            <div className="text-[13px] text-slate-600 leading-relaxed text-justify font-light tracking-wide">
+              <p className="mb-2">
+                <span className="font-semibold text-slate-900">{t.bio[0].split(' ').slice(0, 5).join(' ')}</span>
+                {' ' + t.bio[0].split(' ').slice(5).join(' ')}
+              </p>
+
+              {/* Expandable Section */}
+              <div className={`space-y-2 overflow-hidden transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] ${isExpanded ? 'max-h-[800px] opacity-100 mt-2' : 'max-h-0 opacity-0'}`}>
+                {t.bio.slice(1).map((para, idx) => (
+                  <p key={idx}>{para}</p>
+                ))}
+              </div>
+            </div>
+
+            {/* Toggle Action */}
+            <div className="mt-2 flex justify-start">
+              <button
+                onClick={() => setIsExpanded(!isExpanded)}
+                className="text-[11px] font-bold text-blue-600 hover:text-blue-800 transition-colors uppercase tracking-wider flex items-center gap-1.5 py-1"
+              >
+                {isExpanded ? t.readLess : t.readMore}
+                {isExpanded ? <ChevronUp size={12} /> : <ChevronDown size={12} />}
+              </button>
+            </div>
           </div>
-          <div className="w-28 sm:w-36 opacity-90">
-            {/* Using a placeholder if logo-white.png exists, otherwise text */}
-            <Image src="/logo-white.png" width={150} height={50} alt="Investarise" className="object-contain" />
-          </div>
+
         </div>
-
-        <div className="space-y-5 text-sm sm:text-base leading-7 sm:leading-8 text-gray-300 text-justify font-light tracking-wide">
-          <p className="first-letter:text-3xl first-letter:font-bold first-letter:text-yellow-500 first-letter:mr-1 first-letter:float-left">
-            {t.bio[0]}
-          </p>
-
-          <div className={`space-y-5 overflow-hidden transition-all duration-700 ease-in-out ${isExpanded ? 'max-h-[2000px] opacity-100' : 'max-h-0 opacity-0'}`}>
-            {t.bio.slice(1).map((para, idx) => (
-              <p key={idx}>{para}</p>
-            ))}
-          </div>
-        </div>
-
-        <button
-          onClick={() => setIsExpanded(!isExpanded)}
-          className="mt-8 text-yellow-500 text-sm font-bold uppercase tracking-wider flex items-center gap-2 hover:gap-3 transition-all group w-fit"
-        >
-          {isExpanded ? t.readLess : t.readMore}
-          {isExpanded ?
-            <ChevronUp size={18} className="group-hover:-translate-y-1 transition-transform" /> :
-            <ChevronDown size={18} className="group-hover:translate-y-1 transition-transform" />
-          }
-        </button>
       </div>
     </section>
   )
