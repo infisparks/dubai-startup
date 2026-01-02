@@ -25,7 +25,7 @@ const translations = {
         iconKey: 'Press',
         title: 'Press & Media',
         type: 'list',
-        items: ['Gulf News', 'Khaleej Times', 'Forbes Middle East'],
+        items: ['Prominent Media Outlets', 'Leading Business Journals', 'Global News Coverage'],
       },
       {
         iconKey: 'Digital',
@@ -66,7 +66,7 @@ const translations = {
         iconKey: 'Press',
         title: 'الصحافة والإعلام',
         type: 'list',
-        items: ['جلف نيوز', 'الخليج تايمز', 'فوربس الشرق الأوسط'],
+        items: ['منافذ إعلامية بارزة', 'مجلات أعمال رائدة', 'تغطية إخبارية عالمية'],
       },
       {
         iconKey: 'Digital',
