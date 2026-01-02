@@ -1,6 +1,8 @@
 'use client'
 
 import React, { useState } from 'react'
+import Image from 'next/image'
+import { ChevronDown, ChevronUp, Quote } from 'lucide-react'
 
 interface CoFoundersPageProps {
   language: 'en' | 'ar'
@@ -9,8 +11,8 @@ interface CoFoundersPageProps {
 const translations = {
   en: {
     title: 'Our Co-Founders',
-    readMore: 'Read More',
-    readLess: 'Read Less',
+    readMore: 'Read Full Bio',
+    readLess: 'Show Less',
     coFounders: [
       {
         name: 'Sanjay Bhambri',
@@ -28,8 +30,8 @@ const translations = {
   },
   ar: {
     title: 'المؤسسون المشاركون',
-    readMore: 'اقرأ المزيد',
-    readLess: 'اقرأ أقل',
+    readMore: 'اقرأ السيرة الذاتية الكاملة',
+    readLess: 'عرض أقل',
     coFounders: [
       {
         name: 'سانجاي بهامبري',
@@ -61,55 +63,75 @@ export default function CoFoundersPage({ language = 'en' }: CoFoundersPageProps)
   }
 
   return (
-    <section className="relative py-12 sm:py-16 bg-white overflow-hidden" dir={isRtl ? 'rtl' : 'ltr'}>
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 relative z-10 w-full">
-        {/* Page Title - Compact */}
-        <div className="text-center mb-8 sm:mb-10">
-          <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 leading-tight">
+    <section className="relative py-16 sm:py-24 bg-white overflow-hidden" dir={isRtl ? 'rtl' : 'ltr'}>
+      {/* Background Decor */}
+      <div className="absolute top-1/2 left-0 w-[400px] h-[400px] bg-slate-50 rounded-full blur-3xl -translate-y-1/2 -translate-x-1/2 pointer-events-none" />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
+        {/* Page Title */}
+        <div className="text-center mb-16">
+          <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight">
             {t.title}
           </h2>
-          <div className="mt-3 h-1 w-16 bg-blue-600 rounded-full mx-auto" />
+          <div className="mt-4 h-1 w-20 bg-gradient-to-r from-blue-600 to-cyan-500 rounded-full mx-auto" />
         </div>
 
-        {/* Co-Founders Grid - Compact Vertical */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
-          {t.coFounders.map((founder) => {
+        {/* Co-Founders Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
+          {t.coFounders.map((founder, index) => {
             const isExpanded = expandedIds.includes(founder.name)
 
             return (
               <div
                 key={founder.name}
-                className="relative flex flex-col items-center text-center bg-white rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-all duration-300 p-5 sm:p-6"
+                className="group relative bg-white rounded-[2rem] p-6 sm:p-8 border border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.08)] transition-all duration-300 flex flex-col md:flex-row gap-6 items-start"
               >
-                {/* Image - Centered & Moderate Size */}
-                <div className="relative w-24 h-24 sm:w-28 sm:h-28 rounded-full mb-3 p-1 bg-gradient-to-br from-blue-500 to-cyan-400 shadow-sm hover:scale-105 transition-transform duration-300">
-                  <img
-                    src={founder.image}
-                    alt={founder.name}
-                    className="w-full h-full rounded-full object-cover border-2 border-white"
-                  />
+                {/* Image Section */}
+                <div className="relative shrink-0 mx-auto md:mx-0">
+                  <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full p-1 bg-gradient-to-br from-slate-100 to-white shadow-inner">
+                    <img
+                      src={founder.image}
+                      alt={founder.name}
+                      className="w-full h-full rounded-full object-cover shadow-sm group-hover:scale-105 transition-transform duration-500"
+                    />
+                  </div>
+                  {/* Decorative Quote Icon */}
+                  <div className="absolute -bottom-1 -right-1 bg-white p-1.5 rounded-full shadow-sm border border-slate-100 text-blue-500">
+                    <Quote size={12} fill="currentColor" />
+                  </div>
                 </div>
 
-                {/* Content - Compact Centered */}
-                <div className="flex-grow flex flex-col w-full">
-                  <h3 className="text-lg sm:text-xl font-bold text-slate-900 leading-tight mb-1">
+                {/* Content Section */}
+                <div className="flex-grow text-center md:text-start w-full">
+                  <h3 className="text-xl sm:text-2xl font-bold text-slate-900 group-hover:text-blue-600 transition-colors duration-300 mb-1">
                     {founder.name}
                   </h3>
-                  <p className="text-[10px] sm:text-xs font-semibold text-blue-600 uppercase tracking-wide mb-3">
-                    {founder.role}
-                  </p>
+                  <div className="inline-block px-3 py-1 rounded-full bg-slate-50 border border-slate-100 mb-3">
+                    <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide">
+                      {founder.role}
+                    </p>
+                  </div>
 
-                  <div className="text-[13px] sm:text-sm text-slate-600 leading-relaxed">
-                    <p className={`${!isExpanded ? 'line-clamp-3' : ''}`}>
+                  <div className="relative">
+                    <p className={`text-sm text-slate-600 leading-relaxed text-justify md:text-left ${!isExpanded ? 'line-clamp-3' : ''}`}>
                       {founder.bio}
                     </p>
+                    {/* Gradient Fade for Collapsed State */}
+                    {!isExpanded && (
+                      <div className="absolute bottom-0 left-0 w-full h-8 bg-gradient-to-t from-white to-transparent md:hidden" />
+                    )}
                   </div>
 
                   <button
                     onClick={() => toggleExpand(founder.name)}
-                    className="text-[10px] sm:text-xs font-semibold text-blue-600 bg-blue-50 hover:bg-blue-100 rounded-full px-4 py-1.5 transition-colors mt-4 self-center"
+                    className="inline-flex items-center gap-1.5 text-xs font-bold text-blue-600 hover:text-blue-800 uppercase tracking-wider mt-4 group/btn transition-colors"
                   >
                     {isExpanded ? t.readLess : t.readMore}
+                    {isExpanded ? (
+                      <ChevronUp size={14} className="group-hover/btn:-translate-y-0.5 transition-transform" />
+                    ) : (
+                      <ChevronDown size={14} className="group-hover/btn:translate-y-0.5 transition-transform" />
+                    )}
                   </button>
                 </div>
               </div>

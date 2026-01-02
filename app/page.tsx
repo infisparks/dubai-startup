@@ -19,6 +19,9 @@ import FounderPage from "@/components/Founder"
 import CoFoundersPage from "@/components/Cofounder"
 import ApprovedStartupsList from "@/components/ApprovedStartupsList"
 import Speaker from "@/components/Speaker"
+import PastSpeakers from "@/components/PastSpeakers"
+import Gallery from "@/components/Gallery"
+import PastSponsors from "@/components/PastSponsors"
 import EventOverview from "@/components/Eventoverview"
 import VisionAndGoals from "@/components/Vision"
 import { LandPlot } from "lucide-react"
@@ -44,7 +47,10 @@ export default function Home() {
       {/* <ApprovedStartupsList language={language}/> */}
       <CoFoundersPage language={language} />
       <Speaker language={language} />
+      <PastSpeakers language={language} />
       <InvestorsSponsors language={language} />
+      <Gallery language={language} />
+      <PastSponsors />
       {/* <SpeakerMajid language={language} /> */}
       <EventOverview language={language} />
       <VisionAndGoals language={language} />
