@@ -7,13 +7,14 @@ import { Star } from "lucide-react"
 // Based on the user request, we need a "Past Sponsors" component.
 // We will use 7placeholder logos or the ones found in brand/ for now.
 const sponsors = [
-    { name: "Sponsor 1", logo: "/brand/1.png" },
-    { name: "Sponsor 2", logo: "/brand/2.png" },
-    { name: "Sponsor 3", logo: "/brand/3.png" },
-    { name: "Sponsor 4", logo: "/brand/4.png" },
-    { name: "Sponsor 5", logo: "/brand/5.png" },
-    { name: "Sponsor 6", logo: "/brand/6.png" },
-    { name: "Sponsor 7", logo: "/brand/7.png" },
+    { name: "Sponsor 3", logo: "/Sponsors/3.png" },
+    { name: "Sponsor 4", logo: "/Sponsors/4.png" },
+    { name: "Sponsor 5", logo: "/Sponsors/5.png" },
+    { name: "Sponsor 6", logo: "/Sponsors/6.png" },
+    { name: "Sponsor 7", logo: "/Sponsors/7.png" },
+    { name: "Sponsor 8", logo: "/Sponsors/8.png" },
+    { name: "Sponsor 9", logo: "/Sponsors/9.png" },
+    { name: "Sponsor 10", logo: "/Sponsors/10.png" },
 ]
 
 export default function PastSponsors() {
@@ -40,7 +41,7 @@ export default function PastSponsors() {
                         {sponsors.map((sponsor, index) => (
                             <div
                                 key={`sponsor-1-${index}`}
-                                className="relative group flex items-center justify-center grayscale hover:grayscale-0 transition-all duration-300 opacity-70 hover:opacity-100 hover:scale-105"
+                                className="relative group flex items-center justify-center transition-all duration-300 hover:scale-105"
                             >
                                 <img
                                     src={sponsor.logo}
@@ -56,7 +57,7 @@ export default function PastSponsors() {
                         {sponsors.map((sponsor, index) => (
                             <div
                                 key={`sponsor-2-${index}`}
-                                className="relative group flex items-center justify-center grayscale hover:grayscale-0 transition-all duration-300 opacity-70 hover:opacity-100 hover:scale-105"
+                                className="relative group flex items-center justify-center transition-all duration-300 hover:scale-105"
                             >
                                 <img
                                     src={sponsor.logo}
@@ -74,7 +75,7 @@ export default function PastSponsors() {
                         {sponsors.map((sponsor, index) => (
                             <div
                                 key={`sponsor-3-${index}`}
-                                className="relative group flex items-center justify-center grayscale hover:grayscale-0 transition-all duration-300 opacity-70 hover:opacity-100 hover:scale-105"
+                                className="relative group flex items-center justify-center transition-all duration-300 hover:scale-105"
                             >
                                 <img
                                     src={sponsor.logo}
