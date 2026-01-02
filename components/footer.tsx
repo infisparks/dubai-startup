@@ -28,7 +28,7 @@ const translations = {
     contact: 'Contact',
     privacy: 'Privacy Policy',
     terms: 'Terms of Service',
-    copyright: '© 2025 Investarise. All Rights Reserved.',
+    copyright: '© 2025 InfiSpark Technologies.  All Rights Reserved.',
     email: 'Email Us',
     call: 'Call Us',
     visit: 'Visit Us',
