@@ -33,11 +33,13 @@ import OurTeam from "@/components/Team"
 import SponsorshipPackages from "@/components/Sponser"
 import SpeakerMajid from "@/components/Speaker-majid"
 import InvestorsSponsors from "@/components/InvestorsSponsors"
+import HomeBannerPopup from "@/components/HomeBannerPopup"
 export default function Home() {
   const [language, setLanguage] = useState<"en" | "ar">("en")
 
   return (
     <div className="min-h-screen bg-white">
+      <HomeBannerPopup />
       <Header language={language} setLanguage={setLanguage} />
       <Hero language={language} />
       <About language={language} />
