@@ -97,10 +97,20 @@ export default function Header({ language = "en", setLanguage, userEmail }: Head
         }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className={`flex items-center lg:justify-between h-14 lg:h-20 ${isHomepage ? "justify-end" : "justify-between"}`}>
-          {/* Logo */}
-          {/* Logo Removed as per user request */}
-          <div className="hidden lg:block w-52"></div> {/* Spacer to keep layout balanced if needed, or just remove */}
+        <div className="flex items-center justify-between h-14 lg:h-20">
+          {/* Mobile Logo */}
+          <Link href="/" className="lg:hidden">
+            <Image
+              src="/logo.png"
+              alt="Investarise"
+              width={120}
+              height={40}
+              className="h-8 w-auto"
+            />
+          </Link>
+
+          {/* Desktop Spacer (keeps layout balanced as requested previously) */}
+          <div className="hidden lg:block w-52"></div>
 
           {/* Desktop Navigation - Updated */}
           <nav className="hidden lg:flex items-center gap-1">
