@@ -405,10 +405,10 @@ export default function ExhibitorFormPage() {
         if (!user || needsVerification) {
             if (needsVerification) return <EmailVerificationNotice language={language} />;
             return (
-                <div className="max-w-xl mx-auto mt-16 p-8 text-center bg-red-50 border-2 border-red-300 rounded-xl shadow-lg animate-fadeIn">
+                <div className="max-w-xl mx-auto mt-16 p-8 text-center bg-red-50 border-2 border-[#740001]/20 rounded-xl shadow-lg animate-fadeIn">
                     <h2 className="text-2xl font-bold text-slate-900 mb-4">{t.loginRequired}</h2>
                     <p className="text-slate-700 mb-6">{t.loginRequiredDesc}</p>
-                    <button onClick={() => setShowAuthPopup(true)} className="px-8 py-3 bg-[#013371] text-white rounded-lg font-semibold hover:bg-[#024fa3] transition-all flex items-center justify-center gap-2 mx-auto">
+                    <button onClick={() => setShowAuthPopup(true)} className="px-8 py-3 bg-[#740001] text-white rounded-lg font-semibold hover:bg-[#940200] transition-all flex items-center justify-center gap-2 mx-auto">
                         <LogIn className="w-5 h-5" /> {t.login}
                     </button>
                 </div>
@@ -491,7 +491,7 @@ const ExhibitorFormView: React.FC<any> = ({ t, formData, handleInputChange, hand
                             value={formData[field.name as keyof ExhibitorFormData] as string}
                             onChange={handleInputChange}
                             placeholder={field.placeholder}
-                            className={`w-full px-4 py-3 border-2 border-slate-200 rounded-lg focus:border-[#013371] focus:outline-none bg-white hover:border-slate-300 transition-colors ${field.disabled || isApproved ? 'bg-slate-100 cursor-not-allowed' : ''}`}
+                            className={`w-full px-4 py-3 border-2 border-slate-200 rounded-lg focus:border-[#740001] focus:outline-none bg-white hover:border-slate-300 transition-colors ${field.disabled || isApproved ? 'bg-slate-100 cursor-not-allowed' : ''}`}
                             required={field.required}
                             disabled={field.disabled || isApproved}
                         />
@@ -508,7 +508,7 @@ const ExhibitorFormView: React.FC<any> = ({ t, formData, handleInputChange, hand
                         onChange={handlePhoneChange}
                         defaultCountry="AE"
                         disabled={isApproved}
-                        className={`w-full px-4 py-3 border-2 border-slate-200 rounded-lg focus-within:border-[#013371] bg-white hover:border-slate-300 transition-colors ${isApproved ? 'bg-slate-100 cursor-not-allowed' : ''} [&>input]:outline-none [&>input]:bg-transparent [&>input]:w-full`}
+                        className={`w-full px-4 py-3 border-2 border-slate-200 rounded-lg focus-within:border-[#740001] bg-white hover:border-slate-300 transition-colors ${isApproved ? 'bg-slate-100 cursor-not-allowed' : ''} [&>input]:outline-none [&>input]:bg-transparent [&>input]:w-full`}
                     />
                 </div>
 
@@ -520,7 +520,7 @@ const ExhibitorFormView: React.FC<any> = ({ t, formData, handleInputChange, hand
                         name="boothType"
                         value={formData.boothType}
                         onChange={handleInputChange}
-                        className={`w-full px-4 py-3 border-2 border-slate-200 rounded-lg focus:border-[#013371] focus:outline-none bg-white hover:border-slate-300 transition-colors ${isApproved ? 'bg-slate-100 cursor-not-allowed' : ''}`}
+                        className={`w-full px-4 py-3 border-2 border-slate-200 rounded-lg focus:border-[#740001] focus:outline-none bg-white hover:border-slate-300 transition-colors ${isApproved ? 'bg-slate-100 cursor-not-allowed' : ''}`}
                         required
                         disabled={isApproved}
                     >
@@ -539,7 +539,7 @@ const ExhibitorFormView: React.FC<any> = ({ t, formData, handleInputChange, hand
                         name="reference"
                         value={formData.reference}
                         onChange={handleInputChange}
-                        className={`w-full px-4 py-3 border-2 border-slate-200 rounded-lg focus:border-[#013371] focus:outline-none bg-white hover:border-slate-300 transition-colors ${isApproved ? 'bg-slate-100 cursor-not-allowed' : ''}`}
+                        className={`w-full px-4 py-3 border-2 border-slate-200 rounded-lg focus:border-[#740001] focus:outline-none bg-white hover:border-slate-300 transition-colors ${isApproved ? 'bg-slate-100 cursor-not-allowed' : ''}`}
                         required
                         disabled={isApproved}
                     >
@@ -560,7 +560,7 @@ const ExhibitorFormView: React.FC<any> = ({ t, formData, handleInputChange, hand
                             name="referenceOther"
                             value={formData.referenceOther}
                             onChange={handleInputChange}
-                            className={`w-full px-4 py-3 border-2 border-slate-200 rounded-lg focus:border-[#013371] focus:outline-none bg-white hover:border-slate-300 transition-colors ${isApproved ? 'bg-slate-100 cursor-not-allowed' : ''}`}
+                            className={`w-full px-4 py-3 border-2 border-slate-200 rounded-lg focus:border-[#740001] focus:outline-none bg-white hover:border-slate-300 transition-colors ${isApproved ? 'bg-slate-100 cursor-not-allowed' : ''}`}
                             required
                             disabled={isApproved}
                         />
@@ -578,7 +578,7 @@ const ExhibitorFormView: React.FC<any> = ({ t, formData, handleInputChange, hand
                         placeholder={t.placeholder.description}
                         rows={3}
                         maxLength={150}
-                        className={`w-full px-4 py-3 border-2 border-slate-200 rounded-lg focus:border-[#013371] focus:outline-none bg-white hover:border-slate-300 transition-colors resize-none ${isApproved ? 'bg-slate-100 cursor-not-allowed' : ''}`}
+                        className={`w-full px-4 py-3 border-2 border-slate-200 rounded-lg focus:border-[#740001] focus:outline-none bg-white hover:border-slate-300 transition-colors resize-none ${isApproved ? 'bg-slate-100 cursor-not-allowed' : ''}`}
                         required
                         disabled={isApproved}
                     />
@@ -589,7 +589,7 @@ const ExhibitorFormView: React.FC<any> = ({ t, formData, handleInputChange, hand
                     <label className="block text-sm font-semibold text-slate-900 mb-2">
                         {t.companyLogo} {formData.companyLogoUrl ? "(Optional Update)" : <span className="text-red-500">*</span>}
                     </label>
-                    <div className={`border-2 border-dashed rounded-lg p-6 text-center transition-all ${isApproved ? 'border-slate-200 bg-slate-50' : 'border-slate-300 hover:border-[#013371] hover:bg-blue-50 cursor-pointer'}`}>
+                    <div className={`border-2 border-dashed rounded-lg p-6 text-center transition-all ${isApproved ? 'border-slate-200 bg-slate-50' : 'border-slate-300 hover:border-[#740001] hover:bg-slate-50 cursor-pointer'}`}>
                         <input
                             type="file"
                             onChange={handleFileUpload}
@@ -600,7 +600,7 @@ const ExhibitorFormView: React.FC<any> = ({ t, formData, handleInputChange, hand
                             disabled={isApproved}
                         />
                         <label htmlFor="logo-upload" className={`cursor-pointer block ${isApproved ? 'cursor-not-allowed' : ''}`}>
-                            <Store className="w-8 h-8 text-[#013371] mx-auto mb-2" />
+                            <Store className="w-8 h-8 text-[#740001] mx-auto mb-2" />
                             {formData.companyLogo ? (
                                 <p className="text-sm font-semibold text-slate-900">{formData.companyLogo.name}</p>
                             ) : formData.companyLogoUrl ? (
@@ -618,7 +618,7 @@ const ExhibitorFormView: React.FC<any> = ({ t, formData, handleInputChange, hand
                 <div className="pt-6">
                     <button
                         type="submit"
-                        className="w-full px-6 py-3 bg-[#013371] text-white rounded-lg font-semibold hover:bg-[#024fa3] transition-all shadow-lg hover:shadow-xl flex items-center justify-center gap-2"
+                        className="w-full px-6 py-3 bg-[#740001] text-white rounded-lg font-semibold hover:bg-[#940200] transition-all shadow-lg hover:shadow-xl flex items-center justify-center gap-2"
                         disabled={isApproved}
                     >
                         {hasExistingProfile ? t.update : t.submit} {hasExistingProfile && <Save className="w-4 h-4" />}
@@ -720,7 +720,7 @@ const ExhibitorStatusView: React.FC<any> = ({ t, isApproved, paymentStatus, form
                     <button
                         onClick={handlePayNow}
                         disabled={processingPayment}
-                        className="bg-[#013371] text-white px-6 py-3 rounded-lg font-bold hover:bg-[#024fa3] transition-colors shadow-md flex items-center gap-2"
+                        className="bg-[#740001] text-white px-6 py-3 rounded-lg font-bold hover:bg-[#940200] transition-colors shadow-md flex items-center gap-2"
                     >
                         {processingPayment ? "Processing..." : <> <CreditCard className="w-5 h-5" /> Pay Fee</>}
                     </button>

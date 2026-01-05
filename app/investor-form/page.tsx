@@ -468,12 +468,12 @@ export default function InvestorFormPage() {
 
         if (!isUserLoggedInAndVerified) {
             return (
-                <div className="max-w-xl mx-auto mt-16 p-8 text-center bg-red-50 border-2 border-red-300 rounded-xl shadow-lg animate-fadeIn">
+                <div className="max-w-xl mx-auto mt-16 p-8 text-center bg-red-50 border-2 border-[#740001]/20 rounded-xl shadow-lg animate-fadeIn">
                     <h2 className="text-2xl font-bold text-slate-900 mb-4">{t.loginRequired}</h2>
                     <p className="text-slate-700 mb-6">{t.loginRequiredDesc}</p>
                     <button
                         onClick={() => setShowAuthPopup(true)}
-                        className="px-8 py-3 bg-[#013371] text-white rounded-lg font-semibold hover:bg-[#024fa3] transition-all shadow-lg flex items-center justify-center gap-2 mx-auto"
+                        className="px-8 py-3 bg-[#740001] text-white rounded-lg font-semibold hover:bg-[#940200] transition-all shadow-lg flex items-center justify-center gap-2 mx-auto"
                     >
                         <LogIn className="w-5 h-5" /> {t.login}
                     </button>
@@ -590,13 +590,13 @@ const InvestorFormView: React.FC<InvestorFormViewProps> = ({
                 {[1, 2].map((stepNum) => (
                     <div key={stepNum} className="flex items-center">
                         <div
-                            className={`w-12 h-12 rounded-full flex items-center justify-center font-bold text-lg transition-all ${step >= stepNum ? "bg-[#013371] text-white shadow-lg" : "bg-slate-200 text-slate-500"
+                            className={`w-12 h-12 rounded-full flex items-center justify-center font-bold text-lg transition-all ${step >= stepNum ? "bg-[#740001] text-white shadow-lg" : "bg-slate-200 text-slate-500"
                                 }`}
                         >
                             {step > stepNum ? <CheckCircle2 className="w-6 h-6" /> : stepNum}
                         </div>
                         {stepNum < 2 && (
-                            <div className={`h-1 w-12 md:w-20 transition-all ${step >= 2 ? "bg-[#013371]" : "bg-slate-200"}`} />
+                            <div className={`h-1 w-12 md:w-20 transition-all ${step >= 2 ? "bg-[#740001]" : "bg-slate-200"}`} />
                         )}
                     </div>
                 ))}
@@ -634,7 +634,7 @@ const InvestorFormView: React.FC<InvestorFormViewProps> = ({
                                         onChange={handleInputChange}
                                         placeholder={field.placeholder}
                                         // Use field.disabled to handle Email lock, and isApproved for others
-                                        className={`w-full px-4 py-3 border-2 border-slate-200 rounded-lg focus:border-[#013371] focus:outline-none bg-white hover:border-slate-300 transition-colors ${field.disabled ? 'bg-slate-100 cursor-not-allowed' : ''}`}
+                                        className={`w-full px-4 py-3 border-2 border-slate-200 rounded-lg focus:border-[#740001] focus:outline-none bg-white hover:border-slate-300 transition-colors ${field.disabled ? 'bg-slate-100 cursor-not-allowed' : ''}`}
                                         required={field.required}
                                         disabled={field.disabled}
                                     />
@@ -649,7 +649,7 @@ const InvestorFormView: React.FC<InvestorFormViewProps> = ({
                                     name="reference"
                                     value={formData.reference}
                                     onChange={handleInputChange}
-                                    className={`w-full px-4 py-3 border-2 border-slate-200 rounded-lg focus:border-[#013371] focus:outline-none bg-white hover:border-slate-300 transition-colors ${isApproved ? 'bg-slate-100 cursor-not-allowed' : ''}`}
+                                    className={`w-full px-4 py-3 border-2 border-slate-200 rounded-lg focus:border-[#740001] focus:outline-none bg-white hover:border-slate-300 transition-colors ${isApproved ? 'bg-slate-100 cursor-not-allowed' : ''}`}
                                     disabled={isApproved}
                                     required
                                 >
@@ -670,7 +670,7 @@ const InvestorFormView: React.FC<InvestorFormViewProps> = ({
                                         name="referenceOther"
                                         value={formData.referenceOther}
                                         onChange={handleInputChange}
-                                        className={`w-full px-4 py-3 border-2 border-slate-200 rounded-lg focus:border-[#013371] focus:outline-none bg-white hover:border-slate-300 transition-colors ${isApproved ? 'bg-slate-100 cursor-not-allowed' : ''}`}
+                                        className={`w-full px-4 py-3 border-2 border-slate-200 rounded-lg focus:border-[#740001] focus:outline-none bg-white hover:border-slate-300 transition-colors ${isApproved ? 'bg-slate-100 cursor-not-allowed' : ''}`}
                                         required
                                         disabled={isApproved}
                                     />
@@ -688,7 +688,7 @@ const InvestorFormView: React.FC<InvestorFormViewProps> = ({
                                 <button
                                     type="button"
                                     onClick={handleNext}
-                                    className="flex-1 px-6 py-3 bg-[#013371] text-white rounded-lg font-semibold hover:bg-[#024fa3] transition-all flex items-center justify-center gap-2 shadow-lg hover:shadow-xl"
+                                    className="flex-1 px-6 py-3 bg-[#740001] text-white rounded-lg font-semibold hover:bg-[#940200] transition-all flex items-center justify-center gap-2 shadow-lg hover:shadow-xl"
                                     disabled={isApproved} // Disable next if approved
                                 >
                                     {t.next} <ArrowRight className="w-4 h-4" />
@@ -715,7 +715,7 @@ const InvestorFormView: React.FC<InvestorFormViewProps> = ({
                                         name={field.name}
                                         value={formData[field.name as keyof typeof formData]}
                                         onChange={handleInputChange}
-                                        className={`w-full px-4 py-3 border-2 border-slate-200 rounded-lg focus:border-[#013371] focus:outline-none bg-white hover:border-slate-300 transition-colors ${isApproved ? 'bg-slate-100 cursor-not-allowed' : ''}`}
+                                        className={`w-full px-4 py-3 border-2 border-slate-200 rounded-lg focus:border-[#740001] focus:outline-none bg-white hover:border-slate-300 transition-colors ${isApproved ? 'bg-slate-100 cursor-not-allowed' : ''}`}
                                         required
                                         disabled={isApproved}
                                     >
@@ -743,7 +743,7 @@ const InvestorFormView: React.FC<InvestorFormViewProps> = ({
                                                 type="checkbox"
                                                 checked={formData.interests.includes(interest)}
                                                 onChange={(e) => handleCheckboxChange(interest, e.target.checked)}
-                                                className="w-4 h-4 accent-[#013371] cursor-pointer"
+                                                className="w-4 h-4 accent-[#740001] cursor-pointer"
                                                 disabled={isApproved}
                                             />
                                             <span className="text-sm text-slate-900 font-medium">{interest}</span>
@@ -762,7 +762,7 @@ const InvestorFormView: React.FC<InvestorFormViewProps> = ({
                                 </button>
                                 <button
                                     type="submit"
-                                    className="flex-1 px-6 py-3 bg-[#013371] text-white rounded-lg font-semibold hover:bg-[#024fa3] transition-all shadow-lg hover:shadow-xl flex items-center justify-center gap-2"
+                                    className="flex-1 px-6 py-3 bg-[#740001] text-white rounded-lg font-semibold hover:bg-[#940200] transition-all shadow-lg hover:shadow-xl flex items-center justify-center gap-2"
                                     disabled={isApproved} // Disable submit if approved
                                 >
                                     {hasExistingProfile ? t.update : t.submit} {hasExistingProfile && <Save className="w-4 h-4" />}
@@ -775,7 +775,7 @@ const InvestorFormView: React.FC<InvestorFormViewProps> = ({
 
             {/* Info Box */}
             <div
-                className="mt-8 bg-blue-50 border-2 border-blue-200 rounded-xl p-6 animate-slideInUp"
+                className="mt-8 bg-black/5 border-2 border-[#740001]/20 rounded-xl p-6 animate-slideInUp"
                 style={{ animationDelay: "200ms" }}
             >
                 <p className="font-semibold text-slate-900 mb-2">{t.whatNext}</p>

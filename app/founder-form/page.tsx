@@ -605,7 +605,7 @@ export default function FounderFormPage() {
                     <p className="text-sm text-slate-500 mb-6">{t.loginRequiredDesc}</p>
                     <button
                         onClick={() => setShowAuthPopup(true)}
-                        className="w-full py-2.5 bg-[#013371] text-white text-sm font-medium rounded-lg hover:bg-[#024fa3] transition-all flex items-center justify-center gap-2"
+                        className="w-full py-2.5 bg-[#740001] text-white text-sm font-medium rounded-lg hover:bg-[#940200] transition-all flex items-center justify-center gap-2"
                     >
                         <LogIn className="w-4 h-4" /> {t.login}
                     </button>
@@ -679,7 +679,7 @@ const InputGroup = ({ label, required, children, subLabel }: { label: string, re
 const StyledInput = (props: React.InputHTMLAttributes<HTMLInputElement>) => (
     <input
         {...props}
-        className={`w-full px-3 py-2.5 bg-white border border-slate-200 rounded-md text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#013371] focus:ring-1 focus:ring-[#013371]/20 transition-all disabled:bg-slate-50 disabled:text-slate-500 ${props.className}`}
+        className={`w-full px-3 py-2.5 bg-white border border-slate-200 rounded-md text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#740001] focus:ring-1 focus:ring-[#740001]/20 transition-all disabled:bg-slate-50 disabled:text-slate-500 ${props.className}`}
     />
 );
 
@@ -687,7 +687,7 @@ const StyledSelect = (props: React.SelectHTMLAttributes<HTMLSelectElement>) => (
     <div className="relative">
         <select
             {...props}
-            className={`w-full px-3 py-2.5 bg-white border border-slate-200 rounded-md text-sm text-slate-900 focus:outline-none focus:border-[#013371] focus:ring-1 focus:ring-[#013371]/20 transition-all appearance-none disabled:bg-slate-50 ${props.className}`}
+            className={`w-full px-3 py-2.5 bg-white border border-slate-200 rounded-md text-sm text-slate-900 focus:outline-none focus:border-[#740001] focus:ring-1 focus:ring-[#740001]/20 transition-all appearance-none disabled:bg-slate-50 ${props.className}`}
         />
         <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400">
             <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -701,17 +701,17 @@ const ToggleSwitch = ({ checked, onChange, disabled, labelOn, labelOff }: { chec
     <button
         type="button"
         onClick={() => !disabled && onChange(!checked)}
-        className={`relative inline-flex h-8 w-full md:w-48 items-center rounded-lg border px-1 transition-colors ${checked ? 'bg-[#013371]/5 border-[#013371]' : 'bg-white border-slate-200'}`}
+        className={`relative inline-flex h-8 w-full md:w-48 items-center rounded-lg border px-1 transition-colors ${checked ? 'bg-[#740001]/5 border-[#740001]' : 'bg-white border-slate-200'}`}
         disabled={disabled}
     >
         <span className="sr-only">Use setting</span>
         <span
-            className={`${checked ? 'translate-x-full md:translate-x-[calc(100%-8px)] bg-[#013371]' : 'translate-x-0 bg-slate-300'
+            className={`${checked ? 'translate-x-full md:translate-x-[calc(100%-8px)] bg-[#740001]' : 'translate-x-0 bg-slate-300'
                 } inline-block h-6 w-6 transform rounded-md transition-transform duration-200 ease-in-out`}
         />
         <span className="absolute inset-0 flex items-center justify-between px-3 text-xs font-medium">
             <span className={`${!checked ? 'text-slate-900' : 'text-transparent'} transition-colors`}>{labelOff}</span>
-            <span className={`${checked ? 'text-[#013371]' : 'text-transparent'} transition-colors`}>{labelOn}</span>
+            <span className={`${checked ? 'text-[#740001]' : 'text-transparent'} transition-colors`}>{labelOn}</span>
         </span>
     </button>
 );
@@ -726,12 +726,12 @@ const FormView: React.FC<any> = ({ t, step, formData, pitchDeckMode, handleInput
         <>
             <div className="flex items-center justify-between mb-8 px-1">
                 <div className="flex items-center gap-3">
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-colors ${step >= 1 ? 'bg-[#013371] text-white' : 'bg-white border border-slate-200 text-slate-400'}`}>1</div>
+                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-colors ${step >= 1 ? 'bg-[#740001] text-white shadow-lg' : 'bg-white border border-slate-200 text-slate-400'}`}>1</div>
                     <span className={`text-sm font-medium ${step >= 1 ? 'text-slate-900' : 'text-slate-400'}`}>{t.startupInfo}</span>
                 </div>
-                <div className={`flex-1 h-px mx-4 ${step >= 2 ? 'bg-[#013371]' : 'bg-slate-200'}`}></div>
+                <div className={`flex-1 h-px mx-4 ${step >= 2 ? 'bg-[#740001]' : 'bg-slate-200'}`}></div>
                 <div className="flex items-center gap-3">
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-colors ${step >= 2 ? 'bg-[#013371] text-white' : 'bg-white border border-slate-200 text-slate-400'}`}>2</div>
+                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-colors ${step >= 2 ? 'bg-[#740001] text-white shadow-lg' : 'bg-white border border-slate-200 text-slate-400'}`}>2</div>
                     <span className={`text-sm font-medium ${step >= 2 ? 'text-slate-900' : 'text-slate-400'}`}>{t.founderDetails}</span>
                 </div>
             </div>
@@ -793,7 +793,7 @@ const FormView: React.FC<any> = ({ t, step, formData, pitchDeckMode, handleInput
                                                     key={mode}
                                                     type="button"
                                                     onClick={() => handlePitchDeckModeChange(mode)}
-                                                    className={`flex-1 px-4 py-1.5 text-xs font-medium rounded-md transition-all ${pitchDeckMode === mode ? 'bg-white text-[#013371] shadow-sm border border-slate-100' : 'text-slate-500 hover:text-slate-700'}`}
+                                                    className={`flex-1 px-4 py-1.5 text-xs font-medium rounded-md transition-all ${pitchDeckMode === mode ? 'bg-white text-[#740001] shadow-sm border border-slate-100' : 'text-slate-500 hover:text-slate-700'}`}
                                                     disabled={isDisabled}
                                                 >
                                                     {mode === 'file' ? t.uploadFile : t.addUrl}
@@ -804,12 +804,12 @@ const FormView: React.FC<any> = ({ t, step, formData, pitchDeckMode, handleInput
                                         {pitchDeckMode === 'file' ? (
                                             <div className="relative">
                                                 <input type="file" id="pitch-upload" onChange={handleFileUpload} accept=".pdf,.ppt,.pptx" className="hidden" disabled={isDisabled} />
-                                                <label htmlFor="pitch-upload" className={`block border border-dashed border-slate-300 rounded-lg p-8 text-center hover:bg-slate-50 hover:border-[#013371] transition-all cursor-pointer ${isDisabled ? 'opacity-60 pointer-events-none' : ''}`}>
-                                                    <div className="w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-3 text-[#013371]">
+                                                <label htmlFor="pitch-upload" className={`block border border-dashed border-slate-300 rounded-lg p-8 text-center hover:bg-slate-50 hover:border-[#740001] transition-all cursor-pointer ${isDisabled ? 'opacity-60 pointer-events-none' : ''}`}>
+                                                    <div className="w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-3 text-[#740001]">
                                                         <Upload className="w-5 h-5" />
                                                     </div>
                                                     {isFileSelected ? (
-                                                        <div className="flex items-center justify-center gap-2 text-sm font-medium text-[#013371]">
+                                                        <div className="flex items-center justify-center gap-2 text-sm font-medium text-[#740001]">
                                                             <FileText className="w-4 h-4" /> {formData.pitchDeckFile.name}
                                                         </div>
                                                     ) : (
@@ -837,7 +837,7 @@ const FormView: React.FC<any> = ({ t, step, formData, pitchDeckMode, handleInput
                                 </div>
 
                                 <div className="flex justify-end pt-4">
-                                    <button type="button" onClick={handleNext} className="bg-[#013371] text-white px-6 py-2.5 rounded-lg text-sm font-medium hover:bg-[#024fa3] transition-colors flex items-center gap-2">
+                                    <button type="button" onClick={handleNext} className="bg-[#740001] text-white px-6 py-2.5 rounded-lg text-sm font-medium hover:bg-[#940200] transition-colors flex items-center gap-2">
                                         {t.next} <ArrowRight className="w-4 h-4" />
                                     </button>
                                 </div>
@@ -934,7 +934,7 @@ const FormView: React.FC<any> = ({ t, step, formData, pitchDeckMode, handleInput
                                             onChange={handleInputChange}
                                             placeholder={t.placeholder.problemDescription}
                                             rows={3}
-                                            className="w-full px-3 py-2.5 bg-white border border-slate-200 rounded-md text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#013371] focus:ring-1 focus:ring-[#013371]/20 transition-all disabled:bg-slate-50 resize-none"
+                                            className="w-full px-3 py-2.5 bg-white border border-slate-200 rounded-md text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#740001] focus:ring-1 focus:ring-[#740001]/20 transition-all disabled:bg-slate-50 resize-none"
                                             required
                                             disabled={isDisabled}
                                         />
@@ -948,7 +948,7 @@ const FormView: React.FC<any> = ({ t, step, formData, pitchDeckMode, handleInput
                                             placeholder={t.placeholder.description}
                                             rows={4}
                                             maxLength={250}
-                                            className="w-full px-3 py-2.5 bg-white border border-slate-200 rounded-md text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#013371] focus:ring-1 focus:ring-[#013371]/20 transition-all disabled:bg-slate-50 resize-none"
+                                            className="w-full px-3 py-2.5 bg-white border border-slate-200 rounded-md text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#740001] focus:ring-1 focus:ring-[#740001]/20 transition-all disabled:bg-slate-50 resize-none"
                                             required
                                             disabled={isDisabled}
                                         />
@@ -960,7 +960,7 @@ const FormView: React.FC<any> = ({ t, step, formData, pitchDeckMode, handleInput
                                     <button type="button" onClick={handleBack} className="px-4 py-2.5 rounded-lg text-sm font-medium text-slate-600 bg-slate-100 hover:bg-slate-200 transition-colors">
                                         {t.back}
                                     </button>
-                                    <button type="submit" disabled={isDisabled} className="flex-1 bg-[#013371] text-white px-6 py-2.5 rounded-lg text-sm font-medium hover:bg-[#024fa3] transition-all flex items-center justify-center gap-2 shadow-sm disabled:opacity-50">
+                                    <button type="submit" disabled={isDisabled} className="flex-1 bg-[#740001] text-white px-6 py-2.5 rounded-lg text-sm font-medium hover:bg-[#940200] transition-all flex items-center justify-center gap-2 shadow-sm disabled:opacity-50">
                                         {hasExistingProfile ? t.update : t.submit} {hasExistingProfile && <Save className="w-4 h-4" />}
                                     </button>
                                 </div>
@@ -1068,7 +1068,7 @@ const StatusView: React.FC<any> = ({ t, isApproved, paymentStatus, formData, set
             <dt className="text-xs text-slate-500 uppercase tracking-wide font-medium mb-1">{label}</dt>
             <dd className="text-sm font-medium text-slate-900 break-words">
                 {link ? (
-                    <a href={value.startsWith('http') ? value : `https://${value}`} target="_blank" rel="noopener noreferrer" className="text-[#013371] hover:underline flex items-center gap-1">
+                    <a href={value.startsWith('http') ? value : `https://${value}`} target="_blank" rel="noopener noreferrer" className="text-[#740001] hover:underline flex items-center gap-1">
                         {value} <LinkIcon className="w-3 h-3" />
                     </a>
                 ) : value}
@@ -1101,7 +1101,7 @@ const StatusView: React.FC<any> = ({ t, isApproved, paymentStatus, formData, set
                     <button
                         onClick={handlePayNow}
                         disabled={processingPayment}
-                        className="bg-[#013371] text-white px-5 py-2.5 rounded-lg text-sm font-bold hover:bg-[#024fa3] transition-colors shadow-md flex items-center gap-2 w-full md:w-auto justify-center"
+                        className="bg-[#740001] text-white px-5 py-2.5 rounded-lg text-sm font-bold hover:bg-[#940200] transition-colors shadow-md flex items-center gap-2 w-full md:w-auto justify-center"
                     >
                         {processingPayment ? <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div> : <CreditCard className="w-4 h-4" />}
                         Pay $500.00
@@ -1330,7 +1330,7 @@ const StatusView: React.FC<any> = ({ t, isApproved, paymentStatus, formData, set
                         <div className="flex flex-col">
                             <dt className="text-xs text-slate-500 uppercase tracking-wide font-medium mb-1">{t.pitchDeck}</dt>
                             <dd>
-                                <a href={formData.pitchDeckUrl || '#'} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#013371]/5 text-[#013371] rounded text-xs font-bold hover:bg-[#013371]/10 transition-colors">
+                                <a href={formData.pitchDeckUrl || '#'} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#740001]/5 text-[#740001] rounded text-xs font-bold hover:bg-[#740001]/10 transition-colors">
                                     <FileText className="w-3 h-3" /> View Document
                                 </a>
                             </dd>
