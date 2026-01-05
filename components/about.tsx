@@ -54,58 +54,38 @@ const translations = {
 // --- Sub Components ---
 
 const BrandTicker = () => {
-    const scrollRef = useRef<HTMLDivElement>(null);
-    const [isPaused, setIsPaused] = useState(false);
-    // Include all 7 logos found in the directory
-    const logos = [1, 2, 3, 4, 5, 6, 7];
-    // Create enough duplicates for smooth infinite scrolling
-    const repeatedLogos = [...logos, ...logos, ...logos, ...logos, ...logos, ...logos];
-
-    useEffect(() => {
-        const el = scrollRef.current;
-        if (!el) return;
-        let animationId: number;
-        const animate = () => {
-            if (!isPaused) {
-                const speed = 0.5; // Slightly slower for a more premium feel
-                if (el.scrollLeft >= (el.scrollWidth / 2)) {
-                    el.scrollLeft = 0; // Reset to start for seamless loop
-                } else {
-                    el.scrollLeft += speed;
-                }
-            }
-            animationId = requestAnimationFrame(animate);
-        };
-        animationId = requestAnimationFrame(animate);
-        return () => cancelAnimationFrame(animationId);
-    }, [isPaused]);
+    const logos = [1, 2, 3, 4, 5, 7];
 
     return (
-        <div className="w-full bg-slate-950 border-b border-slate-800/50 py-6 sm:py-8 overflow-hidden relative z-20">
-            {/* Enhanced Gradient Masks */}
-            <div className="absolute left-0 top-0 bottom-0 w-24 sm:w-40 bg-gradient-to-r from-slate-950 via-slate-950/80 to-transparent z-10 pointer-events-none"></div>
-            <div className="absolute right-0 top-0 bottom-0 w-24 sm:w-40 bg-gradient-to-l from-slate-950 via-slate-950/80 to-transparent z-10 pointer-events-none"></div>
+        <div className="w-full bg-white border-b border-gray-100 py-10 px-4 sm:px-6 lg:px-8 relative z-20">
+            <div className="max-w-7xl mx-auto">
+                {/* Section Header - Adds professionalism */}
+                <div className="text-center mb-8">
+                    <p className="text-[10px] sm:text-xs font-bold text-gray-400 uppercase tracking-[0.2em]">Trusted by Industry Leaders</p>
+                </div>
 
-            <div
-                ref={scrollRef}
-                className="flex items-center overflow-x-auto gap-12 sm:gap-24 px-4 no-scrollbar select-none"
-                style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', WebkitOverflowScrolling: 'touch' }}
-                onMouseEnter={() => setIsPaused(true)}
-                onMouseLeave={() => setIsPaused(false)}
-                onTouchStart={() => setIsPaused(true)}
-                onTouchEnd={() => setIsPaused(false)}
-            >
-                {repeatedLogos.map((num, i) => (
-                    <div key={i} className="flex-shrink-0 group cursor-pointer relative">
-                        <div className="absolute -inset-2 bg-blue-500/0 group-hover:bg-blue-500/5 rounded-lg transition-colors duration-500" />
-                        <img
-                            src={`${BRAND_BASE_PATH}/${num}.png`}
-                            alt={`Partner Brand ${num}`}
-                            className="h-8 sm:h-10 w-auto max-w-none object-contain transition-all duration-500 transform group-hover:scale-105"
-                            draggable={false}
-                        />
-                    </div>
-                ))}
+                {/* 
+                   Mobile: Grid with 2 columns.
+                   Desktop: Flex layout to center 7 items beautifully.
+                */}
+                <div className="grid grid-cols-2 md:flex md:flex-wrap md:justify-center gap-x-8 gap-y-8 md:gap-12 items-center justify-items-center">
+                    {logos.map((num, i) => (
+                        <div
+                            key={i}
+                            className={`group relative flex items-center justify-center p-2 transition-all duration-300 transform hover:scale-105 ${
+                                // On mobile, center the 7th item (index 6) by making it span 2 columns
+                                i === 6 ? 'col-span-2 md:w-auto' : ''
+                                }`}
+                        >
+                            <img
+                                src={`${BRAND_BASE_PATH}/${num}.png`}
+                                alt={`Partner Brand ${num}`}
+                                className="h-10 sm:h-12 md:h-14 w-auto object-contain transition-all duration-300 filter-none opacity-90 group-hover:opacity-100 group-hover:drop-shadow-sm"
+                                draggable={false}
+                            />
+                        </div>
+                    ))}
+                </div>
             </div>
         </div>
     );
@@ -114,7 +94,6 @@ const BrandTicker = () => {
 const FeaturesTicker = ({ features, isRtl }: { features: { title: string; desc: string }[]; isRtl: boolean }) => {
     const scrollRef = useRef<HTMLDivElement>(null)
     const [isPaused, setIsPaused] = useState(false)
-    // Duplicate features for smooth infinite scrolling
     const repeatedFeatures = [...features, ...features, ...features, ...features]
 
     useEffect(() => {
@@ -123,9 +102,9 @@ const FeaturesTicker = ({ features, isRtl }: { features: { title: string; desc: 
         let animationId: number
         const animate = () => {
             if (!isPaused) {
-                const speed = 0.5 // Consistent speed
+                const speed = 0.5
                 if (el.scrollLeft >= el.scrollWidth / 2) {
-                    el.scrollLeft = 0 // Reset to start
+                    el.scrollLeft = 0
                 } else {
                     el.scrollLeft += speed
                 }
@@ -138,9 +117,9 @@ const FeaturesTicker = ({ features, isRtl }: { features: { title: string; desc: 
 
     return (
         <div className="w-full py-4 overflow-hidden relative z-20 mt-6">
-            {/* Gradient Masks */}
-            <div className="absolute left-0 top-0 bottom-0 w-12 sm:w-24 bg-gradient-to-r from-slate-950 to-transparent z-10 pointer-events-none"></div>
-            <div className="absolute right-0 top-0 bottom-0 w-12 sm:w-24 bg-gradient-to-l from-slate-950 to-transparent z-10 pointer-events-none"></div>
+            {/* Gradient Masks - Light Theme */}
+            <div className="absolute left-0 top-0 bottom-0 w-12 sm:w-24 bg-gradient-to-r from-[#f9f9f9] to-transparent z-10 pointer-events-none"></div>
+            <div className="absolute right-0 top-0 bottom-0 w-12 sm:w-24 bg-gradient-to-l from-[#f9f9f9] to-transparent z-10 pointer-events-none"></div>
 
             <div
                 ref={scrollRef}
@@ -158,13 +137,13 @@ const FeaturesTicker = ({ features, isRtl }: { features: { title: string; desc: 
                 {repeatedFeatures.map((feature, i) => (
                     <div
                         key={i}
-                        className={`flex-shrink-0 w-64 sm:w-72 p-5 bg-gradient-to-br from-slate-900/50 to-slate-800/30 border border-slate-800/60 rounded-lg hover:bg-slate-800/80 transition-all duration-300 hover:border-blue-500/20 group backdrop-blur-sm ${isRtl ? 'text-right' : 'text-left'
+                        className={`flex-shrink-0 w-64 sm:w-72 p-5 bg-white border border-gray-200 shadow-sm rounded-lg hover:shadow-lg transition-all duration-300 hover:border-[#bf1e2e]/20 group ${isRtl ? 'text-right' : 'text-left'
                             }`}
                     >
-                        <h4 className="text-sm font-semibold text-slate-100 mb-2 group-hover:text-blue-300 transition-colors">
+                        <h4 className="text-sm font-bold text-[#bf1e2e] mb-2 group-hover:text-[#940200] transition-colors">
                             {feature.title}
                         </h4>
-                        <p className="text-xs text-slate-400 leading-normal group-hover:text-slate-300 transition-colors">
+                        <p className="text-xs text-[#58585a] leading-normal group-hover:text-black transition-colors">
                             {feature.desc}
                         </p>
                     </div>
@@ -183,66 +162,58 @@ export default function About({ language = 'en' }: AboutProps) {
 
     return (
         <>
-            {/* Brand Ticker */}
+            {/* Brand Ticker (now static grid) */}
             <BrandTicker />
 
             {/* About Us Section */}
-            <section id="about" className="relative py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8 bg-slate-950 overflow-hidden">
-                {/* Background Gradients */}
+            <section id="about" className="relative py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8 bg-[#f9f9f9] overflow-hidden">
+                {/* Background Gradients - Light & Red/Gold */}
                 <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                    <div className="absolute top-[-10%] right-[-5%] w-[500px] h-[500px] bg-blue-900/10 rounded-full blur-[120px]" />
-                    <div className="absolute bottom-[-10%] left-[-5%] w-[500px] h-[500px] bg-cyan-900/10 rounded-full blur-[120px]" />
+                    <div className="absolute top-[-10%] right-[-5%] w-[500px] h-[500px] bg-[#bf1e2e]/5 rounded-full blur-[120px]" />
+                    <div className="absolute bottom-[-10%] left-[-5%] w-[500px] h-[500px] bg-[#c4925f]/10 rounded-full blur-[120px]" />
                 </div>
-
-                {/* Subtle Grid Pattern */}
-                <div className="absolute inset-0 opacity-[0.02] pointer-events-none"
-                    style={{
-                        backgroundImage: `linear-gradient(to right, #808080 1px, transparent 1px), linear-gradient(to bottom, #808080 1px, transparent 1px)`,
-                        backgroundSize: '80px 80px',
-                    }}
-                />
 
                 <div className="max-w-6xl mx-auto relative z-10">
                     <div className="flex flex-col lg:flex-row gap-8 lg:gap-16 items-start">
                         {/* Header Column */}
                         <div className={`flex-1 ${isRtl ? 'lg:order-2 text-right' : 'lg:order-1 text-left'}`}>
                             <div className={`inline-flex items-center gap-2 mb-3 ${isRtl ? 'flex-row-reverse' : 'flex-row'}`}>
-                                <div className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse" />
-                                <span className="text-[10px] font-bold tracking-[0.2em] text-blue-400 uppercase opacity-80">Our Vision</span>
+                                <div className="w-1.5 h-1.5 rounded-full bg-[#bf1e2e] animate-pulse" />
+                                <span className="text-[10px] font-bold tracking-[0.2em] text-[#bf1e2e] uppercase">Our Vision</span>
                             </div>
 
-                            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-2 tracking-tight">
+                            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#333] mb-2 tracking-tight">
                                 {t.aboutUsTitle}
                             </h2>
 
-                            <h3 className="text-lg sm:text-xl text-transparent bg-clip-text bg-gradient-to-r from-blue-200 to-cyan-200 font-medium mb-6">
+                            <h3 className="text-lg sm:text-xl font-medium mb-6 text-[#940200]">
                                 {t.investorsTitle}
                             </h3>
 
-                            <div className={`hidden lg:block w-16 h-1 bg-gradient-to-r from-blue-600 to-cyan-600 rounded-full ${isRtl ? 'mr-auto' : 'ml-0'}`} />
+                            <div className={`hidden lg:block w-16 h-1 bg-gradient-to-r from-[#bf1e2e] to-[#940200] rounded-full ${isRtl ? 'mr-auto' : 'ml-0'}`} />
                         </div>
 
                         {/* Content Column */}
                         <div className={`flex-[1.5] ${isRtl ? 'lg:order-1' : 'lg:order-2'}`}>
                             <div className="relative group">
-                                <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500/20 to-cyan-500/20 rounded-xl blur opacity-30 group-hover:opacity-50 transition duration-500" />
-                                <div className="relative bg-slate-900/60 border border-white/5 rounded-xl p-6 sm:p-8 backdrop-blur-xl transition-all duration-300">
-                                    <p className="text-sm sm:text-base text-slate-300 leading-relaxed font-light whitespace-pre-line tracking-wide">
+                                <div className="absolute -inset-0.5 bg-gradient-to-r from-[#bf1e2e]/20 to-[#c4925f]/20 rounded-xl blur opacity-30 group-hover:opacity-50 transition duration-500" />
+                                <div className="relative bg-white border border-gray-100 shadow-md rounded-xl p-6 sm:p-8 transition-all duration-300">
+                                    <p className="text-sm sm:text-base text-[#58585a] leading-relaxed font-normal whitespace-pre-line tracking-wide">
                                         {expandedText ? t.aboutDescription : t.aboutPartial}
-                                        {!expandedText && <span className="text-blue-400/80 font-medium ml-1">...</span>}
+                                        {!expandedText && <span className="text-[#bf1e2e] font-medium ml-1">...</span>}
                                     </p>
 
                                     {!expandedText && (
-                                        <div className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-slate-900 via-slate-900/80 to-transparent rounded-b-xl pointer-events-none" />
+                                        <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-white via-white/90 to-transparent rounded-b-xl pointer-events-none" />
                                     )}
 
                                     {/* Action Button */}
                                     <div className={`mt-6 flex ${isRtl ? 'justify-end' : 'justify-start'}`}>
                                         <button
                                             onClick={() => setExpandedText(!expandedText)}
-                                            className="group/btn inline-flex items-center gap-2 text-xs font-semibold text-blue-300 hover:text-white transition-colors uppercase tracking-wider"
+                                            className="group/btn inline-flex items-center gap-2 text-xs font-bold text-[#bf1e2e] hover:text-[#940200] transition-colors uppercase tracking-wider"
                                         >
-                                            <span className="border-b border-blue-500/30 group-hover/btn:border-blue-400 pb-0.5 transition-all">
+                                            <span className="border-b border-[#bf1e2e]/30 group-hover/btn:border-[#940200] pb-0.5 transition-all">
                                                 {expandedText ? t.readLess : t.readMore}
                                             </span>
                                             {expandedText ?
@@ -262,11 +233,11 @@ export default function About({ language = 'en' }: AboutProps) {
                     </div>
 
                     {/* Footer Note */}
-                    <div className="mt-8 sm:mt-12 text-center border-t border-white/5 pt-6 sm:pt-8 w-full max-w-2xl mx-auto">
-                        <p className="text-[10px] sm:text-xs text-slate-500 font-medium tracking-wide uppercase">
+                    <div className="mt-8 sm:mt-12 text-center border-t border-gray-200 pt-6 sm:pt-8 w-full max-w-2xl mx-auto">
+                        <p className="text-[10px] sm:text-xs text-gray-400 font-bold tracking-wide uppercase">
                             Investarise Global Investor Summit – 2026
-                            <span className="hidden sm:inline mx-2 text-slate-700">|</span>
-                            <span className="block sm:inline mt-1 sm:mt-0 text-slate-400">Shaping Tomorrow's Economy</span>
+                            <span className="hidden sm:inline mx-2 text-[#bf1e2e]">|</span>
+                            <span className="block sm:inline mt-1 sm:mt-0 text-gray-500">Shaping Tomorrow's Economy</span>
                         </p>
                     </div>
 

@@ -193,7 +193,7 @@ export default function SpeakersPage({ language = 'en' }: SpeakersPageProps) {
           <p className="mt-4 text-lg text-slate-600 max-w-3xl mx-auto">
             {t.subtitle}
           </p>
-          <div className="mt-6 h-1.5 w-24 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full mx-auto" />
+          <div className="mt-6 h-1.5 w-24 bg-gradient-to-r from-[#bf1e2e] to-[#940200] rounded-full mx-auto" />
         </div>
 
         {/* ADDED: Wrapper div for arrows and scroll container.
@@ -205,21 +205,13 @@ export default function SpeakersPage({ language = 'en' }: SpeakersPageProps) {
           {/* ADDED: Left Arrow Button */}
           <button
             onClick={() => scroll('left')}
-            className={`absolute top-1/2 -translate-y-1/2 left-0 z-10 p-2 bg-white rounded-full shadow-lg text-blue-600 hover:bg-slate-100 transition-all
+            className={`absolute top-1/2 -translate-y-1/2 left-0 z-10 p-2 bg-white rounded-full shadow-lg text-[#bf1e2e] hover:bg-slate-100 transition-all
                        sm:hidden ${isScrollStart ? 'opacity-0' : 'opacity-100'}`} // Hides on mobile if at start
             aria-label="Scroll left"
           >
             <ChevronLeftIcon />
           </button>
 
-          {/* UPDATED: Speakers Grid
-            - Becomes a flex container on mobile
-            - 'overflow-x-auto' enables horizontal scrolling
-            - 'scroll-smooth' for smooth arrow clicks
-            - 'snap-x snap-mandatory' for swipe-snapping
-            - 'scrollbar-none' hides the scrollbar (requires tailwind-scrollbar-hide plugin or CSS)
-            - 'sm:grid' brings back the grid on larger screens
-          */}
           <div
             ref={scrollContainerRef}
             className="flex flex-nowrap overflow-x-auto scroll-smooth snap-x snap-mandatory gap-4 px-2 py-4
@@ -233,18 +225,18 @@ export default function SpeakersPage({ language = 'en' }: SpeakersPageProps) {
                 <div
                   key={speaker.name}
                   // UPDATED: Card sizing for mobile scroll
-                  className="flex flex-col items-center text-center bg-slate-50 rounded-3xl p-6 shadow-lg
+                  className="flex flex-col items-center text-center bg-slate-50 rounded-3xl p-6 shadow-lg hover:shadow-xl hover:border-[#bf1e2e]/10 transition-all duration-300
                              w-[85vw] flex-shrink-0 snap-start
-                             sm:w-auto sm:flex-shrink-1" // Restores auto-width on grid
+                             sm:w-auto sm:flex-shrink-1"
                 >
-                  <div className="relative w-40 h-40 rounded-full mb-6 overflow-hidden shadow-md flex-shrink-0">
+                  <div className="relative w-40 h-40 rounded-full mb-6 overflow-hidden shadow-md flex-shrink-0 border-4 border-white">
                     <img
                       src={speaker.image}
                       alt={speaker.name}
                       className="w-full h-full object-cover"
                     />
                   </div>
-                  <h3 className="text-xl font-bold text-slate-900 mb-2">
+                  <h3 className="text-xl font-bold text-slate-900 mb-2 hover:text-[#bf1e2e] transition-colors">
                     {speaker.name}
                   </h3>
 
@@ -258,7 +250,7 @@ export default function SpeakersPage({ language = 'en' }: SpeakersPageProps) {
 
                     <button
                       onClick={() => toggleExpand(speaker.name)}
-                      className="text-sm font-semibold text-blue-700 bg-blue-100 hover:bg-blue-200 rounded-full px-4 py-1.5 transition-colors mt-4 self-center flex-shrink-0"
+                      className="text-sm font-semibold text-[#bf1e2e] bg-red-50 hover:bg-red-100 rounded-full px-4 py-1.5 transition-colors mt-4 self-center flex-shrink-0"
                     >
                       {isExpanded ? t.readLess : t.readMore}
                     </button>
@@ -271,7 +263,7 @@ export default function SpeakersPage({ language = 'en' }: SpeakersPageProps) {
           {/* ADDED: Right Arrow Button */}
           <button
             onClick={() => scroll('right')}
-            className={`absolute top-1/2 -translate-y-1/2 right-0 z-10 p-2 bg-white rounded-full shadow-lg text-blue-600 hover:bg-slate-100 transition-all
+            className={`absolute top-1/2 -translate-y-1/2 right-0 z-10 p-2 bg-white rounded-full shadow-lg text-[#bf1e2e] hover:bg-slate-100 transition-all
                        sm:hidden ${isScrollEnd ? 'opacity-0' : 'opacity-100'}`} // Hides on mobile if at end
             aria-label="Scroll right"
           >

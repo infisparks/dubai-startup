@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react'
-import Link from 'next/link' // Imported Link for navigation
+import Link from 'next/link'
 import { FiCheck, FiMail, FiGlobe, FiBriefcase, FiArrowRight } from 'react-icons/fi'
 
 interface MarketingStrategyProps {
@@ -113,10 +113,10 @@ const GridCta = ({ language }: { language: 'en' | 'ar' }) => {
         <img
           src="https://images.unsplash.com/photo-1517245381831-f11a437e56b8?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
           alt="Abstract background"
-          className="absolute inset-0 w-full h-full object-cover z-0"
+          className="absolute inset-0 w-full h-full object-cover z-0 grayscale"
         />
         {/* Overlay for text readability */}
-        <div className="absolute inset-0 bg-blue-800 bg-opacity-70 group-hover:bg-opacity-80 transition-all duration-300 z-10" />
+        <div className="absolute inset-0 bg-[#940200] bg-opacity-80 group-hover:bg-opacity-90 transition-all duration-300 z-10" />
 
         <div className="relative z-20 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 h-full">
           <div className={isRtl ? 'text-right' : ''}>
@@ -128,10 +128,9 @@ const GridCta = ({ language }: { language: 'en' | 'ar' }) => {
             </p>
           </div>
 
-          {/* Replaced button with Next.js Link */}
           <Link
             href="/registration"
-            className="flex-shrink-0 px-5 py-2 text-sm bg-white text-blue-600 font-semibold rounded-lg transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 whitespace-nowrap inline-block text-center"
+            className="flex-shrink-0 px-5 py-2 text-sm bg-white text-[#bf1e2e] font-semibold rounded-lg transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 whitespace-nowrap inline-block text-center"
           >
             {t.button}
           </Link>
@@ -148,13 +147,13 @@ export default function MarketingStrategy({ language = 'en' }: MarketingStrategy
 
   return (
     <section
-      className="relative py-12 lg:py-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-slate-50 to-white overflow-hidden"
+      className="relative py-12 lg:py-16 px-4 sm:px-6 lg:px-8 bg-[#f9f9f9] overflow-hidden"
       dir={isRtl ? 'rtl' : 'ltr'}
     >
       {/* Minimal Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-0 right-0 w-80 h-80 bg-gradient-to-br from-blue-50 to-cyan-50 rounded-full blur-3xl opacity-30" />
-        <div className="absolute bottom-0 left-0 w-80 h-80 bg-gradient-to-tr from-blue-50 to-indigo-50 rounded-full blur-3xl opacity-30" />
+        <div className="absolute top-0 right-0 w-80 h-80 bg-[#bf1e2e]/5 rounded-full blur-3xl opacity-30" />
+        <div className="absolute bottom-0 left-0 w-80 h-80 bg-[#c4925f]/10 rounded-full blur-3xl opacity-30" />
       </div>
 
       {/* Main Content */}
@@ -163,15 +162,15 @@ export default function MarketingStrategy({ language = 'en' }: MarketingStrategy
         {/* Header - Compact */}
         <div className="mb-8">
           <div className="inline-flex items-center gap-2 mb-2">
-            <div className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-blue-500 to-cyan-500" />
-            <span className="text-xs font-semibold tracking-widest text-slate-500 uppercase">Strategy</span>
+            <div className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-[#bf1e2e] to-[#c4925f]" />
+            <span className="text-xs font-semibold tracking-widest text-[#bf1e2e] uppercase">Strategy</span>
           </div>
 
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-900 mb-2 tracking-tight">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-800 mb-2 tracking-tight">
             {t.title}
           </h2>
 
-          <p className="text-xs sm:text-sm text-slate-600 max-w-3xl leading-relaxed font-light">
+          <p className="text-xs sm:text-sm text-slate-500 max-w-3xl leading-relaxed font-light">
             {t.subtitle}
           </p>
         </div>
@@ -191,12 +190,12 @@ export default function MarketingStrategy({ language = 'en' }: MarketingStrategy
                 `}
               >
                 {/* Card Background */}
-                <div className="absolute inset-0 bg-white border border-slate-200 rounded-lg transition-all duration-300 group-hover:border-slate-300 group-hover:shadow-md" />
+                <div className="absolute inset-0 bg-white border border-slate-200 rounded-lg transition-all duration-300 group-hover:border-[#c4925f]/30 group-hover:shadow-md" />
 
                 {/* Subtle Hover Gradient */}
                 <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg"
                   style={{
-                    background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.03) 0%, rgba(6, 182, 212, 0.03) 100%)'
+                    background: 'linear-gradient(135deg, rgba(191, 30, 46, 0.03) 0%, rgba(196, 146, 95, 0.03) 100%)'
                   }}
                 />
 
@@ -206,13 +205,13 @@ export default function MarketingStrategy({ language = 'en' }: MarketingStrategy
                   {/* Icon + Title Row */}
                   <div className="flex items-start gap-2.5 mb-3">
                     <div className="relative flex-shrink-0">
-                      <div className="w-10 h-10 bg-gradient-to-br from-blue-50 to-cyan-50 rounded-lg flex items-center justify-center border border-blue-100 group-hover:border-blue-200 transition-colors duration-300">
-                        <IconComponent className="w-5 h-5 text-blue-600" />
+                      <div className="w-10 h-10 bg-gradient-to-br from-[#bf1e2e]/5 to-[#c4925f]/10 rounded-lg flex items-center justify-center border border-[#bf1e2e]/10 group-hover:border-[#c4925f]/30 transition-colors duration-300">
+                        <IconComponent className="w-5 h-5 text-[#bf1e2e]" />
                       </div>
                     </div>
 
                     <div className={`${isRtl ? 'text-right' : ''}`}>
-                      <h3 className="text-xs sm:text-sm font-bold text-slate-900 leading-tight">
+                      <h3 className="text-xs sm:text-sm font-bold text-slate-800 leading-tight group-hover:text-[#bf1e2e] transition-colors">
                         {strategy.title}
                       </h3>
                     </div>
@@ -224,11 +223,11 @@ export default function MarketingStrategy({ language = 'en' }: MarketingStrategy
                       {strategy.items.map((item, itemIndex) => (
                         <div key={itemIndex} className="flex items-start gap-2">
                           <div className="flex-shrink-0 mt-0.5">
-                            <div className="w-3 h-3 rounded-full bg-gradient-to-br from-blue-100 to-cyan-100 flex items-center justify-center border border-blue-200 flex-shrink-0">
-                              <FiCheck className="w-2 h-2 text-blue-600" />
+                            <div className="w-3 h-3 rounded-full bg-gradient-to-br from-[#bf1e2e]/10 to-[#c4925f]/10 flex items-center justify-center border border-[#bf1e2e]/20 flex-shrink-0">
+                              <FiCheck className="w-2 h-2 text-[#bf1e2e]" />
                             </div>
                           </div>
-                          <span className="text-xs text-slate-600 leading-tight font-light">
+                          <span className="text-xs text-slate-500 leading-tight font-light">
                             {item}
                           </span>
                         </div>
@@ -236,10 +235,10 @@ export default function MarketingStrategy({ language = 'en' }: MarketingStrategy
                     </div>
                   ) : (
                     <div>
-                      <p className="text-xs text-slate-600 leading-tight font-light mb-2">
+                      <p className="text-xs text-slate-500 leading-tight font-light mb-2">
                         {strategy.description}
                       </p>
-                      <div className="inline-flex items-center gap-1 text-blue-600 font-semibold text-xs opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <div className="inline-flex items-center gap-1 text-[#bf1e2e] font-semibold text-xs opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                         {language === 'en' ? 'More' : 'المزيد'}
                         <FiArrowRight className="w-3 h-3" />
                       </div>

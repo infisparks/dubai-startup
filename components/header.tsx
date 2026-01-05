@@ -77,35 +77,30 @@ export default function Header({ language = "en", setLanguage, userEmail }: Head
     return () => window.removeEventListener("scroll", handleScroll)
   }, [isHomepage])
 
+  // 💡 CHANGE: Always assume a light background style or scrolled style since the Hero is now white/light.
+  // We can simplify this by making the header always have dark text, but keep the transparent background at top if desired.
+  // However, white text on white bg won't work. So for 'unscrolled' (top of home), we need dark text.
+
   const baseStyle = effectiveScrolled
-    ? "text-slate-700 hover:text-[#013371] hover:bg-slate-50"
-    : "text-white hover:text-blue-200"
+    ? "text-[#bf1e2e] hover:text-[#940200] hover:bg-slate-50"
+    : "text-[#bf1e2e] hover:text-[#940200] hover:bg-white/50"
 
   const iconColor = effectiveScrolled
-    ? "text-slate-700 hover:bg-slate-100"
-    : "text-white hover:bg-white/10"
+    ? "text-[#bf1e2e] hover:bg-slate-100"
+    : "text-[#bf1e2e] hover:bg-white/10"
 
   return (
     <header
-      className={`fixed w-full top-0 z-50 transition-all duration-500 ${effectiveScrolled
-        ? "bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm"
-        : "bg-transparent border-transparent"
+      className={`w-full top-0 z-50 transition-all duration-500 relative lg:fixed bg-white lg:bg-transparent ${effectiveScrolled
+        ? "lg:bg-white/95 lg:backdrop-blur-md lg:border-b lg:border-slate-200 lg:shadow-sm"
+        : "lg:border-transparent"
         }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20">
+        <div className={`flex items-center lg:justify-between h-14 lg:h-20 ${isHomepage ? "justify-end" : "justify-between"}`}>
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2">
-            <div className="relative w-52 h-10">
-              <Image
-                src={effectiveScrolled ? "/logo.png" : "/logo-white.png"}
-                alt="Investarise Logo"
-                fill
-                className="object-contain"
-                priority
-              />
-            </div>
-          </Link>
+          {/* Logo Removed as per user request */}
+          <div className="hidden lg:block w-52"></div> {/* Spacer to keep layout balanced if needed, or just remove */}
 
           {/* Desktop Navigation - Updated */}
           <nav className="hidden lg:flex items-center gap-1">
@@ -127,12 +122,12 @@ export default function Header({ language = "en", setLanguage, userEmail }: Head
             {/* User Info & Logout */}
             {userEmail && (
               <div className="hidden md:flex items-center space-x-3 border-r border-slate-200 pr-3">
-                <span className={`text-sm font-medium flex items-center gap-1 ${effectiveScrolled ? 'text-slate-600' : 'text-white'}`}>
+                <span className={`text-sm font-medium flex items-center gap-1 text-[#bf1e2e]`}>
                   <UserIcon className="w-4 h-4" /> {userEmail}
                 </span>
                 <button
                   onClick={handleLogout}
-                  className="flex items-center gap-2 px-3 py-1.5 text-sm bg-red-500 text-white rounded-lg hover:bg-red-600 transition"
+                  className="flex items-center gap-2 px-3 py-1.5 text-sm bg-[#bf1e2e] text-white rounded-lg hover:bg-[#940200] transition"
                 >
                   <LogOut className="w-4 h-4" />
                   <span>{t.logout}</span>
@@ -152,8 +147,8 @@ export default function Header({ language = "en", setLanguage, userEmail }: Head
             <Link
               href="/registration"
               className={`hidden sm:flex px-4 py-2 rounded-lg font-medium text-sm shadow-md transition-colors ${effectiveScrolled
-                ? "bg-[#013371] text-white hover:bg-[#024fa3]"
-                : "bg-white text-[#013371] hover:bg-[#013371] hover:text-white"
+                ? "bg-[#bf1e2e] text-white hover:bg-[#940200]"
+                : "bg-[#bf1e2e] text-white hover:bg-[#940200]"
                 }`}
             >
               {t.register}
@@ -174,14 +169,14 @@ export default function Header({ language = "en", setLanguage, userEmail }: Head
           <nav
             className={`lg:hidden pb-4 space-y-2 animate-slideInDown ${effectiveScrolled
               ? "bg-white/95 border-t border-slate-200"
-              : "bg-black/50 backdrop-blur-md"
+              : "bg-white/90 backdrop-blur-md shadow-lg" // Ensure visibility on mobile
               } rounded-b-xl`}
           >
             {navItems.map((item) => (
               <Link
                 key={item.key}
                 href={item.href}
-                className={`block px-4 py-2 rounded-lg font-medium text-sm ${baseStyle}`}
+                className={`block px-4 py-2 rounded-lg font-medium text-sm text-slate-800 hover:bg-slate-50 hover:text-[#D32F2F]`}
                 onClick={() => setMobileMenuOpen(false)} // Close menu on click
               >
                 {t[item.key]}
@@ -203,10 +198,7 @@ export default function Header({ language = "en", setLanguage, userEmail }: Head
               {/* ⭐ FIX: Combined Registration Button for Mobile */}
               <Link
                 href="/registration"
-                className={`block px-4 py-2 rounded-lg text-center font-medium text-sm ${effectiveScrolled
-                  ? "bg-[#013371] text-white hover:bg-[#024fa3]"
-                  : "bg-white text-[#013371] hover:bg-[#013371] hover:text-white"
-                  }`}
+                className={`block px-4 py-2 rounded-lg text-center font-medium text-sm bg-[#bf1e2e] text-white hover:bg-[#940200]`}
                 onClick={() => setMobileMenuOpen(false)} // Close menu on click
               >
                 {t.register}

@@ -27,7 +27,7 @@ const GlobeAltIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5"><path fillRule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM12.75 6a.75.75 0 00-1.5 0v6c0 .414.336.75.75.75h4.5a.75.75 0 000-1.5h-3.75V6z" clipRule="evenodd" /></svg>
 )
 
-// Data structure (minimal change, primarily for readability)
+// Data structure
 const translations = {
   en: {
     title: 'Event Overview',
@@ -81,17 +81,17 @@ export default function EventOverview({ language = 'en' }: EventOverviewProps) {
   const t = translations[language]
 
   return (
-    <section className="relative py-16 sm:py-24 lg:py-32 px-4 sm:px-6 lg:px-8 bg-slate-50 overflow-hidden">
-      {/* Background Orbs */}
+    <section className="relative py-16 sm:py-24 lg:py-32 px-4 sm:px-6 lg:px-8 bg-[#f9f9f9] overflow-hidden">
+      {/* Background Orbs by Red/Gold */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -left-40 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl opacity-50" />
-        <div className="absolute -bottom-40 -right-40 w-80 h-80 bg-cyan-500/10 rounded-full blur-3xl opacity-50" />
+        <div className="absolute -top-40 -left-40 w-80 h-80 bg-[#bf1e2e]/5 rounded-full blur-3xl opacity-50" />
+        <div className="absolute -bottom-40 -right-40 w-80 h-80 bg-[#c4925f]/10 rounded-full blur-3xl opacity-50" />
       </div>
 
       <div className="max-w-7xl mx-auto relative z-10 w-full">
         {/* Main Title, Intro, and Theme */}
         <div className="text-center mb-10 lg:mb-16">
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 leading-tight">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-800 leading-tight">
             {t.title}
           </h2>
           <p className="mt-4 text-sm sm:text-base text-slate-600 max-w-4xl mx-auto leading-relaxed">
@@ -99,27 +99,27 @@ export default function EventOverview({ language = 'en' }: EventOverviewProps) {
           </p>
           {/* Theme Highlight */}
           <div className="mt-8">
-            <h3 className="text-base font-semibold text-slate-800 uppercase tracking-wider mb-2">
+            <h3 className="text-base font-semibold text-slate-700 uppercase tracking-wider mb-2">
               {t.summitTheme}
             </h3>
-            <p className="text-2xl sm:text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-500 italic">
+            <p className="text-2xl sm:text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-[#bf1e2e] to-[#940200] italic">
               {t.themePhrase}
             </p>
           </div>
         </div>
 
         {/* 1. KEY STAKEHOLDERS (High-Contrast Stat Block) */}
-        <div className="bg-slate-900 text-white rounded-xl shadow-2xl p-6 sm:p-8 lg:p-10 mb-16 lg:mb-20">
+        <div className="bg-[#940200] text-white rounded-xl shadow-2xl p-6 sm:p-8 lg:p-10 mb-16 lg:mb-20">
           <div className="grid grid-cols-3 gap-6 text-center">
             {t.stakeholders.map((stat, index) => (
               <div
                 key={index}
-                className="flex flex-col items-center border-r border-slate-700 last:border-r-0"
+                className="flex flex-col items-center border-r border-[#bf1e2e] last:border-r-0"
               >
-                <p className="text-4xl sm:text-5xl font-extrabold text-cyan-400">
+                <p className="text-4xl sm:text-5xl font-extrabold text-[#c4925f]">
                   {stat.count}
                 </p>
-                <p className="mt-1 text-xs sm:text-sm uppercase tracking-widest font-medium text-slate-300">
+                <p className="mt-1 text-xs sm:text-sm uppercase tracking-widest font-medium text-red-100">
                   {stat.label}
                 </p>
               </div>
@@ -131,14 +131,14 @@ export default function EventOverview({ language = 'en' }: EventOverviewProps) {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
           {/* Column 1: Date & Venue (Sleek Information Block) */}
           <div className="lg:col-span-1 bg-white p-6 rounded-2xl shadow-lg border border-slate-100 h-fit">
-            <h4 className="text-lg font-bold text-blue-600 uppercase tracking-wider mb-4">
+            <h4 className="text-lg font-bold text-[#bf1e2e] uppercase tracking-wider mb-4">
               {t.venueLabel} & {t.dateLabel}
             </h4>
 
             <div className="space-y-6">
               {/* Date */}
               <div className="flex items-start gap-3">
-                <div className="flex-shrink-0 p-2 bg-blue-500/10 text-blue-600 rounded-lg">
+                <div className="flex-shrink-0 p-2 bg-[#bf1e2e]/10 text-[#bf1e2e] rounded-lg">
                   <CalendarIcon />
                 </div>
                 <div>
@@ -153,7 +153,7 @@ export default function EventOverview({ language = 'en' }: EventOverviewProps) {
 
               {/* Venue */}
               <div className="flex items-start gap-3">
-                <div className="flex-shrink-0 p-2 bg-cyan-500/10 text-cyan-600 rounded-lg">
+                <div className="flex-shrink-0 p-2 bg-[#c4925f]/10 text-[#c4925f] rounded-lg">
                   <MapPinIcon />
                 </div>
                 <div>
@@ -182,11 +182,11 @@ export default function EventOverview({ language = 'en' }: EventOverviewProps) {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-8">
               {t.objectives.map((obj, index) => {
                 const IconComponent = obj.icon
-                const isBlue = index % 2 === 0; // Alternate icon color for visual separation
+                const isRed = index % 2 === 0;
 
                 return (
                   <div key={index} className="flex items-start gap-4">
-                    <div className={`flex-shrink-0 p-3 rounded-xl ${isBlue ? 'bg-blue-500/10 text-blue-600' : 'bg-cyan-500/10 text-cyan-600'}`}>
+                    <div className={`flex-shrink-0 p-3 rounded-xl ${isRed ? 'bg-[#bf1e2e]/10 text-[#bf1e2e]' : 'bg-[#c4925f]/10 text-[#c4925f]'}`}>
                       <IconComponent />
                     </div>
                     <div>

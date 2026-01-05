@@ -4,26 +4,34 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --background: 0 0% 100%;
-  --foreground: 12 84% 13%;
+  --background: 0 0% 98%;
+  /* #f9f9f9 */
+  --foreground: 240 1% 35%;
+  /* #58585a */
   --card: 0 0% 100%;
-  --card-foreground: 12 84% 13%;
+  --card-foreground: 240 1% 35%;
+  /* #58585a */
   --popover: 0 0% 100%;
-  --popover-foreground: 12 84% 13%;
-  --primary: 216 82% 22%;
+  --popover-foreground: 240 1% 35%;
+  /* #58585a */
+  --primary: 354 73% 43%;
+  /* #bf1e2e */
   --primary-foreground: 0 0% 100%;
-  --secondary: 218 91% 39%;
+  --secondary: 30 46% 57%;
+  /* #c4925f */
   --secondary-foreground: 0 0% 100%;
-  --accent: 216 82% 45%;
+  --accent: 0 100% 29%;
+  /* #940200 */
   --accent-foreground: 0 0% 100%;
-  --muted: 213 32% 92%;
-  --muted-foreground: 215 14% 34%;
+  --muted: 0 0% 95%;
+  --muted-foreground: 240 1% 45%;
   --destructive: 0 84% 60%;
   --destructive-foreground: 0 0% 100%;
-  --border: 213 32% 92%;
-  --input: 213 32% 96%;
-  --ring: 216 82% 22%;
-  --radius: 0.5rem;
+  --border: 240 1% 90%;
+  --input: 240 1% 90%;
+  --ring: 354 73% 43%;
+  --radius: 0.75rem;
+  /* More modern rounded corners */
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
@@ -119,9 +127,11 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground font-sans;
   }
+
   html {
     scroll-behavior: smooth;
   }
@@ -138,6 +148,7 @@
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
@@ -148,6 +159,7 @@
     opacity: 0;
     transform: translateY(20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -159,6 +171,7 @@
     opacity: 0;
     transform: translateY(-20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -170,6 +183,7 @@
     opacity: 0;
     transform: translateX(-20px);
   }
+
   to {
     opacity: 1;
     transform: translateX(0);
@@ -181,6 +195,7 @@
     opacity: 0;
     transform: translateX(20px);
   }
+
   to {
     opacity: 1;
     transform: translateX(0);
@@ -192,6 +207,7 @@
     opacity: 0;
     transform: scale(0.95);
   }
+
   to {
     opacity: 1;
     transform: scale(1);
@@ -199,20 +215,24 @@
 }
 
 @keyframes float {
+
   0%,
   100% {
     transform: translateY(0px);
   }
+
   50% {
     transform: translateY(-10px);
   }
 }
 
 @keyframes pulse-glow {
+
   0%,
   100% {
     box-shadow: 0 0 0 0 rgba(216, 82%, 22%, 0.4);
   }
+
   50% {
     box-shadow: 0 0 0 10px rgba(216, 82%, 22%, 0);
   }
@@ -263,6 +283,7 @@ textarea {
   0% {
     transform: translateX(0);
   }
+
   100% {
     transform: translateX(-50%);
   }

@@ -2,7 +2,7 @@
 
 import Image from 'next/image'
 import React from 'react'
-import { Crown, Star, Globe } from 'lucide-react'
+import { Crown, Star, Award, TrendingUp, Globe } from 'lucide-react'
 
 interface PrincePageProps {
   language: 'en' | 'ar'
@@ -11,7 +11,6 @@ interface PrincePageProps {
 const translations = {
   en: {
     guestOfHonor: 'Guest of Honor & Mentor',
-    welcomeMessage: 'A visionary leader inspiring excellence and innovation across continents.',
     princeName: 'H.R.H Prince Ebrahim Sanyang',
     role: 'Royal Africa Holdings Chairman',
     bio: [
@@ -20,14 +19,13 @@ const translations = {
       "As Chairman of Royal Africa Holdings, he spearheads the $5 billion Mansa Sansang City Project in The Gambia, driving growth and prosperity in the region."
     ],
     stats: [
-      { label: 'Investment Value', value: '$5B+' },
-      { label: 'Global Impact', value: 'Pan-African' },
-      { label: 'Leadership', value: 'Visionary' },
+      { label: 'Investment Value', value: '$5B+', icon: TrendingUp },
+      { label: 'Global Impact', value: 'Pan-African', icon: Globe },
+      { label: 'Leadership', value: 'Visionary', icon: Award },
     ]
   },
   ar: {
     guestOfHonor: 'ضيف الشرف والمرشد',
-    welcomeMessage: 'قائد صاحب رؤية يلهم التميز والابتكار عبر القارات.',
     princeName: 'صاحب السمو الأمير إبراهيم سانيانغ',
     role: 'رئيس مجلس إدارة رويال أفريقيا القابضة',
     bio: [
@@ -36,9 +34,9 @@ const translations = {
       "بصفته رئيس مجلس إدارة رويال أفريقيا القابضة، يقود مشروع مدينة مانسا سانسانغ بقيمة 5 مليارات دولار في غامبيا، مما يدفع النمو والازدهار في المنطقة."
     ],
     stats: [
-      { label: 'قيمة الاستثمار', value: '+5 مليار دولار' },
-      { label: 'التأثير العالمي', value: 'عموم أفريقيا' },
-      { label: 'القيادة', value: 'صاحب رؤية' },
+      { label: 'قيمة الاستثمار', value: '+5 مليار دولار', icon: TrendingUp },
+      { label: 'التأثير العالمي', value: 'عموم أفريقيا', icon: Globe },
+      { label: 'القيادة', value: 'صاحب رؤية', icon: Award },
     ]
   },
 }
@@ -48,92 +46,91 @@ export default function PrincePage({ language = 'en' }: PrincePageProps) {
   const isRtl = language === 'ar'
 
   return (
-    <section className="relative py-12 lg:py-16 bg-slate-950 overflow-hidden flex items-center">
-      {/* Dynamic Background */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-blue-900/20 via-slate-950 to-slate-950" />
-        <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-amber-500/10 rounded-full blur-[100px] mix-blend-screen opacity-30 animate-pulse" />
-        <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-blue-600/10 rounded-full blur-[100px] mix-blend-screen opacity-30" />
+    <section className="relative py-16 bg-white overflow-hidden flex items-center">
+      {/* Background - Clean White with subtle Red accents */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        {/* Soft Red/Gold Blobs for Depth */}
+        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-[#bf1e2e]/5 rounded-full blur-[120px] opacity-70 -translate-y-1/2 translate-x-1/2" />
+        <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-[#c4925f]/10 rounded-full blur-[120px] opacity-40 translate-y-1/2 -translate-x-1/2" />
       </div>
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
-        <div className={`flex flex-col lg:flex-row items-center gap-8 lg:gap-12 ${isRtl ? 'lg:flex-row-reverse' : ''}`}>
+        <div className={`flex flex-col lg:flex-row items-center gap-10 lg:gap-16 ${isRtl ? 'lg:flex-row-reverse' : ''}`}>
 
-          {/* Image Section - Smaller & Optimized */}
-          <div className="w-full lg:w-[35%] relative group perspective-1000">
-            <div className="relative z-10 transform transition-transform duration-700 group-hover:rotate-y-6 group-hover:scale-105">
-              <div className="relative rounded-2xl overflow-hidden border border-white/10 shadow-xl bg-slate-900/50 backdrop-blur-sm">
-                <div className="absolute inset-0 bg-gradient-to-tr from-amber-500/20 to-blue-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-20" />
-                <Image
-                  src="/prince.png"
-                  alt={t.princeName}
-                  width={400}
-                  height={500}
-                  className="w-full h-auto object-cover transform transition-transform duration-1000 group-hover:scale-105"
-                  priority
-                />
+          {/* Image Section */}
+          <div className="w-full lg:w-[35%] relative group perspective-1000 lg:translate-y-12">
+            {/* Decorative Border */}
+            <div className="absolute -inset-3 bg-gradient-to-tr from-[#bf1e2e]/20 via-[#c4925f]/20 to-[#bf1e2e]/20 rounded-2xl opacity-60 blur-md group-hover:opacity-80 transition-opacity duration-700" />
 
-                {/* Floating Tags - Smaller */}
-                <div className={`absolute bottom-4 ${isRtl ? 'right-4' : 'left-4'} z-30`}>
-                  <div className="bg-white/10 backdrop-blur-md border border-white/20 p-2.5 rounded-xl shadow-lg transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 delay-100">
-                    <div className="flex items-center gap-2">
-                      <div className="p-1.5 bg-amber-500 rounded-lg text-white">
-                        <Crown className="w-3.5 h-3.5" />
-                      </div>
-                      <div>
-                        <p className="text-[9px] text-amber-200 font-medium uppercase tracking-wider">Royal Lineage</p>
-                        <p className="text-[11px] font-bold text-white">Mali & Kabu Empires</p>
-                      </div>
-                    </div>
-                  </div>
+            <div className="relative rounded-2xl overflow-hidden shadow-2xl transform transition-transform duration-700 group-hover:scale-[1.02] bg-white">
+              <Image
+                src="/prince.png"
+                alt={t.princeName}
+                width={400}
+                height={500}
+                className="w-full h-auto object-cover transform transition-transform duration-1000 group-hover:scale-105"
+                priority
+              />
+
+              {/* Floating Badge */}
+              <div className={`absolute top-4 ${isRtl ? 'right-4' : 'left-4'} z-20`}>
+                <div className="flex items-center gap-1.5 bg-white/90 backdrop-blur-md px-3 py-1.5 rounded-full shadow-lg border border-[#bf1e2e]/20">
+                  <Crown className="w-3.5 h-3.5 text-[#bf1e2e] fill-current" />
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-[#bf1e2e]">Royal Guest</span>
                 </div>
               </div>
             </div>
-
-            {/* Background Decorative Elements - Scaled */}
-            <div className={`absolute -top-4 ${isRtl ? '-right-4' : '-left-4'} w-full h-full border-2 border-amber-500/20 rounded-2xl -z-10 transform rotate-2 transition-transform duration-700 group-hover:rotate-4`} />
-            <div className={`absolute -bottom-4 ${isRtl ? '-left-4' : '-right-4'} w-full h-full bg-gradient-to-br from-blue-600/10 to-purple-600/10 rounded-2xl -z-20 transform -rotate-2 transition-transform duration-700 group-hover:-rotate-4 blur-lg`} />
           </div>
 
-          {/* Content Section - Compact & Elegant */}
+          {/* Content Section */}
           <div className={`w-full lg:w-[65%] ${isRtl ? 'text-right' : 'text-left'}`}>
-            <div className="space-y-5">
-              <div>
-                <div className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 mb-3 ${isRtl ? 'flex-row-reverse' : ''}`}>
-                  <Star className="w-3 h-3 fill-amber-400" />
-                  <span className="text-[10px] font-bold tracking-widest uppercase">{t.guestOfHonor}</span>
+            <div className="space-y-6">
+
+              {/* Header */}
+              <div className="space-y-3">
+                <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#bf1e2e]/5 border border-[#bf1e2e]/20 text-[#bf1e2e] ${isRtl ? 'flex-row-reverse' : ''}`}>
+                  <Star className="w-3.5 h-3.5 fill-current" />
+                  <span className="text-[10px] sm:text-xs font-semibold tracking-widest uppercase">{t.guestOfHonor}</span>
                 </div>
 
-                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black text-white leading-tight mb-2 tracking-tight">
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-yellow-400 to-amber-600">
-                    {t.princeName}
-                  </span>
+                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-[#bf1e2e] leading-tight tracking-tight">
+                  {t.princeName}
                 </h2>
-                <p className="text-base sm:text-lg text-blue-200 font-light border-l-2 border-blue-500 pl-3">
+
+                <p className={`text-lg sm:text-xl text-[#58585a] font-medium ${isRtl ? 'border-r-4 pr-3' : 'border-l-4 pl-3'} border-[#c4925f]`}>
                   {t.role}
                 </p>
               </div>
 
-              <div className="space-y-3 text-sm text-slate-300 leading-relaxed font-light">
+              {/* Bio - Dark text for readability on white */}
+              <div className="space-y-3 text-[#58585a] text-base leading-relaxed font-normal">
                 {t.bio.map((paragraph, index) => (
-                  <p key={index} className="hover:text-white transition-colors duration-300">
+                  <p key={index} className="transition-opacity hover:opacity-100 opacity-90 hover:text-black">
                     {paragraph}
                   </p>
                 ))}
               </div>
 
-              {/* Stats Row - Compact */}
-              <div className="grid grid-cols-3 gap-3 pt-5 border-t border-white/10">
-                {t.stats.map((stat, idx) => (
-                  <div key={idx} className="group cursor-default">
-                    <p className="text-base sm:text-lg font-bold text-white mb-0.5 group-hover:text-amber-400 transition-colors whitespace-nowrap">
-                      {stat.value}
-                    </p>
-                    <p className="text-[10px] text-slate-500 uppercase tracking-wider group-hover:text-slate-300 transition-colors">
-                      {stat.label}
-                    </p>
-                  </div>
-                ))}
+              {/* Stats - White Cards with Red Text */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-4">
+                {t.stats.map((stat, idx) => {
+                  const Icon = stat.icon
+                  return (
+                    <div key={idx} className="group relative bg-white p-4 rounded-xl border border-gray-100 shadow-sm hover:shadow-lg hover:border-[#bf1e2e]/20 transition-all duration-300">
+
+                      <div className="mb-2 w-8 h-8 rounded-lg bg-[#bf1e2e]/5 flex items-center justify-center text-[#bf1e2e] group-hover:bg-[#bf1e2e] group-hover:text-white transition-colors">
+                        <Icon className="w-4 h-4" />
+                      </div>
+
+                      <p className="text-xl font-bold text-slate-800 mb-0.5 group-hover:text-[#bf1e2e] transition-colors">
+                        {stat.value}
+                      </p>
+                      <p className="text-[10px] text-gray-500 font-medium uppercase tracking-wider group-hover:text-gray-700">
+                        {stat.label}
+                      </p>
+                    </div>
+                  )
+                })}
               </div>
 
             </div>

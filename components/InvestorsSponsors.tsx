@@ -191,14 +191,14 @@ export default function InvestorsSponsors({ language = 'en' }: InvestorsSponsors
                     <p className="mt-4 text-lg text-slate-600 max-w-3xl mx-auto">
                         {t.subtitle}
                     </p>
-                    <div className="mt-6 h-1.5 w-24 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full mx-auto" />
+                    <div className="mt-6 h-1.5 w-24 bg-gradient-to-r from-[#bf1e2e] to-[#940200] rounded-full mx-auto" />
                 </div>
 
                 <div className="relative -mx-4 px-4 sm:mx-0 sm:px-0">
 
                     <button
                         onClick={() => scroll('left')}
-                        className={`absolute top-1/2 -translate-y-1/2 left-0 z-10 p-2 bg-white rounded-full shadow-lg text-blue-600 hover:bg-slate-100 transition-all
+                        className={`absolute top-1/2 -translate-y-1/2 left-0 z-10 p-2 bg-white rounded-full shadow-lg text-[#bf1e2e] hover:bg-slate-100 transition-all
                         ${isScrollStart ? 'opacity-0' : 'opacity-100'}`}
                         aria-label="Scroll left"
                     >
@@ -217,18 +217,18 @@ export default function InvestorsSponsors({ language = 'en' }: InvestorsSponsors
                             return (
                                 <div
                                     key={investor.name}
-                                    className="flex flex-col items-center text-center bg-slate-50 rounded-3xl p-6 shadow-lg
+                                    className="flex flex-col items-center text-center bg-slate-50 rounded-3xl p-6 shadow-lg hover:shadow-xl transition-shadow border border-slate-100/50 hover:border-[#bf1e2e]/10
                              w-[85vw] flex-shrink-0 snap-start
                              sm:w-[300px]"
                                 >
-                                    <div className="relative w-40 h-40 rounded-full mb-6 overflow-hidden shadow-md flex-shrink-0">
+                                    <div className="relative w-40 h-40 rounded-full mb-6 overflow-hidden shadow-md flex-shrink-0 border-4 border-white">
                                         <img
                                             src={investor.image}
                                             alt={investor.name}
                                             className="w-full h-full object-cover"
                                         />
                                     </div>
-                                    <h3 className="text-xl font-bold text-slate-900 mb-2">
+                                    <h3 className="text-xl font-bold text-slate-900 mb-2 hover:text-[#bf1e2e] transition-colors">
                                         {investor.name}
                                     </h3>
 
@@ -242,7 +242,7 @@ export default function InvestorsSponsors({ language = 'en' }: InvestorsSponsors
 
                                         <button
                                             onClick={() => toggleExpand(investor.name)}
-                                            className="text-sm font-semibold text-blue-700 bg-blue-100 hover:bg-blue-200 rounded-full px-4 py-1.5 transition-colors mt-4 self-center flex-shrink-0"
+                                            className="text-sm font-semibold text-[#bf1e2e] bg-red-50 hover:bg-red-100 rounded-full px-4 py-1.5 transition-colors mt-4 self-center flex-shrink-0"
                                         >
                                             {isExpanded ? t.readLess : t.readMore}
                                         </button>
@@ -254,7 +254,7 @@ export default function InvestorsSponsors({ language = 'en' }: InvestorsSponsors
 
                     <button
                         onClick={() => scroll('right')}
-                        className={`absolute top-1/2 -translate-y-1/2 right-0 z-10 p-2 bg-white rounded-full shadow-lg text-blue-600 hover:bg-slate-100 transition-all
+                        className={`absolute top-1/2 -translate-y-1/2 right-0 z-10 p-2 bg-white rounded-full shadow-lg text-[#bf1e2e] hover:bg-slate-100 transition-all
                         ${isScrollEnd ? 'opacity-0' : 'opacity-100'}`}
                         aria-label="Scroll right"
                     >

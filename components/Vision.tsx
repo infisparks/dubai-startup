@@ -90,11 +90,11 @@ export default function VisionAndGoals({ language = 'en' }: VisionAndGoalsProps)
   const isRtl = language === 'ar'
 
   return (
-    <section id="vision" className="w-full bg-slate-950 py-16 sm:py-24 border-b border-slate-900" dir={isRtl ? 'rtl' : 'ltr'}>
+    <section id="vision" className="w-full bg-white py-20 sm:py-28" dir={isRtl ? 'rtl' : 'ltr'}>
       {/* Background Gradients */}
-      <div className="absolute inset-0 opacity-10 pointer-events-none overflow-hidden">
-        <div className="absolute -top-[20%] -right-[10%] w-[600px] h-[600px] bg-blue-600/30 rounded-full blur-[100px]" />
-        <div className="absolute -bottom-[20%] -left-[10%] w-[600px] h-[600px] bg-cyan-600/30 rounded-full blur-[100px]" />
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute -top-[20%] -right-[10%] w-[600px] h-[600px] bg-[#bf1e2e]/5 rounded-full blur-[100px]" />
+        <div className="absolute -bottom-[20%] -left-[10%] w-[600px] h-[600px] bg-[#c4925f]/10 rounded-full blur-[100px]" />
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -105,18 +105,18 @@ export default function VisionAndGoals({ language = 'en' }: VisionAndGoalsProps)
           {/* Left Column: Vision */}
           <div className="space-y-8">
             <div>
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 mb-6">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#bf1e2e]/10 border border-[#bf1e2e]/20 text-[#bf1e2e] mb-6">
                 <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#bf1e2e] opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-[#940200]"></span>
                 </span>
                 <span className="text-xs font-bold tracking-widest uppercase">{t.title}</span>
               </div>
 
-              <h2 className="text-4xl sm:text-5xl font-bold text-white leading-tight tracking-tight mb-6">
+              <h2 className="text-4xl sm:text-5xl font-bold text-slate-900 leading-tight tracking-tight mb-6">
                 {t.visionTitle}
               </h2>
-              <p className="text-lg sm:text-xl text-slate-300 leading-relaxed font-light border-l-4 border-blue-500 pl-6">
+              <p className="text-lg sm:text-xl text-slate-600 leading-relaxed font-light border-l-4 border-[#bf1e2e] pl-6">
                 {t.visionDesc}
               </p>
             </div>
@@ -125,25 +125,25 @@ export default function VisionAndGoals({ language = 'en' }: VisionAndGoalsProps)
           {/* Right Column: Strategic Goals Grid */}
           <div>
             <div className="mb-6 flex items-center gap-4">
-              <div className="h-px bg-slate-800 flex-1"></div>
+              <div className="h-px bg-slate-200 flex-1"></div>
               <h3 className="text-sm font-bold text-slate-500 uppercase tracking-widest">{t.goalsTitle}</h3>
-              <div className="h-px bg-slate-800 flex-1"></div>
+              <div className="h-px bg-slate-200 flex-1"></div>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {t.goals.map((goal, index) => {
                 const IconComponent = goal.icon
-                const isBlue = index % 2 === 0
+                const isRed = index % 2 === 0
 
                 return (
-                  <div key={index} className="group p-6 bg-slate-900/50 backdrop-blur-sm rounded-2xl border border-slate-800 hover:border-slate-700 hover:shadow-lg hover:shadow-blue-500/10 transition-all duration-300">
-                    <div className={`w-10 h-10 rounded-xl mb-4 flex items-center justify-center transition-colors duration-300 ${isBlue ? 'bg-blue-500/10 text-blue-400 group-hover:bg-blue-500 group-hover:text-white'
-                        : 'bg-cyan-500/10 text-cyan-400 group-hover:bg-cyan-500 group-hover:text-white'
+                  <div key={index} className="group p-6 bg-white rounded-2xl border border-slate-100 shadow-[0_4px_20px_rgb(0,0,0,0.03)] hover:shadow-[0_10px_40px_rgb(191,30,46,0.08)] hover:border-[#bf1e2e]/10 transition-all duration-300">
+                    <div className={`w-12 h-12 rounded-xl mb-4 flex items-center justify-center transition-colors duration-300 ${isRed ? 'bg-[#bf1e2e]/10 text-[#bf1e2e] group-hover:bg-[#bf1e2e] group-hover:text-white'
+                      : 'bg-[#c4925f]/10 text-[#c4925f] group-hover:bg-[#c4925f] group-hover:text-white'
                       }`}>
                       <IconComponent />
                     </div>
-                    <h4 className="text-base font-bold text-white mb-2">{goal.title}</h4>
-                    <p className="text-xs text-slate-400 leading-relaxed">
+                    <h4 className="text-base font-bold text-slate-900 mb-2">{goal.title}</h4>
+                    <p className="text-xs text-slate-500 leading-relaxed">
                       {goal.desc}
                     </p>
                   </div>

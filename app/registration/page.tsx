@@ -126,19 +126,36 @@ export default function RegistrationSelectionPage() {
     ];
 
     return (
-        <div className="min-h-screen flex flex-col bg-white">
+        <div className="min-h-screen flex flex-col relative bg-slate-900">
+            {/* Background Image with Overlay */}
+            <div
+                className="fixed inset-0 z-0"
+                style={{
+                    backgroundImage: 'url(/taj.jpg)',
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                }}
+            >
+                <div className="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
+            </div>
+
             <Header
                 language={language}
                 setLanguage={setLanguage as Dispatch<SetStateAction<"en" | "ar">>}
-                userEmail={session?.user?.email} // Pass user email if available
+                userEmail={session?.user?.email}
             />
 
-            <main className="flex-1 pt-32 pb-20 px-4">
-                <div className="max-w-4xl mx-auto">
+            <main className="relative z-10 flex-1 pt-32 pb-20 px-4 flex items-center justify-center">
+                <div className="max-w-6xl mx-auto w-full">
                     {/* Header Section */}
-                    <div className="mb-12 text-center animate-fadeIn">
-                        <h1 className="text-4xl md:text-5xl font-bold text-slate-900 mb-3">{t.title}</h1>
-                        <p className="text-lg text-slate-600">{t.subtitle}</p>
+                    <div className="mb-12 text-center animate-fadeIn space-y-4">
+                        <h1 className="text-4xl md:text-6xl font-extrabold text-white tracking-tight drop-shadow-lg">
+                            {t.title}
+                        </h1>
+                        <p className="text-lg md:text-xl text-gray-200 max-w-2xl mx-auto leading-relaxed">
+                            {t.subtitle}
+                        </p>
+                        <div className="w-24 h-1.5 bg-gradient-to-r from-[#bf1e2e] to-[#940200] rounded-full mx-auto mt-6 shadow-lg shadow-[#bf1e2e]/50"></div>
                     </div>
 
                     {/* Registration Cards Grid */}
@@ -151,15 +168,21 @@ export default function RegistrationSelectionPage() {
                                     key={option.title}
                                     className="group block"
                                 >
-                                    <div className="bg-white border-2 border-slate-200 rounded-2xl shadow-lg p-8 h-full transition-all hover:border-[#013371] hover:shadow-2xl hover:scale-[1.02]">
-                                        <div className="w-14 h-14 bg-[#013371] text-white flex items-center justify-center rounded-full mb-5">
+                                    <div className="h-full bg-white/10 backdrop-blur-lg border border-white/10 rounded-2xl p-8 transition-all duration-300 hover:scale-[1.02] hover:bg-white/15 hover:border-[#bf1e2e]/30 hover:shadow-2xl hover:shadow-[#bf1e2e]/10 flex flex-col items-start relative overflow-hidden">
+
+                                        {/* Decorative Gradient Blob */}
+                                        <div className="absolute top-0 right-0 w-32 h-32 bg-[#bf1e2e]/20 rounded-full blur-[60px] -mr-10 -mt-10 pointer-events-none group-hover:bg-[#bf1e2e]/30 transition-colors"></div>
+
+                                        <div className="w-14 h-14 bg-gradient-to-br from-[#bf1e2e] to-[#940200] text-white flex items-center justify-center rounded-xl mb-6 shadow-lg shadow-[#bf1e2e]/25 group-hover:scale-110 transition-transform duration-300">
                                             <Icon className="w-7 h-7" />
                                         </div>
-                                        <h2 className="text-2xl font-bold text-slate-900 mb-3">{option.title}</h2>
-                                        <p className="text-slate-600 mb-6">{option.desc}</p>
-                                        <div className="flex items-center text-lg font-semibold text-[#013371] group-hover:underline">
+
+                                        <h2 className="text-2xl font-bold text-white mb-3 tracking-wide">{option.title}</h2>
+                                        <p className="text-gray-300 mb-8 leading-relaxed flex-grow">{option.desc}</p>
+
+                                        <div className="flex items-center text-sm font-bold text-[#bf1e2e] uppercase tracking-wider group-hover:text-red-400 transition-colors mt-auto">
                                             {option.cta}
-                                            <ArrowRight className="w-5 h-5 ml-2 transition-transform group-hover:translate-x-1" />
+                                            <ArrowRight className="w-4 h-4 ml-2 transition-transform duration-300 group-hover:translate-x-1" />
                                         </div>
                                     </div>
                                 </Link>

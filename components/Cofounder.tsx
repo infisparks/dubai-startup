@@ -25,6 +25,7 @@ const translations = {
         role: 'Oil & Gas Industry Professional',
         bio: 'Mr. Farid Ahmed is a seasoned professional with extensive experience in the oil and gas industry, specializing in business development, strategic partnerships, and investment facilitation. Over the years, he has played a pivotal role in driving growth across multiple sectors by connecting investors with high-potential opportunities in energy, infrastructure, and emerging markets.',
         image: '/speaker/1.png',
+        imgClass: 'scale-[1.25] -translate-y-1 object-center', // Zoomed to fix cut-off
       },
     ],
   },
@@ -44,6 +45,7 @@ const translations = {
         role: 'محترف في صناعة النفط والغاز',
         bio: 'السيد فريد أحمد محترف متمرس يتمتع بخبرة واسعة في صناعة النفط والغاز، متخصص في تطوير الأعمال، والشراكات الاستراتيجية، وتسهيل الاستثمار. على مر السنين، لعب دورًا محوريًا في دفع النمو عبر قطاعات متعددة من خلال ربط المستثمرين بفرص عالية الإمكانات في الطاقة والبنية التحتية والأسواق الناشئة.',
         image: '/speaker/6.png',
+        imgClass: 'scale-[1.25] -translate-y-1 object-center', // Zoomed to fix cut-off
       },
     ],
   },
@@ -73,13 +75,15 @@ export default function CoFoundersPage({ language = 'en' }: CoFoundersPageProps)
           <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight">
             {t.title}
           </h2>
-          <div className="mt-4 h-1 w-20 bg-gradient-to-r from-blue-600 to-cyan-500 rounded-full mx-auto" />
+          <div className="mt-4 h-1 w-20 bg-gradient-to-r from-[#bf1e2e] to-[#940200] rounded-full mx-auto" />
         </div>
 
         {/* Co-Founders Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
           {t.coFounders.map((founder, index) => {
             const isExpanded = expandedIds.includes(founder.name)
+            // @ts-ignore
+            const customImgClass = founder.imgClass || ''
 
             return (
               <div
@@ -88,26 +92,27 @@ export default function CoFoundersPage({ language = 'en' }: CoFoundersPageProps)
               >
                 {/* Image Section */}
                 <div className="relative shrink-0 mx-auto md:mx-0">
-                  <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full p-1 bg-gradient-to-br from-slate-100 to-white shadow-inner">
+                  <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full p-1 bg-gradient-to-br from-[#bf1e2e]/10 to-[#c4925f]/10 shadow-inner overflow-hidden">
                     <img
                       src={founder.image}
                       alt={founder.name}
-                      className="w-full h-full rounded-full object-cover shadow-sm group-hover:scale-105 transition-transform duration-500"
+                      className={`w-full h-full rounded-full object-cover shadow-sm transition-transform duration-500 origin-center ${customImgClass ? `scale-[1.25] group-hover:scale-[1.35] ${customImgClass}` : 'group-hover:scale-105'
+                        }`}
                     />
                   </div>
                   {/* Decorative Quote Icon */}
-                  <div className="absolute -bottom-1 -right-1 bg-white p-1.5 rounded-full shadow-sm border border-slate-100 text-blue-500">
+                  <div className="absolute -bottom-1 -right-1 bg-white p-1.5 rounded-full shadow-sm border border-slate-100 text-[#bf1e2e]">
                     <Quote size={12} fill="currentColor" />
                   </div>
                 </div>
 
                 {/* Content Section */}
                 <div className="flex-grow text-center md:text-start w-full">
-                  <h3 className="text-xl sm:text-2xl font-bold text-slate-900 group-hover:text-blue-600 transition-colors duration-300 mb-1">
+                  <h3 className="text-xl sm:text-2xl font-bold text-slate-900 group-hover:text-[#bf1e2e] transition-colors duration-300 mb-1">
                     {founder.name}
                   </h3>
-                  <div className="inline-block px-3 py-1 rounded-full bg-slate-50 border border-slate-100 mb-3">
-                    <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide">
+                  <div className="inline-block px-3 py-1 rounded-full bg-slate-50 border border-slate-100 mb-3 group-hover:border-[#c4925f]/30 transition-colors">
+                    <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide group-hover:text-[#c4925f] transition-colors">
                       {founder.role}
                     </p>
                   </div>
@@ -124,7 +129,7 @@ export default function CoFoundersPage({ language = 'en' }: CoFoundersPageProps)
 
                   <button
                     onClick={() => toggleExpand(founder.name)}
-                    className="inline-flex items-center gap-1.5 text-xs font-bold text-blue-600 hover:text-blue-800 uppercase tracking-wider mt-4 group/btn transition-colors"
+                    className="inline-flex items-center gap-1.5 text-xs font-bold text-[#bf1e2e] hover:text-[#940200] uppercase tracking-wider mt-4 group/btn transition-colors"
                   >
                     {isExpanded ? t.readLess : t.readMore}
                     {isExpanded ? (
