@@ -49,7 +49,7 @@ export default function HomeBannerPopup() {
                 {/* Image Section - Flexible height but respects aspect ratio */}
                 <div className="relative w-full bg-slate-50 flex-grow overflow-hidden flex items-center justify-center">
                     <img
-                        src="/Homebanner.png"
+                        src="/hero.jpg"
                         alt="Investarise Global Investors Summit 2026"
                         className="w-full h-auto max-h-[60vh] object-contain"
                     />
