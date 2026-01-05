@@ -33,7 +33,7 @@ const translations = {
     call: 'Call Us',
     visit: 'Visit Us',
     emailAddr: 'info@investariseglobal.com',
-    phone: '+971 55 450 0978',
+    phone: '+971 55 472 1421 / +971 50 304 0901',
     website: 'www.investariseglobal.com',
   },
   ar: {
@@ -60,7 +60,7 @@ const translations = {
     call: 'اتصل بنا',
     visit: 'زيارة',
     emailAddr: 'info@investariseglobal.com',
-    phone: '+971 55 450 0978',
+    phone: '+971 55 472 1421 / +971 50 304 0901',
     website: 'www.investariseglobal.com',
   },
 }
@@ -71,11 +71,11 @@ export default function Footer({ language = 'en' }: FooterProps) {
   const isRtl = language === 'ar'
 
   return (
-    <footer className="bg-[#bf1e2e] text-white relative overflow-hidden" dir={isRtl ? 'rtl' : 'ltr'}>
+    <footer className="bg-[#740001] text-white relative overflow-hidden" dir={isRtl ? 'rtl' : 'ltr'}>
       {/* Background Elements - Strong Brand Red */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {/* Darker red accents for depth */}
-        <div className="absolute -top-1/2 -right-1/4 w-[800px] h-[800px] bg-[#940200] rounded-full blur-[120px] opacity-60" />
+        <div className="absolute -top-1/2 -right-1/4 w-[800px] h-[800px] bg-[#500000] rounded-full blur-[120px] opacity-60" />
         <div className="absolute -bottom-1/2 -left-1/4 w-[600px] h-[600px] bg-[#c4925f] rounded-full blur-[100px] opacity-30" />
       </div>
 
@@ -97,7 +97,7 @@ export default function Footer({ language = 'en' }: FooterProps) {
                 </p>
                 <button
                   onClick={() => router.push('/registration')}
-                  className="inline-flex items-center gap-3 px-8 py-4 bg-white text-[#bf1e2e] hover:bg-[#c4925f] hover:text-white rounded-xl font-bold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+                  className="inline-flex items-center gap-3 px-8 py-4 bg-white text-[#740001] hover:bg-[#c4925f] hover:text-white rounded-xl font-bold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
                 >
                   <span className="uppercase tracking-wider text-sm">{t.registerNow}</span>
                   <ArrowRight className="w-5 h-5" />
@@ -108,7 +108,7 @@ export default function Footer({ language = 'en' }: FooterProps) {
               <div className={`space-y-4 ${isRtl ? 'text-right' : 'text-left'}`}>
                 {[
                   { icon: Mail, label: t.email, value: t.emailAddr, href: `mailto:${t.emailAddr}` },
-                  { icon: Phone, label: t.call, value: t.phone, href: `tel:${t.phone}` },
+                  { icon: Phone, label: t.call, value: t.phone, href: 'tel:+971554721421' },
                   { icon: MapPin, label: t.visit, value: t.website, href: `https://${t.website}` },
                 ].map((item, idx) => {
                   const Icon = item.icon
@@ -139,18 +139,9 @@ export default function Footer({ language = 'en' }: FooterProps) {
 
             {/* Brand Section */}
             <div className="lg:col-span-1">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-14 h-14 bg-gradient-to-br from-[#c4925f] to-[#bf1e2e] rounded-2xl flex items-center justify-center shadow-lg border border-white/10">
-                  <span className="text-white font-extrabold text-2xl tracking-tighter">I</span>
-                </div>
-                <div>
-                  <span className="font-extrabold text-2xl tracking-tight block leading-none">Investarise</span>
-                  <span className="text-[10px] uppercase tracking-[0.2em] text-white/60 font-medium">Global Summit</span>
-                </div>
+              <div className="mb-6">
+                <img src="/logo-white.png" alt="Investarise" className="w-48 h-auto" />
               </div>
-              <p className="text-white/60 text-sm leading-relaxed font-light">
-                Connecting visionary founders with global investment opportunities.
-              </p>
             </div>
 
             {/* Links Sections */}
