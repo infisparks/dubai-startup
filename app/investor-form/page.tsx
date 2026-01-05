@@ -854,7 +854,7 @@ const InvestorStatusView: React.FC<InvestorStatusViewProps> = ({ t, isApproved, 
                                     href={field.value && field.value.startsWith('http') ? field.value : `https://${field.value}`}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="text-[#013371] hover:underline break-words"
+                                    className="text-[#740001] hover:underline break-words"
                                 >
                                     <LinkIcon className="w-4 h-4 inline-block mr-1" />
                                     {field.value}

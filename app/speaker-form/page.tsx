@@ -802,7 +802,7 @@ const SpeakerFormView: React.FC<SpeakerFormViewProps> = ({
             </div>
 
             <div
-                className="mt-8 bg-blue-50 border-2 border-blue-200 rounded-xl p-6 animate-slideInUp"
+                className="mt-8 bg-black/5 border-2 border-[#740001]/20 rounded-xl p-6 animate-slideInUp"
                 style={{ animationDelay: "200ms" }}
             >
                 <p className="font-semibold text-slate-900 mb-2">{t.whatNext}</p>
@@ -885,7 +885,7 @@ const SpeakerStatusView: React.FC<SpeakerStatusViewProps> = ({ t, isApproved, fo
                                         href={field.value && field.value.startsWith('http') ? field.value : `https://${field.value}`}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="text-[#013371] hover:underline break-words"
+                                        className="text-[#740001] hover:underline break-words"
                                     >
                                         <LinkIcon className="w-4 h-4 inline-block mr-1" />
                                         {field.value}

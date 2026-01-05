@@ -14,7 +14,7 @@ const content = {
     founders: [
       {
         name: 'Kishan Kumar Verma',
-        role: 'Chief Executive Officer',
+        role: 'Chief Executive Officer, Investarise Global',
         image: '/speaker/4.png',
         bio: [
           "An accomplished retail & business banking leader with over 25 years of diversified experience across the UAE and India, specializing in Sales & Distribution Management, Payroll Acquisition, Credit Cards, Personal Finance, Mortgage, SME, and Strategic Business Growth.",

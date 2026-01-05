@@ -54,37 +54,69 @@ const translations = {
 // --- Sub Components ---
 
 const BrandTicker = () => {
-    const logos = [1, 2, 3, 4, 5, 7];
+    const scrollRef = useRef<HTMLDivElement>(null)
+    const [isPaused, setIsPaused] = useState(false)
+    const logos = [1, 2, 3, 4, 5, 7, 8];
+    // Duplicate logos for seamless infinite scrolling
+    const repeatedLogos = [...logos, ...logos, ...logos, ...logos, ...logos];
+
+    useEffect(() => {
+        const el = scrollRef.current
+        if (!el) return
+        let animationId: number
+        const animate = () => {
+            if (!isPaused) {
+                const speed = 0.8 // Adjust speed as necessary
+                if (el.scrollLeft >= el.scrollWidth / 2) {
+                    el.scrollLeft = 0 // Reset to start for seamless loop
+                } else {
+                    el.scrollLeft += speed
+                }
+            }
+            animationId = requestAnimationFrame(animate)
+        }
+        animationId = requestAnimationFrame(animate)
+        return () => cancelAnimationFrame(animationId)
+    }, [isPaused])
 
     return (
-        <div className="w-full bg-white border-b border-gray-100 py-10 px-4 sm:px-6 lg:px-8 relative z-20">
-            <div className="max-w-7xl mx-auto">
-                {/* Section Header - Adds professionalism */}
+        <div className="w-full bg-white border-b border-gray-100 py-10 px-0 relative z-20 overflow-hidden">
+            {/* Gradient Masks */}
+            <div className="absolute left-0 top-0 bottom-0 w-20 sm:w-32 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none"></div>
+            <div className="absolute right-0 top-0 bottom-0 w-20 sm:w-32 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none"></div>
+
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="text-center mb-8">
                     <p className="text-[10px] sm:text-xs font-bold text-gray-400 uppercase tracking-[0.2em]">Trusted by Industry Leaders</p>
                 </div>
 
-                {/* 
-                   Mobile: Grid with 2 columns.
-                   Desktop: Flex layout to center 7 items beautifully.
-                */}
-                <div className="grid grid-cols-2 md:flex md:flex-wrap md:justify-center gap-x-8 gap-y-8 md:gap-12 items-center justify-items-center">
-                    {logos.map((num, i) => (
-                        <div
-                            key={i}
-                            className={`group relative flex items-center justify-center p-2 transition-all duration-300 transform hover:scale-105 ${
-                                // On mobile, center the 7th item (index 6) by making it span 2 columns
-                                i === 6 ? 'col-span-2 md:w-auto' : ''
-                                }`}
-                        >
-                            <img
-                                src={`${BRAND_BASE_PATH}/${num}.png`}
-                                alt={`Partner Brand ${num}`}
-                                className="h-10 sm:h-12 md:h-14 w-auto object-contain transition-all duration-300 filter-none opacity-90 group-hover:opacity-100 group-hover:drop-shadow-sm"
-                                draggable={false}
-                            />
-                        </div>
-                    ))}
+                <div
+                    ref={scrollRef}
+                    className="flex items-center overflow-x-auto no-scrollbar select-none py-2"
+                    style={{
+                        scrollbarWidth: 'none',
+                        msOverflowStyle: 'none',
+                    }}
+                    onMouseEnter={() => setIsPaused(true)}
+                    onMouseLeave={() => setIsPaused(false)}
+                    onTouchStart={() => setIsPaused(true)}
+                    onTouchEnd={() => setIsPaused(false)}
+                >
+                    <div className="flex gap-12 sm:gap-16 md:gap-24 px-4">
+                        {repeatedLogos.map((num, i) => (
+                            <div
+                                key={i}
+                                className="flex-shrink-0 transform transition-transform duration-300 hover:scale-110"
+                            >
+                                <img
+                                    src={`${BRAND_BASE_PATH}/${num}.png`}
+                                    alt={`Partner Brand ${num}`}
+                                    className="h-10 sm:h-12 md:h-14 w-auto object-contain opacity-90 hover:opacity-100 transition-all duration-300"
+                                    draggable={false}
+                                />
+                            </div>
+                        ))}
+                    </div>
                 </div>
             </div>
         </div>
