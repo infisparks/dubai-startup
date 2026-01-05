@@ -5,7 +5,7 @@ import React, { useEffect, useState, useMemo, useCallback } from "react"
 import { supabase } from "@/lib/supabaseConfig"
 import {
     Filter, Search, Users, CheckCircle, Clock, X, Loader2,
-    Save, Store, XCircle, User, Link as LinkIcon, Phone, Mail, FileText
+    Save, Store, XCircle, User, Link as LinkIcon, Phone, Mail, FileText, Trash2
 } from "lucide-react"
 import { useForm, Controller } from 'react-hook-form';
 import { cn } from "@/lib/utils"
@@ -407,6 +407,35 @@ export default function AdminExhibitorDashboard() {
         fetchExhibitorProfiles(); // Refresh to be safe
     };
 
+    const handleDeleteProfile = async (userId: string) => {
+        const confirmInput = prompt("To confirm deletion, please type 'DELETE':");
+        if (confirmInput !== "DELETE") {
+            if (confirmInput !== null) alert("Incorrect confirmation input. Deletion cancelled.");
+            return;
+        }
+
+        try {
+            const { error } = await supabase
+                .from('exhibitor_profiles')
+                .delete()
+                .eq('user_id', userId);
+
+            if (error) throw error;
+
+            // Also update the main profile to remove exhibitor status
+            await supabase
+                .from('profiles')
+                .update({ is_exhibitor: false })
+                .eq('id', userId);
+
+            setProfiles(prev => prev.filter(p => p.user_id !== userId));
+            alert("Exhibitor application deleted successfully.");
+        } catch (err: any) {
+            console.error("Error deleting profile:", err);
+            alert(`Failed to delete: ${err.message}`);
+        }
+    };
+
     // Filtering
     const filteredProfiles = useMemo(() => {
         if (!searchTerm) return profiles;
@@ -549,6 +578,16 @@ export default function AdminExhibitorDashboard() {
                                                     className="inline-flex items-center justify-center gap-1 px-3 py-1.5 border border-indigo-200 rounded-lg text-indigo-700 bg-indigo-50 hover:bg-indigo-100 transition text-sm font-medium"
                                                 >
                                                     Review
+                                                </button>
+                                                <button
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        handleDeleteProfile(p.user_id);
+                                                    }}
+                                                    className="inline-flex items-center justify-center p-2 border border-red-200 rounded-lg text-red-700 bg-red-50 hover:bg-red-100 transition text-sm font-medium ml-2"
+                                                    title="Delete Application"
+                                                >
+                                                    <Trash2 className="w-4 h-4" />
                                                 </button>
                                             </td>
                                         </tr>

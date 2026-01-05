@@ -567,19 +567,19 @@ export default function FounderFormPage() {
 
             let error;
             if (hasExistingProfile) {
-                const result = await supabase.from('founder_profiles').update(submissionData).eq('user_id', user.id).select();
+                const result = await supabase.from('founder_profiles').update({ ...submissionData, is_approved: true }).eq('user_id', user.id).select();
                 error = result.error;
             } else {
-                const result = await supabase.from('founder_profiles').insert({ user_id: user.id, ...submissionData, is_approved: false }).select();
+                const result = await supabase.from('founder_profiles').insert({ user_id: user.id, ...submissionData, is_approved: true }).select();
                 error = result.error;
             }
             if (error) throw error;
 
             alert(hasExistingProfile ? t.updateSuccess : t.submitSuccess);
             setHasExistingProfile(true);
+            setIsApproved(true);
             setFormData(prev => ({ ...prev, pitchDeckUrl: finalPitchUrl, pitchDeckFile: null }));
             setStep(0);
-            window.location.reload();
         } catch (err: any) {
             alert(t.submitError + (err.message || ''));
             console.error("Submission error:", err);

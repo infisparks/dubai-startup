@@ -371,10 +371,10 @@ export default function ExhibitorFormPage() {
 
             let error;
             if (hasExistingProfile) {
-                const result = await supabase.from('exhibitor_profiles').update(profileData).eq('user_id', user.id);
+                const result = await supabase.from('exhibitor_profiles').update({ ...profileData, is_approved: true }).eq('user_id', user.id);
                 error = result.error;
             } else {
-                const result = await supabase.from('exhibitor_profiles').insert({ user_id: user.id, ...profileData, is_approved: false });
+                const result = await supabase.from('exhibitor_profiles').insert({ user_id: user.id, ...profileData, is_approved: true });
                 error = result.error;
             }
 
@@ -382,9 +382,9 @@ export default function ExhibitorFormPage() {
 
             alert(hasExistingProfile ? "Application updated!" : "Application submitted!");
             setHasExistingProfile(true);
+            setIsApproved(true);
             setFormData(prev => ({ ...prev, companyLogoUrl: finalLogoUrl }));
             setStep(0);
-            window.location.reload();
         } catch (err: any) {
             alert(`Error: ${err.message}`);
         } finally {
@@ -479,7 +479,7 @@ const ExhibitorFormView: React.FC<any> = ({ t, formData, handleInputChange, hand
                     { label: t.companyName, name: "companyName", type: "text", placeholder: t.placeholder.companyName, required: true },
                     { label: t.companyWebsite, name: "companyWebsite", type: "text", placeholder: t.placeholder.companyWebsite, required: true },
                     { label: t.contactName, name: "contactName", type: "text", placeholder: t.placeholder.contactName, required: true },
-                    { label: t.contactEmail, name: "contactEmail", type: "email", placeholder: t.placeholder.contactEmail, required: true, disabled: true },
+                    { label: t.contactEmail, name: "contactEmail", type: "email", placeholder: t.placeholder.contactEmail, required: true },
                 ].map((field) => (
                     <div key={field.name}>
                         <label className="block text-sm font-semibold text-slate-900 mb-2">
@@ -491,9 +491,9 @@ const ExhibitorFormView: React.FC<any> = ({ t, formData, handleInputChange, hand
                             value={formData[field.name as keyof ExhibitorFormData] as string}
                             onChange={handleInputChange}
                             placeholder={field.placeholder}
-                            className={`w-full px-4 py-3 border-2 border-slate-200 rounded-lg focus:border-[#740001] focus:outline-none bg-white hover:border-slate-300 transition-colors ${field.disabled || isApproved ? 'bg-slate-100 cursor-not-allowed' : ''}`}
+                            className={`w-full px-4 py-3 border-2 border-slate-200 rounded-lg focus:border-[#740001] focus:outline-none bg-white hover:border-slate-300 transition-colors ${isApproved ? 'bg-slate-100 cursor-not-allowed' : ''}`}
                             required={field.required}
-                            disabled={field.disabled || isApproved}
+                            disabled={isApproved}
                         />
                     </div>
                 ))}
@@ -596,7 +596,6 @@ const ExhibitorFormView: React.FC<any> = ({ t, formData, handleInputChange, hand
                             accept="image/png, image/jpeg"
                             className="hidden"
                             id="logo-upload"
-                            required={!formData.companyLogoUrl}
                             disabled={isApproved}
                         />
                         <label htmlFor="logo-upload" className={`cursor-pointer block ${isApproved ? 'cursor-not-allowed' : ''}`}>
