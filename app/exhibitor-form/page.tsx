@@ -76,6 +76,12 @@ type Translations = {
     reference: string;
     referenceOther: string;
     referenceOptions: string[];
+    thankYou: {
+        title: string;
+        message: string;
+        subMessage: string;
+        close: string;
+    };
 };
 
 export default function ExhibitorFormPage() {
@@ -86,6 +92,7 @@ export default function ExhibitorFormPage() {
     const [showAuthPopup, setShowAuthPopup] = useState(false)
     const [needsVerification, setNeedsVerification] = useState(false)
     const [hasExistingProfile, setHasExistingProfile] = useState(false)
+    const [showThankYouPopup, setShowThankYouPopup] = useState(false)
 
     // Status States
     const [isApproved, setIsApproved] = useState(false)
@@ -201,6 +208,13 @@ export default function ExhibitorFormPage() {
         return () => authListener.subscription.unsubscribe();
     }, [fetchUserData])
 
+    useEffect(() => {
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('done') === 'registration') {
+            setShowThankYouPopup(true);
+        }
+    }, [])
+
     // --- Translations ---
     const t = useMemo(() => {
         const translations = {
@@ -249,6 +263,12 @@ export default function ExhibitorFormPage() {
                 reference: "Reference",
                 referenceOther: "Please specify reference",
                 referenceOptions: ["Kishan Verma", "Sanjay Bhamari", "Farid Ahmed", "Abdulmajid", "Ideabaaz", "Marwadi Catalyst", "Rehbar", "Other"],
+                thankYou: {
+                    title: "Registration Successful!",
+                    message: "Thank you for registering. Your application has been received successfully.",
+                    subMessage: "You can now proceed to the payment step to complete your verification.",
+                    close: "Close"
+                }
             },
             ar: {
                 title: "تسجيل العارضين",
@@ -295,6 +315,12 @@ export default function ExhibitorFormPage() {
                 reference: "مرجع",
                 referenceOther: "يرجى تحديد المرجع",
                 referenceOptions: ["كيشان فيرما", "سانجاي بهاماري", "فريد أحمد", "عبد المجيد", "أيديا باز", "ماروادي كاتاليست", "رهبار", "أخرى"],
+                thankYou: {
+                    title: "تم التسجيل بنجاح!",
+                    message: "شكراً لتسجيلك. تم استلام طلبك بنجاح.",
+                    subMessage: "يمكنك الآن المتابعة إلى خطوة الدفع لإكمال التحقق.",
+                    close: "إغلاق"
+                }
             },
         };
 
@@ -380,7 +406,13 @@ export default function ExhibitorFormPage() {
 
             if (error) throw error;
 
-            alert(hasExistingProfile ? "Application updated!" : "Application submitted!");
+            // Update URL without reload to show Thank You Popup
+            const newUrl = new URL(window.location.href);
+            newUrl.searchParams.set('done', 'registration');
+            window.history.pushState({}, '', newUrl);
+
+            setShowThankYouPopup(true);
+            // alert(hasExistingProfile ? "Application updated!" : "Application submitted!");
             setHasExistingProfile(true);
             setIsApproved(true);
             setFormData(prev => ({ ...prev, companyLogoUrl: finalLogoUrl }));
@@ -463,6 +495,7 @@ export default function ExhibitorFormPage() {
             </main>
             <Footer language={language} />
             {showAuthPopup && <AuthPopup onClose={() => setShowAuthPopup(false)} onSuccess={() => setShowAuthPopup(false)} language={language} />}
+            {showThankYouPopup && <ThankYouPopup onClose={() => setShowThankYouPopup(false)} t={t} />}
         </div>
     )
 }
@@ -948,3 +981,36 @@ const ExhibitorStatusView: React.FC<any> = ({ t, isApproved, paymentStatus, form
         </div>
     );
 };
+
+const ThankYouPopup = ({ onClose, t }: { onClose: () => void, t: Translations }) => (
+    <div className="fixed inset-0 z-[60] flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4 animate-fadeIn">
+        <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden relative animate-bounceIn">
+            <button onClick={onClose} className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 transition-colors bg-slate-100 rounded-full p-1">
+                <CheckCircle2 className="w-5 h-5 opacity-0" /> {/* Spacer */}
+                <div className="absolute inset-0 flex items-center justify-center">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
+                </div>
+            </button>
+            <div className="p-8 text-center flex flex-col items-center">
+                <div className="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mb-6 shadow-sm">
+                    <CheckCircle2 className="w-10 h-10" />
+                </div>
+                <h2 className="text-2xl font-bold text-slate-900 mb-3">{t.thankYou.title}</h2>
+                <div className="space-y-2 mb-8">
+                    <p className="text-slate-600 text-base font-medium">
+                        {t.thankYou.message}
+                    </p>
+                    <p className="text-slate-500 text-sm">
+                        {t.thankYou.subMessage}
+                    </p>
+                </div>
+                <button
+                    onClick={onClose}
+                    className="w-full py-3.5 bg-[#740001] text-white rounded-xl font-bold shadow-lg shadow-[#740001]/20 hover:bg-[#940200] hover:scale-[1.02] active:scale-[0.98] transition-all duration-200"
+                >
+                    {t.thankYou.close}
+                </button>
+            </div>
+        </div>
+    </div>
+);
