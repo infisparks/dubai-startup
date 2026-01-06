@@ -71,7 +71,7 @@ const translations = {
             },
             {
                 name: 'Mr. Ariz',
-                bio: 'CEO of Everest DG and Co-founder at EIT Global. 13+ years in engineering and tech. Investor with 3M+ AED in startups, specializing in scaling businesses globally.',
+                bio: 'CEO of Everest DG and Co-founder at EIT Global. 13+ years in engineering and tech. Investor with 3M+ $ in startups, specializing in scaling businesses globally.',
                 image: '/speaker/13.png',
             },
             {

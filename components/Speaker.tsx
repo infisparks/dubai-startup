@@ -77,6 +77,11 @@ const translations = {
         bio: 'Certified trainer for AML & Fraud, Banking Products and Policies, have achieved 23% increase in the productivity and the retention with the last organization',
         image: '/speaker/12.png',
       },
+      {
+        name: 'Mr. Muzaffar Ahmad',
+        bio: 'Muzaffar Ahmad is a globally recognized AI leader, author, and advocate for Responsible AI. Founder of RAGN and Chairman of Kazma Technology, he drives AI-led innovation and secure digital transformation. As CAIO at Data Automation and Founder of ChatWeft, he leads scalable AI solutions. A sought-after speaker and author, he advises global organizations on Responsible GenAI strategy, aligning innovation with regulation and human values.',
+        image: '/speaker/15.png',
+      },
     ],
   },
   ar: {
@@ -111,6 +116,11 @@ const translations = {
         name: 'السيد جاتين باجاج',
         bio: 'مدرب معتمد في مكافحة غسيل الأموال والاحتيال، والمنتجات والسياسات المصرفية، حقق زيادة بنسبة 23٪ في الإنتاجية والاحتفاظ بالموظفين في المنظمة السابقة.',
         image: '/speaker/12.png',
+      },
+      {
+        name: 'السيد مظفر أحمد',
+        bio: 'مظفر أحمد هو قائد عالمي في مجال الذكاء الاصطناعي، ومؤلف، ومدافع عن الذكاء الاصطناعي المسؤول. مؤسس شبكة حوكمة الذكاء الاصطناعي المسؤول (RAGN) ورئيس مجلس إدارة Kazma Technology، يقود الابتكار القائم على الذكاء الاصطناعي. بصفته الرئيس التنفيذي للذكاء الاصطناعي في Data Automation ومؤسس ChatWeft، يقود حلول الذكاء الاصطناعي القابلة للتطوير. كمتحدث ومؤلف مطلوب، يقدم المشورة للمؤسسات العالمية حول استراتيجية الذكاء الاصطناعي التوليدي المسؤول.',
+        image: '/speaker/15.png',
       },
     ],
   },
@@ -206,7 +216,7 @@ export default function SpeakersPage({ language = 'en' }: SpeakersPageProps) {
           <button
             onClick={() => scroll('left')}
             className={`absolute top-1/2 -translate-y-1/2 left-0 z-10 p-2 bg-white rounded-full shadow-lg text-[#bf1e2e] hover:bg-slate-100 transition-all
-                       sm:hidden ${isScrollStart ? 'opacity-0' : 'opacity-100'}`} // Hides on mobile if at start
+                       ${isScrollStart ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
             aria-label="Scroll left"
           >
             <ChevronLeftIcon />
@@ -215,7 +225,7 @@ export default function SpeakersPage({ language = 'en' }: SpeakersPageProps) {
           <div
             ref={scrollContainerRef}
             className="flex flex-nowrap overflow-x-auto scroll-smooth snap-x snap-mandatory gap-4 px-2 py-4
-                       sm:grid sm:grid-cols-2 lg:grid-cols-5 sm:gap-8 sm:p-0 sm:overflow-visible
+                       sm:gap-8 sm:py-8
                        [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden" // Hides scrollbar
           >
             {t.speakers.map((speaker) => {
@@ -224,10 +234,10 @@ export default function SpeakersPage({ language = 'en' }: SpeakersPageProps) {
               return (
                 <div
                   key={speaker.name}
-                  // UPDATED: Card sizing for mobile scroll
+                  // UPDATED: Card sizing for scroll on all devices
                   className="flex flex-col items-center text-center bg-slate-50 rounded-3xl p-6 shadow-lg hover:shadow-xl hover:border-[#bf1e2e]/10 transition-all duration-300
                              w-[85vw] flex-shrink-0 snap-start
-                             sm:w-auto sm:flex-shrink-1"
+                             sm:w-80"
                 >
                   <div className="relative w-40 h-40 rounded-full mb-6 overflow-hidden shadow-md flex-shrink-0 border-4 border-white">
                     <img
@@ -264,7 +274,7 @@ export default function SpeakersPage({ language = 'en' }: SpeakersPageProps) {
           <button
             onClick={() => scroll('right')}
             className={`absolute top-1/2 -translate-y-1/2 right-0 z-10 p-2 bg-white rounded-full shadow-lg text-[#bf1e2e] hover:bg-slate-100 transition-all
-                       sm:hidden ${isScrollEnd ? 'opacity-0' : 'opacity-100'}`} // Hides on mobile if at end
+                       ${isScrollEnd ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
             aria-label="Scroll right"
           >
             <ChevronRightIcon />
