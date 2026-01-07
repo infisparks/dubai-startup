@@ -51,7 +51,7 @@ const translations = {
         investors: [
             {
                 name: 'Dr. M.F.G. Thierry Catherine',
-                bio: 'With 45+ years in the global hospitality industry, Thierry has held senior development and advisory roles across Japan, Singapore, Maldives, Mauritius, South Africa, and Europe. A hospitality graduate and ISO 9000–9001 Lead Assessor (BSI UK), he has contributed to major hotel openings, refurbishments, and international accreditations. He continues to be active as a hospitality investor and strategic advisor in Europe.',
+                bio: 'Dr. Thierry Catherine has 25 years of experience in the oil and gas industry and innovative technologies. His legacy is marked by innovation, collaboration, and environmental stewardship. His visionary leadership and dedication to advancing sustainable solutions in the energy, decarbonisation and water sectors have positioned him as a respected figure in the market. As a CEO, Board Member and advisor for not less than 7 companies in the Energy Industry, Dr. Thierry continues to drive positive change and inspire others in various industries.',
                 image: '/speaker/17.png',
             },
             {
@@ -101,7 +101,7 @@ const translations = {
         investors: [
             {
                 name: 'Dr. M.F.G. Thierry Catherine',
-                bio: 'With 45+ years in the global hospitality industry, Thierry has held senior development and advisory roles across Japan, Singapore, Maldives, Mauritius, South Africa, and Europe. A hospitality graduate and ISO 9000–9001 Lead Assessor (BSI UK), he has contributed to major hotel openings, refurbishments, and international accreditations. He continues to be active as a hospitality investor and strategic advisor in Europe.',
+                bio: 'Dr. Thierry Catherine has 25 years of experience in the oil and gas industry and innovative technologies. His legacy is marked by innovation, collaboration, and environmental stewardship. His visionary leadership and dedication to advancing sustainable solutions in the energy, decarbonisation and water sectors have positioned him as a respected figure in the market. As a CEO, Board Member and advisor for not less than 7 companies in the Energy Industry, Dr. Thierry continues to drive positive change and inspire others in various industries.',
                 image: '/speaker/17.png',
             },
             {
