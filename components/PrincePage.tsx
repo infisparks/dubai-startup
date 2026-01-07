@@ -14,12 +14,12 @@ const translations = {
     princeName: 'H.R.H Prince Ebrahim Sanyang',
     role: 'Royal Africa Holdings Chairman',
     bio: [
-      "H.R.H. Prince Ebrahim Sanyang is a 21st-century royal and transformative Pan-African figure whose life's work spans diplomacy, heritage, and sustainable development. As a direct descendant of the legendary rulers of the Mali & Kabu Empires, he is a custodian of tradition and a pioneer of the future.",
-      "Recognized for exceptional leadership in economic development, he champions transformative entrepreneurship and pioneering investments across Africa.",
-      "As Chairman of Royal Africa Holdings, he spearheads the $5 billion Mansa Sansang City Project in The Gambia, driving growth and prosperity in the region."
+      "H.R.H. Prince Ebrahim is a 21st-century royal and transformative Pan-African figure whose life's work spans diplomacy, heritage, and sustainable development. As a direct descendant of the legendary rulers of the Mali & Kabu Empires, he is a custodian of tradition and a pioneer of the future.",
+      "Recognised for exceptional leadership in economic development, he champions transformative entrepreneurship and pioneering investments across Africa.",
+      "As Chairman of Royal Africa Holdings, he spearheads over $8 Billion of portfolios and pipeline investments in Real Estates, Aviation, Oil and Gas, Transport and Logistics, Banking and Finance, Media etc, driving growth and prosperity in the region."
     ],
     stats: [
-      { label: 'Investment Value', value: '$5B+', icon: TrendingUp },
+      { label: 'Investment Value', value: '$8B+', icon: TrendingUp },
       { label: 'Global Impact', value: 'Pan-African', icon: Globe },
       { label: 'Leadership', value: 'Visionary', icon: Award },
     ]
@@ -29,12 +29,12 @@ const translations = {
     princeName: 'صاحب السمو الأمير إبراهيم سانيانغ',
     role: 'رئيس مجلس إدارة رويال أفريقيا القابضة',
     bio: [
-      "صاحب السمو الأمير إبراهيم سانيانغ هو شخصية ملكية وتحويلية أفريقية من القرن الحادي والعشرين، يمتد عمله الدبلوماسي والتراثي والتنمية المستدامة. بصفته سليل مباشر لحكام إمبراطوريتي مالي وكابو الأسطوريتين، فهو وصي على التقاليد ورائد للمستقبل.",
+      "صاحب السمو الأمير إبراهيم هو شخصية ملكية وتحويلية أفريقية من القرن الحادي والعشرين، يمتد عمله الدبلوماسي والتراثي والتنمية المستدامة. بصفته سليل مباشر لحكام إمبراطوريتي مالي وكابو الأسطوريتين، فهو وصي على التقاليد ورائد للمستقبل.",
       "تم الاعتراف به لقيادته الاستثنائية في التنمية الاقتصادية، وهو يناصر ريادة الأعمال التحويلية والاستثمارات الرائدة في جميع أنحاء أفريقيا.",
-      "بصفته رئيس مجلس إدارة رويال أفريقيا القابضة، يقود مشروع مدينة مانسا سانسانغ بقيمة 5 مليارات دولار في غامبيا، مما يدفع النمو والازدهار في المنطقة."
+      "بصفته رئيس مجلس إدارة رويال أفريقيا القابضة، يقود أكثر من 8 مليارات دولار من المحافظ والاستثمارات في مجالات العقارات والطيران والنفط والغاز والنقل والخدمات اللوجستية والمصارف والتمويل والإعلام وغيرها، مما يدفع النمو والازدهار في المنطقة."
     ],
     stats: [
-      { label: 'قيمة الاستثمار', value: '+5 مليار دولار', icon: TrendingUp },
+      { label: 'قيمة الاستثمار', value: '+8 مليار دولار', icon: TrendingUp },
       { label: 'التأثير العالمي', value: 'عموم أفريقيا', icon: Globe },
       { label: 'القيادة', value: 'صاحب رؤية', icon: Award },
     ]
