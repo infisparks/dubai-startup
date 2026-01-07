@@ -79,6 +79,11 @@ const translations = {
                 bio: 'Founder and CEO of Marwari Catalysts, fueling the startup ecosystem in Tier 2 & 3 cities. Angel investor in 100+ startups, with a focus on gender diversity and innovation.',
                 image: '/speaker/14.png',
             },
+            {
+                name: 'Mr. Navneet Agarwal',
+                bio: 'A seasoned entrepreneur with a diversified portfolio spanning engineering, real estate, hospitality, and international trading. An IIT Roorkee and IIM Kolkata alumnus, he founded Navneet International FZE and Navneet Accounting in UAE, leading ventures across India and the UAE.',
+                image: '/speaker/16.png',
+            },
         ],
     },
     ar: {
@@ -118,6 +123,11 @@ const translations = {
                 name: 'السيد سوشيل شارما',
                 bio: 'المؤسس والرئيس التنفيذي لشركة Marwari Catalysts، التي تغذي نظام الشركات الناشئة في مدن المستوى 2 و 3. مستثمر ملاك في أكثر من 100 شركة ناشئة، مع التركيز على التنوع بين الجنسين والابتكار.',
                 image: '/speaker/14.png',
+            },
+            {
+                name: 'Mr. Navneet Agarwal',
+                bio: 'A seasoned entrepreneur with a diversified portfolio spanning engineering, real estate, hospitality, and international trading. An IIT Roorkee and IIM Kolkata alumnus, he founded Navneet International FZE and Navneet Accounting in UAE, leading ventures across India and the UAE.',
+                image: '/speaker/16.png',
             },
         ],
     },
