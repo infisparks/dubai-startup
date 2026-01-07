@@ -82,6 +82,11 @@ const translations = {
         bio: 'Muzaffar Ahmad is a globally recognized AI leader, author, and advocate for Responsible AI. Founder of RAGN and Chairman of Kazma Technology, he drives AI-led innovation and secure digital transformation. As CAIO at Data Automation and Founder of ChatWeft, he leads scalable AI solutions. A sought-after speaker and author, he advises global organizations on Responsible GenAI strategy, aligning innovation with regulation and human values.',
         image: '/speaker/15.png',
       },
+      {
+        name: 'Prof Dr Yasir Amin A.Latif',
+        bio: 'Highly accomplished General and Endocrine Surgeon with over 26 years of clinical experience. Internationally recognized for pioneering scar-free Transoral Endoscopic Endocrine Surgery and introducing the globally cited "Dubai Triangle" and "Amin’s Triangle" anatomical landmarks.',
+        image: '/speaker/18.png',
+      },
     ],
   },
   ar: {
@@ -121,6 +126,11 @@ const translations = {
         name: 'السيد مظفر أحمد',
         bio: 'مظفر أحمد هو قائد عالمي في مجال الذكاء الاصطناعي، ومؤلف، ومدافع عن الذكاء الاصطناعي المسؤول. مؤسس شبكة حوكمة الذكاء الاصطناعي المسؤول (RAGN) ورئيس مجلس إدارة Kazma Technology، يقود الابتكار القائم على الذكاء الاصطناعي. بصفته الرئيس التنفيذي للذكاء الاصطناعي في Data Automation ومؤسس ChatWeft، يقود حلول الذكاء الاصطناعي القابلة للتطوير. كمتحدث ومؤلف مطلوب، يقدم المشورة للمؤسسات العالمية حول استراتيجية الذكاء الاصطناعي التوليدي المسؤول.',
         image: '/speaker/15.png',
+      },
+      {
+        name: 'Prof Dr Yasir Amin A.Latif',
+        bio: 'Highly accomplished General and Endocrine Surgeon with over 26 years of clinical experience. Internationally recognized for pioneering scar-free Transoral Endoscopic Endocrine Surgery and introducing the globally cited "Dubai Triangle" and "Amin’s Triangle" anatomical landmarks.',
+        image: '/speaker/18.png',
       },
     ],
   },
