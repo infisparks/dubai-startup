@@ -84,6 +84,11 @@ const translations = {
                 bio: 'A seasoned entrepreneur with a diversified portfolio spanning engineering, real estate, hospitality, and international trading. An IIT Roorkee and IIM Kolkata alumnus, he founded Navneet International FZE and Navneet Accounting in UAE, leading ventures across India and the UAE.',
                 image: '/speaker/16.png',
             },
+            {
+                name: 'Dr. M.F.G. Thierry Catherine',
+                bio: 'CEO of Midgard Group and Shareholder/Board Member in multiple global entities including Alyasat Oil Trading and AGE Pty Ltd. With a 45-year professional journey starting in hospitality, he has evolved into a key figure in international trade and strategic leadership across the UAE, Australia, and beyond.',
+                image: '/speaker/17.png',
+            },
         ],
     },
     ar: {
@@ -128,6 +133,11 @@ const translations = {
                 name: 'Mr. Navneet Agarwal',
                 bio: 'A seasoned entrepreneur with a diversified portfolio spanning engineering, real estate, hospitality, and international trading. An IIT Roorkee and IIM Kolkata alumnus, he founded Navneet International FZE and Navneet Accounting in UAE, leading ventures across India and the UAE.',
                 image: '/speaker/16.png',
+            },
+            {
+                name: 'Dr. M.F.G. Thierry Catherine',
+                bio: 'CEO of Midgard Group and Shareholder/Board Member in multiple global entities including Alyasat Oil Trading and AGE Pty Ltd. With a 45-year professional journey starting in hospitality, he has evolved into a key figure in international trade and strategic leadership across the UAE, Australia, and beyond.',
+                image: '/speaker/17.png',
             },
         ],
     },
