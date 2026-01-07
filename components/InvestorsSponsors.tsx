@@ -86,7 +86,7 @@ const translations = {
             },
             {
                 name: 'Dr. M.F.G. Thierry Catherine',
-                bio: 'CEO of Midgard Group and Shareholder/Board Member in multiple global entities including Alyasat Oil Trading and AGE Pty Ltd. With a 45-year professional journey starting in hospitality, he has evolved into a key figure in international trade and strategic leadership across the UAE, Australia, and beyond.',
+                bio: 'With 45+ years in the global hospitality industry, Thierry has held senior development and advisory roles across Japan, Singapore, Maldives, Mauritius, South Africa, and Europe. A hospitality graduate and ISO 9000–9001 Lead Assessor (BSI UK), he has contributed to major hotel openings, refurbishments, and international accreditations. He continues to be active as a hospitality investor and strategic advisor in Europe.',
                 image: '/speaker/17.png',
             },
         ],
@@ -136,7 +136,7 @@ const translations = {
             },
             {
                 name: 'Dr. M.F.G. Thierry Catherine',
-                bio: 'CEO of Midgard Group and Shareholder/Board Member in multiple global entities including Alyasat Oil Trading and AGE Pty Ltd. With a 45-year professional journey starting in hospitality, he has evolved into a key figure in international trade and strategic leadership across the UAE, Australia, and beyond.',
+                bio: 'With 45+ years in the global hospitality industry, Thierry has held senior development and advisory roles across Japan, Singapore, Maldives, Mauritius, South Africa, and Europe. A hospitality graduate and ISO 9000–9001 Lead Assessor (BSI UK), he has contributed to major hotel openings, refurbishments, and international accreditations. He continues to be active as a hospitality investor and strategic advisor in Europe.',
                 image: '/speaker/17.png',
             },
         ],
