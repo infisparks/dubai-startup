@@ -50,6 +50,26 @@ const translations = {
         readLess: 'Read Less',
         investors: [
             {
+                name: 'Dr. M.F.G. Thierry Catherine',
+                bio: 'With 45+ years in the global hospitality industry, Thierry has held senior development and advisory roles across Japan, Singapore, Maldives, Mauritius, South Africa, and Europe. A hospitality graduate and ISO 9000–9001 Lead Assessor (BSI UK), he has contributed to major hotel openings, refurbishments, and international accreditations. He continues to be active as a hospitality investor and strategic advisor in Europe.',
+                image: '/speaker/17.png',
+            },
+            {
+                name: 'Mr. Sushil Sharma',
+                bio: 'Founder and CEO of Marwari Catalysts, fueling the startup ecosystem in Tier 2 & 3 cities. Angel investor in 100+ startups, with a focus on gender diversity and innovation.',
+                image: '/speaker/14.png',
+            },
+            {
+                name: 'Mr. Ariz',
+                bio: 'CEO of Everest DG and Co-founder at EIT Global. 13+ years in engineering and tech. Investor with 3M+ $ in startups, specializing in scaling businesses globally.',
+                image: '/speaker/13.png',
+            },
+            {
+                name: 'Mr. Navneet Agarwal',
+                bio: 'A seasoned entrepreneur with a diversified portfolio spanning engineering, real estate, hospitality, and international trading. An IIT Roorkee and IIM Kolkata alumnus, he founded Navneet International FZE and Navneet Accounting in UAE, leading ventures across India and the UAE.',
+                image: '/speaker/16.png',
+            },
+            {
                 name: 'Mr. Nitin Aggarwal',
                 bio: 'Managing Partner at Gopinath Group with experience in Retail and SME Banking, new business setup, and strong skills in handling multiple tasks efficiently under pressure and tight deadlines.',
                 image: '/speaker/2.png',
@@ -60,34 +80,14 @@ const translations = {
                 image: '/speaker/6.png',
             },
             {
-                name: 'Mr. Puneet Sakhuja',
-                bio: 'Chartered Accountant, Insolvency Professional, Strategic Advisor, Founder of Arthah Group, and Director of International Tax & Compliance with over 18 years of experience and investments in more than 20 companies.',
-                image: '/speaker/5.png',
-            },
-            {
                 name: 'Mr. Manzar Khan',
                 bio: "Reham Group's founder has led the company for over 18 years, serving more than 1500 clients across the UAE, India, and APAC. The group is recognized for its quality service, growth, and stability.",
                 image: '/speaker/7.png',
             },
             {
-                name: 'Mr. Ariz',
-                bio: 'CEO of Everest DG and Co-founder at EIT Global. 13+ years in engineering and tech. Investor with 3M+ $ in startups, specializing in scaling businesses globally.',
-                image: '/speaker/13.png',
-            },
-            {
-                name: 'Mr. Sushil Sharma',
-                bio: 'Founder and CEO of Marwari Catalysts, fueling the startup ecosystem in Tier 2 & 3 cities. Angel investor in 100+ startups, with a focus on gender diversity and innovation.',
-                image: '/speaker/14.png',
-            },
-            {
-                name: 'Mr. Navneet Agarwal',
-                bio: 'A seasoned entrepreneur with a diversified portfolio spanning engineering, real estate, hospitality, and international trading. An IIT Roorkee and IIM Kolkata alumnus, he founded Navneet International FZE and Navneet Accounting in UAE, leading ventures across India and the UAE.',
-                image: '/speaker/16.png',
-            },
-            {
-                name: 'Dr. M.F.G. Thierry Catherine',
-                bio: 'With 45+ years in the global hospitality industry, Thierry has held senior development and advisory roles across Japan, Singapore, Maldives, Mauritius, South Africa, and Europe. A hospitality graduate and ISO 9000–9001 Lead Assessor (BSI UK), he has contributed to major hotel openings, refurbishments, and international accreditations. He continues to be active as a hospitality investor and strategic advisor in Europe.',
-                image: '/speaker/17.png',
+                name: 'Mr. Puneet Sakhuja',
+                bio: 'Chartered Accountant, Insolvency Professional, Strategic Advisor, Founder of Arthah Group, and Director of International Tax & Compliance with over 18 years of experience and investments in more than 20 companies.',
+                image: '/speaker/5.png',
             },
         ],
     },
@@ -100,6 +100,26 @@ const translations = {
         readLess: 'اقرأ أقل',
         investors: [
             {
+                name: 'Dr. M.F.G. Thierry Catherine',
+                bio: 'With 45+ years in the global hospitality industry, Thierry has held senior development and advisory roles across Japan, Singapore, Maldives, Mauritius, South Africa, and Europe. A hospitality graduate and ISO 9000–9001 Lead Assessor (BSI UK), he has contributed to major hotel openings, refurbishments, and international accreditations. He continues to be active as a hospitality investor and strategic advisor in Europe.',
+                image: '/speaker/17.png',
+            },
+            {
+                name: 'السيد سوشيل شارما',
+                bio: 'المؤسس والرئيس التنفيذي لشركة Marwari Catalysts، التي تغذي نظام الشركات الناشئة في مدن المستوى 2 و 3. مستثمر ملاك في أكثر من 100 شركة ناشئة، مع التركيز على التنوع بين الجنسين والابتكار.',
+                image: '/speaker/14.png',
+            },
+            {
+                name: 'السيد أريز',
+                bio: 'الرئيس التنفيذي لشركة Everest DG والمؤسس المشارك في EIT Global. أكثر من 13 عامًا في الهندسة والتكنولوجيا. مستثمر بأكثر من 3 ملايين درهم في الشركات الناشئة، متخصص في توسيع نطاق الأعمال عالميًا.',
+                image: '/speaker/13.png',
+            },
+            {
+                name: 'Mr. Navneet Agarwal',
+                bio: 'A seasoned entrepreneur with a diversified portfolio spanning engineering, real estate, hospitality, and international trading. An IIT Roorkee and IIM Kolkata alumnus, he founded Navneet International FZE and Navneet Accounting in UAE, leading ventures across India and the UAE.',
+                image: '/speaker/16.png',
+            },
+            {
                 name: 'السيد نيتين أغاروال',
                 bio: 'الشريك الإداري في مجموعة شركات جوبيناث. استباقي وموجه نحو النتائج ولديه خبرة جيدة في الخدمات المصرفية للأفراد والخدمات المصرفية للمشاريع الصغيرة والمتوسطة وتأسيس الأعمال الجديدة. منضبط جيدًا ولديه قدرة مثبتة على إدارة مهام متعددة بكفاءة تحت ضغط شديد مع الالتزام بجداول زمنية ضيقة.',
                 image: '/speaker/2.png',
@@ -110,34 +130,14 @@ const translations = {
                 image: '/speaker/6.png',
             },
             {
-                name: 'السيد بونيت ساخوجا',
-                bio: 'محاسب قانوني | محترف إعسار | مستشار استراتيجي | مؤسس - مجموعة أرثاه | مدير - الضرائب الدولية والامتثال مع أكثر من 18 عامًا من الخبرة، استثمر في أكثر من 20 شركة حتى الآن.',
-                image: '/speaker/5.png',
-            },
-            {
                 name: 'السيد منذر خان',
                 bio: 'مؤسس مجموعة رهام. تعمل في مجال الأعمال منذ أكثر من 18 عامًا. في رحلتنا المثيرة للغاية، نجحنا في التسليم لأكثر من 1500 شركة ونفتخر بقاعدة عملاء كبيرة عبر الإمارات العربية المتحدة والهند ومناطق آسيا والمحيط الهادئ الأخرى. لقد تم تكريمنا من قبل العديد من المنظمات الرئيسية لخدمتنا عالية الجودة ونمونا واستقرارنا.',
                 image: '/speaker/7.png',
             },
             {
-                name: 'السيد أريز',
-                bio: 'الرئيس التنفيذي لشركة Everest DG والمؤسس المشارك في EIT Global. أكثر من 13 عامًا في الهندسة والتكنولوجيا. مستثمر بأكثر من 3 ملايين درهم في الشركات الناشئة، متخصص في توسيع نطاق الأعمال عالميًا.',
-                image: '/speaker/13.png',
-            },
-            {
-                name: 'السيد سوشيل شارما',
-                bio: 'المؤسس والرئيس التنفيذي لشركة Marwari Catalysts، التي تغذي نظام الشركات الناشئة في مدن المستوى 2 و 3. مستثمر ملاك في أكثر من 100 شركة ناشئة، مع التركيز على التنوع بين الجنسين والابتكار.',
-                image: '/speaker/14.png',
-            },
-            {
-                name: 'Mr. Navneet Agarwal',
-                bio: 'A seasoned entrepreneur with a diversified portfolio spanning engineering, real estate, hospitality, and international trading. An IIT Roorkee and IIM Kolkata alumnus, he founded Navneet International FZE and Navneet Accounting in UAE, leading ventures across India and the UAE.',
-                image: '/speaker/16.png',
-            },
-            {
-                name: 'Dr. M.F.G. Thierry Catherine',
-                bio: 'With 45+ years in the global hospitality industry, Thierry has held senior development and advisory roles across Japan, Singapore, Maldives, Mauritius, South Africa, and Europe. A hospitality graduate and ISO 9000–9001 Lead Assessor (BSI UK), he has contributed to major hotel openings, refurbishments, and international accreditations. He continues to be active as a hospitality investor and strategic advisor in Europe.',
-                image: '/speaker/17.png',
+                name: 'السيد بونيت ساخوجا',
+                bio: 'محاسب قانوني | محترف إعسار | مستشار استراتيجي | مؤسس - مجموعة أرثاه | مدير - الضرائب الدولية والامتثال مع أكثر من 18 عامًا من الخبرة، استثمر في أكثر من 20 شركة حتى الآن.',
+                image: '/speaker/5.png',
             },
         ],
     },
