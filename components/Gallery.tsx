@@ -168,6 +168,7 @@ export default function Gallery({ language = 'en' }: GalleryProps) {
                                         height={300}
                                         className="w-full h-full object-cover transition-transform duration-700 group-hover/card:scale-110"
                                         sizes="(max-width: 640px) 300px, 360px"
+                                        unoptimized
                                     />
                                     {/* Overlay Gradient on Hover */}
                                     <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity duration-300" />

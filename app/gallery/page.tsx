@@ -6,6 +6,7 @@ import Footer from "@/components/footer"
 import ScrollToTop from "@/components/scroll-to-top"
 import { galleryImages } from "@/lib/gallery-data"
 import { ZoomIn } from "lucide-react"
+import Image from "next/image"
 
 export default function GalleryPage() {
     const [language, setLanguage] = useState<"en" | "ar">("en")
@@ -34,10 +35,13 @@ export default function GalleryPage() {
                                 className="group relative aspect-[4/3] overflow-hidden rounded-2xl bg-slate-100 shadow-lg cursor-pointer"
                                 onClick={() => setSelectedImage(src)}
                             >
-                                <img
+                                <Image
                                     src={src}
                                     alt={`Gallery Image ${index + 1}`}
+                                    width={600}
+                                    height={450}
                                     className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+                                    unoptimized
                                 />
                                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100">
                                     <div className="bg-white/90 p-3 rounded-full backdrop-blur-sm shadow-xl transform scale-50 group-hover:scale-100 transition-all duration-300">
@@ -57,10 +61,13 @@ export default function GalleryPage() {
                     onClick={() => setSelectedImage(null)}
                 >
                     <div className="relative max-w-7xl max-h-[90vh] w-full h-full flex items-center justify-center">
-                        <img
+                        <Image
                             src={selectedImage}
                             alt="Gallery Fullscreen"
+                            width={1200}
+                            height={900}
                             className="max-w-full max-h-full object-contain rounded-md shadow-2xl"
+                            unoptimized
                         />
                         <button
                             className="absolute top-4 right-4 text-white hover:text-gray-300 p-2"
