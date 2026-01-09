@@ -2,6 +2,7 @@
 
 // ADDED: Import new hooks
 import React, { useState, useRef, useEffect, useCallback } from 'react'
+import Image from 'next/image'
 
 // ADDED: SVG icons for the arrows
 function ChevronLeftIcon() {
@@ -250,9 +251,11 @@ export default function SpeakersPage({ language = 'en' }: SpeakersPageProps) {
                              sm:w-80"
                 >
                   <div className="relative w-40 h-40 rounded-full mb-6 overflow-hidden shadow-md flex-shrink-0 border-4 border-white">
-                    <img
+                    <Image
                       src={speaker.image}
                       alt={speaker.name}
+                      width={160}
+                      height={160}
                       className="w-full h-full object-cover"
                     />
                   </div>

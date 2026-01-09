@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState, useRef, useEffect, useCallback } from 'react'
+import Image from 'next/image'
 
 function ChevronLeftIcon() {
     return (
@@ -242,9 +243,11 @@ export default function InvestorsSponsors({ language = 'en' }: InvestorsSponsors
                              sm:w-[300px]"
                                 >
                                     <div className="relative w-40 h-40 rounded-full mb-6 overflow-hidden shadow-md flex-shrink-0 border-4 border-white">
-                                        <img
+                                        <Image
                                             src={investor.image}
                                             alt={investor.name}
+                                            width={160}
+                                            height={160}
                                             className="w-full h-full object-cover"
                                         />
                                     </div>

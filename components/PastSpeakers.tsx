@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useRef, useState, useEffect, useCallback } from 'react'
+import Image from 'next/image'
 import { pastSpeakersData } from "@/lib/past-speakers-data"
 import Link from 'next/link'
 import { ChevronRight, ArrowRight, Star } from 'lucide-react'
@@ -165,9 +166,11 @@ export default function PastSpeakers({ language = 'en' }: PastSpeakersProps) {
                                     {/* Image */}
                                     <div className="relative mb-4">
                                         <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full overflow-hidden border-4 border-slate-50 group-hover:border-white shadow-sm transition-colors duration-300 mx-auto">
-                                            <img
+                                            <Image
                                                 src={speaker.image}
                                                 alt={speaker.name}
+                                                width={112}
+                                                height={112}
                                                 className="w-full h-full object-cover object-center transform group-hover:scale-110 transition-transform duration-500"
                                             />
                                         </div>

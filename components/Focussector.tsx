@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState, useRef, useEffect, useCallback } from 'react'
+import Image from 'next/image'
 // Importing Lucide icons for a modern look
 import { Zap, Leaf, CreditCard, Stethoscope, Home, Users, ChevronLeft, ChevronRight, CheckCircle } from 'lucide-react'
 
@@ -10,7 +11,7 @@ interface FocusSectorsProps {
 
 const PRIMARY_COLOR = "#bf1e2e"
 
-// --- Data Structure (Updated to use the same image path for all sectors) ---
+// --- Data Structure (Updated to use optimized .jpg images) ---
 const translations = {
   en: {
     title: 'Focus Sectors',
@@ -18,12 +19,12 @@ const translations = {
     footer:
       'These sectors represent areas where technological advancements and strategic investments can yield substantial returns and societal impact.',
     sectors: [
-      { icon: Zap, name: 'AI & Robotics', desc: 'Cutting-edge artificial intelligence and robotic solutions transforming industries.', image: '/Startup/1.png' },
-      { icon: CreditCard, name: 'Fintech & Blockchain', desc: 'Digital financial innovations and blockchain technologies revolutionizing commerce.', image: '/Startup/2.png' },
-      { icon: Stethoscope, name: 'Healthcare & Biotech', desc: 'Breakthrough medical technologies and biotech innovations improving lives.', image: '/Startup/3.png' },
-      { icon: Home, name: 'Real Estate & PropTech', desc: 'Smart property solutions and real estate innovations transforming urban development.', image: '/Startup/4.png' },
-      { icon: Leaf, name: 'Clean Energy & Sustainability', desc: 'Renewable energy solutions and sustainable practices driving environmental progress.', image: '/Startup/5.png' },
-      { icon: Users, name: 'Women Empowerment', desc: 'Platform supporting women founders through mentorship, funding, and community.', image: '/Startup/6.png' },
+      { icon: Zap, name: 'AI & Robotics', desc: 'Cutting-edge artificial intelligence and robotic solutions transforming industries.', image: '/Startup/1.jpg' },
+      { icon: CreditCard, name: 'Fintech & Blockchain', desc: 'Digital financial innovations and blockchain technologies revolutionizing commerce.', image: '/Startup/2.jpg' },
+      { icon: Stethoscope, name: 'Healthcare & Biotech', desc: 'Breakthrough medical technologies and biotech innovations improving lives.', image: '/Startup/3.jpg' },
+      { icon: Home, name: 'Real Estate & PropTech', desc: 'Smart property solutions and real estate innovations transforming urban development.', image: '/Startup/4.jpg' },
+      { icon: Leaf, name: 'Clean Energy & Sustainability', desc: 'Renewable energy solutions and sustainable practices driving environmental progress.', image: '/Startup/5.jpg' },
+      { icon: Users, name: 'Women Empowerment', desc: 'Platform supporting women founders through mentorship, funding, and community.', image: '/Startup/6.jpg' },
     ],
   },
   ar: {
@@ -32,12 +33,12 @@ const translations = {
     footer:
       'تمثل هذه القطاعات مجالات يمكن أن تحقق فيها التطورات التكنولوجية والاستثمارات الاستراتيجية عوائد كبيرة وتأثيراً مجتمعياً.',
     sectors: [
-      { icon: Zap, name: 'الذكاء الاصطناعي والروبوتات', desc: 'حلول الذكاء الاصطناعي والروبوتات المتطورة التي تحول الصناعات.', image: '/Startup/1.png' },
-      { icon: CreditCard, name: 'التكنولوجيا المالية والبلوكشين', desc: 'الابتكارات المالية الرقمية وتقنيات البلوكشين التي تحدث ثورة في التجارة.', image: '/Startup/2.png' },
-      { icon: Stethoscope, name: 'الرعاية الصحية والتكنولوجيا الحيوية', desc: 'تقنيات طبية رائدة وابتكارات في التكنولوجيا الحيوية تعمل على تحسين الحياة.', image: '/Startup/3.png' },
-      { icon: Home, name: 'العقارات والتكنولوجيا العقارية', desc: 'حلول الممتلكات الذكية وابتكارات العقارات التي تحول التنمية الحضرية.', image: '/Startup/4.png' },
-      { icon: Leaf, name: 'الطاقة النظيفة والاستدامة', desc: 'حلول الطاقة المتجددة والممارسات المستدامة التي تدفع التقدم البيئي.', image: '/Startup/5.png' },
-      { icon: Users, name: 'تمكين المرأة', desc: 'منصة تدعم المؤسسات من النساء من خلال الإرشاد والتمويل والمجتمع.', image: '/Startup/6.png' },
+      { icon: Zap, name: 'الذكاء الاصطناعي والروبوتات', desc: 'حلول الذكاء الاصطناعي والروبوتات المتطورة التي تحول الصناعات.', image: '/Startup/1.jpg' },
+      { icon: CreditCard, name: 'التكنولوجيا المالية والبلوكشين', desc: 'الابتكارات المالية الرقمية وتقنيات البلوكشين التي تحدث ثورة في التجارة.', image: '/Startup/2.jpg' },
+      { icon: Stethoscope, name: 'الرعاية الصحية والتكنولوجيا الحيوية', desc: 'تقنيات طبية رائدة وابتكارات في التكنولوجيا الحيوية تعمل على تحسين الحياة.', image: '/Startup/3.jpg' },
+      { icon: Home, name: 'العقارات والتكنولوجيا العقارية', desc: 'حلول الممتلكات الذكية وابتكارات العقارات التي تحول التنمية الحضرية.', image: '/Startup/4.jpg' },
+      { icon: Leaf, name: 'الطاقة النظيفة والاستدامة', desc: 'حلول الطاقة المتجددة والممارسات المستدامة التي تدفع التقدم البيئي.', image: '/Startup/5.jpg' },
+      { icon: Users, name: 'تمكين المرأة', desc: 'منصة تدعم المؤسسات من النساء من خلال الإرشاد والتمويل والمجتمع.', image: '/Startup/6.jpg' },
     ],
   },
 }
@@ -64,9 +65,11 @@ const SectorCard: React.FC<{ sector: (typeof translations.en.sectors)[0]; isRtl:
         }}
       >
         {/* Background Image */}
-        <img
+        <Image
           src={sector.image}
           alt={sector.name}
+          width={400}
+          height={400}
           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
         />
 

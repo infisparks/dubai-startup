@@ -1,6 +1,7 @@
 'use client'
 
 import React from 'react'
+import Image from 'next/image'
 import { FiStar, FiSun, FiUsers } from 'react-icons/fi'
 
 interface VenueSectionProps {
@@ -78,16 +79,22 @@ export default function VenueSection({
     <section
       id="venue"
       // ADJUSTMENT 1: Minimized vertical padding
-      className="relative w-full min-h-screen flex items-center justify-center py-8 lg:py-16"
-      style={{
-        backgroundImage: `url(${backgroundImageSrc})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundAttachment: 'fixed',
-      }}
+      className="relative w-full min-h-screen flex items-center justify-center py-8 lg:py-16 overflow-hidden"
     >
+      {/* Background Image using Next/Image for optimization */}
+      <div className="absolute inset-0 z-0">
+        <Image
+          src={backgroundImageSrc}
+          alt="Venue Background"
+          fill
+          className="object-cover object-center"
+          sizes="100vw"
+          quality={75}
+        />
+      </div>
+
       {/* Dark Overlay for Text Readability */}
-      <div className="absolute inset-0 bg-black/70 backdrop-blur-sm"></div>
+      <div className="absolute inset-0 bg-black/70 backdrop-blur-sm z-[1]"></div>
 
       {/* Content Container (Slightly narrower maximum width) */}
       <div
@@ -97,9 +104,11 @@ export default function VenueSection({
       >
         {/* Left Side: Venue Image & Caption (Minimized spacing) */}
         <div className="flex flex-col items-center lg:items-start space-y-3">
-          <img
+          <Image
             src={venueImageSrc}
             alt="Taj Exotica Resort & Spa The Palm"
+            width={600}
+            height={400}
             className="w-full max-w-lg lg:max-w-none h-auto rounded-lg shadow-2xl transition-transform duration-500 hover:scale-[1.01] hover:shadow-cyan-400/30"
           />
           <p className="text-white text-xs opacity-80 italic max-w-lg text-center lg:text-left">

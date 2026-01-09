@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState, useRef, useEffect } from 'react'
+import Image from 'next/image'
 import {
     ChevronDown,
     ChevronUp,
@@ -108,9 +109,11 @@ const BrandTicker = () => {
                                 key={i}
                                 className="flex-shrink-0 transform transition-transform duration-300 hover:scale-110"
                             >
-                                <img
+                                <Image
                                     src={`${BRAND_BASE_PATH}/${num}.png`}
                                     alt={`Partner Brand ${num}`}
+                                    width={100}
+                                    height={50}
                                     className="h-10 sm:h-12 md:h-14 w-auto object-contain opacity-90 hover:opacity-100 transition-all duration-300"
                                     draggable={false}
                                 />

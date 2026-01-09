@@ -93,9 +93,11 @@ export default function CoFoundersPage({ language = 'en' }: CoFoundersPageProps)
                 {/* Image Section */}
                 <div className="relative shrink-0 mx-auto md:mx-0">
                   <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full p-1 bg-gradient-to-br from-[#bf1e2e]/10 to-[#c4925f]/10 shadow-inner overflow-hidden">
-                    <img
+                    <Image
                       src={founder.image}
                       alt={founder.name}
+                      width={112}
+                      height={112}
                       className={`w-full h-full rounded-full object-cover shadow-sm transition-transform duration-500 origin-center ${customImgClass ? `scale-[1.25] group-hover:scale-[1.35] ${customImgClass}` : 'group-hover:scale-105'
                         }`}
                     />

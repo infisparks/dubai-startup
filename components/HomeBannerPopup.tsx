@@ -1,6 +1,7 @@
 "use client"
 
 import React, { useEffect, useState } from "react"
+import Image from "next/image"
 import { X, Calendar, MapPin } from "lucide-react"
 import Link from "next/link"
 
@@ -47,11 +48,14 @@ export default function HomeBannerPopup() {
                 </button>
 
                 {/* Image Section - Flexible height but respects aspect ratio */}
-                <div className="relative w-full bg-slate-50 flex-grow overflow-hidden flex items-center justify-center">
-                    <img
+                <div className="relative w-full bg-slate-50 flex-grow overflow-hidden flex items-center justify-center min-h-[300px]">
+                    <Image
                         src="/hero.jpg"
                         alt="Investarise Global Investors Summit 2026"
+                        width={800}
+                        height={600}
                         className="w-full h-auto max-h-[60vh] object-contain"
+                        sizes="(max-width: 768px) 100vw, 800px"
                     />
                 </div>
 

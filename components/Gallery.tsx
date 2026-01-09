@@ -3,6 +3,7 @@
 import React, { useRef, useState, useEffect, useCallback } from 'react'
 import { galleryImages } from "@/lib/gallery-data"
 import Link from 'next/link'
+import Image from 'next/image'
 import { ChevronRight, ArrowRight, Camera } from 'lucide-react'
 
 // Custom Navigation Icons
@@ -160,10 +161,13 @@ export default function Gallery({ language = 'en' }: GalleryProps) {
                                 className="flex-shrink-0 w-[300px] sm:w-[360px] aspect-[4/3] snap-start relative group/card"
                             >
                                 <div className="w-full h-full rounded-2xl overflow-hidden shadow-md border border-slate-100 relative">
-                                    <img
+                                    <Image
                                         src={src}
                                         alt={`Event photo ${idx + 1}`}
+                                        width={400}
+                                        height={300}
                                         className="w-full h-full object-cover transition-transform duration-700 group-hover/card:scale-110"
+                                        sizes="(max-width: 640px) 300px, 360px"
                                     />
                                     {/* Overlay Gradient on Hover */}
                                     <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity duration-300" />

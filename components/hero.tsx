@@ -1,4 +1,5 @@
 import { MapPin, Calendar } from "lucide-react" // Optional: using icons
+import Image from "next/image"
 
 // 🔹 NOTE: If you don't use icons, you can delete the import above
 // and the <MapPin> / <Calendar> components below.
@@ -42,10 +43,14 @@ export default function Hero({ language }: HeroProps) {
       {/* 🔹 Background Image - Full width, natural height (No Crop) */}
       <div className="w-full h-full">
         {/* Removed absolute positioning to let image define height */}
-        <img
+        <Image
           src="/hero.jpg"
           alt="Conference Hero"
+          width={1920}
+          height={1080}
           className="w-full h-auto block"
+          priority
+          sizes="100vw"
         // On mobile: w-full h-auto (shows full image, no crop).
         // On desktop: user might still want it strict ?? 
         // Re-reading: "mobile show me the full screen... dont crop... in mobile".
