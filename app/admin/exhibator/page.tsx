@@ -9,6 +9,7 @@ import {
 } from "lucide-react"
 import { useForm, Controller } from 'react-hook-form';
 import { cn } from "@/lib/utils"
+import * as XLSX from 'xlsx';
 
 // --- Types ---
 
@@ -355,6 +356,76 @@ const ExhibitorReviewModal: React.FC<ExhibitorReviewModalProps> = ({ profile, on
     );
 };
 
+// --- Deletion Confirm Modal ---
+interface DeleteConfirmModalProps {
+    profile: ExhibitorProfile;
+    onClose: () => void;
+    onConfirm: (userId: string) => void;
+}
+
+const DeleteConfirmModal: React.FC<DeleteConfirmModalProps> = ({ profile, onClose, onConfirm }) => {
+    const [confirmText, setConfirmText] = useState("");
+    const [isDeleting, setIsDeleting] = useState(false);
+    const isConfirmed = confirmText === "confirm delete";
+
+    const handleDelete = async () => {
+        if (!isConfirmed) return;
+        setIsDeleting(true);
+        try {
+            await onConfirm(profile.user_id);
+            onClose();
+        } catch (err) {
+            console.error(err);
+        } finally {
+            setIsDeleting(false);
+        }
+    };
+
+    return (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black bg-opacity-50 backdrop-blur-sm" onClick={onClose}>
+            <div className="bg-white rounded-xl shadow-2xl w-full max-w-md overflow-hidden" onClick={e => e.stopPropagation()}>
+                <div className="p-6">
+                    <div className="flex items-center gap-3 text-red-600 mb-4">
+                        <XCircle className="w-8 h-8" />
+                        <h3 className="text-xl font-bold text-slate-900">Confirm Deletion</h3>
+                    </div>
+                    <p className="text-slate-600 mb-4">
+                        This will permanently delete the exhibitor profile for <span className="font-bold text-slate-900">{profile.company_name}</span>. This action cannot be undone.
+                    </p>
+                    <div className="bg-slate-50 p-4 rounded-lg mb-4 border border-slate-200">
+                        <label className="block text-sm font-medium text-slate-700 mb-2">
+                            Please type <span className="font-mono font-bold text-red-600">confirm delete</span> to proceed:
+                        </label>
+                        <input
+                            type="text"
+                            value={confirmText}
+                            onChange={(e) => setConfirmText(e.target.value)}
+                            placeholder="Type here..."
+                            className="w-full px-4 py-2 bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
+                        />
+                    </div>
+                    <div className="flex gap-3 mt-6">
+                        <button
+                            onClick={onClose}
+                            className="flex-1 px-4 py-2 border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 transition font-medium"
+                        >
+                            Cancel
+                        </button>
+                        <button
+                            onClick={handleDelete}
+                            disabled={!isConfirmed || isDeleting}
+                            className="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 disabled:bg-red-300 transition font-medium flex items-center justify-center gap-2"
+                        >
+                            {isDeleting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Trash2 className="w-4 h-4" />}
+                            Delete Permanently
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+};
+
 
 // 2. Main Admin Dashboard Component
 export default function AdminExhibitorDashboard() {
@@ -365,6 +436,7 @@ export default function AdminExhibitorDashboard() {
 
     // Modal State
     const [selectedProfileForModal, setSelectedProfileForModal] = useState<ExhibitorProfile | null>(null);
+    const [selectedProfileForDelete, setSelectedProfileForDelete] = useState<ExhibitorProfile | null>(null);
 
     // Hardcoded Booth Options
     const BOOTH_OPTIONS = useMemo(() => ["Startup Pod (2x2m)", "Standard Shell (3x3m)", "Premium Booth (6x3m)", "Custom Build (Space only)"], []);
@@ -408,12 +480,6 @@ export default function AdminExhibitorDashboard() {
     };
 
     const handleDeleteProfile = async (userId: string) => {
-        const confirmInput = prompt("To confirm deletion, please type 'DELETE':");
-        if (confirmInput !== "DELETE") {
-            if (confirmInput !== null) alert("Incorrect confirmation input. Deletion cancelled.");
-            return;
-        }
-
         try {
             const { error } = await supabase
                 .from('exhibitor_profiles')
@@ -429,11 +495,40 @@ export default function AdminExhibitorDashboard() {
                 .eq('id', userId);
 
             setProfiles(prev => prev.filter(p => p.user_id !== userId));
-            alert("Exhibitor application deleted successfully.");
         } catch (err: any) {
             console.error("Error deleting profile:", err);
             alert(`Failed to delete: ${err.message}`);
+            throw err;
         }
+    };
+
+    const exportToExcel = () => {
+        // Prepare data for export
+        const exportData = filteredProfiles
+            .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()) // Latest on top
+            .map((p, index) => ({
+                '#': index + 1,
+                'Registration Date': new Date(p.created_at).toLocaleString(),
+                'Company Name': p.company_name,
+                'Contact Person': p.contact_personname,
+                'Email': p.email,
+                'Phone': p.contact_phone,
+                'Website': p.company_website || 'N/A',
+                'Booth Package': p.booth_type || 'Not Selected',
+                'Company Description': p.company_description,
+                'Reference Source': p.reference || 'N/A',
+                'Payment Status': p.payment_status || 'N/A',
+                'Paid At': p.paid_at ? new Date(p.paid_at).toLocaleString() : 'N/A',
+                'Stripe Session ID': p.stripe_session_id || 'N/A',
+                'Approval Status': p.is_approved ? 'Approved' : 'Pending'
+            }));
+
+        const worksheet = XLSX.utils.json_to_sheet(exportData);
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Exhibitors");
+
+        // Generate Excel file and trigger download
+        XLSX.writeFile(workbook, `Exhibitors_Detailed_Export_${new Date().toISOString().split('T')[0]}.xlsx`);
     };
 
     // Filtering
@@ -490,6 +585,12 @@ export default function AdminExhibitorDashboard() {
                         <button onClick={fetchExhibitorProfiles} className="p-2 bg-slate-100 rounded-lg hover:bg-slate-200 text-slate-600 transition">
                             <Filter className="w-5 h-5" />
                         </button>
+                        <button
+                            onClick={exportToExcel}
+                            className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition text-sm font-medium shadow-sm"
+                        >
+                            <FileText className="w-4 h-4" /> Export Excel
+                        </button>
                     </div>
                 </div>
 
@@ -506,6 +607,7 @@ export default function AdminExhibitorDashboard() {
                             <table className="min-w-full divide-y divide-slate-200">
                                 <thead className="bg-slate-50">
                                     <tr>
+                                        <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600 uppercase w-10">#</th>
                                         <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600 uppercase">Company</th>
                                         <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600 uppercase hidden md:table-cell">Contact</th>
                                         <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600 uppercase hidden lg:table-cell">Booth Type</th>
@@ -516,8 +618,11 @@ export default function AdminExhibitorDashboard() {
                                     </tr>
                                 </thead>
                                 <tbody className="bg-white divide-y divide-slate-100">
-                                    {filteredProfiles.map((p) => (
+                                    {filteredProfiles.map((p, index) => (
                                         <tr key={p.user_id} className="hover:bg-slate-50 transition duration-150 group">
+                                            <td className="px-6 py-4 text-xs text-slate-400 font-mono">
+                                                {index + 1}
+                                            </td>
                                             <td className="px-6 py-4">
                                                 <div className="flex items-center gap-3">
                                                     <div className="w-10 h-10 rounded-lg bg-slate-50 border border-slate-200 p-1 flex-shrink-0 flex items-center justify-center">
@@ -582,7 +687,7 @@ export default function AdminExhibitorDashboard() {
                                                 <button
                                                     onClick={(e) => {
                                                         e.stopPropagation();
-                                                        handleDeleteProfile(p.user_id);
+                                                        setSelectedProfileForDelete(p);
                                                     }}
                                                     className="inline-flex items-center justify-center p-2 border border-red-200 rounded-lg text-red-700 bg-red-50 hover:bg-red-100 transition text-sm font-medium ml-2"
                                                     title="Delete Application"
@@ -606,6 +711,15 @@ export default function AdminExhibitorDashboard() {
                     onClose={() => setSelectedProfileForModal(null)}
                     onSave={handleModalSave}
                     boothOptions={BOOTH_OPTIONS}
+                />
+            )}
+
+            {/* Deletion Confirm Modal */}
+            {selectedProfileForDelete && (
+                <DeleteConfirmModal
+                    profile={selectedProfileForDelete}
+                    onClose={() => setSelectedProfileForDelete(null)}
+                    onConfirm={handleDeleteProfile}
                 />
             )}
         </div>

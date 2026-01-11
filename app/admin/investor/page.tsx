@@ -8,6 +8,7 @@ import {
     Save, User, Phone, TrendingUp, XCircle, Linkedin, Mail, FileText
 } from "lucide-react"
 import { useForm, Controller } from 'react-hook-form';
+import * as XLSX from 'xlsx';
 
 // --- Types ---
 
@@ -94,6 +95,48 @@ const ToggleSwitch = ({ label, checked, onChange }: any) => (
         </button>
     </div>
 );
+
+const DeleteConfirmModal = ({ profile, onClose, onConfirm }: { profile: InvestorProfile, onClose: () => void, onConfirm: () => void }) => {
+    const [confirmText, setConfirmText] = useState('');
+    const isValid = confirmText === 'confirm delete';
+
+    return (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black bg-opacity-50 backdrop-blur-sm" onClick={onClose}>
+            <div className="bg-white rounded-xl shadow-2xl w-full max-w-md p-6" onClick={e => e.stopPropagation()}>
+                <h3 className="text-xl font-bold text-slate-900 mb-2">Confirm Delete</h3>
+                <p className="text-slate-600 mb-4">
+                    Are you sure you want to delete <span className="font-semibold text-red-600">{profile.name}</span>?
+                    This action cannot be undone.
+                </p>
+                <p className="text-sm text-slate-500 mb-4">
+                    Please type <span className="font-mono font-bold text-slate-900">confirm delete</span> to proceed.
+                </p>
+                <input
+                    type="text"
+                    value={confirmText}
+                    onChange={(e) => setConfirmText(e.target.value)}
+                    placeholder="Type 'confirm delete' here"
+                    className="w-full px-4 py-2 border border-slate-300 rounded-lg mb-6 focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none"
+                />
+                <div className="flex gap-3 justify-end">
+                    <button
+                        onClick={onClose}
+                        className="px-4 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50"
+                    >
+                        Cancel
+                    </button>
+                    <button
+                        disabled={!isValid}
+                        onClick={onConfirm}
+                        className={`px-4 py-2 text-sm font-medium text-white rounded-lg transition ${isValid ? 'bg-red-600 hover:bg-red-700' : 'bg-red-300 cursor-not-allowed'}`}
+                    >
+                        Delete Permanently
+                    </button>
+                </div>
+            </div>
+        </div>
+    );
+};
 
 
 // --- 1. Investor Review Modal ---
@@ -205,7 +248,7 @@ const InvestorReviewModal: React.FC<InvestorReviewModalProps> = ({ profile, onCl
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50 backdrop-blur-sm" onClick={onClose}>
             <div className="bg-white rounded-xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
                 <form onSubmit={handleSubmit(onSubmit)}>
-                    
+
                     {/* Header */}
                     <div className="sticky top-0 z-10 flex justify-between items-center p-6 border-b bg-white rounded-t-xl">
                         <h3 className="text-xl font-bold text-slate-900 flex items-center gap-2">
@@ -217,40 +260,40 @@ const InvestorReviewModal: React.FC<InvestorReviewModalProps> = ({ profile, onCl
                     </div>
 
                     <div className="p-6 space-y-8">
-                        
+
                         {/* Section 1: Personal Info */}
                         <div>
                             <h4 className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-4 border-b pb-2">Personal Information</h4>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-                                <FormInput 
-                                    label="Full Name" 
-                                    {...register('name', { required: true })} 
-                                    icon={<User className="w-4 h-4"/>}
+                                <FormInput
+                                    label="Full Name"
+                                    {...register('name', { required: true })}
+                                    icon={<User className="w-4 h-4" />}
                                 />
                                 <div>
                                     <label className="block text-sm font-medium text-slate-700 mb-1">Email (Read-only)</label>
                                     <div className="relative">
-                                        <div className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"><Mail className="w-4 h-4"/></div>
+                                        <div className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"><Mail className="w-4 h-4" /></div>
                                         <input value={profile.email} disabled className="block w-full pl-9 pr-4 py-2 bg-slate-100 border border-slate-300 rounded-lg shadow-sm text-sm text-slate-500 cursor-not-allowed" />
                                     </div>
                                 </div>
-                                <FormInput 
-                                    label="Phone Number" 
-                                    {...register('phone')} 
-                                    icon={<Phone className="w-4 h-4"/>}
+                                <FormInput
+                                    label="Phone Number"
+                                    {...register('phone')}
+                                    icon={<Phone className="w-4 h-4" />}
                                 />
-                                <FormInput 
-                                    label="LinkedIn URL" 
-                                    {...register('linkedin')} 
+                                <FormInput
+                                    label="LinkedIn URL"
+                                    {...register('linkedin')}
                                     placeholder="https://linkedin.com/in/..."
-                                    icon={<Linkedin className="w-4 h-4"/>}
+                                    icon={<Linkedin className="w-4 h-4" />}
                                 />
                                 <div className="md:col-span-2">
-                                    <FormInput 
-                                        label="Reference Source" 
-                                        {...register('reference')} 
+                                    <FormInput
+                                        label="Reference Source"
+                                        {...register('reference')}
                                         placeholder="Who referred them?"
-                                        icon={<FileText className="w-4 h-4"/>}
+                                        icon={<FileText className="w-4 h-4" />}
                                     />
                                 </div>
                             </div>
@@ -304,14 +347,14 @@ const InvestorReviewModal: React.FC<InvestorReviewModalProps> = ({ profile, onCl
 
                         {/* Section 3: Status Action */}
                         <div className="pt-4 border-t border-slate-200">
-                             <Controller
+                            <Controller
                                 name="is_approved"
                                 control={control}
                                 render={({ field }) => (
-                                    <ToggleSwitch 
-                                        label="Account Approval Status" 
-                                        checked={field.value} 
-                                        onChange={field.onChange} 
+                                    <ToggleSwitch
+                                        label="Account Approval Status"
+                                        checked={field.value}
+                                        onChange={field.onChange}
                                     />
                                 )}
                             />
@@ -321,17 +364,17 @@ const InvestorReviewModal: React.FC<InvestorReviewModalProps> = ({ profile, onCl
 
                     {/* Footer */}
                     <div className="sticky bottom-0 z-10 flex justify-end items-center gap-3 p-6 bg-slate-50 border-t rounded-b-xl">
-                        <button 
-                            type="button" 
-                            onClick={onClose} 
-                            disabled={isSubmitting} 
+                        <button
+                            type="button"
+                            onClick={onClose}
+                            disabled={isSubmitting}
                             className="px-5 py-2.5 border border-slate-300 text-sm font-medium rounded-xl shadow-sm text-slate-700 bg-white hover:bg-slate-100 transition"
                         >
                             Cancel
                         </button>
-                        <button 
-                            type="submit" 
-                            disabled={isSubmitting} 
+                        <button
+                            type="submit"
+                            disabled={isSubmitting}
                             className="px-5 py-2.5 rounded-xl shadow-md text-white bg-indigo-600 hover:bg-indigo-700 disabled:bg-indigo-300 transition flex items-center gap-2"
                         >
                             {isSubmitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
@@ -352,9 +395,57 @@ export default function AdminInvestorDashboard() {
     const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
     const [approvalFilter, setApprovalFilter] = useState('all');
-    
+
+
     // Modal State
     const [selectedProfileForModal, setSelectedProfileForModal] = useState<InvestorProfile | null>(null);
+    const [selectedProfileForDelete, setSelectedProfileForDelete] = useState<InvestorProfile | null>(null);
+
+    const exportToExcel = () => {
+        // Prepare data for export
+        const exportData = filteredProfiles
+            .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()) // Latest on top
+            .map((p, index) => ({
+                '#': index + 1,
+                'Registration Date': new Date(p.created_at).toLocaleString(),
+                'Name': p.name,
+                'Email': p.email,
+                'Phone': p.phone || 'N/A',
+                'LinkedIn': p.linkedin || 'N/A',
+                'Investment Amount': p.investment_amount,
+                'Investment Type': p.investment_type,
+                'Experience': p.experience,
+                'Interests': Array.isArray(p.interests) ? p.interests.join(', ') : (p.interests || 'N/A'),
+                'Reference Source': p.reference || 'N/A',
+                'Status': p.is_approved ? 'Approved' : 'Pending'
+            }));
+
+        const worksheet = XLSX.utils.json_to_sheet(exportData);
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Investors");
+
+        // Generate Excel file and trigger download
+        XLSX.writeFile(workbook, `Investors_Detailed_Export_${new Date().toISOString().split('T')[0]}.xlsx`);
+    };
+
+    const handleDelete = async () => {
+        if (!selectedProfileForDelete) return;
+
+        try {
+            const { error } = await supabase
+                .from('investor_profiles')
+                .delete()
+                .eq('user_id', selectedProfileForDelete.user_id);
+
+            if (error) throw error;
+
+            setProfiles(prev => prev.filter(p => p.user_id !== selectedProfileForDelete.user_id));
+            setSelectedProfileForDelete(null);
+        } catch (err: any) {
+            console.error("Error deleting profile:", err);
+            alert(`Failed to delete: ${err.message}`);
+        }
+    };
 
     const fetchInvestorProfiles = useCallback(async () => {
         setLoading(true);
@@ -405,7 +496,7 @@ export default function AdminInvestorDashboard() {
     return (
         <div className="min-h-screen bg-slate-50 p-6 lg:p-10">
             <div className="max-w-7xl mx-auto">
-                
+
                 {/* Header */}
                 <div className="mb-8">
                     <h1 className="text-3xl font-extrabold text-slate-900 flex items-center gap-3">
@@ -417,19 +508,19 @@ export default function AdminInvestorDashboard() {
                 {/* Filters */}
                 <div className="bg-white p-4 rounded-xl shadow-sm border border-slate-200 mb-6 flex flex-col md:flex-row gap-4 justify-between items-center">
                     <div className="relative w-full md:w-96">
-                        <input 
-                            type="text" 
-                            placeholder="Search by name or email..." 
-                            value={searchTerm} 
-                            onChange={(e) => setSearchTerm(e.target.value)} 
+                        <input
+                            type="text"
+                            placeholder="Search by name or email..."
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
                             className="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
                         />
                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                     </div>
 
                     <div className="flex gap-2 w-full md:w-auto">
-                        <select 
-                            value={approvalFilter} 
+                        <select
+                            value={approvalFilter}
                             onChange={(e) => setApprovalFilter(e.target.value)}
                             className="px-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
                         >
@@ -439,6 +530,12 @@ export default function AdminInvestorDashboard() {
                         </select>
                         <button onClick={fetchInvestorProfiles} className="p-2 bg-slate-100 rounded-lg hover:bg-slate-200 text-slate-600 transition">
                             <Filter className="w-5 h-5" />
+                        </button>
+                        <button
+                            onClick={exportToExcel}
+                            className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition text-sm font-medium shadow-sm"
+                        >
+                            <FileText className="w-4 h-4" /> Export Excel
                         </button>
                     </div>
                 </div>
@@ -456,6 +553,7 @@ export default function AdminInvestorDashboard() {
                             <table className="min-w-full divide-y divide-slate-200">
                                 <thead className="bg-slate-50">
                                     <tr>
+                                        <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600 uppercase w-10">#</th>
                                         <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600 uppercase">Investor</th>
                                         <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600 uppercase hidden md:table-cell">Contact</th>
                                         <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600 uppercase hidden lg:table-cell">Investment</th>
@@ -465,8 +563,11 @@ export default function AdminInvestorDashboard() {
                                     </tr>
                                 </thead>
                                 <tbody className="bg-white divide-y divide-slate-100">
-                                    {filteredProfiles.map((p) => (
+                                    {filteredProfiles.map((p, index) => (
                                         <tr key={p.user_id} className="hover:bg-slate-50 transition duration-150 group">
+                                            <td className="px-6 py-4 text-xs text-slate-400 font-mono">
+                                                {index + 1}
+                                            </td>
                                             <td className="px-6 py-4">
                                                 <div className="flex flex-col">
                                                     <span className="text-sm font-medium text-slate-900">{p.name}</span>
@@ -492,12 +593,21 @@ export default function AdminInvestorDashboard() {
                                                 {renderStatusBadge(p.is_approved)}
                                             </td>
                                             <td className="px-6 py-4 text-right">
-                                                <button 
-                                                    onClick={() => setSelectedProfileForModal(p)}
-                                                    className="inline-flex items-center justify-center gap-1 px-3 py-1.5 border border-indigo-200 rounded-lg text-indigo-700 bg-indigo-50 hover:bg-indigo-100 transition text-sm font-medium"
-                                                >
-                                                    Review & Edit
-                                                </button>
+                                                <div className="flex justify-end gap-2">
+                                                    <button
+                                                        onClick={() => setSelectedProfileForModal(p)}
+                                                        className="inline-flex items-center justify-center gap-1 px-3 py-1.5 border border-indigo-200 rounded-lg text-indigo-700 bg-indigo-50 hover:bg-indigo-100 transition text-sm font-medium"
+                                                    >
+                                                        Review & Edit
+                                                    </button>
+                                                    <button
+                                                        onClick={() => setSelectedProfileForDelete(p)}
+                                                        className="inline-flex items-center justify-center p-1.5 border border-red-100 rounded-lg text-red-600 bg-red-50 hover:bg-red-100 transition"
+                                                        title="Delete Investor"
+                                                    >
+                                                        <XCircle className="w-4 h-4" />
+                                                    </button>
+                                                </div>
                                             </td>
                                         </tr>
                                     ))}
@@ -514,6 +624,15 @@ export default function AdminInvestorDashboard() {
                     profile={selectedProfileForModal}
                     onClose={() => setSelectedProfileForModal(null)}
                     onSave={handleModalSave}
+                />
+            )}
+
+            {/* Deletion Confirm Modal */}
+            {selectedProfileForDelete && (
+                <DeleteConfirmModal
+                    profile={selectedProfileForDelete}
+                    onClose={() => setSelectedProfileForDelete(null)}
+                    onConfirm={handleDelete}
                 />
             )}
         </div>

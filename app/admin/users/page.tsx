@@ -7,8 +7,9 @@ import Header from "@/components/header"
 import Footer from "@/components/footer"
 import {
     Users, Search, Mail, Shield, User, Clock,
-    CheckCircle, AlertTriangle, Loader2, ExternalLink
+    CheckCircle, AlertTriangle, Loader2, ExternalLink, FileText
 } from "lucide-react"
+import * as XLSX from 'xlsx';
 
 interface UserProfile {
     id: string;
@@ -121,6 +122,30 @@ export default function AdminUsersPage() {
         );
     }, [users, searchTerm]);
 
+    const exportToExcel = () => {
+        // Prepare data for export
+        const exportData = filteredUsers.map((u, index) => ({
+            '#': index + 1,
+            'Full Name': u.full_name || 'N/A',
+            'Email Address': u.email || 'N/A',
+            'Summit Roles': [
+                u.is_investor ? 'Investor' : null,
+                u.is_speaker ? 'Speaker' : null,
+                u.is_startup ? 'Startup' : null,
+                u.is_exhibitor ? 'Exhibitor' : null
+            ].filter(Boolean).join(', ') || 'No Roles',
+            'Account UID': u.id,
+            'Last Sync Date': new Date(u.updated_at).toLocaleString(),
+        }));
+
+        const worksheet = XLSX.utils.json_to_sheet(exportData);
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Users");
+
+        // Generate Excel file and trigger download
+        XLSX.writeFile(workbook, `Platform_Users_Export_${new Date().toISOString().split('T')[0]}.xlsx`);
+    };
+
     const renderRoles = (user: UserProfile) => {
         const roles = [];
         if (user.is_investor) roles.push({ label: "Investor", color: "bg-blue-100 text-blue-700" });
@@ -189,8 +214,8 @@ export default function AdminUsersPage() {
                     </div>
 
                     <div className="bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden">
-                        <div className="p-4 border-b border-slate-100 bg-slate-50/50">
-                            <div className="relative max-w-md">
+                        <div className="p-4 border-b border-slate-100 bg-slate-50/50 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                            <div className="relative max-w-md w-full">
                                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                                 <input
                                     type="text"
@@ -200,6 +225,12 @@ export default function AdminUsersPage() {
                                     className="w-full pl-10 pr-4 py-2 bg-white border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#013371] transition-all text-sm"
                                 />
                             </div>
+                            <button
+                                onClick={exportToExcel}
+                                className="flex items-center justify-center gap-2 px-6 py-2 bg-green-600 text-white rounded-xl hover:bg-green-700 transition shadow-sm font-bold text-sm"
+                            >
+                                <FileText className="w-4 h-4" /> Export Excel
+                            </button>
                         </div>
 
                         <div className="overflow-x-auto">

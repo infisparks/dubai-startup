@@ -12,6 +12,7 @@ import {
   CheckCircle, Clock, Search, ExternalLink, FileText, XCircle,
   DollarSign, Calendar, FileCheck
 } from "lucide-react"
+import * as XLSX from 'xlsx';
 
 // --- 1. Define Types ---
 
@@ -153,8 +154,8 @@ export default function AdminStartupsPage() {
       cancel: "إلغاء",
       deleteStartup: "حذف الشركة الناشئة",
       deleteWarning: "هذا الإجراء لا يمكن التراجع عنه. سيتم حذف الملف الشخصي للشركة نهائيًا.",
-      deleteConfirmText: "لحذف، اكتب 'CONFIRM' في المربع أدناه:",
-      deleteButton: "حذف",
+      deleteConfirmText: "لحذف، اكتب 'confirm delete' في المربع أدناه:",
+      deleteButton: "حذف نهائيًا",
       establishmentYear: "سنة التأسيس",
       turnover: "دوران السنوي",
       netProfit: "صافي الربح",
@@ -195,8 +196,8 @@ export default function AdminStartupsPage() {
       cancel: "Cancel",
       deleteStartup: "Delete Startup",
       deleteWarning: "This action cannot be undone. This will permanently delete the startup's profile.",
-      deleteConfirmText: "To delete, type 'CONFIRM' in the box below:",
-      deleteButton: "Delete",
+      deleteConfirmText: "Please type 'confirm delete' to proceed:",
+      deleteButton: "Delete Permanently",
       establishmentYear: "Establishment Year",
       turnover: "Annual Turnover",
       netProfit: "Net Profit",
@@ -310,6 +311,45 @@ export default function AdminStartupsPage() {
     );
   }, [allStartups, searchTerm]);
 
+  const exportToExcel = () => {
+    // Prepare data for export
+    const exportData = filteredStartups
+      .sort((a, b) => new Date(b.created_at || 0).getTime() - new Date(a.created_at || 0).getTime()) // Latest on top
+      .map((s, index) => ({
+        '#': index + 1,
+        'Registration Date': s.created_at ? new Date(s.created_at).toLocaleString() : 'N/A',
+        'Company Name': s.company_name,
+        'Founder Name': s.founder_name || 'N/A',
+        'Email': s.email || 'N/A',
+        'Phone': s.founder_phone || 'N/A',
+        'Website': s.website || 'N/A',
+        'LinkedIn': s.company_linkedin || 'N/A',
+        'Domain': s.domain || 'N/A',
+        'Domain Other': s.domain_other_spec || 'N/A',
+        'Stage': s.stage || 'N/A',
+        'Earning Status': s.earning_status || 'N/A',
+        'Description': s.description || 'N/A',
+        'Problem Statement': s.problem_description || 'N/A',
+        'Reference Source': s.reference || 'N/A',
+        'Establishment Year': s.establishment_year || 'N/A',
+        'Turnover': s.turnover || 'N/A',
+        'Net Profit': s.net_profit || 'N/A',
+        'IT Returns Filed': s.it_returns_filed ? 'Yes' : 'No',
+        'Audited': s.is_audited ? 'Yes' : 'No',
+        'Payment Status': s.payment_status || 'N/A',
+        'Paid At': s.paid_at ? new Date(s.paid_at).toLocaleString() : 'N/A',
+        'Stripe Session ID': s.stripe_session_id || 'N/A',
+        'Approval Status': s.is_approved ? 'Approved' : (s.is_approved === false ? 'Disapproved' : 'Pending')
+      }));
+
+    const worksheet = XLSX.utils.json_to_sheet(exportData);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Startups");
+
+    // Generate Excel file and trigger download
+    XLSX.writeFile(workbook, `Startups_Detailed_Export_${new Date().toISOString().split('T')[0]}.xlsx`);
+  };
+
   // --- Render ---
   const renderStatusBadge = (isApproved: boolean | null) => {
     if (isApproved === false) return <span className="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-800"><XCircle className="w-3.5 h-3.5" />{t.disapproved}</span>;
@@ -328,6 +368,7 @@ export default function AdminStartupsPage() {
         <table className="min-w-full divide-y divide-slate-200">
           <thead className="bg-slate-50">
             <tr>
+              <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600 uppercase w-10">#</th>
               <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600 uppercase">{t.company}</th>
               <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600 uppercase hidden sm:table-cell">{t.founder}</th>
               <th className="px-6 py-3 text-left text-xs font-semibold text-slate-600 uppercase hidden md:table-cell">{t.email}</th>
@@ -339,8 +380,11 @@ export default function AdminStartupsPage() {
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-slate-100">
-            {filteredStartups.map(startup => (
+            {filteredStartups.map((startup, index) => (
               <tr key={startup.user_id} className="hover:bg-slate-50 transition duration-150">
+                <td className="px-6 py-4 text-xs text-slate-900 font-bold font-mono">
+                  {index + 1}
+                </td>
                 <td className="px-6 py-4">
                   <div className="flex flex-col">
                     <span className="text-sm font-medium text-slate-900">{startup.company_name}</span>
@@ -400,9 +444,17 @@ export default function AdminStartupsPage() {
         <div className="w-full px-4">
           <div className="mb-6"><h1 className="text-3xl font-extrabold text-slate-900">{t.title}</h1><p className="text-md text-slate-600 mt-1">{t.subtitle}</p></div>
           {isAdmin && allStartups.length > 0 && (
-            <div className="relative mb-6">
-              <input type="text" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} placeholder={t.searchPlaceholder} className="w-full pl-12 pr-4 py-2.5 text-base bg-white border border-slate-300 rounded-xl shadow-md focus:outline-none focus:ring-2 focus:ring-indigo-600" />
-              <div className="absolute left-4 top-1/2 -translate-y-1/2"><Search className="w-5 h-5 text-slate-400" /></div>
+            <div className="flex flex-col md:flex-row gap-4 mb-6 items-center justify-between">
+              <div className="relative flex-1 w-full">
+                <input type="text" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} placeholder={t.searchPlaceholder} className="w-full pl-12 pr-4 py-2.5 text-base bg-white border border-slate-300 rounded-xl shadow-md focus:outline-none focus:ring-2 focus:ring-indigo-600" />
+                <div className="absolute left-4 top-1/2 -translate-y-1/2"><Search className="w-5 h-5 text-slate-400" /></div>
+              </div>
+              <button
+                onClick={exportToExcel}
+                className="flex items-center justify-center gap-2 px-6 py-2.5 bg-green-600 text-white rounded-xl hover:bg-green-700 transition shadow-md font-bold whitespace-nowrap"
+              >
+                <FileText className="w-5 h-5" /> Export Excel
+              </button>
             </div>
           )}
           {renderContent()}
@@ -647,7 +699,7 @@ interface DeleteModalProps {
 const DeleteModal: React.FC<DeleteModalProps> = ({ startup, onClose, onDelete, t }) => {
   const [confirmText, setConfirmText] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
-  const isConfirmed = confirmText === "CONFIRM";
+  const isConfirmed = confirmText === "confirm delete";
 
   const handleDelete = async () => {
     if (!isConfirmed) return;
@@ -674,7 +726,7 @@ const DeleteModal: React.FC<DeleteModalProps> = ({ startup, onClose, onDelete, t
           <p className="text-md text-slate-700 font-semibold">**{startup.company_name}**</p>
           <p className="text-sm text-red-600 font-medium"><AlertTriangle className="w-4 h-4 inline mr-1" />{t.deleteWarning}</p>
           <p className="text-sm text-slate-600">{t.deleteConfirmText}</p>
-          <input type="text" value={confirmText} onChange={(e) => setConfirmText(e.target.value)} className="w-full px-4 py-2 text-sm bg-white border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500" placeholder="CONFIRM" />
+          <input type="text" value={confirmText} onChange={(e) => setConfirmText(e.target.value)} className="w-full px-4 py-2 text-sm bg-white border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500" placeholder="confirm delete" />
         </div>
         <div className="flex justify-end items-center gap-3 p-6 bg-slate-50 border-t rounded-b-xl">
           <button type="button" onClick={onClose} disabled={isDeleting} className="px-5 py-2.5 border border-slate-300 text-sm font-medium rounded-xl shadow-sm text-slate-700 bg-white hover:bg-slate-100 transition">{t.cancel}</button>
