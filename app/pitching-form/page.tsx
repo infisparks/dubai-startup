@@ -17,11 +17,10 @@ import {
 import { supabase } from "@/lib/supabaseConfig"
 
 // --- Constants ---
-// CHANGE THIS TO YOUR DEPLOYED BACKEND URL IN PRODUCTION
 const API_URL = "https://pay.infispark.in";
 
 // --- Types ---
-interface FounderProfileData {
+interface PitchingProfileData {
     company_name: string;
     stage: string;
     pitch_deck_url: string | null;
@@ -42,7 +41,7 @@ interface FounderProfileData {
     is_approved: boolean;
     email: string;
     reference: string | null;
-    payment_status: string; // Added payment_status
+    payment_status: string;
 }
 
 type Translations = {
@@ -142,11 +141,10 @@ type Translations = {
 
 type PitchDeckMode = 'file' | 'url';
 
-export default function FounderFormPage() {
+export default function PitchingFormPage() {
     // --- State Logic ---
     const [session, setSession] = useState<Session | null>(null)
     const [user, setUser] = useState<SupabaseUser | null>(null)
-    const [userRole, setUserRole] = useState<string | null>(null)
     const [loadingSession, setLoadingSession] = useState(true)
     const [loadingData, setLoadingData] = useState(false)
     const [showAuthPopup, setShowAuthPopup] = useState(false)
@@ -160,7 +158,6 @@ export default function FounderFormPage() {
     const [paymentStatus, setPaymentStatus] = useState<string>("unpaid")
     const [paymentSessionId, setPaymentSessionId] = useState<string | null>(null)
     const [paidAt, setPaidAt] = useState<string | null>(null)
-    const [isGala, setIsGala] = useState(false)
 
     const [step, setStep] = useState(1)
     const [language, setLanguage] = useState<"en" | "ar">("en")
@@ -192,47 +189,43 @@ export default function FounderFormPage() {
     // --- Effects & Fetching ---
     const fetchUserData = useCallback(async (currentUser: SupabaseUser) => {
         setLoadingData(true);
-        const { data: profileData } = await supabase.from('profiles').select('role').eq('id', currentUser.id).single();
-        setUserRole(profileData?.role || null);
+        const { data: pitchingProfile } = await supabase.from('pitching_profiles').select('*').eq('user_id', currentUser.id).single();
 
-        const { data: founderProfile } = await supabase.from('founder_profiles').select('*').eq('user_id', currentUser.id).single();
-
-        if (founderProfile) {
+        if (pitchingProfile) {
             setHasExistingProfile(true);
-            setIsApproved(founderProfile.is_approved);
-            setPaymentStatus(founderProfile.payment_status || 'unpaid'); // Set Payment Status
-            setPaymentSessionId(founderProfile.stripe_session_id || null);
-            setPaidAt(founderProfile.paid_at || null);
-            setIsGala(founderProfile.is_gala || false);
+            setIsApproved(pitchingProfile.is_approved);
+            setPaymentStatus(pitchingProfile.payment_status || 'unpaid');
+            setPaymentSessionId(pitchingProfile.stripe_session_id || null);
+            setPaidAt(pitchingProfile.paid_at || null);
             setStep(0);
-            const storedUrl = founderProfile.pitch_deck_url;
-            if (storedUrl && storedUrl.startsWith('http') && !storedUrl.includes(process.env.NEXT_PUBLIC_SUPABASE_URL || '')) {
+            const storedUrl = pitchingProfile.pitch_deck_url;
+            if (storedUrl && storedUrl.startsWith('http')) {
                 setPitchDeckMode('url');
             } else {
                 setPitchDeckMode('file');
             }
             setFormData((prev) => ({
                 ...prev,
-                companyName: founderProfile.company_name || '',
-                stage: founderProfile.stage || '',
+                companyName: pitchingProfile.company_name || '',
+                stage: pitchingProfile.stage || '',
                 pitchDeckUrl: storedUrl,
-                companyLinkedin: founderProfile.company_linkedin || '',
-                website: founderProfile.website || '',
-                description: founderProfile.description || '',
-                founderName: founderProfile.founder_name || '',
-                founderEmail: founderProfile.email || currentUser.email!,
-                founderPhone: founderProfile.founder_phone || '',
-                domain: founderProfile.domain || '',
-                domainOtherSpec: founderProfile.domain_other_spec || '',
-                problemDescription: founderProfile.problem_description || '',
-                earningStatus: founderProfile.earning_status || '',
-                establishmentYear: founderProfile.establishment_year || '',
-                turnover: founderProfile.turnover || '',
-                netProfit: founderProfile.net_profit || '',
-                itReturnsFiled: founderProfile.it_returns_filed || false,
-                isAudited: founderProfile.is_audited || false,
-                reference: founderProfile.reference && ["Kishan Verma", "Sanjay Bhamari", "Farid Ahmed", "Abdulmajid", "Ideabaaz", "Marwadi Catalyst", "Rehbar"].includes(founderProfile.reference) ? founderProfile.reference : (founderProfile.reference ? "Other" : ""),
-                referenceOther: founderProfile.reference && !["Kishan Verma", "Sanjay Bhamari", "Farid Ahmed", "Abdulmajid", "Ideabaaz", "Marwadi Catalyst", "Rehbar"].includes(founderProfile.reference) ? founderProfile.reference : "",
+                companyLinkedin: pitchingProfile.company_linkedin || '',
+                website: pitchingProfile.website || '',
+                description: pitchingProfile.description || '',
+                founderName: pitchingProfile.founder_name || '',
+                founderEmail: pitchingProfile.email || currentUser.email!,
+                founderPhone: pitchingProfile.founder_phone || '',
+                domain: pitchingProfile.domain || '',
+                domainOtherSpec: pitchingProfile.domain_other_spec || '',
+                problemDescription: pitchingProfile.problem_description || '',
+                earningStatus: pitchingProfile.earning_status || '',
+                establishmentYear: pitchingProfile.establishment_year || '',
+                turnover: pitchingProfile.turnover || '',
+                netProfit: pitchingProfile.net_profit || '',
+                itReturnsFiled: pitchingProfile.it_returns_filed || false,
+                isAudited: pitchingProfile.is_audited || false,
+                reference: pitchingProfile.reference && ["Kishan Verma", "Sanjay Bhamari", "Farid Ahmed", "Abdulmajid", "Ideabaaz", "Marwadi Catalyst", "Rehbar"].includes(pitchingProfile.reference) ? pitchingProfile.reference : (pitchingProfile.reference ? "Other" : ""),
+                referenceOther: pitchingProfile.reference && !["Kishan Verma", "Sanjay Bhamari", "Farid Ahmed", "Abdulmajid", "Ideabaaz", "Marwadi Catalyst", "Rehbar"].includes(pitchingProfile.reference) ? pitchingProfile.reference : "",
             }));
         } else {
             setHasExistingProfile(false);
@@ -247,13 +240,6 @@ export default function FounderFormPage() {
             const currentUser = session?.user ?? null;
             setSession(session);
             setUser(currentUser);
-
-            // Check if returned from Stripe successfully
-            const params = new URLSearchParams(window.location.search);
-            if (params.get('success') === 'true') {
-                // You might want to show a toast/alert here
-                console.log("Payment successful, refreshing data...");
-            }
 
             if (currentUser) {
                 setFormData(prev => ({ ...prev, founderEmail: currentUser.email! }));
@@ -278,13 +264,11 @@ export default function FounderFormPage() {
                     fetchUserData(currentUser);
                 } else if (event === "SIGNED_OUT") {
                     setNeedsVerification(false);
-                    setUserRole(null);
                     setIsApproved(false);
                     setPaymentStatus('unpaid');
                     setHasExistingProfile(false);
                     setStep(1);
                     setPitchDeckMode('file');
-                    // Reset form...
                 }
             }
         );
@@ -302,8 +286,8 @@ export default function FounderFormPage() {
     const t = useMemo(() => {
         const translations = {
             en: {
-                title: "Startup Application",
-                subtitle: "Get funding for your innovative startup",
+                title: "Startup Pitching Registration",
+                subtitle: "Apply for a 10-minute slot to pitch your startup to investors",
                 startupInfo: "Startup Information",
                 founderDetails: "Founder & Legal",
                 financialDetails: "Financial Details",
@@ -357,18 +341,18 @@ export default function FounderFormPage() {
                     netProfit: "e.g. 50,000 USD",
                     year: "YYYY",
                 },
-                ready: "Ready to launch?",
-                readyDesc: "Our team reviews applications daily. We'll be in touch shortly.",
+                ready: "Ready to pitch?",
+                readyDesc: "Our team reviews pitching applications daily.",
                 status: {
                     title: "Application Status",
                     notSubmitted: "Not Submitted",
                     pending: "Under Review",
                     approved: "Approved",
-                    notApprovedDesc: "Your application is currently being reviewed by our investment team.",
-                    approvedDesc: "Your startup has been approved for the next stage.",
+                    notApprovedDesc: "Your pitching application is currently being reviewed.",
+                    approvedDesc: "Your pitching application has been approved! Please proceed with payment to confirm your slot.",
                     viewDetails: "Application Details",
-                    qrTitle: "Startup ID Pass",
-                    qrDesc: "Scan to verify your startup identity",
+                    qrTitle: "Pitching ID Pass",
+                    qrDesc: "Scan to verify your pitching slot",
                     clickToDownload: "Click card to download",
                 },
                 authError: "Authentication error: Please try logging in again.",
@@ -377,7 +361,7 @@ export default function FounderFormPage() {
                 updateSuccess: "Application updated successfully!",
                 submitError: "An error occurred: ",
                 loginRequired: "Authentication Required",
-                loginRequiredDesc: "Please login to access the founder application.",
+                loginRequiredDesc: "Please login to access the pitching registration.",
                 roleMismatch: "Access Denied",
                 roleMismatchDesc: "Your account is registered as an Investor.",
                 login: "Login / Sign Up",
@@ -390,14 +374,14 @@ export default function FounderFormPage() {
                 referenceOptions: ["Kishan Verma", "Sanjay Bhamari", "Farid Ahmed", "Abdulmajid", "Ideabaaz", "Marwadi Catalyst", "Rehbar", "Other"],
                 thankYou: {
                     title: "Registration Successful!",
-                    message: "Thank you for registering. Your application has been received successfully.",
-                    subMessage: "You can now proceed to the payment step to complete your verification.",
+                    message: "Thank you for registering for pitching. Your application has been received successfully.",
+                    subMessage: "You can now proceed to the payment step to confirm your 10-minute presentation slot.",
                     close: "Close"
                 }
             },
             ar: {
-                title: "طلب الشركة الناشئة",
-                subtitle: "احصل على تمويل لشركتك الناشئة المبتكرة",
+                title: "تسجيل عرض الشركة الناشئة",
+                subtitle: "تقدم بطلب للحصول على فتحة مدتها 10 دقائق لعرض شركتك الناشئة على المستثمرين",
                 startupInfo: "معلومات الشركة الناشئة",
                 founderDetails: "تفاصيل المؤسس",
                 financialDetails: "التفاصيل المالية",
@@ -451,18 +435,18 @@ export default function FounderFormPage() {
                     netProfit: "مثال: 5 آلاف",
                     year: "السنة",
                 },
-                ready: "هل أنت مستعد للإطلاق؟",
-                readyDesc: "يراجع فريقنا الطلبات يوميًا.",
+                ready: "هل أنت مستعد للعرض؟",
+                readyDesc: "يراجع فريقنا طلبات العرض يوميًا.",
                 status: {
                     title: "حالة الطلب",
                     notSubmitted: "لم يتم تقديم الطلب",
                     pending: "الطلب قيد المراجعة",
                     approved: "تمت الموافقة",
-                    notApprovedDesc: "يتم حاليًا مراجعة طلبك.",
-                    approvedDesc: "تمت الموافقة على شركتك الناشئة.",
+                    notApprovedDesc: "يتم حاليًا مراجعة طلب العرض الخاص بك.",
+                    approvedDesc: "تمت الموافقة على طلب العرض الخاص بك! يرجى المتابعة لإتمام الدفع لتأكيد مكانك.",
                     viewDetails: "تفاصيل الطلب",
-                    qrTitle: "بطاقة هوية الشركة الناشئة",
-                    qrDesc: "امسح للتحقق من هوية شركتك الناشئة",
+                    qrTitle: "بطاقة هوية العرض",
+                    qrDesc: "امسح للتحقق من مكان العرض الخاص بك",
                     clickToDownload: "انقر فوق البطاقة للتنزيل",
                 },
                 authError: "خطأ في المصادقة.",
@@ -484,8 +468,8 @@ export default function FounderFormPage() {
                 referenceOptions: ["كيشان فيرما", "سانجاي بهاماري", "فريد أحمد", "عبد المجيد", "أيديا باز", "ماروادي كاتاليست", "رهبار", "أخرى"],
                 thankYou: {
                     title: "تم التسجيل بنجاح!",
-                    message: "شكراً لتسجيلك. تم استلام طلبك بنجاح.",
-                    subMessage: "يمكنك الآن المتابعة إلى خطوة الدفع لإكمال التحقق.",
+                    message: "شكراً لتسجيلك في العرض. تم استلام طلبك بنجاح.",
+                    subMessage: "يمكنك الآن المتابعة إلى خطوة الدفع لتأكيد مكانك في العرض التقديمي لمدة 10 دقائق.",
                     close: "إغلاق"
                 }
             },
@@ -546,7 +530,7 @@ export default function FounderFormPage() {
     const uploadPitchDeck = async (file: File, userId: string) => {
         const fileExt = file.name.split('.').pop();
         const filePath = `${userId}/${Date.now()}.${fileExt}`;
-        const { data, error } = await supabase.storage.from('pitchdecks').upload(filePath, file, { cacheControl: '3600', upsert: false });
+        const { data, error } = await supabase.storage.from('pitchdecks').upload(filePath, file);
         if (error) throw error;
         const { data: urlData } = supabase.storage.from('pitchdecks').getPublicUrl(filePath);
         return urlData.publicUrl;
@@ -572,7 +556,7 @@ export default function FounderFormPage() {
                 return;
             }
 
-            const submissionData: Omit<FounderProfileData, 'is_approved' | 'payment_status'> = {
+            const submissionData = {
                 company_name: formData.companyName,
                 stage: formData.stage,
                 pitch_deck_url: finalPitchUrl,
@@ -596,15 +580,14 @@ export default function FounderFormPage() {
 
             let error;
             if (hasExistingProfile) {
-                const result = await supabase.from('founder_profiles').update({ ...submissionData, is_approved: true }).eq('user_id', user.id).select();
+                const result = await supabase.from('pitching_profiles').update({ ...submissionData, is_approved: true }).eq('user_id', user.id);
                 error = result.error;
             } else {
-                const result = await supabase.from('founder_profiles').insert({ user_id: user.id, ...submissionData, is_approved: true }).select();
+                const result = await supabase.from('pitching_profiles').insert({ user_id: user.id, ...submissionData, is_approved: true });
                 error = result.error;
             }
             if (error) throw error;
 
-            // Update URL without reload to show Thank You Popup
             const newUrl = new URL(window.location.href);
             newUrl.searchParams.set('done', 'registration');
             window.history.pushState({}, '', newUrl);
@@ -655,13 +638,11 @@ export default function FounderFormPage() {
                     paymentStatus={paymentStatus}
                     formData={formData}
                     setStep={setStep}
-                    canEdit={!isApproved}
+                    canEdit={!isApproved && paymentStatus !== 'paid'}
                     userId={user.id}
                     userEmail={user.email!}
                     paymentSessionId={paymentSessionId}
                     paidAt={paidAt}
-                    isGala={isGala}
-                    setIsGala={setIsGala}
                 />
             );
         }
@@ -847,7 +828,7 @@ const FormView: React.FC<any> = ({ t, step, formData, pitchDeckMode, handleInput
                                                     </div>
                                                     {isFileSelected ? (
                                                         <div className="flex items-center justify-center gap-2 text-sm font-medium text-[#740001]">
-                                                            <FileText className="w-4 h-4" /> {formData.pitchDeckFile.name}
+                                                            <FileText className="w-4 h-4" /> {formData.pitchDeckFile?.name}
                                                         </div>
                                                     ) : (
                                                         <>
@@ -856,9 +837,6 @@ const FormView: React.FC<any> = ({ t, step, formData, pitchDeckMode, handleInput
                                                         </>
                                                     )}
                                                 </label>
-                                                {formData.pitchDeckUrl && !isFileSelected && (
-                                                    <p className="text-xs text-green-600 mt-2 flex items-center gap-1"><CheckCircle2 className="w-3 h-3" /> Current file on server.</p>
-                                                )}
                                             </div>
                                         ) : (
                                             <div className="relative">
@@ -1010,11 +988,10 @@ const FormView: React.FC<any> = ({ t, step, formData, pitchDeckMode, handleInput
     );
 };
 
-// --- Status View (Vertical + Payment Logic) ---
-const StatusView: React.FC<any> = ({ t, isApproved, paymentStatus, formData, setStep, canEdit, userId, userEmail, paymentSessionId, paidAt, isGala, setIsGala }) => {
+// --- Status View ---
+const StatusView: React.FC<any> = ({ t, isApproved, paymentStatus, formData, setStep, canEdit, userId, userEmail, paymentSessionId, paidAt }) => {
     const isPaid = paymentStatus === 'paid';
 
-    // Status Logic
     let statusColor = "bg-amber-50 text-amber-700 border-amber-200";
     let statusIcon = <TrendingUp className="w-5 h-5" />;
     let statusTitle = t.status.pending;
@@ -1030,14 +1007,13 @@ const StatusView: React.FC<any> = ({ t, isApproved, paymentStatus, formData, set
             statusColor = "bg-blue-50 text-blue-700 border-blue-200";
             statusIcon = <DollarSign className="w-5 h-5" />;
             statusTitle = "Application Approved - Payment Required";
-            statusDesc = "Your application has been accepted. Please complete the payment to receive your Founder Pass.";
+            statusDesc = "Your application for pitching has been approved! Please complete the payment to confirm your 10-minute presentation slot.";
         }
     }
 
     const badgeRef = useRef<HTMLDivElement>(null);
     const [processingPayment, setProcessingPayment] = useState(false);
 
-    // --- Payment Handler ---
     const handlePayNow = async () => {
         setProcessingPayment(true);
         try {
@@ -1048,21 +1024,17 @@ const StatusView: React.FC<any> = ({ t, isApproved, paymentStatus, formData, set
                     userId: userId,
                     email: userEmail,
                     companyName: formData.companyName,
-                    isGala: isGala,
-                    type: 'founder',
-                    success_url: "https://www.investariseglobal.com/founder-form?success=true",
-                    cancel_url: "https://www.investariseglobal.com/founder-form?canceled=true"
+                    type: 'pitching',
+                    success_url: "https://www.investariseglobal.com/pitching-form?success=true",
+                    cancel_url: "https://www.investariseglobal.com/pitching-form?canceled=true"
                 }),
             });
             const data = await response.json();
-            if (data.url) {
-                window.location.href = data.url;
-            } else {
-                alert("Failed to initiate payment");
-            }
+            if (data.url) window.location.href = data.url;
+            else alert("Failed to initiate payment");
         } catch (error) {
             console.error(error);
-            alert("Error connecting to payment server. Make sure the Node.js backend is running.");
+            alert("Error connecting to payment server.");
         } finally {
             setProcessingPayment(false);
         }
@@ -1070,36 +1042,14 @@ const StatusView: React.FC<any> = ({ t, isApproved, paymentStatus, formData, set
 
     const handleDownloadBadge = async () => {
         if (!badgeRef.current || !isApproved) return;
-
         try {
-            await new Promise(resolve => setTimeout(resolve, 200));
-
-            const canvas = await html2canvas(badgeRef.current, {
-                scale: 4,
-                useCORS: true,
-                allowTaint: true,
-                backgroundColor: null,
-                logging: false,
-                scrollY: -window.scrollY,
-                onclone: (clonedDoc) => {
-                    const element = clonedDoc.getElementById('badge-content');
-                    if (element) {
-                        element.style.height = 'auto';
-                        element.style.visibility = 'visible';
-                        element.style.transform = 'none';
-                    }
-                }
-            });
-
+            const canvas = await html2canvas(badgeRef.current, { scale: 4, useCORS: true, allowTaint: true, backgroundColor: null });
             const image = canvas.toDataURL("image/png", 1.0);
             const link = document.createElement("a");
             link.href = image;
-            link.download = `Investarise-Pass-${formData.founderName.replace(/\s+/g, '-')}.png`;
+            link.download = `Pitching-Pass-${formData.founderName.replace(/\s+/g, '-')}.png`;
             link.click();
-        } catch (error) {
-            console.error("Error generating badge:", error);
-            alert("Could not download badge. Please try again.");
-        }
+        } catch (error) { console.error(error); }
     };
 
     const DataItem = ({ label, value, link }: { label: string, value: string, link?: boolean }) => (
@@ -1115,18 +1065,6 @@ const StatusView: React.FC<any> = ({ t, isApproved, paymentStatus, formData, set
         </div>
     );
 
-    const BooleanItem = ({ label, value }: { label: string, value: boolean }) => (
-        <div className="flex flex-col">
-            <dt className="text-xs text-slate-500 uppercase tracking-wide font-medium mb-1">{label}</dt>
-            <dd className="flex items-center gap-2">
-                <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${value ? 'bg-green-100 text-green-800' : 'bg-slate-100 text-slate-600'}`}>
-                    {value ? <FileCheck className="w-3 h-3 mr-1" /> : <XCircle className="w-3 h-3 mr-1" />}
-                    {value ? t.yes : t.no}
-                </span>
-            </dd>
-        </div>
-    );
-
     return (
         <div className="space-y-6">
             <div className={`p-6 rounded-xl border ${statusColor} flex flex-col md:flex-row items-start md:items-center gap-4`}>
@@ -1135,40 +1073,23 @@ const StatusView: React.FC<any> = ({ t, isApproved, paymentStatus, formData, set
                     <h3 className="font-bold text-base mb-1">{statusTitle}</h3>
                     <p className="text-sm opacity-90">{statusDesc}</p>
                 </div>
-                {/* Pay Button Logic */}
                 {isApproved && !isPaid && (
-                    <div className="flex flex-col gap-4 w-full md:w-auto">
-                        <label className="flex items-center gap-2 bg-white/50 p-3 rounded-lg border border-slate-200 cursor-pointer hover:bg-white/80 transition-colors">
-                            <input
-                                type="checkbox"
-                                checked={isGala}
-                                onChange={(e) => setIsGala(e.target.checked)}
-                                className="w-4 h-4 text-[#740001] focus:ring-[#740001] border-slate-300 rounded"
-                            />
-                            <div className="flex flex-col">
-                                <span className="text-sm font-bold text-slate-800">Include Gala Dinner</span>
-                                <span className="text-xs text-slate-500">Add networking dinner for +$500.00</span>
-                            </div>
-                        </label>
-                        <button
-                            onClick={handlePayNow}
-                            disabled={processingPayment}
-                            className="bg-[#740001] text-white px-5 py-2.5 rounded-lg text-sm font-bold hover:bg-[#940200] transition-colors shadow-md flex items-center gap-2 w-full justify-center"
-                        >
-                            {processingPayment ? <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div> : <CreditCard className="w-4 h-4" />}
-                            Pay ${isGala ? '1000.00' : '500.00'}
-                        </button>
-                    </div>
+                    <button
+                        onClick={handlePayNow}
+                        disabled={processingPayment}
+                        className="bg-[#740001] text-white px-5 py-2.5 rounded-lg text-sm font-bold hover:bg-[#940200] transition-colors shadow-md flex items-center gap-2 w-full md:w-auto justify-center"
+                    >
+                        {processingPayment ? <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div> : <CreditCard className="w-4 h-4" />}
+                        Pay $2500.00
+                    </button>
                 )}
             </div>
 
-            {/* ONLY SHOW BADGE IF PAID */}
-            {isApproved && isPaid && userId && (
+            {isApproved && isPaid && (
                 <div className="flex flex-col items-center space-y-6 py-6 animate-fadeIn">
                     <div
                         onClick={handleDownloadBadge}
                         className="group relative w-full max-w-[340px] cursor-pointer transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl"
-                        title={t.status.clickToDownload}
                     >
                         <div
                             ref={badgeRef}
@@ -1188,146 +1109,32 @@ const StatusView: React.FC<any> = ({ t, isApproved, paymentStatus, formData, set
                             }}
                         >
                             <div style={{ position: 'absolute', top: '-100px', left: '-50px', width: '300px', height: '300px', background: 'radial-gradient(circle, rgba(197,160,89,0.1) 0%, rgba(0,0,0,0) 70%)', borderRadius: '50%', pointerEvents: 'none' }}></div>
-                            <div style={{
-                                padding: '30px 20px 20px 20px',
-                                textAlign: 'center',
-                                borderBottom: '1px solid rgba(255,255,255,0.1)',
-                                position: 'relative',
-                                zIndex: 10
-                            }}>
-                                <h5 style={{
-                                    color: '#94a3b8',
-                                    fontSize: '10px',
-                                    letterSpacing: '0.2em',
-                                    textTransform: 'uppercase',
-                                    margin: '0 0 8px 0'
-                                }}>
-                                    Official Event Pass
-                                </h5>
-                                <h2 style={{
-                                    color: '#C5A059',
-                                    fontSize: '22px',
-                                    fontWeight: '900',
-                                    textTransform: 'uppercase',
-                                    letterSpacing: '0.05em',
-                                    lineHeight: '1.2',
-                                    margin: 0,
-                                    textShadow: '0 2px 10px rgba(197,160,89,0.3)'
-                                }}>
-                                    INVESTARISE<br />GLOBAL
-                                </h2>
+                            <div style={{ padding: '30px 20px 20px 20px', textAlign: 'center', borderBottom: '1px solid rgba(255,255,255,0.1)', position: 'relative', zIndex: 10 }}>
+                                <h5 style={{ color: '#94a3b8', fontSize: '10px', letterSpacing: '0.2em', textTransform: 'uppercase', margin: '0 0 8px 0' }}>Official Pitching Pass</h5>
+                                <h2 style={{ color: '#C5A059', fontSize: '22px', fontWeight: '900', textTransform: 'uppercase', letterSpacing: '0.05em', lineHeight: '1.2', margin: 0 }}>INVESTARISE<br />GLOBAL</h2>
                             </div>
-                            <div style={{
-                                flex: 1,
-                                display: 'flex',
-                                flexDirection: 'column',
-                                justifyContent: 'center',
-                                padding: '30px 24px',
-                                textAlign: 'center',
-                                position: 'relative',
-                                zIndex: 10
-                            }}>
-                                <div style={{
-                                    width: '180px',
-                                    padding: '12px',
-                                    margin: '0 auto 24px auto',
-                                    borderRadius: '12px',
-                                    border: '2px solid #C5A059',
-                                    background: 'rgba(255, 255, 255, 0.03)',
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    boxShadow: '0 4px 20px rgba(0,0,0,0.2)'
-                                }}>
-                                    <img
-                                        src="/logo-white.png"
-                                        alt="Logo"
-                                        style={{
-                                            width: '100%',
-                                            height: 'auto',
-                                            objectFit: 'contain'
-                                        }}
-                                    />
+                            <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '30px 24px', textAlign: 'center', position: 'relative', zIndex: 10 }}>
+                                <div style={{ width: '180px', padding: '12px', margin: '0 auto 24px auto', borderRadius: '12px', border: '2px solid #C5A059', background: 'rgba(255, 255, 255, 0.03)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                    <img src="/logo-white.png" alt="Logo" style={{ width: '100%', height: 'auto', objectFit: 'contain' }} />
                                 </div>
-                                <h1 style={{
-                                    color: '#ffffff',
-                                    fontSize: '28px',
-                                    fontWeight: '800',
-                                    margin: '0 0 8px 0',
-                                    lineHeight: '1.2',
-                                    wordWrap: 'break-word',
-                                    textTransform: 'uppercase'
-                                }}>
-                                    {formData.founderName}
-                                </h1>
-                                <p style={{
-                                    color: '#cbd5e1',
-                                    fontSize: '16px',
-                                    fontWeight: '500',
-                                    margin: '0 0 20px 0',
-                                    opacity: 0.9,
-                                    textTransform: 'uppercase'
-                                }}>
-                                    {formData.companyName}
-                                </p>
-                                <div style={{ display: 'flex', justifyContent: 'center' }}>
-                                    <span style={{
-                                        color: '#C5A059',
-                                        fontSize: '14px',
-                                        fontWeight: 'bold',
-                                        textTransform: 'uppercase',
-                                        letterSpacing: '0.05em'
-                                    }}>
-                                        Founder Access {isGala && "+ Gala Dinner"}
-                                    </span>
-                                </div>
+                                <h1 style={{ color: '#ffffff', fontSize: '28px', fontWeight: '800', margin: '0 0 8px 0', textTransform: 'uppercase' }}>{formData.founderName}</h1>
+                                <p style={{ color: '#cbd5e1', fontSize: '16px', fontWeight: '500', margin: '0 0 20px 0', textTransform: 'uppercase' }}>{formData.companyName}</p>
+                                <span style={{ color: '#C5A059', fontSize: '14px', fontWeight: 'bold', textTransform: 'uppercase' }}>Pitching Slot Confirmed</span>
                             </div>
-                            <div style={{
-                                background: '#ffffff',
-                                padding: '25px 20px',
-                                borderTop: '4px solid #C5A059',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'space-between',
-                                position: 'relative',
-                                zIndex: 10
-                            }}>
+                            <div style={{ background: '#ffffff', padding: '25px 20px', borderTop: '4px solid #C5A059', display: 'flex', alignItems: 'center', justifyContent: 'space-between', position: 'relative', zIndex: 10 }}>
                                 <div style={{ textAlign: 'left' }}>
-                                    <p style={{ color: '#64748b', fontSize: '9px', textTransform: 'uppercase', fontWeight: 'bold', margin: '0 0 2px 0' }}>
-                                        Event Date
-                                    </p>
-                                    <p style={{ color: '#0f172a', fontSize: '12px', fontWeight: 'bold', margin: '0 0 10px 0' }}>
-                                        FEB 2026
-                                    </p>
-                                    <p style={{ color: '#64748b', fontSize: '9px', textTransform: 'uppercase', fontWeight: 'bold', margin: '0 0 2px 0' }}>
-                                        Pass ID
-                                    </p>
-                                    <p style={{ color: '#0f172a', fontSize: '11px', fontFamily: 'monospace', margin: 0 }}>
-                                        {userId.slice(0, 8)}
-                                    </p>
+                                    <p style={{ color: '#64748b', fontSize: '9px', textTransform: 'uppercase', fontWeight: 'bold', margin: '0 0 2px 0' }}>Event Date</p>
+                                    <p style={{ color: '#0f172a', fontSize: '12px', fontWeight: 'bold', margin: '0 0 10px 0' }}>FEB 2026</p>
+                                    <p style={{ color: '#64748b', fontSize: '9px', textTransform: 'uppercase', fontWeight: 'bold', margin: '0 0 2px 0' }}>Pass ID</p>
+                                    <p style={{ color: '#0f172a', fontSize: '11px', fontFamily: 'monospace', margin: 0 }}>{userId.slice(0, 8)}</p>
                                 </div>
-                                <div style={{
-                                    padding: '4px',
-                                    border: '1px solid #e2e8f0',
-                                    borderRadius: '8px'
-                                }}>
+                                <div style={{ padding: '4px', border: '1px solid #e2e8f0', borderRadius: '8px' }}>
                                     <QRCode value={userId} size={80} fgColor="#000000" bgColor="#ffffff" />
                                 </div>
                             </div>
                         </div>
-
-                        <div className="absolute inset-0 rounded-2xl flex items-center justify-center bg-slate-900/60 opacity-0 transition-opacity duration-200 group-hover:opacity-100 backdrop-blur-[2px]">
-                            <div className="bg-white/10 border border-white/20 backdrop-blur-md px-6 py-3 rounded-full shadow-2xl">
-                                <p className="flex items-center gap-2 text-sm font-bold text-white tracking-wide">
-                                    <Download className="h-4 w-4" /> Save to Device
-                                </p>
-                            </div>
-                        </div>
                     </div>
-
-                    <p className="text-xs text-slate-400 flex items-center gap-1">
-                        <Download className="w-3 h-3" /> {t.status.clickToDownload}
-                    </p>
+                    <p className="text-xs text-slate-400 flex items-center gap-1"><Download className="w-3 h-3" /> Click card to download</p>
                 </div>
             )}
 
@@ -1343,59 +1150,11 @@ const StatusView: React.FC<any> = ({ t, isApproved, paymentStatus, formData, set
                 <div className="p-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-y-6 gap-x-8">
                         <DataItem label={t.companyName} value={formData.companyName} />
-                        <DataItem label={t.establishmentYear} value={String(formData.establishmentYear)} />
                         <DataItem label={t.website} value={formData.website} link />
-                        <DataItem label={t.stage} value={formData.stage} />
-                        <DataItem label={t.earningStatus} value={formData.earningStatus} />
-                        <DataItem label={t.domain} value={formData.domain === 'Other' ? `${formData.domain} (${formData.domainOtherSpec})` : formData.domain} />
-                        <DataItem label="Pass Type" value={isGala ? "Founder + Gala Dinner" : "Founder Pass (Standard)"} />
-
-                        <div className="md:col-span-2 grid grid-cols-2 md:grid-cols-4 gap-6 bg-slate-50 p-4 rounded-lg border border-slate-100">
-                            <DataItem label={t.turnover} value={formData.turnover} />
-                            <DataItem label={t.netProfit} value={formData.netProfit} />
-                            <BooleanItem label={t.itFiled} value={formData.itReturnsFiled} />
-                            <BooleanItem label={t.audited} value={formData.isAudited} />
-                        </div>
-
                         <DataItem label={t.founderName} value={formData.founderName} />
                         <DataItem label={t.email} value={formData.founderEmail} />
                         <DataItem label="Payment Status" value={paymentStatus.toUpperCase()} />
                         {isPaid && paidAt && <DataItem label="Payment Date" value={new Date(paidAt).toLocaleString()} />}
-                        {isPaid && paymentSessionId && (
-                            <div className="flex flex-col">
-                                <dt className="text-xs text-slate-500 uppercase tracking-wide font-medium mb-1">Transaction ID</dt>
-                                <dd className="flex items-center gap-2">
-                                    <span className="text-sm font-medium text-slate-900 font-mono bg-slate-100 px-2 py-1 rounded">
-                                        {paymentSessionId.slice(0, 10)}...
-                                    </span>
-                                    <button
-                                        onClick={() => {
-                                            navigator.clipboard.writeText(paymentSessionId);
-                                            alert("Transaction ID Copied!");
-                                        }}
-                                        className="text-xs text-indigo-600 hover:text-indigo-800 font-medium border border-indigo-200 px-2 py-1 rounded hover:bg-indigo-50 transition-colors"
-                                    >
-                                        Copy
-                                    </button>
-                                </dd>
-                            </div>
-                        )}
-
-                        <div className="flex flex-col">
-                            <dt className="text-xs text-slate-500 uppercase tracking-wide font-medium mb-1">{t.pitchDeck}</dt>
-                            <dd>
-                                <a href={formData.pitchDeckUrl || '#'} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#740001]/5 text-[#740001] rounded text-xs font-bold hover:bg-[#740001]/10 transition-colors">
-                                    <FileText className="w-3 h-3" /> View Document
-                                </a>
-                            </dd>
-                        </div>
-
-                        <div className="md:col-span-2 pt-2 border-t border-slate-100">
-                            <dt className="text-xs text-slate-500 uppercase tracking-wide font-medium mb-2 mt-4">{t.problemDescription}</dt>
-                            <dd className="text-sm text-slate-700 leading-relaxed whitespace-pre-wrap bg-slate-50 p-3 rounded-lg border border-slate-100">
-                                {formData.problemDescription}
-                            </dd>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -1415,17 +1174,10 @@ const ThankYouPopup = ({ onClose, t }: { onClose: () => void, t: Translations })
                 </div>
                 <h2 className="text-2xl font-bold text-slate-900 mb-3">{t.thankYou.title}</h2>
                 <div className="space-y-2 mb-8">
-                    <p className="text-slate-600 text-base font-medium">
-                        {t.thankYou.message}
-                    </p>
-                    <p className="text-slate-500 text-sm">
-                        {t.thankYou.subMessage}
-                    </p>
+                    <p className="text-slate-600 text-base font-medium">{t.thankYou.message}</p>
+                    <p className="text-slate-500 text-sm">{t.thankYou.subMessage}</p>
                 </div>
-                <button
-                    onClick={onClose}
-                    className="w-full py-3.5 bg-[#740001] text-white rounded-xl font-bold shadow-lg shadow-[#740001]/20 hover:bg-[#940200] hover:scale-[1.02] active:scale-[0.98] transition-all duration-200"
-                >
+                <button onClick={onClose} className="w-full py-3.5 bg-[#740001] text-white rounded-xl font-bold shadow-lg shadow-[#740001]/20 hover:bg-[#940200] hover:scale-[1.02] active:scale-[0.98] transition-all duration-200">
                     {t.thankYou.close}
                 </button>
             </div>

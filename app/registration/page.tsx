@@ -33,6 +33,11 @@ type Translations = {
         desc: string;
         cta: string;
     };
+    pitching: {
+        title: string;
+        desc: string;
+        cta: string;
+    };
 };
 
 export default function RegistrationSelectionPage() {
@@ -50,6 +55,16 @@ export default function RegistrationSelectionPage() {
                     desc: "Apply for funding, gain visibility, and connect with investors.",
                     cta: "Apply as a Startup",
                 },
+                exhibitor: {
+                    title: "Exhibitor Registration",
+                    desc: "Showcase your product or service to a targeted audience.",
+                    cta: "Register as an Exhibitor",
+                },
+                pitching: {
+                    title: "Startup Pitching",
+                    desc: "Apply for a  presentation slot to showcase your startup.",
+                    cta: "Register to Pitch",
+                },
                 investor: {
                     title: "Investor Registration",
                     desc: "Access our network of vetted startups and investment opportunities.",
@@ -60,11 +75,7 @@ export default function RegistrationSelectionPage() {
                     desc: "Share your insights. Apply to be a speaker at our next event.",
                     cta: "Apply as a Speaker",
                 },
-                exhibitor: {
-                    title: "Exhibitor Registration",
-                    desc: "Showcase your product or service to a targeted audience.",
-                    cta: "Register as an Exhibitor",
-                },
+
             },
             ar: {
                 title: "سجل اهتمامك",
@@ -73,6 +84,11 @@ export default function RegistrationSelectionPage() {
                     title: "تسجيل شركة ناشئة",
                     desc: "تقدم بطلب للحصول على تمويل واكتسب الظهور وتواصل مع المستثمرين.",
                     cta: "قدم كشركة ناشئة",
+                },
+                pitching: {
+                    title: "عرض الشركة الناشئة",
+                    desc: "تقدم بطلب للحصول على فتحة عرض مدتها 10 دقائق لعرض شركتك الناشئة. الرسوم: 2500 دولار.",
+                    cta: "سجل للعرض",
                 },
                 investor: {
                     title: "تسجيل مستثمر",
@@ -101,6 +117,13 @@ export default function RegistrationSelectionPage() {
             desc: t.startup.desc,
             cta: t.startup.cta,
             href: "/founder-form",
+        },
+        {
+            icon: Rocket, // Using Rocket icon again or can find another one
+            title: t.pitching.title,
+            desc: t.pitching.desc,
+            cta: t.pitching.cta,
+            href: "/pitching-form",
         },
         {
             icon: Briefcase,
@@ -148,18 +171,18 @@ export default function RegistrationSelectionPage() {
             <main className="relative z-10 flex-1 pt-32 pb-20 px-4 flex items-center justify-center">
                 <div className="max-w-6xl mx-auto w-full">
                     {/* Header Section */}
-                    <div className="mb-12 text-center animate-fadeIn space-y-4">
-                        <h1 className="text-4xl md:text-6xl font-extrabold text-white tracking-tight drop-shadow-lg">
+                    <div className="mb-8 text-center animate-fadeIn space-y-2">
+                        <h1 className="text-3xl md:text-5xl font-extrabold text-white tracking-tight drop-shadow-lg">
                             {t.title}
                         </h1>
-                        <p className="text-lg md:text-xl text-gray-200 max-w-2xl mx-auto leading-relaxed">
+                        <p className="text-base md:text-lg text-gray-200 max-w-2xl mx-auto leading-relaxed shadow-sm">
                             {t.subtitle}
                         </p>
-                        <div className="w-24 h-1.5 bg-gradient-to-r from-[#bf1e2e] to-[#940200] rounded-full mx-auto mt-6 shadow-lg shadow-[#bf1e2e]/50"></div>
+                        <div className="w-16 h-1 bg-gradient-to-r from-[#bf1e2e] to-[#940200] rounded-full mx-auto mt-4 shadow-lg shadow-[#bf1e2e]/50"></div>
                     </div>
 
                     {/* Registration Cards Grid */}
-                    <div className="grid md:grid-cols-2 gap-6 lg:gap-8 animate-slideInUp">
+                    <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-5 animate-slideInUp">
                         {registrationOptions.map((option) => {
                             const Icon = option.icon;
                             return (
@@ -168,21 +191,21 @@ export default function RegistrationSelectionPage() {
                                     key={option.title}
                                     className="group block"
                                 >
-                                    <div className="h-full bg-white/10 backdrop-blur-lg border border-white/10 rounded-2xl p-8 transition-all duration-300 hover:scale-[1.02] hover:bg-white/15 hover:border-[#bf1e2e]/30 hover:shadow-2xl hover:shadow-[#bf1e2e]/10 flex flex-col items-start relative overflow-hidden">
+                                    <div className="h-full bg-white/10 backdrop-blur-md border border-white/5 rounded-xl p-4 md:p-6 transition-all duration-300 hover:scale-[1.02] hover:bg-white/15 hover:border-[#bf1e2e]/30 hover:shadow-2xl hover:shadow-[#bf1e2e]/10 flex flex-col items-start relative overflow-hidden">
 
                                         {/* Decorative Gradient Blob */}
-                                        <div className="absolute top-0 right-0 w-32 h-32 bg-[#bf1e2e]/20 rounded-full blur-[60px] -mr-10 -mt-10 pointer-events-none group-hover:bg-[#bf1e2e]/30 transition-colors"></div>
+                                        <div className="absolute top-0 right-0 w-24 h-24 bg-[#bf1e2e]/20 rounded-full blur-[40px] -mr-8 -mt-8 pointer-events-none group-hover:bg-[#bf1e2e]/30 transition-colors"></div>
 
-                                        <div className="w-14 h-14 bg-gradient-to-br from-[#bf1e2e] to-[#940200] text-white flex items-center justify-center rounded-xl mb-6 shadow-lg shadow-[#bf1e2e]/25 group-hover:scale-110 transition-transform duration-300">
-                                            <Icon className="w-7 h-7" />
+                                        <div className="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-[#bf1e2e] to-[#940200] text-white flex items-center justify-center rounded-lg mb-3 shadow-lg shadow-[#bf1e2e]/25 group-hover:scale-110 transition-transform duration-300">
+                                            <Icon className="w-5 h-5 md:w-6 md:h-6" />
                                         </div>
 
-                                        <h2 className="text-2xl font-bold text-white mb-3 tracking-wide">{option.title}</h2>
-                                        <p className="text-gray-300 mb-8 leading-relaxed flex-grow">{option.desc}</p>
+                                        <h2 className="text-lg md:text-xl font-bold text-white mb-2 tracking-wide leading-tight">{option.title}</h2>
+                                        <p className="text-gray-300 text-xs md:text-sm mb-4 leading-relaxed flex-grow line-clamp-2 md:line-clamp-none">{option.desc}</p>
 
-                                        <div className="flex items-center text-sm font-bold text-[#bf1e2e] uppercase tracking-wider group-hover:text-red-400 transition-colors mt-auto">
+                                        <div className="flex items-center text-[10px] md:text-xs font-bold text-[#bf1e2e] uppercase tracking-wider group-hover:text-red-400 transition-colors mt-auto">
                                             {option.cta}
-                                            <ArrowRight className="w-4 h-4 ml-2 transition-transform duration-300 group-hover:translate-x-1" />
+                                            <ArrowRight className="w-3 h-3 md:w-4 md:h-4 ml-1.5 transition-transform duration-300 group-hover:translate-x-1" />
                                         </div>
                                     </div>
                                 </Link>

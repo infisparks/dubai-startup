@@ -46,6 +46,7 @@ interface FounderProfile {
   payment_status: string;
   stripe_session_id: string | null;
   paid_at: string | null;
+  is_gala: boolean | null;
 }
 
 // Define fields allowed to be edited
@@ -55,7 +56,7 @@ type EditableFounderProfile = Pick<
   'description' | 'domain' | 'domain_other_spec' | 'earning_status' | 'is_approved' |
   'pitch_deck_url' | 'company_linkedin' | 'problem_description' |
   'pitch_deck_url' | 'company_linkedin' | 'problem_description' |
-  'establishment_year' | 'turnover' | 'net_profit' | 'it_returns_filed' | 'is_audited' | 'reference'
+  'establishment_year' | 'turnover' | 'net_profit' | 'it_returns_filed' | 'is_audited' | 'reference' | 'is_gala'
 >;
 
 type Translations = {
@@ -335,8 +336,9 @@ export default function AdminStartupsPage() {
         'Turnover': s.turnover || 'N/A',
         'Net Profit': s.net_profit || 'N/A',
         'IT Returns Filed': s.it_returns_filed ? 'Yes' : 'No',
-        'Audited': s.is_audited ? 'Yes' : 'No',
         'Payment Status': s.payment_status || 'N/A',
+        'Gala Dinner': s.is_gala ? 'Included' : 'No',
+        'Amount Paid': s.payment_status === 'paid' ? (s.is_gala ? '$1000' : '$500') : '$0',
         'Paid At': s.paid_at ? new Date(s.paid_at).toLocaleString() : 'N/A',
         'Stripe Session ID': s.stripe_session_id || 'N/A',
         'Approval Status': s.is_approved ? 'Approved' : (s.is_approved === false ? 'Disapproved' : 'Pending')
@@ -402,9 +404,12 @@ export default function AdminStartupsPage() {
                   {startup.payment_status === 'paid' ? (
                     <div className="flex flex-col">
                       <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 w-fit">
-                        <CheckCircle className="w-3 h-3" /> Paid
+                        <CheckCircle className="w-3 h-3" /> Paid {startup.is_gala ? "$1000" : "$500"}
                       </span>
-                      <span className="text-[10px] text-slate-400 mt-1 font-mono" title={startup.stripe_session_id || ''}>
+                      <span className={`text-[10px] mt-1 font-bold ${startup.is_gala ? 'text-purple-600' : 'text-slate-500'}`}>
+                        {startup.is_gala ? "Pass + Gala Dinner" : "Startup Pass Only"}
+                      </span>
+                      <span className="text-[10px] text-slate-400 mt-0.5 font-mono" title={startup.stripe_session_id || ''}>
                         ID: {(startup.stripe_session_id || 'N/A').slice(0, 8)}...
                       </span>
                       {startup.paid_at && (
@@ -499,6 +504,7 @@ const EditModal: React.FC<EditModalProps> = ({ startup, onClose, onSave, t }) =>
     it_returns_filed: startup.it_returns_filed ?? false,
     is_audited: startup.is_audited ?? false,
     reference: startup.reference || '',
+    is_gala: startup.is_gala || false,
   });
   const [isSaving, setIsSaving] = useState(false);
 
