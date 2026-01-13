@@ -224,8 +224,8 @@ export default function PitchingFormPage() {
                 netProfit: pitchingProfile.net_profit || '',
                 itReturnsFiled: pitchingProfile.it_returns_filed || false,
                 isAudited: pitchingProfile.is_audited || false,
-                reference: pitchingProfile.reference && ["Kishan Verma", "Sanjay Bhamari", "Farid Ahmed", "Abdulmajid", "Ideabaaz", "Marwadi Catalyst", "Rehbar"].includes(pitchingProfile.reference) ? pitchingProfile.reference : (pitchingProfile.reference ? "Other" : ""),
-                referenceOther: pitchingProfile.reference && !["Kishan Verma", "Sanjay Bhamari", "Farid Ahmed", "Abdulmajid", "Ideabaaz", "Marwadi Catalyst", "Rehbar"].includes(pitchingProfile.reference) ? pitchingProfile.reference : "",
+                reference: pitchingProfile.reference && ["Kishan Verma", "Sanjay Bhambri", "Adhar Bharat", "Farid Ahmed", "Abdulmajid", "Ideabaaz", "Marwadi Catalyst", "Rehbar"].includes(pitchingProfile.reference) ? pitchingProfile.reference : (pitchingProfile.reference ? "Other" : ""),
+                referenceOther: pitchingProfile.reference && !["Kishan Verma", "Sanjay Bhambri", "Adhar Bharat", "Farid Ahmed", "Abdulmajid", "Ideabaaz", "Marwadi Catalyst", "Rehbar"].includes(pitchingProfile.reference) ? pitchingProfile.reference : "",
             }));
         } else {
             setHasExistingProfile(false);
@@ -371,7 +371,7 @@ export default function PitchingFormPage() {
                 },
                 reference: "Reference",
                 referenceOther: "Please specify reference",
-                referenceOptions: ["Kishan Verma", "Sanjay Bhamari", "Farid Ahmed", "Abdulmajid", "Ideabaaz", "Marwadi Catalyst", "Rehbar", "Other"],
+                referenceOptions: ["Kishan Verma", "Sanjay Bhambri", "Adhar Bharat", "Farid Ahmed", "Abdulmajid", "Ideabaaz", "Marwadi Catalyst", "Rehbar", "Other"],
                 thankYou: {
                     title: "Registration Successful!",
                     message: "Thank you for registering for pitching. Your application has been received successfully.",
@@ -474,7 +474,7 @@ export default function PitchingFormPage() {
                 }
             },
         };
-        const referenceOptions = ["Kishan Verma", "Sanjay Bhamari", "Farid Ahmed", "Abdulmajid", "Ideabaaz", "Marwadi Catalyst", "Rehbar", "Other"];
+        const referenceOptions = ["Kishan Verma", "Sanjay Bhambri", "Adhar Bharat", "Farid Ahmed", "Abdulmajid", "Ideabaaz", "Marwadi Catalyst", "Rehbar", "Other"];
         return {
             ...translations[language],
             referenceOptions: referenceOptions

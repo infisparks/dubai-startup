@@ -145,8 +145,8 @@ export default function ExhibitorFormPage() {
                 companyLogoUrl: exhibitorProfile.company_logo_url,
                 contactName: exhibitorProfile.contact_personname || profileData?.full_name || '',
                 contactEmail: exhibitorProfile.email || currentUser.email!,
-                reference: exhibitorProfile.reference && ["Kishan Verma", "Sanjay Bhamari", "Farid Ahmed", "Abdulmajid", "Ideabaaz", "Marwadi Catalyst", "Rehbar"].includes(exhibitorProfile.reference) ? exhibitorProfile.reference : (exhibitorProfile.reference ? "Other" : ""),
-                referenceOther: exhibitorProfile.reference && !["Kishan Verma", "Sanjay Bhamari", "Farid Ahmed", "Abdulmajid", "Ideabaaz", "Marwadi Catalyst", "Rehbar"].includes(exhibitorProfile.reference) ? exhibitorProfile.reference : "",
+                reference: exhibitorProfile.reference && ["Kishan Verma", "Sanjay Bhambri", "Adhar Bharat", "Farid Ahmed", "Abdulmajid", "Ideabaaz", "Marwadi Catalyst", "Rehbar"].includes(exhibitorProfile.reference) ? exhibitorProfile.reference : (exhibitorProfile.reference ? "Other" : ""),
+                referenceOther: exhibitorProfile.reference && !["Kishan Verma", "Sanjay Bhambri", "Adhar Bharat", "Farid Ahmed", "Abdulmajid", "Ideabaaz", "Marwadi Catalyst", "Rehbar"].includes(exhibitorProfile.reference) ? exhibitorProfile.reference : "",
             }));
         } else {
             setHasExistingProfile(false);
@@ -262,7 +262,7 @@ export default function ExhibitorFormPage() {
                 },
                 reference: "Reference",
                 referenceOther: "Please specify reference",
-                referenceOptions: ["Kishan Verma", "Sanjay Bhamari", "Farid Ahmed", "Abdulmajid", "Ideabaaz", "Marwadi Catalyst", "Rehbar", "Other"],
+                referenceOptions: ["Kishan Verma", "Sanjay Bhambri", "Adhar Bharat", "Farid Ahmed", "Abdulmajid", "Ideabaaz", "Marwadi Catalyst", "Rehbar", "Other"],
                 thankYou: {
                     title: "Registration Successful!",
                     message: "Thank you for registering. Your application has been received successfully.",
@@ -324,7 +324,7 @@ export default function ExhibitorFormPage() {
             },
         };
 
-        const referenceOptions = ["Kishan Verma", "Sanjay Bhamari", "Farid Ahmed", "Abdulmajid", "Ideabaaz", "Marwadi Catalyst", "Rehbar", "Other"];
+        const referenceOptions = ["Kishan Verma", "Sanjay Bhambri", "Adhar Bharat", "Farid Ahmed", "Abdulmajid", "Ideabaaz", "Marwadi Catalyst", "Rehbar", "Other"];
 
         return {
             ...translations[language],

@@ -231,8 +231,8 @@ export default function FounderFormPage() {
                 netProfit: founderProfile.net_profit || '',
                 itReturnsFiled: founderProfile.it_returns_filed || false,
                 isAudited: founderProfile.is_audited || false,
-                reference: founderProfile.reference && ["Kishan Verma", "Sanjay Bhamari", "Farid Ahmed", "Abdulmajid", "Ideabaaz", "Marwadi Catalyst", "Rehbar"].includes(founderProfile.reference) ? founderProfile.reference : (founderProfile.reference ? "Other" : ""),
-                referenceOther: founderProfile.reference && !["Kishan Verma", "Sanjay Bhamari", "Farid Ahmed", "Abdulmajid", "Ideabaaz", "Marwadi Catalyst", "Rehbar"].includes(founderProfile.reference) ? founderProfile.reference : "",
+                reference: founderProfile.reference && ["Kishan Verma", "Sanjay Bhambri", "Adhar Bharat", "Farid Ahmed", "Abdulmajid", "Ideabaaz", "Marwadi Catalyst", "Rehbar"].includes(founderProfile.reference) ? founderProfile.reference : (founderProfile.reference ? "Other" : ""),
+                referenceOther: founderProfile.reference && !["Kishan Verma", "Sanjay Bhambri", "Adhar Bharat", "Farid Ahmed", "Abdulmajid", "Ideabaaz", "Marwadi Catalyst", "Rehbar"].includes(founderProfile.reference) ? founderProfile.reference : "",
             }));
         } else {
             setHasExistingProfile(false);
@@ -387,7 +387,7 @@ export default function FounderFormPage() {
                 },
                 reference: "Reference",
                 referenceOther: "Please specify reference",
-                referenceOptions: ["Kishan Verma", "Sanjay Bhamari", "Farid Ahmed", "Abdulmajid", "Ideabaaz", "Marwadi Catalyst", "Rehbar", "Other"],
+                referenceOptions: ["Kishan Verma", "Sanjay Bhambri", "Adhar Bharat", "Farid Ahmed", "Abdulmajid", "Ideabaaz", "Marwadi Catalyst", "Rehbar", "Other"],
                 thankYou: {
                     title: "Registration Successful!",
                     message: "Thank you for registering. Your application has been received successfully.",
@@ -490,7 +490,7 @@ export default function FounderFormPage() {
                 }
             },
         };
-        const referenceOptions = ["Kishan Verma", "Sanjay Bhamari", "Farid Ahmed", "Abdulmajid", "Ideabaaz", "Marwadi Catalyst", "Rehbar", "Other"];
+        const referenceOptions = ["Kishan Verma", "Sanjay Bhambri", "Adhar Bharat", "Farid Ahmed", "Abdulmajid", "Ideabaaz", "Marwadi Catalyst", "Rehbar", "Other"];
         return {
             ...translations[language],
             referenceOptions: referenceOptions
