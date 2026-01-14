@@ -1,20 +1,33 @@
 'use client'
 
-import React, { useState, useRef, useEffect } from 'react' // Added useEffect
-import { FiCheck, FiPocket, FiShield, FiAward, FiArrowRight, FiZap, FiChevronLeft, FiChevronRight } from 'react-icons/fi'
+import React, { useState } from 'react'
+import {
+  Check,
+  Award,
+  Shield,
+  Pocket,
+  Zap,
+  ChevronRight,
+  Trophy,
+  Gem,
+  ExternalLink
+} from 'lucide-react'
+import { motion, AnimatePresence } from 'framer-motion'
 
 interface Feature {
   level: string;
   price: string;
   icon: React.ElementType;
-  color: 'gold' | 'cyan' | 'blue';
+  color: 'platinum' | 'gold' | 'silver' | 'bronze';
   features: string[];
-  subtitle?: string;
+  highlight?: string;
+  description: string;
 }
 
 interface SponsorshipPackageData {
   title: string;
   mainTitle: string;
+  subtitle: string;
   tiers: Feature[];
 }
 
@@ -25,405 +38,339 @@ interface SponsorshipPackageProps {
 const translations: { [key: string]: SponsorshipPackageData } = {
   en: {
     title: 'Sponsorship Packages',
-    mainTitle: 'Partnership Tiers',
+    mainTitle: 'Partner With Us',
+    subtitle: 'Choose the perfect sponsorship level to elevate your brand presence and connect with industry leaders.',
     tiers: [
       {
         level: 'Platinum Sponsor',
         price: '500,000 AED',
-        icon: FiAward,
-        color: 'gold',
+        icon: Trophy,
+        color: 'platinum',
+        description: 'Elite partnership with maximum brand exposure and high-level engagement opportunities.',
         features: [
-          '6m² premium exhibition booth located in the VIP section.',
-          '10 VIP passes reserved for investors and executives.',
-          '20-minute keynote speech plus panel involvement',
-          'Logo displayed on all event materials plus a dedicated PR feature.',
+          'Exclusive branding as Platinum sponsor',
+          '8 full conference passes',
+          '1 speaker slot - in a panel discussion',
+          'Logo presence in cross-media campaigns',
+          'Logo on full display on Backdrop Side Panels',
+          '3 display standees at strategic locations',
+          'Company brochure (4 pages) in delegate kit',
+          'Consistent Branding Across Social Media'
         ],
+        highlight: 'MOST PRESTIGIOUS'
       },
       {
         level: 'Gold Sponsor',
         price: '300,000 AED',
-        icon: FiShield,
-        color: 'cyan',
+        icon: Gem,
+        color: 'gold',
+        description: 'Premium visibility and significant representation throughout the event.',
         features: [
-          '4m² exhibition booth in a prime location',
-          'Six VIP passes allocated for company representatives.',
-          'Panel discussion with a sponsored networking event',
-          'Logo displayed on event website and materials.',
+          '6 full conference passes',
+          'Logo on full display on Backdrop Side Panels',
+          '2 display standees at strategic locations',
+          'Company brochure (2 pages) in delegate kit',
+          'Consistent Branding Across Social Media',
+          'Logo presence in cross-media campaigns'
         ],
+        highlight: 'BEST VALUE'
       },
       {
         level: 'Silver Sponsor',
         price: '200,000 AED',
-        icon: FiPocket,
-        color: 'blue',
+        icon: Shield,
+        color: 'silver',
+        description: 'Strong brand presence with essential networking and marketing benefits.',
         features: [
-          'Small 3m² exhibition booth',
-          'Four VIP passes available for networking events.',
-          'Brand exposure on event programs and digital displays',
-          'Access to social media mentions and the attendee database.',
-        ],
+          '4 full conference passes',
+          'Logo on display on Backdrop Side Panels',
+          '1 display standee at strategic locations',
+          'Company brochure (1 page) in delegate kit',
+          'Consistent Branding Across Social Media',
+          'Logo presence in cross-media campaigns'
+        ]
       },
+      {
+        level: 'Bronze Sponsor',
+        price: '100,000 AED',
+        icon: Pocket,
+        color: 'bronze',
+        description: 'Quality representation and basic awareness among event attendees.',
+        features: [
+          '2 full conference passes',
+          'Your Brand Identity/ Logo on Backdrop Side Panels',
+          'Consistent Branding Across Social Media',
+          'Logo presence in cross-media campaigns'
+        ]
+      }
     ],
   },
   ar: {
     title: 'باقات الرعاية',
-    mainTitle: 'مستويات الشراكة',
+    mainTitle: 'شاركنا النجاح',
+    subtitle: 'اختر مستوى الرعاية المثالي لتعزيز حضور علامتك التجارية والتواصل مع قادة الصناعة.',
     tiers: [
       {
-        level: 'راعي بلاتيني',
-        price: '500,000 درهم إماراتي',
-        icon: FiAward,
+        level: 'الراعي البلاتيني',
+        price: '500,000 درهم',
+        icon: Trophy,
+        color: 'platinum',
+        description: 'شراكة نخبوية مع أقصى قدر من التعرض للعلامة التجارية وفرص المشاركة رفيعة المستوى.',
+        features: [
+          'علامة تجارية حصرية كراعي بلاتيني',
+          '8 تصاريح كاملة للمؤتمر',
+          'فرصة تحدث واحدة - في حلقة نقاش',
+          'تواجد الشعار في حملات تسويقية عبر الوسائط',
+          'عرض الشعار بالكامل على لوحات الخلفية الجانبية',
+          '3 منصات عرض (Standees) في مواقع استراتيجية',
+          'كتيب الشركة (4 صفحات بحد أقصى) في ملف الوفود',
+          'علامة تجارية متسقة عبر قنوات التواصل الاجتماعي'
+        ],
+        highlight: 'الأكثر تميزاً'
+      },
+      {
+        level: 'الراعي الذهبي',
+        price: '300,000 درهم',
+        icon: Gem,
         color: 'gold',
-        subtitle: 'الشراكة المتميزة',
+        description: 'رؤية متميزة وتمثيل كبير في جميع أنحاء الحدث.',
         features: [
-          'منصة عرض ممتازة 6 م²',
-          '10 تصاريح VIP حصرية',
-          'خانة متحدث رئيسي',
-          'شعار على جميع المواد',
-          'الوصول الكامل لقاعدة البيانات',
+          '6 تصاريح كاملة للمؤتمر',
+          'عرض الشعار بالكامل على لوحات الخلفية الجانبية',
+          '2 منصة عرض (Standees) في مواقع استراتيجية',
+          'كتيب الشركة (صفحتان بحد أقصى) في ملف الوفود',
+          'علامة تجارية متسقة عبر قنوات التواصل الاجتماعي',
+          'تواجد الشعار في حملات تسويقية عبر الوسائط'
         ],
+        highlight: 'أفضل قيمة'
       },
       {
-        level: 'راعي ذهبي',
-        price: '300,000 درهم إماراتي',
-        icon: FiShield,
-        color: 'cyan',
-        subtitle: 'الشراكة القياسية',
+        level: 'الراعي الفضي',
+        price: '200,000 درهم',
+        icon: Shield,
+        color: 'silver',
+        description: 'حضور قوي للعلامة التجارية مع مزايا التواصل والتسويق الأساسية.',
         features: [
-          'منصة عرض قياسية 4 م²',
-          '6 تصاريح VIP',
-          'المشاركة في لجنة',
-          'الشعار على الموقع والمواد',
-          'الوصول لقاعدة البيانات',
-        ],
+          '4 تصاريح كاملة للمؤتمر',
+          'عرض الشعار على لوحات الخلفية الجانبية',
+          '1 منصة عرض (Standee) في مواقع استراتيجية',
+          'كتيب الشركة (صفحة واحدة) في ملف الوفود',
+          'علامة تجارية متسقة عبر قنوات التواصل الاجتماعي',
+          'تواجد الشعار في حملات تسويقية عبر الوسائط'
+        ]
       },
       {
-        level: 'راعي فضي',
-        price: '200,000 درهم إماراتي',
-        icon: FiPocket,
-        color: 'blue',
-        subtitle: 'الشراكة الأساسية',
+        level: 'الراعي البرونزي',
+        price: '100,000 درهم',
+        icon: Pocket,
+        color: 'bronze',
+        description: 'تمثيل عالي الجودة ووعي أساسي بين حاضري الحدث.',
         features: [
-          'منصة عرض مدمجة',
-          '4 تصاريح VIP',
-          'ظهور على الشاشات الرقمية',
-          'إشارات على التواصل الاجتماعي',
-          'شعار على الموقع',
-        ],
-      },
+          '2 تصريح كامل للمؤتمر',
+          'هوية علامتك التجارية / شعارك على لوحات الخلفية الجانبية',
+          'علامة تجارية متسقة عبر قنوات التواصل الاجتماعي',
+          'تواجد الشعار في حملات تسويقية عبر الوسائط'
+        ]
+      }
     ],
   },
 }
 
-const getColorClasses = (color: string) => {
-  switch (color) {
-    case 'gold':
-      return {
-        bg: 'bg-yellow-50',
-        border: 'border-yellow-200',
-        icon: 'bg-yellow-100 text-yellow-600',
-        text: 'text-yellow-600',
-        gradient: 'from-yellow-500 to-amber-500',
-        badge: 'bg-yellow-100 text-yellow-700',
-        hoverBg: 'hover:border-yellow-300 hover:shadow-yellow-100',
-      }
-    case 'cyan':
-      return {
-        bg: 'bg-cyan-50',
-        border: 'border-cyan-200',
-        icon: 'bg-cyan-100 text-cyan-600',
-        text: 'text-cyan-600',
-        gradient: 'from-cyan-500 to-teal-500',
-        badge: 'bg-cyan-100 text-cyan-700',
-        hoverBg: 'hover:border-cyan-300 hover:shadow-cyan-100',
-      }
-    case 'blue':
-    default:
-      return {
-        bg: 'bg-blue-50',
-        border: 'border-blue-200',
-        icon: 'bg-blue-100 text-blue-600',
-        text: 'text-blue-600',
-        gradient: 'from-blue-500 to-indigo-600',
-        badge: 'bg-blue-100 text-blue-700',
-        hoverBg: 'hover:border-blue-300 hover:shadow-blue-100',
-      }
+const colorConfigs = {
+  platinum: {
+    bg: 'bg-slate-900',
+    text: 'text-white',
+    icon: 'text-slate-300',
+    border: 'border-slate-700',
+    accent: 'bg-gradient-to-r from-slate-300 via-slate-100 to-slate-400',
+    button: 'bg-white text-slate-900 hover:bg-slate-100',
+    check: 'text-slate-400',
+    glow: 'shadow-[0_0_30px_rgba(203,213,225,0.2)]'
+  },
+  gold: {
+    bg: 'bg-white',
+    text: 'text-slate-900',
+    icon: 'text-amber-500',
+    border: 'border-amber-200',
+    accent: 'bg-gradient-to-r from-amber-400 to-yellow-600',
+    button: 'bg-slate-900 text-white hover:bg-slate-800',
+    check: 'text-amber-500',
+    glow: 'shadow-[0_0_30px_rgba(251,191,36,0.15)]'
+  },
+  silver: {
+    bg: 'bg-white',
+    text: 'text-slate-900',
+    icon: 'text-slate-500',
+    border: 'border-slate-200',
+    accent: 'bg-gradient-to-r from-slate-400 to-slate-600',
+    button: 'bg-slate-900 text-white hover:bg-slate-800',
+    check: 'text-slate-500',
+    glow: 'shadow-[0_0_30px_rgba(148,163,184,0.1)]'
+  },
+  bronze: {
+    bg: 'bg-white',
+    text: 'text-slate-900',
+    icon: 'text-orange-700',
+    border: 'border-orange-100',
+    accent: 'bg-gradient-to-r from-orange-400 to-orange-700',
+    button: 'bg-slate-900 text-white hover:bg-slate-800',
+    check: 'text-orange-700',
+    glow: 'shadow-[0_0_30px_rgba(194,65,12,0.1)]'
   }
 }
 
 export default function SponsorshipPackages({ language = 'en' }: SponsorshipPackageProps) {
   const t = translations[language]
   const isRtl = language === 'ar'
-  const [hoveredCard, setHoveredCard] = useState<string | null>(null)
-  const scrollContainerRef = useRef<HTMLDivElement>(null)
-  const [canScrollLeft, setCanScrollLeft] = useState(false)
-  const [canScrollRight, setCanScrollRight] = useState(true)
-
-  const checkScroll = () => {
-    if (scrollContainerRef.current) {
-      const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current
-      setCanScrollLeft(scrollLeft > 0)
-      // Added a small buffer to avoid flickering near the end
-      setCanScrollRight(scrollLeft + clientWidth < scrollWidth - 10)
-    }
-  }
-
-  const scroll = (direction: 'left' | 'right') => {
-    if (scrollContainerRef.current) {
-      const scrollAmount = 320 // Width of a card + gap for smooth scrolling
-      scrollContainerRef.current.scrollBy({
-        left: direction === 'left' ? -scrollAmount : scrollAmount,
-        behavior: 'smooth'
-      })
-      // Give a slight delay to allow scroll animation to finish before checking
-      setTimeout(checkScroll, 300)
-    }
-  }
-
-  // Initial check and re-check on resize for scroll arrows
-  useEffect(() => {
-    checkScroll();
-    const scrollElement = scrollContainerRef.current;
-    if (scrollElement) {
-      scrollElement.addEventListener('scroll', checkScroll);
-      window.addEventListener('resize', checkScroll);
-    }
-    return () => {
-      if (scrollElement) {
-        scrollElement.removeEventListener('scroll', checkScroll);
-        window.removeEventListener('resize', checkScroll);
-      }
-    };
-  }, []);
+  const [expandedCard, setExpandedCard] = useState<string | null>(null)
 
   return (
-    <section
-      id="sponsorship"
-      className="relative py-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-white via-slate-50 to-white overflow-hidden"
-      dir={isRtl ? 'rtl' : 'ltr'}
-    >
-      {/* Premium Background Elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-20 right-10 w-80 h-80 bg-gradient-to-br from-yellow-100 to-amber-50 rounded-full blur-3xl opacity-30" />
-        <div className="absolute bottom-20 left-10 w-80 h-80 bg-gradient-to-tr from-cyan-100 to-blue-50 rounded-full blur-3xl opacity-20" />
-      </div>
-
-      {/* Decorative Grid */}
-      <div className="absolute inset-0 opacity-[0.03] pointer-events-none"
-        style={{
-          backgroundImage: `linear-gradient(0deg, transparent 24%, rgba(15, 23, 42, 0.1) 25%, rgba(15, 23, 42, 0.1) 26%, transparent 27%, transparent 74%, rgba(15, 23, 42, 0.1) 75%, rgba(15, 23, 42, 0.1) 76%, transparent 77%, transparent), linear-gradient(90deg, transparent 24%, rgba(15, 23, 42, 0.1) 25%, rgba(15, 23, 42, 0.1) 26%, transparent 27%, transparent 74%, rgba(15, 23, 42, 0.1) 75%, rgba(15, 23, 42, 0.1) 76%, transparent 77%, transparent)`,
-          backgroundSize: '80px 80px'
-        }}
-      />
-
-      <div className="max-w-7xl mx-auto relative z-10">
-
-        {/* Premium Header Section */}
-        <div className="mb-12 lg:mb-14 text-center">
-          {/* Pre-title Badge */}
-          <div className="inline-flex items-center gap-2 mb-4">
-            <div className="w-2 h-2 rounded-full bg-gradient-to-r from-yellow-500 to-cyan-500" />
-            <span className="text-xs font-semibold tracking-widest text-slate-600 uppercase">Partnership Opportunities</span>
-          </div>
-
-          {/* Main Title */}
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 mb-3 tracking-tight leading-tight">
-            {t.mainTitle}
-          </h1>
-
-          {/* Accent Line - Badge Style */}
-          <div className="inline-block px-4 py-2 rounded-full bg-yellow-100 border border-yellow-200">
-            <span className="text-xs font-bold text-yellow-700">✓ MOST POPULAR</span>
-          </div>
-        </div>
-
-        {/* Scroll Container for Mobile */}
-        <div className="relative lg:hidden mb-8">
-          {/* Left Arrow */}
-          {canScrollLeft && (
-            <button
-              onClick={() => scroll('left')}
-              className="absolute left-0 top-1/2 -translate-y-1/2 z-20 bg-white rounded-full p-2 shadow-lg border border-slate-200 hover:shadow-xl transition-all"
-            >
-              <FiChevronLeft className="w-5 h-5 text-slate-600" />
-            </button>
-          )}
-
-          {/* Cards Container */}
-          <div
-            ref={scrollContainerRef}
-            onScroll={checkScroll}
-            className="overflow-x-auto scrollbar-hide flex gap-6 px-12 pb-2"
-            style={{ scrollBehavior: 'smooth', msOverflowStyle: 'none', scrollbarWidth: 'none' }}
+    <section id="sponsorship" className="py-24 bg-slate-50 overflow-hidden" dir={isRtl ? 'rtl' : 'ltr'}>
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Header Section */}
+        <div className="text-center max-w-4xl mx-auto mb-20">
+          <motion.span
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="inline-block px-4 py-1.5 mb-6 text-sm font-bold tracking-widest text-[#013371] uppercase bg-blue-50 rounded-full border border-blue-100"
           >
-            {t.tiers.map((tier: Feature) => {
-              const IconComponent = tier.icon
-              const colors = getColorClasses(tier.color)
-              const isPlatinum = tier.level.toLowerCase().includes('platinum')
-
-              return (
-                <div
-                  key={tier.level}
-                  className="flex-shrink-0 w-72"
-                >
-                  <div className={`relative flex flex-col rounded-xl overflow-hidden transition-all duration-500 group ${isPlatinum ? 'transform scale-105' : ''}`}>
-                    {/* Card Background */}
-                    <div className={`absolute inset-0 bg-white rounded-xl border-2 ${colors.border} transition-all duration-500 ${colors.hoverBg}`} />
-
-                    {/* Platinum Card: Most Popular Badge - repositioned inside content */}
-                    {isPlatinum && (
-                      <div className="absolute top-4 left-0 right-0 flex justify-center z-20">
-                        <div className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full ${colors.badge} font-bold text-xs shadow-lg`}>
-                          <FiZap className="w-3 h-3" />
-                          Most Popular
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Card Content */}
-                    <div className="relative p-5">
-                      {/* Icon */}
-                      <div className={`w-12 h-12 rounded-lg ${colors.icon} flex items-center justify-center mb-3 transition-transform duration-500`}>
-                        <IconComponent className="w-6 h-6" />
-                      </div>
-
-                      {/* Title and Subtitle */}
-                      <h3 className="text-lg font-bold text-slate-900 mb-0.5 leading-tight">
-                        {tier.level}
-                      </h3>
-                      {tier.subtitle && (
-                        <p className={`text-xs font-medium ${colors.text} mb-3`}>
-                          {tier.subtitle}
-                        </p>
-                      )}
-
-                      {/* Price Section */}
-                      <div className="mb-4 pb-4 border-b border-slate-100">
-                        <div className="text-2xl font-bold text-slate-900">
-                          {tier.price}
-                        </div>
-                      </div>
-
-                      {/* Features List */}
-                      <div className="space-y-2">
-                        {tier.features.map((feature: string, idx: number) => (
-                          <div key={idx} className="flex items-start gap-2">
-                            <div className={`flex-shrink-0 w-5 h-5 rounded-full ${colors.bg} border ${colors.border} flex items-center justify-center mt-0.5`}>
-                              <FiCheck className={`w-3 h-3 ${colors.text} font-bold`} />
-                            </div>
-                            <span className="text-xs text-slate-700 leading-snug">
-                              {feature}
-                            </span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Bottom Accent Line */}
-                    <div className={`absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r ${colors.gradient} opacity-0 transition-opacity duration-500 group-hover:opacity-100`} />
-                  </div>
-                </div>
-              )
-            })}
-          </div>
-
-          {/* Right Arrow */}
-          {canScrollRight && (
-            <button
-              onClick={() => scroll('right')}
-              className="absolute right-0 top-1/2 -translate-y-1/2 z-20 bg-white rounded-full p-2 shadow-lg border border-slate-200 hover:shadow-xl transition-all"
-            >
-              <FiChevronRight className="w-5 h-5 text-slate-600" />
-            </button>
-          )}
+            {t.title}
+          </motion.span>
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1 }}
+            className="text-4xl md:text-5xl lg:text-6xl font-black text-slate-900 mb-8 leading-tight"
+          >
+            {t.mainTitle}
+          </motion.h2>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2 }}
+            className="text-lg text-slate-600 leading-relaxed font-medium"
+          >
+            {t.subtitle}
+          </motion.p>
         </div>
 
-        {/* Desktop Grid */}
-        <div className="hidden lg:grid grid-cols-3 gap-8">
-          {t.tiers.map((tier: Feature) => {
-            const IconComponent = tier.icon
-            const colors = getColorClasses(tier.color)
-            const isPlatinum = tier.level.toLowerCase().includes('platinum')
+        {/* Pricing Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8">
+          {t.tiers.map((tier, index) => {
+            const config = colorConfigs[tier.color]
+            const Icon = tier.icon
+            const isExpanded = expandedCard === tier.level
 
             return (
-              <div
+              <motion.div
                 key={tier.level}
-                onMouseEnter={() => setHoveredCard(tier.level)}
-                onMouseLeave={() => setHoveredCard(null)}
-                className={`group relative flex flex-col rounded-xl overflow-hidden transition-all duration-500 transform
-                           ${hoveredCard === tier.level ? 'scale-105 -translate-y-2' : 'scale-100'}
-                           ${isPlatinum ? '-translate-y-4' : ''}
-                `}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                className={`group relative flex flex-col h-full rounded-2xl border-2 ${config.border} ${config.bg} ${config.text} ${config.glow} transition-all duration-500 hover:-translate-y-2`}
               >
-                {/* Card Background */}
-                <div className={`absolute inset-0 bg-white rounded-xl border-2 ${colors.border} transition-all duration-500 ${colors.hoverBg}`} />
+                {/* Accent Bar at Top */}
+                <div className={`absolute top-0 left-0 right-0 h-1.5 rounded-t-xl ${config.accent}`} />
 
-                {/* Platinum Card: Most Popular Badge - repositioned inside content */}
-                {isPlatinum && (
-                  <div className="absolute top-4 left-0 right-0 flex justify-center z-20">
-                    <div className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full ${colors.badge} font-bold text-xs shadow-lg`}>
-                      <FiZap className="w-3 h-3" />
-                      Most Popular
-                    </div>
+                {/* Highlight Badge */}
+                {tier.highlight && (
+                  <div className="absolute -top-4 left-1/2 -translate-x-1/2 z-10">
+                    <span className={`px-4 py-1.5 rounded-full text-xs font-black tracking-wider uppercase shadow-lg ${config.accent} text-white`}>
+                      {tier.highlight}
+                    </span>
                   </div>
                 )}
 
-                {/* Card Content */}
-                <div className="relative p-6">
-                  {/* Icon */}
-                  <div className={`w-12 h-12 rounded-lg ${colors.icon} flex items-center justify-center mb-3 transition-transform duration-500 group-hover:scale-110`}>
-                    <IconComponent className="w-6 h-6" />
-                  </div>
-
-                  {/* Title and Subtitle */}
-                  <h3 className="text-lg font-bold text-slate-900 mb-0.5">
-                    {tier.level}
-                  </h3>
-                  {tier.subtitle && (
-                    <p className={`text-xs font-medium ${colors.text} mb-3`}>
-                      {tier.subtitle}
-                    </p>
-                  )}
-
-                  {/* Price Section */}
-                  <div className="mb-4 pb-4 border-b border-slate-100">
-                    <div className="text-2xl font-bold text-slate-900">
-                      {tier.price}
+                <div className="p-8 flex flex-col h-full">
+                  {/* Header */}
+                  <div className="mb-8">
+                    <div className="flex items-center justify-between mb-6">
+                      <div className={`p-3 rounded-xl bg-slate-100 group-hover:scale-110 transition-transform duration-500 ${tier.color === 'platinum' ? 'bg-slate-800' : ''}`}>
+                        <Icon className={`w-8 h-8 ${config.icon}`} />
+                      </div>
+                      <div className="text-right">
+                        <span className="text-xs font-bold uppercase tracking-widest opacity-60">Investment</span>
+                        <div className="text-2xl font-black">{tier.price}</div>
+                      </div>
                     </div>
+                    <h3 className="text-2xl font-black mb-4 tracking-tight">{tier.level}</h3>
+                    <p className="text-sm opacity-80 leading-relaxed font-medium">
+                      {tier.description}
+                    </p>
                   </div>
 
-                  {/* Features List */}
-                  <div className="space-y-2">
-                    {tier.features.map((feature: string, idx: number) => (
-                      <div key={idx} className="flex items-start gap-2">
-                        <div className={`flex-shrink-0 w-5 h-5 rounded-full ${colors.bg} border ${colors.border} flex items-center justify-center mt-0.5 transition-all duration-300`}>
-                          <FiCheck className={`w-3 h-3 ${colors.text} font-bold`} />
-                        </div>
-                        <span className="text-xs text-slate-700 leading-snug">
-                          {feature}
-                        </span>
+                  {/* Divider */}
+                  <div className={`h-px w-full mb-8 opacity-10 ${tier.color === 'platinum' ? 'bg-white' : 'bg-slate-900'}`} />
+
+                  {/* Features */}
+                  <div className="flex-grow space-y-4 mb-10">
+                    {tier.features.slice(0, 4).map((feature, idx) => (
+                      <div key={idx} className="flex items-start gap-3">
+                        <Check className={`w-5 h-5 flex-shrink-0 mt-0.5 ${config.check}`} />
+                        <span className="text-sm font-semibold opacity-90">{feature}</span>
                       </div>
                     ))}
+
+                    {/* Expanded Content */}
+                    <AnimatePresence>
+                      {isExpanded && (
+                        <motion.div
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: 'auto', opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          className="overflow-hidden space-y-4"
+                        >
+                          {tier.features.slice(4).map((feature, idx) => (
+                            <div key={idx} className="flex items-start gap-3">
+                              <Check className={`w-5 h-5 flex-shrink-0 mt-0.5 ${config.check}`} />
+                              <span className="text-sm font-semibold opacity-90">{feature}</span>
+                            </div>
+                          ))}
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+
+                  {/* Actions */}
+                  <div className="mt-auto space-y-4">
+                    {tier.features.length > 4 && (
+                      <button
+                        onClick={() => setExpandedCard(isExpanded ? null : tier.level)}
+                        className="w-full flex items-center justify-center gap-2 text-sm font-bold opacity-60 hover:opacity-100 transition-opacity"
+                      >
+                        {isExpanded ? (isRtl ? 'عرض أقل' : 'Read Less') : (isRtl ? 'إقرأ المزيد' : 'Read More')}
+                        <ChevronRight className={`w-4 h-4 transition-transform duration-300 ${isExpanded ? '-rotate-90' : 'rotate-90'}`} />
+                      </button>
+                    )}
                   </div>
                 </div>
-
-                {/* Bottom Accent Line */}
-                <div className={`absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r ${colors.gradient} opacity-0 transition-opacity duration-500 group-hover:opacity-100`} />
-              </div>
+              </motion.div>
             )
           })}
         </div>
+
+        {/* Footer Note */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          className="mt-16 text-center"
+        >
+          <p className="text-slate-500 font-medium italic">
+            {isRtl
+              ? '* تتوفر باقات مخصصة عند الطلب لتناسب أهدافك التسويقية المحددة.'
+              : '* Custom packages are available upon request to suit your specific marketing goals.'}
+          </p>
+        </motion.div>
       </div>
 
-      <style jsx>{`
-        .scrollbar-hide::-webkit-scrollbar {
-          display: none;
-        }
-        .scrollbar-hide {
-          -ms-overflow-style: none; /* IE and Edge */
-          scrollbar-width: none; /* Firefox */
-        }
-      `}</style>
+      {/* Background Decorative Elements */}
+      <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/2 w-[600px] h-[600px] bg-blue-100/50 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-0 left-0 translate-y-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-yellow-100/40 rounded-full blur-[120px] pointer-events-none" />
     </section>
   )
 }

@@ -17,6 +17,9 @@ export const metadata: Metadata = {
   keywords: ["startup funding", "Dubai", "investment", "entrepreneurship", "venture capital"],
   authors: [{ name: "Investarise" }],
   generator: "v0.app",
+  icons: {
+    icon: "/logo.png",
+  },
 }
 
 export const viewport: Viewport = {
