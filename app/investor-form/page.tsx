@@ -165,8 +165,8 @@ export default function InvestorFormPage() {
                 investmentType: investorProfile.investment_type || '',
                 experience: investorProfile.experience || '',
                 interests: (investorProfile.interests || []) as string[],
-                reference: investorProfile.reference && ["Kishan Verma", "Sanjay Bhambri", "Adhar Bharat", "Farid Ahmed", "Abdulmajid", "Ideabaaz", "Marwadi Catalyst", "Rehbar"].includes(investorProfile.reference) ? investorProfile.reference : (investorProfile.reference ? "Other" : ""),
-                referenceOther: investorProfile.reference && !["Kishan Verma", "Sanjay Bhambri", "Adhar Bharat", "Farid Ahmed", "Abdulmajid", "Ideabaaz", "Marwadi Catalyst", "Rehbar"].includes(investorProfile.reference) ? investorProfile.reference : "",
+                reference: investorProfile.reference && ["Kishan Verma", "Finarise", "Sanjay Bhambri", "Adhar Bharat", "Farid Ahmed", "Abdulmajid", "Ideabaaz", "Marwadi Catalyst", "Rehbar"].includes(investorProfile.reference) ? investorProfile.reference : (investorProfile.reference ? "Other" : ""),
+                referenceOther: investorProfile.reference && !["Kishan Verma", "Finarise", "Sanjay Bhambri", "Adhar Bharat", "Farid Ahmed", "Abdulmajid", "Ideabaaz", "Marwadi Catalyst", "Rehbar"].includes(investorProfile.reference) ? investorProfile.reference : "",
             }));
         } else {
             setHasExistingProfile(false);
@@ -338,7 +338,7 @@ export default function InvestorFormPage() {
             },
         };
         // Override options for consistent value mapping if needed, but for now we use English values for logic
-        const referenceOptions = ["Kishan Verma", "Sanjay Bhambri", "Adhar Bharat", "Farid Ahmed", "Abdulmajid", "Ideabaaz", "Marwadi Catalyst", "Rehbar", "Other"];
+        const referenceOptions = ["Kishan Verma", "Finarise", "Sanjay Bhambri", "Adhar Bharat", "Farid Ahmed", "Abdulmajid", "Ideabaaz", "Marwadi Catalyst", "Rehbar", "Other"];
 
         return {
             ...translations[language],

@@ -175,8 +175,8 @@ export default function SpeakerFormPage() {
                 topicTitle: speakerProfile.topic_title || '',
                 topicAbstract: speakerProfile.topic_abstract || '',
                 profilePhotoUrl: speakerProfile.profile_photo_url,
-                reference: speakerProfile.reference && ["Kishan Verma", "Sanjay Bhambri", "Adhar Bharat", "Farid Ahmed", "Abdulmajid", "Ideabaaz", "Marwadi Catalyst", "Rehbar"].includes(speakerProfile.reference) ? speakerProfile.reference : (speakerProfile.reference ? "Other" : ""),
-                referenceOther: speakerProfile.reference && !["Kishan Verma", "Sanjay Bhambri", "Adhar Bharat", "Farid Ahmed", "Abdulmajid", "Ideabaaz", "Marwadi Catalyst", "Rehbar"].includes(speakerProfile.reference) ? speakerProfile.reference : "",
+                reference: speakerProfile.reference && ["Kishan Verma", "Finarise", "Sanjay Bhambri", "Adhar Bharat", "Farid Ahmed", "Abdulmajid", "Ideabaaz", "Marwadi Catalyst", "Rehbar"].includes(speakerProfile.reference) ? speakerProfile.reference : (speakerProfile.reference ? "Other" : ""),
+                referenceOther: speakerProfile.reference && !["Kishan Verma", "Finarise", "Sanjay Bhambri", "Adhar Bharat", "Farid Ahmed", "Abdulmajid", "Ideabaaz", "Marwadi Catalyst", "Rehbar"].includes(speakerProfile.reference) ? speakerProfile.reference : "",
             }));
         } else {
             setHasExistingProfile(false);
@@ -287,7 +287,7 @@ export default function SpeakerFormPage() {
                 },
                 reference: "Reference",
                 referenceOther: "Please specify reference",
-                referenceOptions: ["Kishan Verma", "Sanjay Bhambri", "Adhar Bharat", "Farid Ahmed", "Abdulmajid", "Ideabaaz", "Marwadi Catalyst", "Rehbar", "Other"],
+                referenceOptions: ["Kishan Verma", "Finarise", "Sanjay Bhambri", "Adhar Bharat", "Farid Ahmed", "Abdulmajid", "Ideabaaz", "Marwadi Catalyst", "Rehbar", "Other"],
             },
             ar: {
                 title: "تسجيل المتحدثين",
@@ -345,7 +345,7 @@ export default function SpeakerFormPage() {
             },
         };
         // Override options for consistent value mapping if needed, but for now we use English values for logic
-        const referenceOptions = ["Kishan Verma", "Sanjay Bhambri", "Adhar Bharat", "Farid Ahmed", "Abdulmajid", "Ideabaaz", "Marwadi Catalyst", "Rehbar", "Other"];
+        const referenceOptions = ["Kishan Verma", "Finarise", "Sanjay Bhambri", "Adhar Bharat", "Farid Ahmed", "Abdulmajid", "Ideabaaz", "Marwadi Catalyst", "Rehbar", "Other"];
 
         return {
             ...translations[language],

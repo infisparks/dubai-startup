@@ -57,7 +57,7 @@ const translations = {
 const BrandTicker = () => {
     const scrollRef = useRef<HTMLDivElement>(null)
     const [isPaused, setIsPaused] = useState(false)
-    const logos = [1, 2, 3, 4, 5, 7, 8, 9, 10];
+    const logos = [1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12];
     // Duplicate logos for seamless infinite scrolling
     const repeatedLogos = [...logos, ...logos, ...logos, ...logos, ...logos];
 
@@ -112,9 +112,11 @@ const BrandTicker = () => {
                                 <Image
                                     src={`${BRAND_BASE_PATH}/${num}.png`}
                                     alt={`Partner Brand ${num}`}
-                                    width={100}
-                                    height={50}
-                                    className="h-10 sm:h-12 md:h-14 w-auto object-contain opacity-90 hover:opacity-100 transition-all duration-300"
+                                    width={200}
+                                    height={100}
+                                    quality={100}
+                                    priority={i < 10}
+                                    className="h-10 sm:h-12 md:h-14 w-auto object-contain hover:scale-105 transition-all duration-300"
                                     draggable={false}
                                 />
                             </div>
