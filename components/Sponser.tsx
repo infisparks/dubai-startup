@@ -2,32 +2,22 @@
 
 import React, { useState } from 'react'
 import {
-  Check,
-  Award,
-  Shield,
-  Pocket,
-  Zap,
-  ChevronRight,
-  Trophy,
-  Gem,
-  ExternalLink
+  ChevronRight
 } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 
 interface Feature {
   level: string;
   price: string;
-  icon: React.ElementType;
   color: 'platinum' | 'gold' | 'silver' | 'bronze';
   features: string[];
-  highlight?: string;
-  description: string;
 }
 
 interface SponsorshipPackageData {
   title: string;
   mainTitle: string;
   subtitle: string;
+  packageIntro: string;
   tiers: Feature[];
 }
 
@@ -38,138 +28,120 @@ interface SponsorshipPackageProps {
 const translations: { [key: string]: SponsorshipPackageData } = {
   en: {
     title: 'Sponsorship Packages',
-    mainTitle: 'Partner With Us',
-    subtitle: 'Choose the perfect sponsorship level to elevate your brand presence and connect with industry leaders.',
+    mainTitle: 'Sponsorship Packages',
+    subtitle: 'Choose the level that best fits your brand goals.',
+    packageIntro: 'What your chosen sponsorship package gets you:',
     tiers: [
       {
-        level: 'Platinum Sponsor',
+        level: 'PLATINUM SPONSOR',
         price: '500,000 AED',
-        icon: Trophy,
         color: 'platinum',
-        description: 'Elite partnership with maximum brand exposure and high-level engagement opportunities.',
         features: [
-          'Exclusive branding as Platinum sponsor',
-          '8 full conference passes',
+          'Exclusive branding as Platinum sponsor.',
+          '8 full conference passes.',
           '1 speaker slot - in a panel discussion',
-          'Logo presence in cross-media campaigns',
-          'Logo on full display on Backdrop Side Panels',
-          '3 display standees at strategic locations',
-          'Company brochure (4 pages) in delegate kit',
-          'Consistent Branding Across Social Media'
-        ],
-        highlight: 'MOST PRESTIGIOUS'
-      },
-      {
-        level: 'Gold Sponsor',
-        price: '300,000 AED',
-        icon: Gem,
-        color: 'gold',
-        description: 'Premium visibility and significant representation throughout the event.',
-        features: [
-          '6 full conference passes',
-          'Logo on full display on Backdrop Side Panels',
-          '2 display standees at strategic locations',
-          'Company brochure (2 pages) in delegate kit',
-          'Consistent Branding Across Social Media',
-          'Logo presence in cross-media campaigns'
-        ],
-        highlight: 'BEST VALUE'
-      },
-      {
-        level: 'Silver Sponsor',
-        price: '200,000 AED',
-        icon: Shield,
-        color: 'silver',
-        description: 'Strong brand presence with essential networking and marketing benefits.',
-        features: [
-          '4 full conference passes',
-          'Logo on display on Backdrop Side Panels',
-          '1 display standee at strategic locations',
-          'Company brochure (1 page) in delegate kit',
-          'Consistent Branding Across Social Media',
-          'Logo presence in cross-media campaigns'
+          'Logo presence in cross-media campaigns promoting the event.',
+          'Your Brand Identity/ Logo on full display on Backdrop Side Panels.',
+          '3 display standees at strategic locations at venue.',
+          'Company brochure (Not more than 4 pages) to be provided by sponsor, will be placed in the delegate kit.',
+          'Consistent Branding Across Our Social Media Channels.'
         ]
       },
       {
-        level: 'Bronze Sponsor',
-        price: '100,000 AED',
-        icon: Pocket,
-        color: 'bronze',
-        description: 'Quality representation and basic awareness among event attendees.',
+        level: 'GOLD SPONSOR',
+        price: '300,000 AED',
+        color: 'gold',
         features: [
-          '2 full conference passes',
-          'Your Brand Identity/ Logo on Backdrop Side Panels',
-          'Consistent Branding Across Social Media',
-          'Logo presence in cross-media campaigns'
+          '6 full conference passes.',
+          'Your Brand Identity/ Logo on full display on Backdrop Side Panels.',
+          '2 display standees at strategic locations at venue.',
+          'Company brochure (Not more than 2 pages) to be provided by sponsor, will be placed in the delegate kit.',
+          'Consistent Branding Across Our Social Media Channels.',
+          'Logo presence in cross-media campaigns promoting the event.'
+        ]
+      },
+      {
+        level: 'SILVER SPONSOR',
+        price: '200,000 AED',
+        color: 'silver',
+        features: [
+          '4 full conference passes.',
+          'Your Brand Identity/ Logo on display on Backdrop Side Panels.',
+          '1 display standee at strategic locations at venue.',
+          'Company brochure (Not more than 1 page) to be provided by sponsor, will be placed in the delegate kit.',
+          'Consistent Branding Across Our Social Media Channels.',
+          'Logo presence in cross-media campaigns promoting the event.'
+        ]
+      },
+      {
+        level: 'BRONZE SPONSOR',
+        price: '100,000 AED',
+        color: 'bronze',
+        features: [
+          '2 full conference passes.',
+          'Your Brand Identity/ Logo on Backdrop Side Panels.',
+          'Consistent Branding Across Our Social Media Channels.',
+          'Logo presence in cross-media campaigns promoting the event.'
         ]
       }
     ],
   },
   ar: {
     title: 'باقات الرعاية',
-    mainTitle: 'شاركنا النجاح',
-    subtitle: 'اختر مستوى الرعاية المثالي لتعزيز حضور علامتك التجارية والتواصل مع قادة الصناعة.',
+    mainTitle: 'باقات الرعاية',
+    subtitle: 'اختر المستوى الذي يناسب أهداف علامتك التجارية بشكل أفضل.',
+    packageIntro: 'ما تحصل عليه باقة الرعاية المختارة:',
     tiers: [
       {
-        level: 'الراعي البلاتيني',
+        level: 'راعي بلاتيني',
         price: '500,000 درهم',
-        icon: Trophy,
         color: 'platinum',
-        description: 'شراكة نخبوية مع أقصى قدر من التعرض للعلامة التجارية وفرص المشاركة رفيعة المستوى.',
         features: [
-          'علامة تجارية حصرية كراعي بلاتيني',
-          '8 تصاريح كاملة للمؤتمر',
-          'فرصة تحدث واحدة - في حلقة نقاش',
-          'تواجد الشعار في حملات تسويقية عبر الوسائط',
-          'عرض الشعار بالكامل على لوحات الخلفية الجانبية',
-          '3 منصات عرض (Standees) في مواقع استراتيجية',
-          'كتيب الشركة (4 صفحات بحد أقصى) في ملف الوفود',
-          'علامة تجارية متسقة عبر قنوات التواصل الاجتماعي'
-        ],
-        highlight: 'الأكثر تميزاً'
-      },
-      {
-        level: 'الراعي الذهبي',
-        price: '300,000 درهم',
-        icon: Gem,
-        color: 'gold',
-        description: 'رؤية متميزة وتمثيل كبير في جميع أنحاء الحدث.',
-        features: [
-          '6 تصاريح كاملة للمؤتمر',
-          'عرض الشعار بالكامل على لوحات الخلفية الجانبية',
-          '2 منصة عرض (Standees) في مواقع استراتيجية',
-          'كتيب الشركة (صفحتان بحد أقصى) في ملف الوفود',
-          'علامة تجارية متسقة عبر قنوات التواصل الاجتماعي',
-          'تواجد الشعار في حملات تسويقية عبر الوسائط'
-        ],
-        highlight: 'أفضل قيمة'
-      },
-      {
-        level: 'الراعي الفضي',
-        price: '200,000 درهم',
-        icon: Shield,
-        color: 'silver',
-        description: 'حضور قوي للعلامة التجارية مع مزايا التواصل والتسويق الأساسية.',
-        features: [
-          '4 تصاريح كاملة للمؤتمر',
-          'عرض الشعار على لوحات الخلفية الجانبية',
-          '1 منصة عرض (Standee) في مواقع استراتيجية',
-          'كتيب الشركة (صفحة واحدة) في ملف الوفود',
-          'علامة تجارية متسقة عبر قنوات التواصل الاجتماعي',
-          'تواجد الشعار في حملات تسويقية عبر الوسائط'
+          'هوية تجارية حصرية كراعي بلاتيني.',
+          '8 تصاريح كاملة للمؤتمر.',
+          'فرصة تحدث واحدة - في حلقة نقاشية.',
+          'تواجد الشعار في حملات تسويقية عبر الوسائط للترويج للحدث.',
+          'هوية علامتك التجارية / شعارك معروض بالكامل على لوحات الخلفية الجانبية.',
+          '3 منصات عرض (Standees) في مواقع استراتيجية في الموقع.',
+          'كتيب الشركة (بحد أقصى 4 صفحات) يقدمه الراعي، يوضع في ملف الوفود.',
+          'هوية تجارية متسقة عبر قنوات التواصل الاجتماعي الخاصة بنا.'
         ]
       },
       {
-        level: 'الراعي البرونزي',
-        price: '100,000 درهم',
-        icon: Pocket,
-        color: 'bronze',
-        description: 'تمثيل عالي الجودة ووعي أساسي بين حاضري الحدث.',
+        level: 'راعي ذهبي',
+        price: '300,000 درهم',
+        color: 'gold',
         features: [
-          '2 تصريح كامل للمؤتمر',
-          'هوية علامتك التجارية / شعارك على لوحات الخلفية الجانبية',
-          'علامة تجارية متسقة عبر قنوات التواصل الاجتماعي',
-          'تواجد الشعار في حملات تسويقية عبر الوسائط'
+          '6 تصاريح كاملة للمؤتمر.',
+          'هوية علامتك التجارية / شعارك معروض بالكامل على لوحات الخلفية الجانبية.',
+          'منصتا عرض (Standees) في مواقع استراتيجية في الموقع.',
+          'كتيب الشركة (بحد أقصى صفحتان) يقدمه الراعي، يوضع في ملف الوفود.',
+          'هوية تجارية متسقة عبر قنوات التواصل الاجتماعي الخاصة بنا.',
+          'تواجد الشعار في حملات تسويقية عبر الوسائط للترويج للحدث.'
+        ]
+      },
+      {
+        level: 'راعي فضي',
+        price: '200,000 درهم',
+        color: 'silver',
+        features: [
+          '4 تصاريح كاملة للمؤتمر.',
+          'هوية علامتك التجارية / شعارك على لوحات الخلفية الجانبية.',
+          'منصة عرض واحدة (Standee) في مواقع استراتيجية في الموقع.',
+          'كتيب الشركة (بحد أقصى صفحة واحدة) يقدمه الراعي، يوضع في ملف الوفود.',
+          'هوية تجارية متسقة عبر قنوات التواصل الاجتماعي الخاصة بنا.',
+          'تواجد الشعار في حملات تسويقية عبر الوسائط للترويج للحدث.'
+        ]
+      },
+      {
+        level: 'راعي برونزي',
+        price: '100,000 درهم',
+        color: 'bronze',
+        features: [
+          '2 تصريح كامل للمؤتمر.',
+          'هوية علامتك التجارية / شعارك على لوحات الخلفية الجانبية.',
+          'هوية تجارية متسقة عبر قنوات التواصل الاجتماعي الخاصة بنا.',
+          'تواجد الشعار في حملات تسويقية عبر الوسائط للترويج للحدث.'
         ]
       }
     ],
@@ -178,44 +150,32 @@ const translations: { [key: string]: SponsorshipPackageData } = {
 
 const colorConfigs = {
   platinum: {
-    bg: 'bg-slate-900',
-    text: 'text-white',
-    icon: 'text-slate-300',
-    border: 'border-slate-700',
-    accent: 'bg-gradient-to-r from-slate-300 via-slate-100 to-slate-400',
-    button: 'bg-white text-slate-900 hover:bg-slate-100',
-    check: 'text-slate-400',
-    glow: 'shadow-[0_0_30px_rgba(203,213,225,0.2)]'
+    headerBg: 'bg-white',
+    bodyBg: 'bg-[#B21F24]',
+    levelText: 'text-[#4A4A4A]',
+    priceText: 'text-[#8B0000]',
+    featureText: 'text-white'
   },
   gold: {
-    bg: 'bg-white',
-    text: 'text-slate-900',
-    icon: 'text-amber-500',
-    border: 'border-amber-200',
-    accent: 'bg-gradient-to-r from-amber-400 to-yellow-600',
-    button: 'bg-slate-900 text-white hover:bg-slate-800',
-    check: 'text-amber-500',
-    glow: 'shadow-[0_0_30px_rgba(251,191,36,0.15)]'
+    headerBg: 'bg-white',
+    bodyBg: 'bg-[#B21F24]',
+    levelText: 'text-[#4A4A4A]',
+    priceText: 'text-[#8B0000]',
+    featureText: 'text-white'
   },
   silver: {
-    bg: 'bg-white',
-    text: 'text-slate-900',
-    icon: 'text-slate-500',
-    border: 'border-slate-200',
-    accent: 'bg-gradient-to-r from-slate-400 to-slate-600',
-    button: 'bg-slate-900 text-white hover:bg-slate-800',
-    check: 'text-slate-500',
-    glow: 'shadow-[0_0_30px_rgba(148,163,184,0.1)]'
+    headerBg: 'bg-white',
+    bodyBg: 'bg-[#2D2D2D]',
+    levelText: 'text-[#4A4A4A]',
+    priceText: 'text-[#8B0000]',
+    featureText: 'text-white'
   },
   bronze: {
-    bg: 'bg-white',
-    text: 'text-slate-900',
-    icon: 'text-orange-700',
-    border: 'border-orange-100',
-    accent: 'bg-gradient-to-r from-orange-400 to-orange-700',
-    button: 'bg-slate-900 text-white hover:bg-slate-800',
-    check: 'text-orange-700',
-    glow: 'shadow-[0_0_30px_rgba(194,65,12,0.1)]'
+    headerBg: 'bg-white',
+    bodyBg: 'bg-[#555555]',
+    levelText: 'text-[#4A4A4A]',
+    priceText: 'text-[#8B0000]',
+    featureText: 'text-white'
   }
 }
 
@@ -225,43 +185,30 @@ export default function SponsorshipPackages({ language = 'en' }: SponsorshipPack
   const [expandedCard, setExpandedCard] = useState<string | null>(null)
 
   return (
-    <section id="sponsorship" className="py-24 bg-slate-50 overflow-hidden" dir={isRtl ? 'rtl' : 'ltr'}>
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="sponsorship" className="py-24 bg-[#F5F5F5] overflow-hidden" dir={isRtl ? 'rtl' : 'ltr'}>
+      <div className="container mx-auto px-4 max-w-7xl">
         {/* Header Section */}
-        <div className="text-center max-w-4xl mx-auto mb-20">
-          <motion.span
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="inline-block px-4 py-1.5 mb-6 text-sm font-bold tracking-widest text-[#013371] uppercase bg-blue-50 rounded-full border border-blue-100"
-          >
-            {t.title}
-          </motion.span>
+        <div className="text-center mb-16">
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ delay: 0.1 }}
-            className="text-4xl md:text-5xl lg:text-6xl font-black text-slate-900 mb-8 leading-tight"
+            className="text-4xl md:text-5xl font-bold text-[#333] mb-4"
           >
             {t.mainTitle}
           </motion.h2>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+          <motion.div
+            initial={{ width: 0 }}
+            whileInView={{ width: '80px' }}
             viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
-            className="text-lg text-slate-600 leading-relaxed font-medium"
-          >
-            {t.subtitle}
-          </motion.p>
+            className="h-1.5 bg-[#B21F24] mx-auto mb-6"
+          />
         </div>
 
         {/* Pricing Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {t.tiers.map((tier, index) => {
             const config = colorConfigs[tier.color]
-            const Icon = tier.icon
             const isExpanded = expandedCard === tier.level
 
             return (
@@ -271,51 +218,30 @@ export default function SponsorshipPackages({ language = 'en' }: SponsorshipPack
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
-                className={`group relative flex flex-col h-full rounded-2xl border-2 ${config.border} ${config.bg} ${config.text} ${config.glow} transition-all duration-500 hover:-translate-y-2`}
+                className="flex flex-col h-full rounded-sm overflow-hidden shadow-xl"
               >
-                {/* Accent Bar at Top */}
-                <div className={`absolute top-0 left-0 right-0 h-1.5 rounded-t-xl ${config.accent}`} />
+                {/* Image-Style Header */}
+                <div className={`${config.headerBg} p-8 flex flex-col justify-center border-b border-gray-100`}>
+                  <h3 className={`text-xl md:text-2xl font-bold ${config.levelText} mb-2 leading-tight`}>
+                    {tier.level} — <span className={`${config.priceText}`}>{tier.price}</span>
+                  </h3>
+                  <p className="text-sm font-medium text-gray-600 mt-2">
+                    {t.packageIntro}
+                  </p>
+                </div>
 
-                {/* Highlight Badge */}
-                {tier.highlight && (
-                  <div className="absolute -top-4 left-1/2 -translate-x-1/2 z-10">
-                    <span className={`px-4 py-1.5 rounded-full text-xs font-black tracking-wider uppercase shadow-lg ${config.accent} text-white`}>
-                      {tier.highlight}
-                    </span>
-                  </div>
-                )}
-
-                <div className="p-8 flex flex-col h-full">
-                  {/* Header */}
-                  <div className="mb-8">
-                    <div className="flex items-center justify-between mb-6">
-                      <div className={`p-3 rounded-xl bg-slate-100 group-hover:scale-110 transition-transform duration-500 ${tier.color === 'platinum' ? 'bg-slate-800' : ''}`}>
-                        <Icon className={`w-8 h-8 ${config.icon}`} />
-                      </div>
-                      <div className="text-right">
-                        <span className="text-xs font-bold uppercase tracking-widest opacity-60">Investment</span>
-                        <div className="text-2xl font-black">{tier.price}</div>
-                      </div>
-                    </div>
-                    <h3 className="text-2xl font-black mb-4 tracking-tight">{tier.level}</h3>
-                    <p className="text-sm opacity-80 leading-relaxed font-medium">
-                      {tier.description}
-                    </p>
-                  </div>
-
-                  {/* Divider */}
-                  <div className={`h-px w-full mb-8 opacity-10 ${tier.color === 'platinum' ? 'bg-white' : 'bg-slate-900'}`} />
-
-                  {/* Features */}
-                  <div className="flex-grow space-y-4 mb-10">
+                {/* Image-Style Body */}
+                <div className={`${config.bodyBg} p-8 flex-grow flex flex-col`}>
+                  <ul className="space-y-4 flex-grow mb-6">
                     {tier.features.slice(0, 4).map((feature, idx) => (
-                      <div key={idx} className="flex items-start gap-3">
-                        <Check className={`w-5 h-5 flex-shrink-0 mt-0.5 ${config.check}`} />
-                        <span className="text-sm font-semibold opacity-90">{feature}</span>
-                      </div>
+                      <li key={idx} className="flex items-start gap-3">
+                        <span className="w-1.5 h-1.5 rounded-full bg-white mt-2 flex-shrink-0" />
+                        <span className={`text-sm font-medium ${config.featureText} leading-relaxed`}>
+                          {feature}
+                        </span>
+                      </li>
                     ))}
 
-                    {/* Expanded Content */}
                     <AnimatePresence>
                       {isExpanded && (
                         <motion.div
@@ -326,27 +252,26 @@ export default function SponsorshipPackages({ language = 'en' }: SponsorshipPack
                         >
                           {tier.features.slice(4).map((feature, idx) => (
                             <div key={idx} className="flex items-start gap-3">
-                              <Check className={`w-5 h-5 flex-shrink-0 mt-0.5 ${config.check}`} />
-                              <span className="text-sm font-semibold opacity-90">{feature}</span>
+                              <span className="w-1.5 h-1.5 rounded-full bg-white mt-2 flex-shrink-0" />
+                              <span className={`text-sm font-medium ${config.featureText} leading-relaxed`}>
+                                {feature}
+                              </span>
                             </div>
                           ))}
                         </motion.div>
                       )}
                     </AnimatePresence>
-                  </div>
+                  </ul>
 
-                  {/* Actions */}
-                  <div className="mt-auto space-y-4">
-                    {tier.features.length > 4 && (
-                      <button
-                        onClick={() => setExpandedCard(isExpanded ? null : tier.level)}
-                        className="w-full flex items-center justify-center gap-2 text-sm font-bold opacity-60 hover:opacity-100 transition-opacity"
-                      >
-                        {isExpanded ? (isRtl ? 'عرض أقل' : 'Read Less') : (isRtl ? 'إقرأ المزيد' : 'Read More')}
-                        <ChevronRight className={`w-4 h-4 transition-transform duration-300 ${isExpanded ? '-rotate-90' : 'rotate-90'}`} />
-                      </button>
-                    )}
-                  </div>
+                  {tier.features.length > 4 && (
+                    <button
+                      onClick={() => setExpandedCard(isExpanded ? null : tier.level)}
+                      className={`mt-auto flex items-center justify-center gap-2 text-xs font-bold ${config.featureText} opacity-80 hover:opacity-100 transition-opacity uppercase tracking-wider`}
+                    >
+                      {isExpanded ? (isRtl ? 'عرض أقل' : 'Read Less') : (isRtl ? 'إقرأ المزيد' : 'Read More')}
+                      <ChevronRight className={`w-3 h-3 transition-transform duration-300 ${isExpanded ? '-rotate-90' : 'rotate-90'}`} />
+                    </button>
+                  )}
                 </div>
               </motion.div>
             )
@@ -360,17 +285,13 @@ export default function SponsorshipPackages({ language = 'en' }: SponsorshipPack
           viewport={{ once: true }}
           className="mt-16 text-center"
         >
-          <p className="text-slate-500 font-medium italic">
+          <p className="text-gray-500 font-medium italic">
             {isRtl
               ? '* تتوفر باقات مخصصة عند الطلب لتناسب أهدافك التسويقية المحددة.'
               : '* Custom packages are available upon request to suit your specific marketing goals.'}
           </p>
         </motion.div>
       </div>
-
-      {/* Background Decorative Elements */}
-      <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/2 w-[600px] h-[600px] bg-blue-100/50 rounded-full blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-0 left-0 translate-y-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-yellow-100/40 rounded-full blur-[120px] pointer-events-none" />
     </section>
   )
 }
