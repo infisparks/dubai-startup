@@ -88,7 +88,7 @@ const BrandTicker = () => {
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="text-center mb-8">
-                    <p className="text-[10px] sm:text-xs font-bold text-gray-400 uppercase tracking-[0.2em]">Trusted by Industry Leaders</p>
+                    <p className="text-[10px] sm:text-xs font-bold text-gray-400 uppercase tracking-[0.2em]">Supporting partners</p>
                 </div>
 
                 <div
