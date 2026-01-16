@@ -12,11 +12,10 @@ const translations = {
     en: {
         guestOfHonor: 'Guest of Honour',
         name: 'Her Excellency Shaikha Moaza Obaid Suhail Al Maktoum',
-        role: 'Chairperson of the Pride Group',
+        role: 'Chairperson of a Global Conglomerate',
         bio: [
-            "Her Excellency Shaikha Moaza Obaid Suhail Al Maktoum is a distinguished Emirati business leader and an esteemed member of the Al Maktoum Family, the ruling family of the United Arab Emirates. She is widely recognized for her visionary leadership, global influence, and outstanding contributions to entrepreneurship and economic development.",
-            "She serves as the Chairperson of the Pride Group, a Dubai-headquartered, multinational diversified business conglomerate with operations across more than 40 countries, spanning key sectors including finance, real estate, healthcare, and technology.",
-            "In recognition of her exceptional leadership and royal lineage, Her Excellency will grace the occasion as a Guest of Honour from the UAE Royal Family, lending prestige, insight, and strategic perspective to the gathering."
+            "Her Excellency Shaikha Moaza Obaid Suhail Al Maktoum is a distinguished Emirati business leader and an esteemed member of the Al Maktoum Family, the ruling family of the United Arab Emirates. She is widely acclaimed for her visionary leadership, global influence, and significant contributions to entrepreneurship and economic development.",
+            "She serves as the Chairperson of a leading multinational diversified business conglomerate with operations spanning more than 40 countries, encompassing key sectors such as finance, real estate, healthcare, and technology. In recognition of her exceptional leadership and royal heritage, Her Excellency will grace the occasion as Guest of Honour from the UAE Royal Family, bringing with her unparalleled prestige, strategic insight, and a global perspective that will greatly enrich the gathering."
         ],
         stats: [
             { label: 'Global Presence', value: '40+ Countries', icon: Globe },
@@ -27,11 +26,10 @@ const translations = {
     ar: {
         guestOfHonor: 'ضيفة الشرف',
         name: 'سعادة الشيخة موزة عبيد سهيل آل مكتوم',
-        role: 'رئيس مجلس إدارة مجموعة برايد',
+        role: 'رئيس مجلس إدارة تكتل أعمال عالمي',
         bio: [
-            "تعد سعادة الشيخة موزة عبيد سهيل آل مكتوم قائدة أعمال إماراتية متميزة وعضواً مرموقاً في عائلة آل مكتوم، العائلة الحاكمة في دولة الإمارات العربية المتحدة. وهي معروفة على نطاق واسع بقيادتها الرؤوية وتأثيرها العالمي ومساهماتها البارزة في ريادة الأعمال والتنمية الاقتصادية.",
-            "تشغل منصب رئيس مجلس إدارة مجموعة برايد، وهي تكتل أعمال عالمي متنوع مقره دبي وله عمليات في أكثر من 40 دولة، وتغطي قطاعات رئيسية تشمل التمويل والعقارات والرعاية الصحية والتكنولوجيا.",
-            "تقديراً لقيادتها الاستثنائية ونسبها الملكي، ستشرف سعادتها المناسبة كضيفة شرف من عائلة آل مكتوم، مما يضفي المكانة والبصيرة والمنظور الاستراتيجي على التجمع."
+            "تعد سعادة الشيخة موزة عبيد سهيل آل مكتوم قائدة أعمال إماراتية متميزة وعضواً مرموقاً في عائلة آل مكتوم، العائلة الحاكمة في دولة الإمارات العربية المتحدة. وهي تحظى بتقدير واسع لقيادتها الرؤوية وتأثيرها العالمي ومساهماتها الكبيرة في ريادة الأعمال والتنمية الاقتصادية.",
+            "وتشغل منصب رئيس مجلس إدارة تكتل أعمال عالمي متنوع رائد يمتد نشاطه في أكثر من 40 دولة، ويغطي قطاعات رئيسية مثل التمويل والعقارات والرعاية الصحية والتكنولوجيا. وتقديرًا لقيادتها الاستثنائية وإرثها الملكي، ستشرف سعادتها المناسبة كضيفة شرف من عائلة آل مكتوم، مما يضفي مكانة لا تضاهى وبصيرة استراتيجية ومنظوراً عالمياً يثري هذا التجمع بشكل كبير."
         ],
         stats: [
             { label: 'تواجـد عـالمي', value: '+40 دولة', icon: Globe },
