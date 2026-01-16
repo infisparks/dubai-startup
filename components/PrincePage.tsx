@@ -58,7 +58,7 @@ export default function PrincePage({ language = 'en' }: PrincePageProps) {
         <div className={`flex flex-col lg:flex-row items-center gap-10 lg:gap-16 ${isRtl ? 'lg:flex-row-reverse' : ''}`}>
 
           {/* Image Section */}
-          <div className="w-full lg:w-[35%] relative group perspective-1000 lg:translate-y-12">
+          <div className="w-[85%] sm:w-[60%] lg:w-[32%] relative group perspective-1000 lg:translate-y-12 mx-auto lg:mx-0">
             {/* Decorative Border */}
             <div className="absolute -inset-3 bg-gradient-to-tr from-[#bf1e2e]/20 via-[#c4925f]/20 to-[#bf1e2e]/20 rounded-2xl opacity-60 blur-md group-hover:opacity-80 transition-opacity duration-700" />
 
@@ -83,7 +83,7 @@ export default function PrincePage({ language = 'en' }: PrincePageProps) {
           </div>
 
           {/* Content Section */}
-          <div className={`w-full lg:w-[65%] ${isRtl ? 'text-right' : 'text-left'}`}>
+          <div className={`w-full lg:w-[68%] ${isRtl ? 'text-right' : 'text-left'}`}>
             <div className="space-y-6">
 
               {/* Header */}
