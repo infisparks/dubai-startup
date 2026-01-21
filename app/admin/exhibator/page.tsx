@@ -116,10 +116,11 @@ interface ExhibitorReviewModalProps {
     profile: ExhibitorProfile;
     onClose: () => void;
     onSave: (updatedProfile: ExhibitorProfile) => void;
+    onApprovePayment: (userId: string) => void;
     boothOptions: string[];
 }
 
-const ExhibitorReviewModal: React.FC<ExhibitorReviewModalProps> = ({ profile, onClose, onSave, boothOptions }) => {
+const ExhibitorReviewModal: React.FC<ExhibitorReviewModalProps> = ({ profile, onClose, onSave, onApprovePayment, boothOptions }) => {
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     // RHF Setup
@@ -325,6 +326,20 @@ const ExhibitorReviewModal: React.FC<ExhibitorReviewModalProps> = ({ profile, on
                                             )}
                                         </div>
                                     </div>
+                                    {profile.payment_status !== 'paid' && (
+                                        <div className="mt-4">
+                                            <button
+                                                type="button"
+                                                onClick={() => {
+                                                    onApprovePayment(profile.user_id);
+                                                    onClose();
+                                                }}
+                                                className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-green-600 text-white rounded-lg hover:bg-green-700 transition text-sm font-bold shadow-sm"
+                                            >
+                                                <Store className="w-4 h-4" /> Approve Paid (Direct)
+                                            </button>
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                         </div>
@@ -477,6 +492,26 @@ export default function AdminExhibitorDashboard() {
     const handleModalSave = (updatedProfile: ExhibitorProfile) => {
         setProfiles(prev => prev.map(p => p.user_id === updatedProfile.user_id ? updatedProfile : p));
         fetchExhibitorProfiles(); // Refresh to be safe
+    };
+
+    const handleApprovePaymentDirect = async (userId: string) => {
+        if (confirm(`Approve payment as "direct" for this exhibitor?`)) {
+            try {
+                const { error } = await supabase
+                    .from('exhibitor_profiles')
+                    .update({
+                        payment_status: 'paid',
+                        stripe_session_id: 'direct',
+                        paid_at: new Date().toISOString()
+                    })
+                    .eq('user_id', userId);
+
+                if (error) throw error;
+                fetchExhibitorProfiles();
+            } catch (err: any) {
+                alert(`Error: ${err.message}`);
+            }
+        }
     };
 
     const handleDeleteProfile = async (userId: string) => {
@@ -710,6 +745,7 @@ export default function AdminExhibitorDashboard() {
                     profile={selectedProfileForModal}
                     onClose={() => setSelectedProfileForModal(null)}
                     onSave={handleModalSave}
+                    onApprovePayment={handleApprovePaymentDirect}
                     boothOptions={BOOTH_OPTIONS}
                 />
             )}

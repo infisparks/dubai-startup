@@ -282,6 +282,28 @@ export default function AdminStartupsPage() {
     return data;
   }
 
+  const approvePayment = async (startupId: string, isGala: boolean) => {
+    const { data, error } = await supabase
+      .from('founder_profiles')
+      .update({
+        payment_status: 'paid',
+        stripe_session_id: 'direct',
+        is_gala: isGala,
+        paid_at: new Date().toISOString(),
+        updated_at: new Date().toISOString()
+      })
+      .eq('user_id', startupId)
+      .select()
+      .single();
+
+    if (error) {
+      alert(`Error: ` + error.message);
+      return null;
+    }
+
+    return data;
+  }
+
   const handleApprove = async (startupId: string) => {
     const data = await updateApprovalStatus(startupId, true);
     if (data) setAllStartups(allStartups.map(s => s.user_id === startupId ? data : s));
@@ -290,6 +312,13 @@ export default function AdminStartupsPage() {
   const handleDisapprove = async (startupId: string) => {
     const data = await updateApprovalStatus(startupId, false);
     if (data) setAllStartups(allStartups.map(s => s.user_id === startupId ? data : s));
+  };
+
+  const handleApprovePayment = async (startupId: string, isGala: boolean) => {
+    if (confirm(`Approve payment as "direct" ${isGala ? 'WITH' : 'WITHOUT'} Gala Dinner?`)) {
+      const data = await approvePayment(startupId, isGala);
+      if (data) setAllStartups(allStartups.map(s => s.user_id === startupId ? data : s));
+    }
   };
 
   const handleEditSave = (updatedStartup: FounderProfile) => {
@@ -466,7 +495,7 @@ export default function AdminStartupsPage() {
         </div>
       </main>
       <Footer language={language} />
-      {editModalOpen && selectedStartup && <EditModal startup={selectedStartup} onClose={() => setEditModalOpen(false)} onSave={handleEditSave} t={t} />}
+      {editModalOpen && selectedStartup && <EditModal startup={selectedStartup} onClose={() => setEditModalOpen(false)} onSave={handleEditSave} onApprovePayment={handleApprovePayment} t={t} />}
       {deleteModalOpen && selectedStartup && <DeleteModal startup={selectedStartup} onClose={() => setDeleteModalOpen(false)} onDelete={handleDelete} t={t} />}
     </div>
   );
@@ -478,10 +507,11 @@ interface EditModalProps {
   startup: FounderProfile;
   onClose: () => void;
   onSave: (startup: FounderProfile) => void;
+  onApprovePayment: (startupId: string, isGala: boolean) => void;
   t: Translations;
 }
 
-const EditModal: React.FC<EditModalProps> = ({ startup, onClose, onSave, t }) => {
+const EditModal: React.FC<EditModalProps> = ({ startup, onClose, onSave, onApprovePayment, t }) => {
   const [formData, setFormData] = useState<EditableFounderProfile>({
     email: startup.email || '',
     company_name: startup.company_name || '',
@@ -682,6 +712,30 @@ const EditModal: React.FC<EditModalProps> = ({ startup, onClose, onSave, t }) =>
                   )}
                 </div>
               </div>
+              {startup.payment_status !== 'paid' && (
+                <div className="mt-4 flex flex-col sm:flex-row gap-2">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      onApprovePayment(startup.user_id, true);
+                      onClose();
+                    }}
+                    className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition text-sm font-bold shadow-sm"
+                  >
+                    <DollarSign className="w-4 h-4" /> Approve Paid (With Gala)
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      onApprovePayment(startup.user_id, false);
+                      onClose();
+                    }}
+                    className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition text-sm font-bold shadow-sm"
+                  >
+                    <DollarSign className="w-4 h-4" /> Approve Paid (No Gala)
+                  </button>
+                </div>
+              )}
             </div>
           </div>
 
