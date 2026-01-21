@@ -90,6 +90,16 @@ const translations = {
                 bio: 'Chartered Accountant, Insolvency Professional, Strategic Advisor, Founder of Arthah Group, and Director of International Tax & Compliance with over 18 years of experience and investments in more than 20 companies.',
                 image: '/speaker/5.png',
             },
+            {
+                name: 'Mr. Sultan Ali Rashed Lootah',
+                bio: 'Distinguished Emirati strategist and entrepreneur, recognized for driving high-impact change across government and private sectors. Former CEO of Mohammed bin Rashid Al Maktoum Foundation and Director at The Executive Office.',
+                image: '/speaker/21.png',
+            },
+            {
+                name: 'Mr. Bhimkanta Bhandari',
+                bio: 'Global entrepreneur, Chairman & Managing Director with over 7 years of international experience across trade, IT, and FinTech. Focuses on building scalable, technology-enabled businesses with long-term value.',
+                image: '/speaker/22.png',
+            },
         ],
     },
     ar: {
@@ -139,6 +149,16 @@ const translations = {
                 name: 'السيد بونيت ساخوجا',
                 bio: 'محاسب قانوني | محترف إعسار | مستشار استراتيجي | مؤسس - مجموعة أرثاه | مدير - الضرائب الدولية والامتثال مع أكثر من 18 عامًا من الخبرة، استثمر في أكثر من 20 شركة حتى الآن.',
                 image: '/speaker/5.png',
+            },
+            {
+                name: 'السيد سلطان علي راشد لوتاه',
+                bio: 'Distinguished Emirati strategist and entrepreneur, recognized for driving high-impact change across government and private sectors. Former CEO of Mohammed bin Rashid Al Maktoum Foundation and Director at The Executive Office.',
+                image: '/speaker/21.png',
+            },
+            {
+                name: 'السيد بهيمكانتا بهانداري',
+                bio: 'Global entrepreneur, Chairman & Managing Director with over 7 years of international experience across trade, IT, and FinTech. Focuses on building scalable, technology-enabled businesses with long-term value.',
+                image: '/speaker/22.png',
             },
         ],
     },
