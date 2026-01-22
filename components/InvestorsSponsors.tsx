@@ -62,7 +62,7 @@ const translations = {
             },
             {
                 name: 'Mr. Bhimkanta Bhandari',
-                bio: 'Global entrepreneur, Chairman & Managing Director with over 7 years of international experience across trade, IT, and FinTech. Focuses on building scalable, technology-enabled businesses with long-term value.',
+                bio: 'Bhimkanta Bhandari is a global entrepreneur, Chairman & Managing Director, with an estimated net worth exceeding USD 100 million, built through diversified operating businesses and long-term strategic investments. He has over 7 years of international experience across trade, IT & FinTech, digital assets, insurance, mining, and mobility-related sectors, with operations spanning Asia, the GCC, and North America. Known for a compliance-first, governance-driven approach, he focuses on building scalable, technology-enabled businesses with long-term institutional value.',
                 image: '/speaker/22.png',
             },
             {
@@ -122,7 +122,7 @@ const translations = {
             },
             {
                 name: 'السيد بهيمكانتا بهانداري',
-                bio: 'Global entrepreneur, Chairman & Managing Director with over 7 years of international experience across trade, IT, and FinTech. Focuses on building scalable, technology-enabled businesses with long-term value.',
+                bio: 'Bhimkanta Bhandari is a global entrepreneur, Chairman & Managing Director, with an estimated net worth exceeding USD 100 million, built through diversified operating businesses and long-term strategic investments. He has over 7 years of international experience across trade, IT & FinTech, digital assets, insurance, mining, and mobility-related sectors, with operations spanning Asia, the GCC, and North America. Known for a compliance-first, governance-driven approach, he focuses on building scalable, technology-enabled businesses with long-term institutional value.',
                 image: '/speaker/22.png',
             },
             {
