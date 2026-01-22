@@ -1,26 +1,10 @@
 'use client'
 
-import React, { useRef, useState, useEffect, useCallback } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import Image from 'next/image'
 import { pastSpeakersData } from "@/lib/past-speakers-data"
 import Link from 'next/link'
-import { ChevronRight, ArrowRight, Star } from 'lucide-react'
-
-function ChevronLeftIcon() {
-    return (
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
-            <path fillRule="evenodd" d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z" clipRule="evenodd" />
-        </svg>
-    )
-}
-
-function ChevronRightIcon() {
-    return (
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
-            <path fillRule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clipRule="evenodd" />
-        </svg>
-    )
-}
+import { ArrowRight, Star } from 'lucide-react'
 
 interface PastSpeakersProps {
     language: 'en' | 'ar'
@@ -42,46 +26,31 @@ const translations = {
 export default function PastSpeakers({ language = 'en' }: PastSpeakersProps) {
     const t = translations[language]
     const scrollContainerRef = useRef<HTMLDivElement>(null)
+    const [isPaused, setIsPaused] = useState(false)
 
-    // Show more speakers in the carousel
-    const featuredSpeakers = pastSpeakersData.slice(0, 10)
-
-    const [isScrollStart, setIsScrollStart] = useState(true)
-    const [isScrollEnd, setIsScrollEnd] = useState(false)
-
-    const checkScrollPosition = useCallback(() => {
-        const el = scrollContainerRef.current
-        if (el) {
-            const atStart = el.scrollLeft < 10
-            const atEnd = el.scrollLeft + el.clientWidth >= el.scrollWidth - 10
-            setIsScrollStart(atStart)
-            setIsScrollEnd(atEnd)
-        }
-    }, [])
+    // Repeat speakers for seamless loop
+    const repeatedSpeakers = [...pastSpeakersData.slice(0, 10), ...pastSpeakersData.slice(0, 10), ...pastSpeakersData.slice(0, 10), ...pastSpeakersData.slice(0, 10)]
 
     useEffect(() => {
         const el = scrollContainerRef.current
-        if (el) {
-            el.addEventListener('scroll', checkScrollPosition)
-            window.addEventListener('resize', checkScrollPosition)
-            checkScrollPosition()
-            return () => {
-                el.removeEventListener('scroll', checkScrollPosition)
-                window.removeEventListener('resize', checkScrollPosition)
-            }
-        }
-    }, [checkScrollPosition])
+        if (!el) return
 
-    const scroll = (direction: 'left' | 'right') => {
-        const el = scrollContainerRef.current
-        if (el) {
-            const scrollAmount = 340
-            el.scrollBy({
-                left: direction === 'left' ? -scrollAmount : scrollAmount,
-                behavior: 'smooth',
-            })
+        let animationId: number
+        const animate = () => {
+            if (!isPaused) {
+                const speed = 0.5 // Adjust speed for smoothness
+                if (el.scrollLeft >= el.scrollWidth / 2) {
+                    el.scrollLeft = 0
+                } else {
+                    el.scrollLeft += speed
+                }
+            }
+            animationId = requestAnimationFrame(animate)
         }
-    }
+
+        animationId = requestAnimationFrame(animate)
+        return () => cancelAnimationFrame(animationId)
+    }, [isPaused])
 
     return (
         <section className="py-12 sm:py-16 relative overflow-hidden bg-slate-50">
@@ -121,41 +90,23 @@ export default function PastSpeakers({ language = 'en' }: PastSpeakersProps) {
 
                 {/* Carousel Container */}
                 <div className="relative group/carousel">
+                    {/* Gradient Masks */}
+                    <div className="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-slate-50 to-transparent z-10 pointer-events-none" />
+                    <div className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-slate-50 to-transparent z-10 pointer-events-none" />
 
-                    {/* Navigation Buttons (Floating) */}
-                    <div className="absolute -left-4 top-1/2 -translate-y-1/2 z-20 hidden lg:flex opacity-0 group-hover/carousel:opacity-100 transition-opacity duration-300">
-                        <button
-                            onClick={() => scroll('left')}
-                            className={`p-3.5 rounded-full bg-white/90 backdrop-blur-sm shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-slate-100 text-slate-700 hover:text-[#bf1e2e] hover:scale-110 transition-all duration-300
-                         ${isScrollStart ? 'opacity-50 cursor-not-allowed hidden' : 'opacity-100'}`}
-                            disabled={isScrollStart}
-                        >
-                            <ChevronLeftIcon />
-                        </button>
-                    </div>
-
-                    <div className="absolute -right-4 top-1/2 -translate-y-1/2 z-20 hidden lg:flex opacity-0 group-hover/carousel:opacity-100 transition-opacity duration-300">
-                        <button
-                            onClick={() => scroll('right')}
-                            className={`p-3.5 rounded-full bg-white/90 backdrop-blur-sm shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-slate-100 text-slate-700 hover:text-[#bf1e2e] hover:scale-110 transition-all duration-300
-                         ${isScrollEnd ? 'opacity-50 cursor-not-allowed hidden' : 'opacity-100'}`}
-                            disabled={isScrollEnd}
-                        >
-                            <ChevronRightIcon />
-                        </button>
-                    </div>
-
-                    {/* Cards Scroll Area */}
                     <div
                         ref={scrollContainerRef}
-                        className="flex overflow-x-auto gap-4 pb-8 pt-4 px-2 snap-x snap-mandatory 
-                       scrollbar-none [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] cursor-grab active:cursor-grabbing"
-                        style={{ scrollBehavior: 'smooth' }}
+                        onMouseEnter={() => setIsPaused(true)}
+                        onMouseLeave={() => setIsPaused(false)}
+                        onTouchStart={() => setIsPaused(true)}
+                        onTouchEnd={() => setIsPaused(false)}
+                        className="flex overflow-x-auto gap-4 pb-8 pt-4 px-2 no-scrollbar
+                       scrollbar-none [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none]"
                     >
-                        {featuredSpeakers.map((speaker, idx) => (
+                        {repeatedSpeakers.map((speaker, idx) => (
                             <div
                                 key={`${speaker.name}-${idx}`}
-                                className="flex-shrink-0 w-[240px] sm:w-[260px] snap-start group relative"
+                                className="flex-shrink-0 w-[240px] sm:w-[260px] group relative"
                             >
                                 <div className="bg-white rounded-[1.5rem] p-5 h-full border border-slate-100 shadow-[0_2px_10px_rgb(0,0,0,0.03)] 
                               transition-all duration-300 group-hover:shadow-[0_20px_40px_rgb(191,30,46,0.08)] group-hover:-translate-y-1.5 flex flex-col items-center text-center relative overflow-hidden z-10">
@@ -190,8 +141,8 @@ export default function PastSpeakers({ language = 'en' }: PastSpeakersProps) {
                             </div>
                         ))}
 
-                        {/* "View More" Slide */}
-                        <div className="flex-shrink-0 w-[180px] snap-start flex items-center justify-center">
+                        {/* "View More" Slide at the end of the data loop (it will repeat) */}
+                        <div className="flex-shrink-0 w-[180px] flex items-center justify-center">
                             <Link
                                 href="/past-speakers"
                                 className="flex flex-col items-center justify-center w-full h-[80%] 

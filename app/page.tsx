@@ -13,8 +13,7 @@ import Newsletter from "@/components/newsletter"
 import Contact from "@/components/contact"
 import Footer from "@/components/footer"
 import ScrollToTop from "@/components/scroll-to-top"
-import PrincePage from "@/components/PrincePage"
-import GuestOfHonour from "@/components/GuestOfHonour"
+import HonorarySlider from "@/components/HonorarySlider"
 import DrBuAbdullah from "@/components/DrBuAbdullah"
 import FounderPage from "@/components/Founder"
 import CoFoundersPage from "@/components/Cofounder"
@@ -44,8 +43,7 @@ export default function Home() {
       <Header language={language} setLanguage={setLanguage} />
       <Hero language={language} />
       <About language={language} />
-      <GuestOfHonour language={language} />
-      <PrincePage language={language} />
+      <HonorarySlider language={language} />
       {/* <DrBuAbdullah language={language} /> */}
       <FounderPage language={language} />
       {/* <ApprovedStartupsList language={language}/> */}
