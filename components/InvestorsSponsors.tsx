@@ -51,24 +51,24 @@ const translations = {
         readLess: 'Read Less',
         investors: [
             {
-                name: 'Mr. Bhimkanta Bhandari',
-                bio: 'Global entrepreneur, Chairman & Managing Director with over 7 years of international experience across trade, IT, and FinTech. Focuses on building scalable, technology-enabled businesses with long-term value.',
-                image: '/speaker/22.png',
-            },
-            {
                 name: 'Mr. Sultan Ali Rashed Lootah',
                 bio: 'Distinguished Emirati strategist and entrepreneur, recognized for driving high-impact change across government and private sectors. Former CEO of Mohammed bin Rashid Al Maktoum Foundation and Director at The Executive Office.',
                 image: '/speaker/21.png',
             },
             {
-                name: 'Dr. M.F.G. Thierry Catherine',
-                bio: 'Dr. Thierry Catherine has 25 years of experience in the oil and gas industry and innovative technologies. His legacy is marked by innovation, collaboration, and environmental stewardship. His visionary leadership and dedication to advancing sustainable solutions in the energy, decarbonisation and water sectors have positioned him as a respected figure in the market. As a CEO, Board Member and advisor for not less than 7 companies in the Energy Industry, Dr. Thierry continues to drive positive change and inspire others in various industries.',
-                image: '/speaker/17.png',
-            },
-            {
                 name: 'Mr. Sushil Sharma',
                 bio: 'Founder and CEO of Marwari Catalysts, fueling the startup ecosystem in Tier 2 & 3 cities. Angel investor in 100+ startups, with a focus on gender diversity and innovation.',
                 image: '/speaker/14.png',
+            },
+            {
+                name: 'Mr. Bhimkanta Bhandari',
+                bio: 'Global entrepreneur, Chairman & Managing Director with over 7 years of international experience across trade, IT, and FinTech. Focuses on building scalable, technology-enabled businesses with long-term value.',
+                image: '/speaker/22.png',
+            },
+            {
+                name: 'Dr. M.F.G. Thierry Catherine',
+                bio: 'Dr. Thierry Catherine has 25 years of experience in the oil and gas industry and innovative technologies. His legacy is marked by innovation, collaboration, and environmental stewardship. His visionary leadership and dedication to advancing sustainable solutions in the energy, decarbonisation and water sectors have positioned him as a respected figure in the market. As a CEO, Board Member and advisor for not less than 7 companies in the Energy Industry, Dr. Thierry continues to drive positive change and inspire others in various industries.',
+                image: '/speaker/17.png',
             },
             {
                 name: 'Mr. Ariz',
@@ -111,24 +111,24 @@ const translations = {
         readLess: 'اقرأ أقل',
         investors: [
             {
-                name: 'السيد بهيمكانتا بهانداري',
-                bio: 'Global entrepreneur, Chairman & Managing Director with over 7 years of international experience across trade, IT, and FinTech. Focuses on building scalable, technology-enabled businesses with long-term value.',
-                image: '/speaker/22.png',
-            },
-            {
                 name: 'السيد سلطان علي راشد لوتاه',
                 bio: 'Distinguished Emirati strategist and entrepreneur, recognized for driving high-impact change across government and private sectors. Former CEO of Mohammed bin Rashid Al Maktoum Foundation and Director at The Executive Office.',
                 image: '/speaker/21.png',
             },
             {
-                name: 'Dr. M.F.G. Thierry Catherine',
-                bio: 'Dr. Thierry Catherine has 25 years of experience in the oil and gas industry and innovative technologies. His legacy is marked by innovation, collaboration, and environmental stewardship. His visionary leadership and dedication to advancing sustainable solutions in the energy, decarbonisation and water sectors have positioned him as a respected figure in the market. As a CEO, Board Member and advisor for not less than 7 companies in the Energy Industry, Dr. Thierry continues to drive positive change and inspire others in various industries.',
-                image: '/speaker/17.png',
-            },
-            {
                 name: 'السيد سوشيل شارما',
                 bio: 'المؤسس والرئيس التنفيذي لشركة Marwari Catalysts، التي تغذي نظام الشركات الناشئة في مدن المستوى 2 و 3. مستثمر ملاك في أكثر من 100 شركة ناشئة، مع التركيز على التنوع بين الجنسين والابتكار.',
                 image: '/speaker/14.png',
+            },
+            {
+                name: 'السيد بهيمكانتا بهانداري',
+                bio: 'Global entrepreneur, Chairman & Managing Director with over 7 years of international experience across trade, IT, and FinTech. Focuses on building scalable, technology-enabled businesses with long-term value.',
+                image: '/speaker/22.png',
+            },
+            {
+                name: 'Dr. M.F.G. Thierry Catherine',
+                bio: 'Dr. Thierry Catherine has 25 years of experience in the oil and gas industry and innovative technologies. His legacy is marked by innovation, collaboration, and environmental stewardship. His visionary leadership and dedication to advancing sustainable solutions in the energy, decarbonisation and water sectors have positioned him as a respected figure in the market. As a CEO, Board Member and advisor for not less than 7 companies in the Energy Industry, Dr. Thierry continues to drive positive change and inspire others in various industries.',
+                image: '/speaker/17.png',
             },
             {
                 name: 'السيد أريز',
