@@ -91,6 +91,11 @@ const translations = {
                 bio: 'Founder, Ideabaaz | CEO & Co-Founder, Kuberans Tech Ventures Pvt. Ltd.\n\nJeet Wagh is a startup ecosystem builder and founder of Ideabaaz, dedicated to supporting early-stage startups through strategic guidance, investor engagement, and community building. As CEO & Co-Founder of Kuberans Tech Ventures, he is building one of the world’s largest startup media platforms.\n\nPassionate about innovation, Jeet helps founders refine their vision, validate ideas, and scale effectively while fostering meaningful connections across entrepreneurs, investors, and industry leaders.',
                 image: '/speaker/24.png',
             },
+            {
+                name: 'Anirudh Tripathy',
+                bio: 'Anirudh Tripathy is an Investment Banker and Technology Specialist with over 26 years of global experience in Strategic Asset Management, Investment Banking, and Cross-Border Transactions. He is the Founder, Managing Director & CEO of KPM ASSET Group, a USA-based multi-disciplinary investment banking firm established in 1999. With deep expertise in capital structuring, global investments, and transaction advisory, he specializes across sectors including AI, Blockchain, IT, Pharmaceuticals, Real Estate & Infrastructure, and Defense Technology. He also serves on multiple global advisory boards and is the Global President of CFTIF, supporting international trade and investment ecosystems.',
+                image: '/speaker/29.png',
+            },
         ],
     },
     ar: {
@@ -175,6 +180,11 @@ const translations = {
                 name: 'Jeet Wagh',
                 bio: 'Founder, Ideabaaz | CEO & Co-Founder, Kuberans Tech Ventures Pvt. Ltd.\n\nJeet Wagh is a startup ecosystem builder and founder of Ideabaaz, dedicated to supporting early-stage startups through strategic guidance, investor engagement, and community building. As CEO & Co-Founder of Kuberans Tech Ventures, he is building one of the world’s largest startup media platforms.\n\nPassionate about innovation, Jeet helps founders refine their vision, validate ideas, and scale effectively while fostering meaningful connections across entrepreneurs, investors, and industry leaders.',
                 image: '/speaker/24.png',
+            },
+            {
+                name: 'أنيروده تريباتي',
+                bio: 'أنيروده تريباتي هو مصرفي استثماري وأخصائي تكنولوجيا يتمتع بخبرة عالمية تزيد عن 26 عامًا في إدارة الأصول الإستراتيجية والخدمات المصرفية الاستثمارية والمعاملات عبر الحدود. وهو المؤسس والعضو المنتدب والرئيس التنفيذي لمجموعة KPM ASSET Group، وهي شركة مصرفية استثمارية متعددة التخصصات مقرها الولايات المتحدة الأمريكية وتأسست في عام 1999. بفضل خبرته العميقة في هيكلة رأس المال والاستثمارات العالمية والمعاملات الاستشارية، فإنه متخصص في قطاعات تشمل الذكاء الاصطناعي، بلوكتشين، تكنولوجيا المعلومات، الأدوية، العقارات والبنية التحتية، وتكنولوجيا الدفاع. كما يشغل عضوية العديد من المجالس الاستشارية العالمية وهو الرئيس العالمي لـ CFTIF، حيث يدعم أنظمة التجارة والاستثمار الدولية.',
+                image: '/speaker/29.png',
             },
         ],
     },

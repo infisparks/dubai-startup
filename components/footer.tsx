@@ -156,8 +156,6 @@ export default function Footer({ language = 'en' }: FooterProps) {
               },
               {
                 title: t.platform, links: [
-                  { label: t.forInvestors, href: '/investors' },
-                  { label: t.forStartups, href: '/startups' },
                   { label: t.sponsorship, href: '/#sponsorship' }
                 ]
               },

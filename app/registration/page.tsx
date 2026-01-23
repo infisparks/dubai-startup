@@ -6,7 +6,7 @@ import { useState, useMemo, Dispatch, SetStateAction } from "react"
 import Link from "next/link"
 import Header from "@/components/header" // Assuming path
 import Footer from "@/components/footer" // Assuming path
-import { ArrowRight, Rocket, Briefcase, Mic, Store } from "lucide-react"
+import { ArrowRight, Rocket, Briefcase, Mic, Store, Ticket } from "lucide-react"
 import { Session } from "@supabase/supabase-js" // For header prop if needed
 
 // Define a simple translations type for this page
@@ -34,6 +34,11 @@ type Translations = {
         cta: string;
     };
     pitching: {
+        title: string;
+        desc: string;
+        cta: string;
+    };
+    visitor: {
         title: string;
         desc: string;
         cta: string;
@@ -75,7 +80,11 @@ export default function RegistrationSelectionPage() {
                     desc: "Share your insights. Apply to be a speaker at our next event.",
                     cta: "Apply as a Speaker",
                 },
-
+                visitor: {
+                    title: "Visitor Registration",
+                    desc: "Join as a visitor to network and experience the summit. Choose from Standard ($250) or Premium ($500) access.",
+                    cta: "Register as a Visitor",
+                },
             },
             ar: {
                 title: "سجل اهتمامك",
@@ -105,12 +114,24 @@ export default function RegistrationSelectionPage() {
                     desc: "اعرض منتجك أو خدمتك أمام جمهور مستهدف.",
                     cta: "سجل كعارض",
                 },
+                visitor: {
+                    title: "تسجيل الزوار",
+                    desc: "انضم كزائر للتواصل وتجربة القمة. اختر من بين الوصول القياسي أو الوصول المميز لكبار الشخصيات.",
+                    cta: "سجل كزائر",
+                },
             },
         };
         return translations[language];
     }, [language]);
 
     const registrationOptions = [
+        {
+            icon: Ticket,
+            title: t.visitor.title,
+            desc: t.visitor.desc,
+            cta: t.visitor.cta,
+            href: "/visitor-form",
+        },
         {
             icon: Rocket,
             title: t.startup.title,
