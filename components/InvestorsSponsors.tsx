@@ -66,11 +66,11 @@ const translations = {
                 bio: 'Chartered Accountant, Insolvency Professional, Strategic Advisor, Founder of Arthah Group, and Director of International Tax & Compliance with over 18 years of experience and investments in more than 20 companies.',
                 image: '/speaker/5.png',
             },
-            {
+            /* {
                 name: 'Ashwin Kumar',
                 bio: 'Investor | 2x Entrepreneur | Technology Leader\n\nAshwin Kumar is a seasoned technology leader, 2x entrepreneur, and active investor with a proven track record of building and scaling startups. As CTO & Business Head at Ideabaaz and CEO of Startup Builder, he partners with early- and growth-stage ventures to drive innovation, product strategy, and sustainable growth.\n\nWith deep expertise in technology architecture and venture building, Ashwin mentors founders, evaluates high-potential investment opportunities, and contributes actively to the startup ecosystem.',
                 image: '/speaker/27.png',
-            },
+            }, */
             {
                 name: 'Ankit Anand',
                 bio: 'Founding Partner, Riceberg Ventures\n\nEarly-stage deep-tech investor and ETH Zürich–trained physicist with cross-border, cross-domain experience, focused on backing driven founders building globally impactful companies. Started his entrepreneurial journey at 17 and has worked across MedTech, EdTech, research, education, and creative industries.\n\nContributed to the Advanced VIRGO gravitational-wave project and helped scale Zurich-based Sleepiz across three continents. Former early team member at Embibe, which exited for USD 180M. Believes in interdisciplinary thinking as a catalyst for solving complex problems and driving meaningful innovation.',
@@ -151,11 +151,11 @@ const translations = {
                 bio: 'محاسب قانوني | محترف إعسار | مستشار استراتيجي | مؤسس - مجموعة أرثاه | مدير - الضرائب الدولية والامتثال مع أكثر من 18 عامًا من الخبرة، استثمر في أكثر من 20 شركة حتى الآن.',
                 image: '/speaker/5.png',
             },
-            {
+            /* {
                 name: 'Ashwin Kumar',
                 bio: 'Investor | 2x Entrepreneur | Technology Leader\n\nAshwin Kumar is a seasoned technology leader, 2x entrepreneur, and active investor with a proven track record of building and scaling startups. As CTO & Business Head at Ideabaaz and CEO of Startup Builder, he partners with early- and growth-stage ventures to drive innovation, product strategy, and sustainable growth.\n\nWith deep expertise in technology architecture and venture building, Ashwin mentors founders, evaluates high-potential investment opportunities, and contributes actively to the startup ecosystem.',
                 image: '/speaker/27.png',
-            },
+            }, */
             {
                 name: 'Ankit Anand',
                 bio: 'Founding Partner, Riceberg Ventures\n\nEarly-stage deep-tech investor and ETH Zürich–trained physicist with cross-border, cross-domain experience, focused on backing driven founders building globally impactful companies. Started his entrepreneurial journey at 17 and has worked across MedTech, EdTech, research, education, and creative industries.\n\nContributed to the Advanced VIRGO gravitational-wave project and helped scale Zurich-based Sleepiz across three continents. Former early team member at Embibe, which exited for USD 180M. Believes in interdisciplinary thinking as a catalyst for solving complex problems and driving meaningful innovation.',
