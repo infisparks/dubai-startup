@@ -66,6 +66,31 @@ const translations = {
                 bio: 'Chartered Accountant, Insolvency Professional, Strategic Advisor, Founder of Arthah Group, and Director of International Tax & Compliance with over 18 years of experience and investments in more than 20 companies.',
                 image: '/speaker/5.png',
             },
+            {
+                name: 'Ashwin Kumar',
+                bio: 'Investor | 2x Entrepreneur | Technology Leader\n\nAshwin Kumar is a seasoned technology leader, 2x entrepreneur, and active investor with a proven track record of building and scaling startups. As CTO & Business Head at Ideabaaz and CEO of Startup Builder, he partners with early- and growth-stage ventures to drive innovation, product strategy, and sustainable growth.\n\nWith deep expertise in technology architecture and venture building, Ashwin mentors founders, evaluates high-potential investment opportunities, and contributes actively to the startup ecosystem.',
+                image: '/speaker/27.png',
+            },
+            {
+                name: 'Ankit Anand',
+                bio: 'Founding Partner, Riceberg Ventures\n\nEarly-stage deep-tech investor and ETH Zürich–trained physicist with cross-border, cross-domain experience, focused on backing driven founders building globally impactful companies. Started his entrepreneurial journey at 17 and has worked across MedTech, EdTech, research, education, and creative industries.\n\nContributed to the Advanced VIRGO gravitational-wave project and helped scale Zurich-based Sleepiz across three continents. Former early team member at Embibe, which exited for USD 180M. Believes in interdisciplinary thinking as a catalyst for solving complex problems and driving meaningful innovation.',
+                image: '/speaker/26.png',
+            },
+            {
+                name: 'Sandesh Sharda',
+                bio: 'Serial Entrepreneur | Global Investor | Philanthropist\n\nSandesh Sharda is a serial entrepreneur, global investor, and philanthropist with extensive experience across the USA, UK, and India. After earning his Master’s degree from Richmond University, London, he built a successful career at Oracle Corporation before founding Miracle Systems in 2003. Under his leadership, the company scaled into a leading IT services firm and was acquired by a private equity group in 2023.\n\nPost-exit, Mr. Sharda actively invests across technology, real estate, healthcare, hospitality, and senior living sectors. He is a Judge on Zee TV’s Ideabaaz, Founder of the Indian American Business Impact Group, and The Sharda Family Foundation. A highly decorated leader, he is a multiple-time SMARTCEO of the Year awardee, recipient of US federal business honors, and a recognized Silicon Valley technology entrepreneur featured in leading US publications.',
+                image: '/speaker/25.png',
+            },
+            {
+                name: 'Mudit Sharma',
+                bio: 'Co-Founder, Ideabaaz | Entrepreneur | Strategic Advisor & Mentor | Angel Investor\n\nMudit Sharma is a startup ecosystem leader and Co-Founder of Ideabaaz, enabling early-stage startups through investor access, mentorship, and strategic guidance. With hands-on experience in startup operations and ecosystem building, he helps founders transform ideas into scalable ventures.\n\nPassionate about innovation and collaboration, Mudit actively strengthens connections between startups, investors, and industry leaders, driving India’s startup and innovation story forward.',
+                image: '/speaker/23.png',
+            },
+            {
+                name: 'Jeet Wagh',
+                bio: 'Founder, Ideabaaz | CEO & Co-Founder, Kuberans Tech Ventures Pvt. Ltd.\n\nJeet Wagh is a startup ecosystem builder and founder of Ideabaaz, dedicated to supporting early-stage startups through strategic guidance, investor engagement, and community building. As CEO & Co-Founder of Kuberans Tech Ventures, he is building one of the world’s largest startup media platforms.\n\nPassionate about innovation, Jeet helps founders refine their vision, validate ideas, and scale effectively while fostering meaningful connections across entrepreneurs, investors, and industry leaders.',
+                image: '/speaker/24.png',
+            },
         ],
     },
     ar: {
@@ -125,6 +150,31 @@ const translations = {
                 name: 'السيد بونيت ساخوجا',
                 bio: 'محاسب قانوني | محترف إعسار | مستشار استراتيجي | مؤسس - مجموعة أرثاه | مدير - الضرائب الدولية والامتثال مع أكثر من 18 عامًا من الخبرة، استثمر في أكثر من 20 شركة حتى الآن.',
                 image: '/speaker/5.png',
+            },
+            {
+                name: 'Ashwin Kumar',
+                bio: 'Investor | 2x Entrepreneur | Technology Leader\n\nAshwin Kumar is a seasoned technology leader, 2x entrepreneur, and active investor with a proven track record of building and scaling startups. As CTO & Business Head at Ideabaaz and CEO of Startup Builder, he partners with early- and growth-stage ventures to drive innovation, product strategy, and sustainable growth.\n\nWith deep expertise in technology architecture and venture building, Ashwin mentors founders, evaluates high-potential investment opportunities, and contributes actively to the startup ecosystem.',
+                image: '/speaker/27.png',
+            },
+            {
+                name: 'Ankit Anand',
+                bio: 'Founding Partner, Riceberg Ventures\n\nEarly-stage deep-tech investor and ETH Zürich–trained physicist with cross-border, cross-domain experience, focused on backing driven founders building globally impactful companies. Started his entrepreneurial journey at 17 and has worked across MedTech, EdTech, research, education, and creative industries.\n\nContributed to the Advanced VIRGO gravitational-wave project and helped scale Zurich-based Sleepiz across three continents. Former early team member at Embibe, which exited for USD 180M. Believes in interdisciplinary thinking as a catalyst for solving complex problems and driving meaningful innovation.',
+                image: '/speaker/26.png',
+            },
+            {
+                name: 'Sandesh Sharda',
+                bio: 'Serial Entrepreneur | Global Investor | Philanthropist\n\nSandesh Sharda is a serial entrepreneur, global investor, and philanthropist with extensive experience across the USA, UK, and India. After earning his Master’s degree from Richmond University, London, he built a successful career at Oracle Corporation before founding Miracle Systems in 2003. Under his leadership, the company scaled into a leading IT services firm and was acquired by a private equity group in 2023.\n\nPost-exit, Mr. Sharda actively invests across technology, real estate, healthcare, hospitality, and senior living sectors. He is a Judge on Zee TV’s Ideabaaz, Founder of the Indian American Business Impact Group, and The Sharda Family Foundation. A highly decorated leader, he is a multiple-time SMARTCEO of the Year awardee, recipient of US federal business honors, and a recognized Silicon Valley technology entrepreneur featured in leading US publications.',
+                image: '/speaker/25.png',
+            },
+            {
+                name: 'Mudit Sharma',
+                bio: 'Co-Founder, Ideabaaz | Entrepreneur | Strategic Advisor & Mentor | Angel Investor\n\nMudit Sharma is a startup ecosystem leader and Co-Founder of Ideabaaz, enabling early-stage startups through investor access, mentorship, and strategic guidance. With hands-on experience in startup operations and ecosystem building, he helps founders transform ideas into scalable ventures.\n\nPassionate about innovation and collaboration, Mudit actively strengthens connections between startups, investors, and industry leaders, driving India’s startup and innovation story forward.',
+                image: '/speaker/23.png',
+            },
+            {
+                name: 'Jeet Wagh',
+                bio: 'Founder, Ideabaaz | CEO & Co-Founder, Kuberans Tech Ventures Pvt. Ltd.\n\nJeet Wagh is a startup ecosystem builder and founder of Ideabaaz, dedicated to supporting early-stage startups through strategic guidance, investor engagement, and community building. As CEO & Co-Founder of Kuberans Tech Ventures, he is building one of the world’s largest startup media platforms.\n\nPassionate about innovation, Jeet helps founders refine their vision, validate ideas, and scale effectively while fostering meaningful connections across entrepreneurs, investors, and industry leaders.',
+                image: '/speaker/24.png',
             },
         ],
     },
