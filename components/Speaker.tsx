@@ -51,6 +51,11 @@ const translations = {
         bio: 'Highly accomplished General and Endocrine Surgeon with over 26 years of clinical experience. Internationally recognized for pioneering scar-free Transoral Endoscopic Endocrine Surgery and introducing the globally cited "Dubai Triangle" and "Amin’s Triangle" anatomical landmarks.',
         image: '/speaker/18.png',
       },
+      {
+        name: 'Anirudh Tripathy',
+        bio: 'Anirudh Tripathy is an Investment Banker and Technology Specialist with over 26 years of global experience in Strategic Asset Management, Investment Banking, and Cross-Border Transactions. He is the Founder, Managing Director & CEO of KPM ASSET Group, a USA-based multi-disciplinary investment banking firm established in 1999. With deep expertise in capital structuring, global investments, and transaction advisory, he specializes across sectors including AI, Blockchain, IT, Pharmaceuticals, Real Estate & Infrastructure, and Defense Technology. He also serves on multiple global advisory boards and is the Global President of CFTIF, supporting international trade and investment ecosystems.',
+        image: '/speaker/29.png',
+      },
     ],
   },
   ar: {
@@ -95,6 +100,11 @@ const translations = {
         name: 'Prof Dr Yasir Amin A.Latif',
         bio: 'Highly accomplished General and Endocrine Surgeon with over 26 years of clinical experience. Internationally recognized for pioneering scar-free Transoral Endoscopic Endocrine Surgery and introducing the globally cited "Dubai Triangle" and "Amin’s Triangle" anatomical landmarks.',
         image: '/speaker/18.png',
+      },
+      {
+        name: 'أنيروده تريباتي',
+        bio: 'أنيروده تريباتي هو مصرفي استثماري وأخصائي تكنولوجيا يتمتع بخبرة عالمية تزيد عن 26 عامًا في إدارة الأصول الإستراتيجية والخدمات المصرفية الاستثمارية والمعاملات عبر الحدود. وهو المؤسس والعضو المنتدب والرئيس التنفيذي لمجموعة KPM ASSET Group، وهي شركة مصرفية استثمارية متعددة التخصصات مقرها الولايات المتحدة الأمريكية وتأسست في عام 1999. بفضل خبرته العميقة في هيكلة رأس المال والاستثمارات العالمية والمعاملات استشارية، فإنه متخصص في قطاعات تشمل الذكاء الاصطناعي، بلوكتشين، تكنولوجيا المعلومات، الأدوية، العقارات والبنية التحتية، وتكنولوجيا الدفاع. كما يشغل عضوية العديد من المجالس الاستشارية العالمية وهو الرئيس العالمي لـ CFTIF، حيث يدعم أنظمة التجارة والاستثمار الدولية.',
+        image: '/speaker/29.png',
       },
     ],
   },
