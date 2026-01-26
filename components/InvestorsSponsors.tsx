@@ -78,7 +78,7 @@ const translations = {
             },
             {
                 name: 'Sandesh Sharda',
-                bio: 'Serial Entrepreneur | Global Investor | Philanthropist\n\nSandesh Sharda is a serial entrepreneur, global investor, and philanthropist with extensive experience across the USA, UK, and India. After earning his Master’s degree from Richmond University, London, he built a successful career at Oracle Corporation before founding Miracle Systems in 2003. Under his leadership, the company scaled into a leading IT services firm and was acquired by a private equity group in 2023.\n\nPost-exit, Mr. Sharda actively invests across technology, real estate, healthcare, hospitality, and senior living sectors. He is a Judge on Zee TV’s Ideabaaz, Founder of the Indian American Business Impact Group, and The Sharda Family Foundation. A highly decorated leader, he is a multiple-time SMARTCEO of the Year awardee, recipient of US federal business honors, and a recognized Silicon Valley technology entrepreneur featured in leading US publications.',
+                bio: 'Sandesh Sharda - Titan at Ideabaaz Show telecast on ZeeTV | Founder - Indian American Business Impact Group (IAMBIG) & The Sharda Family Foundation.',
                 image: '/speaker/25.png',
             },
             {
@@ -88,7 +88,7 @@ const translations = {
             },
             {
                 name: 'Jeet Wagh',
-                bio: 'Founder, Ideabaaz | CEO & Co-Founder, Kuberans Tech Ventures Pvt. Ltd.\n\nJeet Wagh is a startup ecosystem builder and founder of Ideabaaz, dedicated to supporting early-stage startups through strategic guidance, investor engagement, and community building. As CEO & Co-Founder of Kuberans Tech Ventures, he is building one of the world’s largest startup media platforms.\n\nPassionate about innovation, Jeet helps founders refine their vision, validate ideas, and scale effectively while fostering meaningful connections across entrepreneurs, investors, and industry leaders.',
+                bio: 'CEO & Founder , Ideabaaz Tech Pvt. Ltd.  Investor (10+ Start Ups) - Kuberans Tech Ventures Pvt. Ltd.',
                 image: '/speaker/24.png',
             },
             {
@@ -168,7 +168,7 @@ const translations = {
             },
             {
                 name: 'Sandesh Sharda',
-                bio: 'Serial Entrepreneur | Global Investor | Philanthropist\n\nSandesh Sharda is a serial entrepreneur, global investor, and philanthropist with extensive experience across the USA, UK, and India. After earning his Master’s degree from Richmond University, London, he built a successful career at Oracle Corporation before founding Miracle Systems in 2003. Under his leadership, the company scaled into a leading IT services firm and was acquired by a private equity group in 2023.\n\nPost-exit, Mr. Sharda actively invests across technology, real estate, healthcare, hospitality, and senior living sectors. He is a Judge on Zee TV’s Ideabaaz, Founder of the Indian American Business Impact Group, and The Sharda Family Foundation. A highly decorated leader, he is a multiple-time SMARTCEO of the Year awardee, recipient of US federal business honors, and a recognized Silicon Valley technology entrepreneur featured in leading US publications.',
+                bio: 'Sandesh Sharda - Titan at Ideabaaz Show telecast on ZeeTV | Founder - Indian American Business Impact Group (IAMBIG) & The Sharda Family Foundation.',
                 image: '/speaker/25.png',
             },
             {
@@ -178,7 +178,7 @@ const translations = {
             },
             {
                 name: 'Jeet Wagh',
-                bio: 'Founder, Ideabaaz | CEO & Co-Founder, Kuberans Tech Ventures Pvt. Ltd.\n\nJeet Wagh is a startup ecosystem builder and founder of Ideabaaz, dedicated to supporting early-stage startups through strategic guidance, investor engagement, and community building. As CEO & Co-Founder of Kuberans Tech Ventures, he is building one of the world’s largest startup media platforms.\n\nPassionate about innovation, Jeet helps founders refine their vision, validate ideas, and scale effectively while fostering meaningful connections across entrepreneurs, investors, and industry leaders.',
+                bio: 'CEO & Founder , Ideabaaz Tech Pvt. Ltd.  Investor (10+ Start Ups) - Kuberans Tech Ventures Pvt. Ltd.',
                 image: '/speaker/24.png',
             },
             {
