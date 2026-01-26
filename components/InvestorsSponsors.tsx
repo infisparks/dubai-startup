@@ -82,8 +82,8 @@ const translations = {
                 image: '/speaker/25.png',
             },
             {
-                name: 'Mudit Sharma',
-                bio: 'Co-Founder, Ideabaaz | Entrepreneur | Strategic Advisor & Mentor | Angel Investor\n\nMudit Sharma is a startup ecosystem leader and Co-Founder of Ideabaaz, enabling early-stage startups through investor access, mentorship, and strategic guidance. With hands-on experience in startup operations and ecosystem building, he helps founders transform ideas into scalable ventures.\n\nPassionate about innovation and collaboration, Mudit actively strengthens connections between startups, investors, and industry leaders, driving India’s startup and innovation story forward.',
+                name: 'Mudit Kumar',
+                bio: 'Co-Founder, Ideabaaz | Entrepreneur | Strategic Advisor & Mentor | Angel Investor\n\nMudit Kumar is a startup ecosystem leader and Co-Founder of Ideabaaz, enabling early-stage startups through investor access, mentorship, and strategic guidance. With hands-on experience in startup operations and ecosystem building, he helps founders transform ideas into scalable ventures.\n\nPassionate about innovation and collaboration, Mudit Kumar actively strengthens connections between startups, investors, and industry leaders, driving India’s startup and innovation story forward.',
                 image: '/speaker/23.png',
             },
             {
@@ -172,8 +172,8 @@ const translations = {
                 image: '/speaker/25.png',
             },
             {
-                name: 'Mudit Sharma',
-                bio: 'Co-Founder, Ideabaaz | Entrepreneur | Strategic Advisor & Mentor | Angel Investor\n\nMudit Sharma is a startup ecosystem leader and Co-Founder of Ideabaaz, enabling early-stage startups through investor access, mentorship, and strategic guidance. With hands-on experience in startup operations and ecosystem building, he helps founders transform ideas into scalable ventures.\n\nPassionate about innovation and collaboration, Mudit actively strengthens connections between startups, investors, and industry leaders, driving India’s startup and innovation story forward.',
+                name: 'Mudit Kumar',
+                bio: 'Co-Founder, Ideabaaz | Entrepreneur | Strategic Advisor & Mentor | Angel Investor\n\nMudit Kumar is a startup ecosystem leader and Co-Founder of Ideabaaz, enabling early-stage startups through investor access, mentorship, and strategic guidance. With hands-on experience in startup operations and ecosystem building, he helps founders transform ideas into scalable ventures.\n\nPassionate about innovation and collaboration, Mudit Kumar Sharma actively strengthens connections between startups, investors, and industry leaders, driving India’s startup and innovation story forward.',
                 image: '/speaker/23.png',
             },
             {
