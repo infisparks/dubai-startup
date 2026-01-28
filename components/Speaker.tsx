@@ -17,7 +17,7 @@ const translations = {
     readLess: 'Read Less',
     speakers: [
       {
-        name: 'Mr. Sushil Sharma',
+        name: 'Sushil Sharma',
         bio: 'Founder and CEO of Marwari Catalysts, fueling the startup ecosystem in Tier 2 & 3 cities. Angel investor in 100+ startups, with a focus on gender diversity and innovation.',
         image: '/speaker/14.png',
       },
@@ -32,17 +32,17 @@ const translations = {
         image: '/speaker/8.png',
       },
       {
-        name: 'Mr. Abdulmajid Ansari',
+        name: 'Abdulmajid Ansari',
         bio: 'Serial Entrepreneur, Founder ARBA Accelerator LLP, Head of Business Incubation AIKTC',
         image: '/speaker/3.png',
       },
       {
-        name: 'Mr. Jatin Bajaj',
+        name: 'Jatin Bajaj',
         bio: 'Certified trainer for AML & Fraud, Banking Products and Policies, have achieved 23% increase in the productivity and the retention with the last organization',
         image: '/speaker/12.png',
       },
       {
-        name: 'Mr. Muzaffar Ahmad',
+        name: 'Muzaffar Ahmad',
         bio: 'Muzaffar Ahmad is a globally recognized AI leader, author, and advocate for Responsible AI. Founder of RAGN and Chairman of Kazma Technology, he drives AI-led innovation and secure digital transformation. As CAIO at Data Automation and Founder of ChatWeft, he leads scalable AI solutions. A sought-after speaker and author, he advises global organizations on Responsible GenAI strategy, aligning innovation with regulation and human values.',
         image: '/speaker/15.png',
       },
@@ -67,7 +67,7 @@ const translations = {
     readLess: 'اقرأ أقل',
     speakers: [
       {
-        name: 'السيد سوشيل شارما',
+        name: 'سوشيل شارما',
         bio: 'المؤسس والرئيس التنفيذي لشركة Marwari Catalysts، التي تغذي نظام الشركات الناشئة في مدن المستوى 2 و 3. مستثمر ملاك في أكثر من 100 شركة ناشئة، مع التركيز على التنوع بين الجنسين والابتكار.',
         image: '/speaker/14.png',
       },
@@ -82,17 +82,17 @@ const translations = {
         image: '/speaker/8.png',
       },
       {
-        name: 'السيد عبد المجيد أنصاري',
+        name: 'عبد المجيد أنصاري',
         bio: 'رئيس مجلس الإدارة واستراتيجي الاستثمار العالمي، قائد ذو رؤية يعيد تعريف مشهد التمويل العالمي، وأكثر من عقدين من الخبرة في الاستثمارات عبر الحدود ورأس المال الاستثماري. بصفته المهندس وراء بعض أكثر الصفقات تحولًا في المنطقة.',
         image: '/speaker/3.png',
       },
       {
-        name: 'السيد جاتين باجاج',
+        name: 'جاتين باجاج',
         bio: 'مدرب معتمد في مكافحة غسيل الأموال والاحتيال، والمنتجات والسياسات المصرفية، حقق زيادة بنسبة 23٪ في الإنتاجية والاحتفاظ بالموظفين في المنظمة السابقة.',
         image: '/speaker/12.png',
       },
       {
-        name: 'السيد مظفر أحمد',
+        name: 'مظفر أحمد',
         bio: 'مظفر أحمد هو قائد عالمي في مجال الذكاء الاصطناعي، ومؤلف، ومدافع عن الذكاء الاصطناعي المسؤول. مؤسس شبكة حوكمة الذكاء الاصطناعي المسؤول (RAGN) ورئيس مجلس إدارة Kazma Technology، يقود الابتكار القائم على الذكاء الاصطناعي. بصفته الرئيس التنفيذي للذكاء الاصطناعي في Data Automation ومؤسس ChatWeft، يقود حلول الذكاء الاصطناعي القابلة للتطوير. كمتحدث ومؤلف مطلوب، يقدم المشورة للمؤسسات العالمية حول استراتيجية الذكاء الاصطناعي التوليدي المسؤول.',
         image: '/speaker/15.png',
       },

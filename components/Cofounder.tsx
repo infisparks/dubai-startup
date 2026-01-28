@@ -23,7 +23,7 @@ const translations = {
       {
         name: 'Farid Ahmed',
         role: 'Oil & Gas Industry Professional',
-        bio: 'Mr. Farid Ahmed is a seasoned professional with extensive experience in the oil and gas industry, specializing in business development, strategic partnerships, and investment facilitation. Over the years, he has played a pivotal role in driving growth across multiple sectors by connecting investors with high-potential opportunities in energy, infrastructure, and emerging markets.',
+        bio: 'Farid Ahmed is a seasoned professional with extensive experience in the oil and gas industry, specializing in business development, strategic partnerships, and investment facilitation. Over the years, he has played a pivotal role in driving growth across multiple sectors by connecting investors with high-potential opportunities in energy, infrastructure, and emerging markets.',
         image: '/speaker/1.png',
         imgClass: 'scale-[1.25] -translate-y-1 object-center', // Zoomed to fix cut-off
       },
@@ -43,7 +43,7 @@ const translations = {
       {
         name: 'فريد أحمد',
         role: 'محترف في صناعة النفط والغاز',
-        bio: 'السيد فريد أحمد محترف متمرس يتمتع بخبرة واسعة في صناعة النفط والغاز، متخصص في تطوير الأعمال، والشراكات الاستراتيجية، وتسهيل الاستثمار. على مر السنين، لعب دورًا محوريًا في دفع النمو عبر قطاعات متعددة من خلال ربط المستثمرين بفرص عالية الإمكانات في الطاقة والبنية التحتية والأسواق الناشئة.',
+        bio: 'فريد أحمد محترف متمرس يتمتع بخبرة واسعة في صناعة النفط والغاز، متخصص في تطوير الأعمال، والشراكات الاستراتيجية، وتسهيل الاستثمار. على مر السنين، لعب دورًا محوريًا في دفع النمو عبر قطاعات متعددة من خلال ربط المستثمرين بفرص عالية الإمكانات في الطاقة والبنية التحتية والأسواق الناشئة.',
         image: '/speaker/6.png',
         imgClass: 'scale-[1.25] -translate-y-1 object-center', // Zoomed to fix cut-off
       },

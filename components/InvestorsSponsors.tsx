@@ -22,12 +22,12 @@ const translations = {
                 image: '/speaker/21.png',
             },
             {
-                name: 'Mr. Sushil Sharma',
+                name: 'Sushil Sharma',
                 bio: 'Founder and CEO of Marwari Catalysts, fueling the startup ecosystem in Tier 2 & 3 cities. Angel investor in 100+ startups, with a focus on gender diversity and innovation.',
                 image: '/speaker/14.png',
             },
             {
-                name: 'Mr. Bhimkanta Bhandari',
+                name: 'Bhimkanta Bhandari',
                 bio: 'Bhimkanta Bhandari is a global entrepreneur, Chairman & Managing Director, with an estimated net worth exceeding USD 100 million, built through diversified operating businesses and long-term strategic investments. He has over 7 years of international experience across trade, IT & FinTech, digital assets, insurance, mining, and mobility-related sectors, with operations spanning Asia, the GCC, and North America. Known for a compliance-first, governance-driven approach, he focuses on building scalable, technology-enabled businesses with long-term institutional value.',
                 image: '/speaker/22.png',
             },
@@ -37,32 +37,32 @@ const translations = {
                 image: '/speaker/17.png',
             },
             {
-                name: 'Mr. Ariz',
+                name: 'Ariz',
                 bio: 'CEO of Everest DG and Co-founder at EIT Global. 13+ years in engineering and tech. Investor with 3M+ $ in startups, specializing in scaling businesses globally.',
                 image: '/speaker/13.png',
             },
             {
-                name: 'Mr. Navneet Agarwal',
+                name: 'Navneet Agarwal',
                 bio: 'A seasoned entrepreneur with a diversified portfolio spanning engineering, real estate, hospitality, and international trading. An IIT Roorkee and IIM Kolkata alumnus, he founded Navneet International FZE and Navneet Accounting in UAE, leading ventures across India and the UAE.',
                 image: '/speaker/16.png',
             },
             {
-                name: 'Mr. Nitin Aggarwal',
+                name: 'Nitin Aggarwal',
                 bio: 'Managing Partner at Gopinath Group with experience in Retail and SME Banking, new business setup, and strong skills in handling multiple tasks efficiently under pressure and tight deadlines.',
                 image: '/speaker/2.png',
             },
             {
-                name: 'Mr. Randeep Singh Nanda',
+                name: 'Randeep Singh Nanda',
                 bio: 'Managing Director at Bonn Metals Const Industries LLC, overseeing operations of companies worth USD 100 million with strong expertise in finance and strategic leadership.',
                 image: '/speaker/6.png',
             },
             {
-                name: 'Mr. Manzar Khan',
+                name: 'Manzar Khan',
                 bio: "Reham Group's founder has led the company for over 18 years, serving more than 1500 clients across the UAE, India, and APAC. The group is recognized for its quality service, growth, and stability.",
                 image: '/speaker/7.png',
             },
             {
-                name: 'Mr. Puneet Sakhuja',
+                name: 'Puneet Sakhuja',
                 bio: 'Chartered Accountant, Insolvency Professional, Strategic Advisor, Founder of Arthah Group, and Director of International Tax & Compliance with over 18 years of experience and investments in more than 20 companies.',
                 image: '/speaker/5.png',
             },
@@ -78,7 +78,7 @@ const translations = {
             },
             {
                 name: 'Sandesh Sharda',
-                bio: 'Sandesh Sharda - Titan at Ideabaaz Show telecast on ZeeTV | Founder - Indian American Business Impact Group (IAMBIG) & The Sharda Family Foundation.',
+                bio: 'Sandesh Sharda is a serial entrepreneur, global investor, and philanthropist with operations across the USA, UK, and India. A Master’s graduate from Richmond University, London, he began his career at Oracle Corporation before founding Miracle Systems in 2003, which scaled into a leading IT services firm and was acquired by a private equity group in 2023.\n\nPost-exit, he actively invests in technology, real estate, healthcare, hospitality, and senior living. He is a Titan Judge on Zee TV’s Ideabaaz, Founder of the Indian American Business Impact Group (IAMBIG) and The Sharda Family Foundation, and a multiple-time SMARTCEO of the Year awardee and recognized Silicon Valley entrepreneur.',
                 image: '/speaker/25.png',
             },
             {
@@ -88,7 +88,7 @@ const translations = {
             },
             {
                 name: 'Jeet Wagh',
-                bio: 'CEO & Founder , Ideabaaz Tech Pvt. Ltd.  Investor (10+ Start Ups) - Kuberans Tech Ventures Pvt. Ltd.',
+                bio: 'Jeet Wagh is a startup ecosystem builder and founder of Ideabaaz, dedicated to supporting early-stage startups through strategic guidance, investor engagement, and community building. As CEO & Co-Founder of Kuberans Tech Ventures, he is building one of the world’s largest startup media platforms.\n\nPassionate about innovation, Jeet helps founders refine their vision, validate ideas, and scale effectively while fostering meaningful connections across entrepreneurs, investors, and industry leaders.',
                 image: '/speaker/24.png',
             },
             {
@@ -102,8 +102,8 @@ const translations = {
                 image: '/speaker/30.png',
             },
             {
-                name: 'Mr. Kartavya Srivastava',
-                bio: 'Mr. Kartavya Srivastava is a globally accomplished investor and entrepreneur, and the Chairman & Founder of Apollo Energy (UK) Pvt. Ltd., with over 20 years of leadership experience across renewable energy, infrastructure, oil & gas, pharmaceuticals, and global financial markets.\n\nHe brings deep expertise in building and scaling cross-border businesses, with extensive operational exposure across the Middle East, Africa, Russia, CIS, and the United Kingdom. Known for his strong geopolitical insight and financial acumen, he has played a key role in structuring utility-scale renewable and infrastructure platforms, including IPP and government-linked projects.\n\nMr. Srivastava is recognized for disciplined capital allocation, long-term value creation, and strategic partnerships with governments, institutional investors, and multinational stakeholders. He holds dual MBAs in Information Systems and International Business and is fluent in English, Hindi, and Russian.',
+                name: 'Kartavya Srivastava',
+                bio: 'Kartavya Srivastava is a globally accomplished investor and entrepreneur, and the Chairman & Founder of Apollo Energy (UK) Pvt. Ltd., with over 20 years of leadership experience across renewable energy, infrastructure, oil & gas, pharmaceuticals, and global financial markets.\n\nHe brings deep expertise in building and scaling cross-border businesses, with extensive operational exposure across the Middle East, Africa, Russia, CIS, and the United Kingdom. Known for his strong geopolitical insight and financial acumen, he has played a key role in structuring utility-scale renewable and infrastructure platforms, including IPP and government-linked projects.\n\nSrivastava is recognized for disciplined capital allocation, long-term value creation, and strategic partnerships with governments, institutional investors, and multinational stakeholders. He holds dual MBAs in Information Systems and International Business and is fluent in English, Hindi, and Russian.',
                 image: '/speaker/31.png',
             },
         ],
@@ -122,12 +122,12 @@ const translations = {
                 image: '/speaker/21.png',
             },
             {
-                name: 'السيد سوشيل شارما',
+                name: 'سوشيل شارما',
                 bio: 'المؤسس والرئيس التنفيذي لشركة Marwari Catalysts، التي تغذي نظام الشركات الناشئة في مدن المستوى 2 و 3. مستثمر ملاك في أكثر من 100 شركة ناشئة، مع التركيز على التنوع بين الجنسين والابتكار.',
                 image: '/speaker/14.png',
             },
             {
-                name: 'السيد بهيمكانتا بهانداري',
+                name: 'بهيمكانتا بهانداري',
                 bio: 'Bhimkanta Bhandari is a global entrepreneur, Chairman & Managing Director, with an estimated net worth exceeding USD 100 million, built through diversified operating businesses and long-term strategic investments. He has over 7 years of international experience across trade, IT & FinTech, digital assets, insurance, mining, and mobility-related sectors, with operations spanning Asia, the GCC, and North America. Known for a compliance-first, governance-driven approach, he focuses on building scalable, technology-enabled businesses with long-term institutional value.',
                 image: '/speaker/22.png',
             },
@@ -137,32 +137,32 @@ const translations = {
                 image: '/speaker/17.png',
             },
             {
-                name: 'السيد أريز',
+                name: 'أريز',
                 bio: 'الرئيس التنفيذي لشركة Everest DG والمؤسس المشارك في EIT Global. أكثر من 13 عامًا في الهندسة والتكنولوجيا. مستثمر بأكثر من 3 ملايين درهم في الشركات الناشئة، متخصص في توسيع نطاق الأعمال عالميًا.',
                 image: '/speaker/13.png',
             },
             {
-                name: 'Mr. Navneet Agarwal',
+                name: 'Navneet Agarwal',
                 bio: 'A seasoned entrepreneur with a diversified portfolio spanning engineering, real estate, hospitality, and international trading. An IIT Roorkee and IIM Kolkata alumnus, he founded Navneet International FZE and Navneet Accounting in UAE, leading ventures across India and the UAE.',
                 image: '/speaker/16.png',
             },
             {
-                name: 'السيد نيتين أغاروال',
+                name: 'نيتين أغاروال',
                 bio: 'الشريك الإداري في مجموعة شركات جوبيناث. استباقي وموجه نحو النتائج ولديه خبرة جيدة في الخدمات المصرفية للأفراد والخدمات المصرفية للمشاريع الصغيرة والمتوسطة وتأسيس الأعمال الجديدة. منضبط جيدًا ولديه قدرة مثبتة على إدارة مهام متعددة بكفاءة تحت ضغط شديد مع الالتزام بجداول زمنية ضيقة.',
                 image: '/speaker/2.png',
             },
             {
-                name: 'السيد رانديب سينغ ناندا',
+                name: 'رانديب سينغ ناندا',
                 bio: 'المدير العام لشركة بون ميتالز كونست اندستريز ذ.م.م | قائد أعمال بارع يتمتع بخلفية قوية في التمويل والإدارة الاستراتيجية. بصفته المدير العام لشركة بون ميتالز كونست اندستريز ذ.م.م، يشرف على عمليات الشركات التي تبلغ قيمتها 100 مليون دولار أمريكي.',
                 image: '/speaker/6.png',
             },
             {
-                name: 'السيد منذر خان',
+                name: 'منذر خان',
                 bio: 'مؤسس مجموعة رهام. تعمل في مجال الأعمال منذ أكثر من 18 عامًا. في رحلتنا المثيرة للغاية، نجحنا في التسليم لأكثر من 1500 شركة ونفتخر بقاعدة عملاء كبيرة عبر الإمارات العربية المتحدة والهند ومناطق آسيا والمحيط الهادئ الأخرى. لقد تم تكريمنا من قبل العديد من المنظمات الرئيسية لخدمتنا عالية الجودة ونمونا واستقرارنا.',
                 image: '/speaker/7.png',
             },
             {
-                name: 'السيد بونيت ساخوجا',
+                name: 'بونيت ساخوجا',
                 bio: 'محاسب قانوني | محترف إعسار | مستشار استراتيجي | مؤسس - مجموعة أرثاه | مدير - الضرائب الدولية والامتثال مع أكثر من 18 عامًا من الخبرة، استثمر في أكثر من 20 شركة حتى الآن.',
                 image: '/speaker/5.png',
             },
@@ -178,7 +178,7 @@ const translations = {
             },
             {
                 name: 'Sandesh Sharda',
-                bio: 'Sandesh Sharda - Titan at Ideabaaz Show telecast on ZeeTV | Founder - Indian American Business Impact Group (IAMBIG) & The Sharda Family Foundation.',
+                bio: 'سانديش شاردا هو رائد أعمال متسلسل، ومستثمر عالمي، وفاعل خير له عمليات في الولايات المتحدة الأمريكية والمملكة المتحدة والهند. تخرج بدرجة الماجستير من جامعة ريتشموند في لندن، وبدأ مسيرته المهنية في شركة أوراكل قبل تأسيس شركة Miracle Systems في عام 2003، والتي تحولت إلى شركة رائدة في خدمات تكنولوجيا المعلومات واستحوذت عليها مجموعة ملكية خاصة في عام 2023.\n\nبعد التخارج، يستثمر بنشاط في التكنولوجيا والعقارات والرعاية الصحية والضيافة ومعيشة كبار السن. وهو حكم في برنامج Ideabaaz على قناة Zee TV، ومؤسس مجموعة تأثير الأعمال الهندية الأمريكية (IAMBIG) ومؤسسة عائلة شاردا، وحائز على جائزة SMARTCEO للعام عدة مرات ورائد أعمال معترف به في وادي السيلكون.',
                 image: '/speaker/25.png',
             },
             {
@@ -188,7 +188,7 @@ const translations = {
             },
             {
                 name: 'Jeet Wagh',
-                bio: 'CEO & Founder , Ideabaaz Tech Pvt. Ltd.  Investor (10+ Start Ups) - Kuberans Tech Ventures Pvt. Ltd.',
+                bio: 'جيت واغ هو مؤسس منظومة الشركات الناشئة ومؤسس Ideabaaz، وهو مكرس لدعم الشركات الناشئة في مراحلها المبكرة من خلال التوجيه الاستراتيجي وتفاعل المستثمرين وبناء المجتمع. بصفته الرئيس التنفيذي والمؤسس المشارك لشركة Kuberans Tech Ventures، فإنه يبني واحدة من أكبر منصات إعلام الشركات الناشئة في العالم.\n\nشغوف بالابتكار، يساعد جيت المؤسسين على صقل رؤيتهم والتحقق من الأفكار والتوسع بفعالية مع تعزيز اتصالات هادفة بين رواد الأعمال والمستثمرين وقادة الصناعة.',
                 image: '/speaker/24.png',
             },
             {
@@ -202,8 +202,8 @@ const translations = {
                 image: '/speaker/30.png',
             },
             {
-                name: 'السيد كارتافيا سريفاستافا',
-                bio: 'Mr. Kartavya Srivastava is a globally accomplished investor and entrepreneur, and the Chairman & Founder of Apollo Energy (UK) Pvt. Ltd., with over 20 years of leadership experience across renewable energy, infrastructure, oil & gas, pharmaceuticals, and global financial markets.\n\nHe brings deep expertise in building and scaling cross-border businesses, with extensive operational exposure across the Middle East, Africa, Russia, CIS, and the United Kingdom. Known for his strong geopolitical insight and financial acumen, he has played a key role in structuring utility-scale renewable and infrastructure platforms, including IPP and government-linked projects.\n\nMr. Srivastava is recognized for disciplined capital allocation, long-term value creation, and strategic partnerships with governments, institutional investors, and multinational stakeholders. He holds dual MBAs in Information Systems and International Business and is fluent in English, Hindi, and Russian.',
+                name: 'كارتافيا سريفاستافا',
+                bio: 'Kartavya Srivastava is a globally accomplished investor and entrepreneur, and the Chairman & Founder of Apollo Energy (UK) Pvt. Ltd., with over 20 years of leadership experience across renewable energy, infrastructure, oil & gas, pharmaceuticals, and global financial markets.\n\nHe brings deep expertise in building and scaling cross-border businesses, with extensive operational exposure across the Middle East, Africa, Russia, CIS, and the United Kingdom. Known for his strong geopolitical insight and financial acumen, he has played a key role in structuring utility-scale renewable and infrastructure platforms, including IPP and government-linked projects.\n\nSrivastava is recognized for disciplined capital allocation, long-term value creation, and strategic partnerships with governments, institutional investors, and multinational stakeholders. He holds dual MBAs in Information Systems and International Business and is fluent in English, Hindi, and Russian.',
                 image: '/speaker/31.png',
             },
         ],
