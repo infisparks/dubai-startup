@@ -78,7 +78,7 @@ const translations = {
             },
             {
                 name: 'Sandesh Sharda',
-                bio: 'Sandesh Sharda is a serial entrepreneur, global investor, and philanthropist with operations across the USA, UK, and India. A Master’s graduate from Richmond University, London, he began his career at Oracle Corporation before founding Miracle Systems in 2003, which scaled into a leading IT services firm and was acquired by a private equity group in 2023.\n\nPost-exit, he actively invests in technology, real estate, healthcare, hospitality, and senior living. He is a Titan Judge on Zee TV’s Ideabaaz, Founder of the Indian American Business Impact Group (IAMBIG) and The Sharda Family Foundation, and a multiple-time SMARTCEO of the Year awardee and recognized Silicon Valley entrepreneur.',
+                bio: 'Sandesh Sharda - Titan at Ideabaaz Show telecast on ZeeTV | Founder - Indian American Business Impact Group (IAMBIG) & The Sharda Family Foundation.\n\nSandesh Sharda is a serial entrepreneur, global investor, and philanthropist with operations across the USA, UK, and India. A Master’s graduate from Richmond University, London, he began his career at Oracle Corporation before founding Miracle Systems in 2003, which scaled into a leading IT services firm and was acquired by a private equity group in 2023.\n\nPost-exit, he actively invests in technology, real estate, healthcare, hospitality, and senior living. He is a Titan Judge on Zee TV’s Ideabaaz, Founder of the Indian American Business Impact Group (IAMBIG) and The Sharda Family Foundation, and a multiple-time SMARTCEO of the Year awardee and recognized Silicon Valley entrepreneur.',
                 image: '/speaker/25.png',
             },
             {
@@ -88,7 +88,7 @@ const translations = {
             },
             {
                 name: 'Jeet Wagh',
-                bio: 'Jeet Wagh is a startup ecosystem builder and founder of Ideabaaz, dedicated to supporting early-stage startups through strategic guidance, investor engagement, and community building. As CEO & Co-Founder of Kuberans Tech Ventures, he is building one of the world’s largest startup media platforms.\n\nPassionate about innovation, Jeet helps founders refine their vision, validate ideas, and scale effectively while fostering meaningful connections across entrepreneurs, investors, and industry leaders.',
+                bio: 'CEO & Founder , Ideabaaz Tech Pvt. Ltd.  Investor (10+ Start Ups) - Kuberans Tech Ventures Pvt. Ltd.\n\nJeet Wagh is a startup ecosystem builder and founder of Ideabaaz, dedicated to supporting early-stage startups through strategic guidance, investor engagement, and community building. As CEO & Co-Founder of Kuberans Tech Ventures, he is building one of the world’s largest startup media platforms.\n\nPassionate about innovation, Jeet helps founders refine their vision, validate ideas, and scale effectively while fostering meaningful connections across entrepreneurs, investors, and industry leaders.',
                 image: '/speaker/24.png',
             },
             {
@@ -178,7 +178,7 @@ const translations = {
             },
             {
                 name: 'Sandesh Sharda',
-                bio: 'سانديش شاردا هو رائد أعمال متسلسل، ومستثمر عالمي، وفاعل خير له عمليات في الولايات المتحدة الأمريكية والمملكة المتحدة والهند. تخرج بدرجة الماجستير من جامعة ريتشموند في لندن، وبدأ مسيرته المهنية في شركة أوراكل قبل تأسيس شركة Miracle Systems في عام 2003، والتي تحولت إلى شركة رائدة في خدمات تكنولوجيا المعلومات واستحوذت عليها مجموعة ملكية خاصة في عام 2023.\n\nبعد التخارج، يستثمر بنشاط في التكنولوجيا والعقارات والرعاية الصحية والضيافة ومعيشة كبار السن. وهو حكم في برنامج Ideabaaz على قناة Zee TV، ومؤسس مجموعة تأثير الأعمال الهندية الأمريكية (IAMBIG) ومؤسسة عائلة شاردا، وحائز على جائزة SMARTCEO للعام عدة مرات ورائد أعمال معترف به في وادي السيلكون.',
+                bio: 'سانديش شاردا - تايتن في برنامج Ideabaaz المعروض على قناة ZeeTV | مؤسس - مجموعة تأثير الأعمال الهندية الأمريكية (IAMBIG) ومؤسسة عائلة شاردا.\n\nسانديش شاردا هو رائد أعمال متسلسل، ومستثمر عالمي، وفاعل خير له عمليات في الولايات المتحدة الأمريكية والمملكة المتحدة والهند. تخرج بدرجة الماجستير من جامعة ريتشموند في لندن، وبدأ مسيرته المهنية في شركة أوراكل قبل تأسيس شركة Miracle Systems في عام 2003، والتي تحولت إلى شركة رائدة في خدمات تكنولوجيا المعلومات واستحوذت عليها مجموعة ملكية خاصة في عام 2023.\n\nبعد التخارج، يستثمر بنشاط في التكنولوجيا والعقارات والرعاية الصحية والضيافة ومعيشة كبار السن. وهو حكم في برنامج Ideabaaz على قناة Zee TV، ومؤسس مجموعة تأثير الأعمال الهندية الأمريكية (IAMBIG) ومؤسسة عائلة شاردا، وحائز على جائزة SMARTCEO للعام عدة مرات ورائد أعمال معترف به في وادي السيلكون.',
                 image: '/speaker/25.png',
             },
             {
@@ -188,7 +188,7 @@ const translations = {
             },
             {
                 name: 'Jeet Wagh',
-                bio: 'جيت واغ هو مؤسس منظومة الشركات الناشئة ومؤسس Ideabaaz، وهو مكرس لدعم الشركات الناشئة في مراحلها المبكرة من خلال التوجيه الاستراتيجي وتفاعل المستثمرين وبناء المجتمع. بصفته الرئيس التنفيذي والمؤسس المشارك لشركة Kuberans Tech Ventures، فإنه يبني واحدة من أكبر منصات إعلام الشركات الناشئة في العالم.\n\nشغوف بالابتكار، يساعد جيت المؤسسين على صقل رؤيتهم والتحقق من الأفكار والتوسع بفعالية مع تعزيز اتصالات هادفة بين رواد الأعمال والمستثمرين وقادة الصناعة.',
+                bio: 'الرئيس التنفيذي والمؤسس لشركة Ideabaaz Tech Pvt. Ltd. مستثمر (في أكثر من 10 شركات ناشئة) - Kuberans Tech Ventures Pvt. Ltd.\n\nجيت واغ هو مؤسس منظومة الشركات الناشئة ومؤسس Ideabaaz، وهو مكرس لدعم الشركات الناشئة في مراحلها المبكرة من خلال التوجيه الاستراتيجي وتفاعل المستثمرين وبناء المجتمع. بصفته الرئيس التنفيذي والمؤسس المشارك لشركة Kuberans Tech Ventures، فإنه يبني واحدة من أكبر منصات إعلام الشركات الناشئة في العالم.\n\nشغوف بالابتكار، يساعد جيت المؤسسين على صقل رؤيتهم والتحقق من الأفكار والتوسع بفعالية مع تعزيز اتصالات هادفة بين رواد الأعمال والمستثمرين وقادة الصناعة.',
                 image: '/speaker/24.png',
             },
             {
