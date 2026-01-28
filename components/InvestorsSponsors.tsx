@@ -96,6 +96,11 @@ const translations = {
                 bio: 'Anirudh Tripathy is an Investment Banker and Technology Specialist with over 26 years of global experience in Strategic Asset Management, Investment Banking, and Cross-Border Transactions. He is the Founder, Managing Director & CEO of KPM ASSET Group, a USA-based multi-disciplinary investment banking firm established in 1999. With deep expertise in capital structuring, global investments, and transaction advisory, he specializes across sectors including AI, Blockchain, IT, Pharmaceuticals, Real Estate & Infrastructure, and Defense Technology. He also serves on multiple global advisory boards and is the Global President of CFTIF, supporting international trade and investment ecosystems.',
                 image: '/speaker/29.png',
             },
+            {
+                name: 'Kapil',
+                bio: 'Kapil is a seasoned finance and real estate professional with over two decades of experience across accounting, auditing, and property investment. A Finance & Accounting graduate from Australia and ACCA-qualified professional, he began his career with Ernst & Young, where he audited leading organizations including Nakheel, BP, and Spinneys—gaining strong exposure to large-scale real estate and infrastructure developments.\n\nWith deep-rooted involvement in family-led property investments, Kapil has played a pivotal role in real estate transactions exceeding AED 150 million, managing diversified investment portfolios across the UAE and India. In 2021, he founded Urban Oasis Real Estate Brokers, delivering end-to-end real estate solutions spanning investment advisory, sales, leasing, mortgages, and property management.\n\nDriven by long-term value creation, Kapil also actively supports startups and growth ventures, with investments across real estate, finance, and emerging businesses—aligning closely with Investarise’s vision of strategic, sustainable wealth building.',
+                image: '/speaker/30.png',
+            },
         ],
     },
     ar: {
@@ -185,6 +190,11 @@ const translations = {
                 name: 'أنيروده تريباتي',
                 bio: 'أنيروده تريباتي هو مصرفي استثماري وأخصائي تكنولوجيا يتمتع بخبرة عالمية تزيد عن 26 عامًا في إدارة الأصول الإستراتيجية والخدمات المصرفية الاستثمارية والمعاملات عبر الحدود. وهو المؤسس والعضو المنتدب والرئيس التنفيذي لمجموعة KPM ASSET Group، وهي شركة مصرفية استثمارية متعددة التخصصات مقرها الولايات المتحدة الأمريكية وتأسست في عام 1999. بفضل خبرته العميقة في هيكلة رأس المال والاستثمارات العالمية والمعاملات الاستشارية، فإنه متخصص في قطاعات تشمل الذكاء الاصطناعي، بلوكتشين، تكنولوجيا المعلومات، الأدوية، العقارات والبنية التحتية، وتكنولوجيا الدفاع. كما يشغل عضوية العديد من المجالس الاستشارية العالمية وهو الرئيس العالمي لـ CFTIF، حيث يدعم أنظمة التجارة والاستثمار الدولية.',
                 image: '/speaker/29.png',
+            },
+            {
+                name: 'كابيل',
+                bio: 'Kapil is a seasoned finance and real estate professional with over two decades of experience across accounting, auditing, and property investment. A Finance & Accounting graduate from Australia and ACCA-qualified professional, he began his career with Ernst & Young, where he audited leading organizations including Nakheel, BP, and Spinneys—gaining strong exposure to large-scale real estate and infrastructure developments.\n\nWith deep-rooted involvement in family-led property investments, Kapil has played a pivotal role in real estate transactions exceeding AED 150 million, managing diversified investment portfolios across the UAE and India. In 2021, he founded Urban Oasis Real Estate Brokers, delivering end-to-end real estate solutions spanning investment advisory, sales, leasing, mortgages, and property management.\n\nDriven by long-term value creation, Kapil also actively supports startups and growth ventures, with investments across real estate, finance, and emerging businesses—aligning closely with Investarise’s vision of strategic, sustainable wealth building.',
+                image: '/speaker/30.png',
             },
         ],
     },
