@@ -16,8 +16,8 @@ const translations = {
     coFounders: [
       {
         name: 'Sanjay Bhambri',
-        role: 'Travel Entrepreneur & Management Consultant',
-        bio: 'Travel Entrepreneur, Management Consultant, Specialized In International Business Development. With a proven track record of leadership, strategy, and cross-border collaborations, Specialized in International Business Development while also contributing actively to humanitarian and non-profit sectors.',
+        role: 'Co-Founder & Global Strategy Lead',
+        bio: 'Specialized in international business development, global strategy, and management consulting. Experienced in building cross-border partnerships, market expansion, and investor engagement. A travel entrepreneur and social development specialist with a strong focus on sustainable growth, impact-driven initiatives, and global collaboration.',
         image: '/speaker/10.png',
       },
       {
@@ -36,8 +36,8 @@ const translations = {
     coFounders: [
       {
         name: 'سانجاي بهامبري',
-        role: 'رائد أعمال في مجال السفر ومستشار إداري',
-        bio: 'رائد أعمال في مجال السفر، مستشار إداري، متخصص في تطوير الأعمال الدولية. يتمتع بسجل حافل في القيادة والاستراتيجية والتعاون عبر الحدود، ومتخصص في تطوير الأعمال الدولية ويساهم بنشاط في القطاعات الإنسانية وغير الربحية.',
+        role: 'المؤسس المشارك ورئيس الاستراتيجية العالمية',
+        bio: 'متخصص في تطوير الأعمال الدولية، والاستراتيجية العالمية، والاستشارات الإدارية. خبير في بناء الشراكات عبر الحدود، وتوسيع الأسواق، وجذب المستثمرين. رائد أعمال في مجال السفر وأخصائي تطوير اجتماعي مع تركيز قوي على النمو المستدام والمبادرات المدفوعة بالتأثير والتعاون العالمي.',
         image: '/speaker/5.png',
       },
       {

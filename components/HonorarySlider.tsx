@@ -113,7 +113,7 @@ export default function HonorarySlider({ language = 'en' }: HonorarySliderProps)
             align: 'center',
             skipSnaps: false
         },
-        [Autoplay({ delay: 5000, stopOnInteraction: false })]
+        [Autoplay({ delay: 5000, stopOnInteraction: false }) as any]
     )
 
     const [selectedIndex, setSelectedIndex] = useState(0)
