@@ -101,6 +101,11 @@ const translations = {
                 bio: 'Kapil is a seasoned finance and real estate professional with over two decades of experience across accounting, auditing, and property investment. A Finance & Accounting graduate from Australia and ACCA-qualified professional, he began his career with Ernst & Young, where he audited leading organizations including Nakheel, BP, and Spinneys—gaining strong exposure to large-scale real estate and infrastructure developments.\n\nWith deep-rooted involvement in family-led property investments, Kapil has played a pivotal role in real estate transactions exceeding AED 150 million, managing diversified investment portfolios across the UAE and India. In 2021, he founded Urban Oasis Real Estate Brokers, delivering end-to-end real estate solutions spanning investment advisory, sales, leasing, mortgages, and property management.\n\nDriven by long-term value creation, Kapil also actively supports startups and growth ventures, with investments across real estate, finance, and emerging businesses—aligning closely with Investarise’s vision of strategic, sustainable wealth building.',
                 image: '/speaker/30.png',
             },
+            {
+                name: 'Mr. Kartavya Srivastava',
+                bio: 'Mr. Kartavya Srivastava is a globally accomplished investor and entrepreneur, and the Chairman & Founder of Apollo Energy (UK) Pvt. Ltd., with over 20 years of leadership experience across renewable energy, infrastructure, oil & gas, pharmaceuticals, and global financial markets.\n\nHe brings deep expertise in building and scaling cross-border businesses, with extensive operational exposure across the Middle East, Africa, Russia, CIS, and the United Kingdom. Known for his strong geopolitical insight and financial acumen, he has played a key role in structuring utility-scale renewable and infrastructure platforms, including IPP and government-linked projects.\n\nMr. Srivastava is recognized for disciplined capital allocation, long-term value creation, and strategic partnerships with governments, institutional investors, and multinational stakeholders. He holds dual MBAs in Information Systems and International Business and is fluent in English, Hindi, and Russian.',
+                image: '/speaker/31.png',
+            },
         ],
     },
     ar: {
@@ -195,6 +200,11 @@ const translations = {
                 name: 'كابيل',
                 bio: 'Kapil is a seasoned finance and real estate professional with over two decades of experience across accounting, auditing, and property investment. A Finance & Accounting graduate from Australia and ACCA-qualified professional, he began his career with Ernst & Young, where he audited leading organizations including Nakheel, BP, and Spinneys—gaining strong exposure to large-scale real estate and infrastructure developments.\n\nWith deep-rooted involvement in family-led property investments, Kapil has played a pivotal role in real estate transactions exceeding AED 150 million, managing diversified investment portfolios across the UAE and India. In 2021, he founded Urban Oasis Real Estate Brokers, delivering end-to-end real estate solutions spanning investment advisory, sales, leasing, mortgages, and property management.\n\nDriven by long-term value creation, Kapil also actively supports startups and growth ventures, with investments across real estate, finance, and emerging businesses—aligning closely with Investarise’s vision of strategic, sustainable wealth building.',
                 image: '/speaker/30.png',
+            },
+            {
+                name: 'السيد كارتافيا سريفاستافا',
+                bio: 'Mr. Kartavya Srivastava is a globally accomplished investor and entrepreneur, and the Chairman & Founder of Apollo Energy (UK) Pvt. Ltd., with over 20 years of leadership experience across renewable energy, infrastructure, oil & gas, pharmaceuticals, and global financial markets.\n\nHe brings deep expertise in building and scaling cross-border businesses, with extensive operational exposure across the Middle East, Africa, Russia, CIS, and the United Kingdom. Known for his strong geopolitical insight and financial acumen, he has played a key role in structuring utility-scale renewable and infrastructure platforms, including IPP and government-linked projects.\n\nMr. Srivastava is recognized for disciplined capital allocation, long-term value creation, and strategic partnerships with governments, institutional investors, and multinational stakeholders. He holds dual MBAs in Information Systems and International Business and is fluent in English, Hindi, and Russian.',
+                image: '/speaker/31.png',
             },
         ],
     },
