@@ -106,6 +106,16 @@ const translations = {
                 bio: 'Kartavya Srivastava is a globally accomplished investor and entrepreneur, and the Chairman & Founder of Apollo Energy (UK) Pvt. Ltd., with over 20 years of leadership experience across renewable energy, infrastructure, oil & gas, pharmaceuticals, and global financial markets.\n\nHe brings deep expertise in building and scaling cross-border businesses, with extensive operational exposure across the Middle East, Africa, Russia, CIS, and the United Kingdom. Known for his strong geopolitical insight and financial acumen, he has played a key role in structuring utility-scale renewable and infrastructure platforms, including IPP and government-linked projects.\n\nSrivastava is recognized for disciplined capital allocation, long-term value creation, and strategic partnerships with governments, institutional investors, and multinational stakeholders. He holds dual MBAs in Information Systems and International Business and is fluent in English, Hindi, and Russian.',
                 image: '/speaker/31.png',
             },
+            {
+                name: 'Digvijay “Danny” Gaekwad',
+                bio: 'Digvijay “Danny” Gaekwad is a first-generation Indian-American serial entrepreneur, investor, and community leader with three decades of experience founding and scaling businesses in IT services, hospitality, real estate, and more. He leads multiple ventures including NDS USA and Danny Gaekwad Development & Investments, and serves on several boards, driving job creation, innovation, and economic growth across sectors.',
+                image: '/speaker/32.png',
+            },
+            {
+                name: 'Sanjay Puri',
+                bio: 'Sanjay Puri is a seasoned entrepreneur, investor, and ecosystem builder with multiple successful ventures and exits. He is the Founder & Chairman of AutoNebula, an investment firm focused on connected transportation startups bridging the U.S. and India, and Co-Founder of ACEL360, an accelerator supporting federal contractors. He also hosts the Indianness Podcast and Regulating AI, and is Founder of USINPAC.',
+                image: '/speaker/33.png',
+            },
         ],
     },
     ar: {
@@ -205,6 +215,16 @@ const translations = {
                 name: 'كارتافيا سريفاستافا',
                 bio: 'Kartavya Srivastava is a globally accomplished investor and entrepreneur, and the Chairman & Founder of Apollo Energy (UK) Pvt. Ltd., with over 20 years of leadership experience across renewable energy, infrastructure, oil & gas, pharmaceuticals, and global financial markets.\n\nHe brings deep expertise in building and scaling cross-border businesses, with extensive operational exposure across the Middle East, Africa, Russia, CIS, and the United Kingdom. Known for his strong geopolitical insight and financial acumen, he has played a key role in structuring utility-scale renewable and infrastructure platforms, including IPP and government-linked projects.\n\nSrivastava is recognized for disciplined capital allocation, long-term value creation, and strategic partnerships with governments, institutional investors, and multinational stakeholders. He holds dual MBAs in Information Systems and International Business and is fluent in English, Hindi, and Russian.',
                 image: '/speaker/31.png',
+            },
+            {
+                name: 'ديجفيجاي "داني" غيكواد',
+                bio: 'هو رائد أعمال هندي أمريكي من الجيل الأول، ومستثمر، وقائد مجتمعي يتمتع بخبرة تمتد لثلاثة عقود في تأسيس وتوسيع نطاق الأعمال في خدمات تكنولوجيا المعلومات، والضيافة، والعقارات، وغيرها. يقود مشاريع متعددة بما في ذلك NDS USA و Danny Gaekwad Development & Investments، ويشغل عضوية عدة مجالس إدارة، مما يساهم في خلق فرص العمل والابتكار والنمو الاقتصادي عبر مختلف القطاعات.',
+                image: '/speaker/32.png',
+            },
+            {
+                name: 'سانجاي بوري',
+                bio: 'هو رائد أعمال ومستثمر ومبني للأنظمة البيئية يتمتع بالعديد من المشاريع والنجاحات. وهو المؤسس ورئيس مجلس إدارة AutoNebula، وهي شركة استثمارية تركز على الشركات الناشئة في مجال النقل المتصل التي تربط بين الولايات المتحدة والهند، والمؤسس المشارك لـ ACEL360، وهو مسرع يدعم المقاولين الفيدراليين. كما يستضيف بودكاست Indianness و Regulating AI، وهو مؤسس USINPAC.',
+                image: '/speaker/33.png',
             },
         ],
     },
