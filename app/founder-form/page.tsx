@@ -12,7 +12,7 @@ import html2canvas from "html2canvas"
 import {
     ArrowRight, Upload, CheckCircle2, LogIn, TrendingUp, Edit,
     Lock, Save, Link as LinkIcon, XCircle, FileText, Globe,
-    Linkedin, Phone, Building2, Calendar, DollarSign, FileCheck, Download, CreditCard
+    Linkedin, Phone, Building2, Calendar, DollarSign, FileCheck, Download, CreditCard, Clock, Zap
 } from "lucide-react"
 import { supabase } from "@/lib/supabaseConfig"
 
@@ -687,6 +687,22 @@ export default function FounderFormPage() {
             <Header language={language} setLanguage={setLanguage as Dispatch<SetStateAction<"en" | "ar">>} userEmail={user?.email} />
             <main className="flex-1 pt-28 pb-20 px-4 md:px-6">
                 <div className="max-w-3xl mx-auto">
+
+                    <div className="bg-gradient-to-r from-[#740001] via-red-600 to-orange-600 text-white p-4 rounded-xl shadow-lg mb-8 flex items-center gap-4 animate-fadeIn border border-white/10 relative overflow-hidden">
+                        <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-2xl -mr-16 -mt-16 pointer-events-none"></div>
+                        <div className="bg-white/20 p-2.5 rounded-full backdrop-blur-sm animate-pulse">
+                            <Clock className="w-6 h-6 text-white" />
+                        </div>
+                        <div className="relative z-10">
+                            <h3 className="font-bold text-lg leading-tight flex items-center gap-2">
+                                3 Days Special: Last Minute Entry <Zap className="w-4 h-4 fill-amber-300 text-amber-300" />
+                            </h3>
+                            <p className="text-white/90 text-sm">
+                                Final opportunity to join the event. Registration closing soon.
+                            </p>
+                        </div>
+                    </div>
+
                     <div className="mb-8">
                         <h1 className="text-2xl md:text-3xl font-bold text-slate-900 tracking-tight mb-2">{t.title}</h1>
                         <p className="text-sm text-slate-500">{t.subtitle}</p>
