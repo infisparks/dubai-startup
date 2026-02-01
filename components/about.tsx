@@ -57,7 +57,7 @@ const translations = {
 const BrandTicker = () => {
     const scrollRef = useRef<HTMLDivElement>(null)
     const [isPaused, setIsPaused] = useState(false)
-    const logos = [1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 33, 34, 35, 36, 37, 38];
+    const logos = [1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 33, 34, 35, 36, 37, 38];
     // Duplicate logos for seamless infinite scrolling
     const repeatedLogos = [...logos, ...logos, ...logos, ...logos, ...logos];
 

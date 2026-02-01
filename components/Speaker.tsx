@@ -26,21 +26,25 @@ const translations = {
         bio: 'Driving business success with modern strategies, backed by 25+ years in business and consultancy, and a doctorate in Human Psychology. Supported 100 entrepreneurs and trained 1,000 sales professionals.',
         image: '/speaker/11.png',
       },
-      {
-        name: 'Dr. Alexandru Nedelcu',
-        bio: 'Dr. Alexandru Nedelcu is known for excellent patient care, innovative treatments, and a compassionate dedication to helping cancer patients.',
-        image: '/speaker/8.png',
-      },
+      /* 
+            {
+              name: 'Dr. Alexandru Nedelcu',
+              bio: 'Dr. Alexandru Nedelcu is known for excellent patient care, innovative treatments, and a compassionate dedication to helping cancer patients.',
+              image: '/speaker/8.png',
+            },
+      */
       {
         name: 'Abdulmajid Ansari',
         bio: 'Serial Entrepreneur, Founder ARBA Accelerator LLP, Head of Business Incubation AIKTC',
         image: '/speaker/3.png',
       },
-      {
-        name: 'Jatin Bajaj',
-        bio: 'Certified trainer for AML & Fraud, Banking Products and Policies, have achieved 23% increase in the productivity and the retention with the last organization',
-        image: '/speaker/12.png',
-      },
+      /* 
+            {
+              name: 'Jatin Bajaj',
+              bio: 'Certified trainer for AML & Fraud, Banking Products and Policies, have achieved 23% increase in the productivity and the retention with the last organization',
+              image: '/speaker/12.png',
+            },
+      */
       {
         name: 'Muzaffar Ahmad',
         bio: 'Muzaffar Ahmad is a globally recognized AI leader, author, and advocate for Responsible AI. Founder of RAGN and Chairman of Kazma Technology, he drives AI-led innovation and secure digital transformation. As CAIO at Data Automation and Founder of ChatWeft, he leads scalable AI solutions. A sought-after speaker and author, he advises global organizations on Responsible GenAI strategy, aligning innovation with regulation and human values.',
@@ -76,21 +80,25 @@ const translations = {
         bio: 'تحويل نجاح الأعمال بنهج حديث. 25+ عامًا من الخبرة الغنية في الأعمال والاستشارات، حاصل على درجة الدكتوراه في علم النفس البشري. قام برعاية أعمال 100 رائد أعمال، ودرب 1000 مرشح على أعمال المبيعات.',
         image: '/speaker/11.png',
       },
-      {
-        name: 'د. ألكسندرو نيديلكو',
-        bio: 'أسس الدكتور ألكسندرو نيديلكو سمعة للتميز في رعاية المرضى، والنهج العلاجية المبتكرة، والالتزام الرحيم بتحسين حياة المتأثرين بالسرطان.',
-        image: '/speaker/8.png',
-      },
+      /* 
+            {
+              name: 'د. ألكسندرو نيديلكو',
+              bio: 'أسس الدكتور ألكسندرو نيديلكو سمعة للتميز في رعاية المرضى، والنهج العلاجية المبتكرة، والالتزام الرحيم بتحسين حياة المتأثرين بالسرطان.',
+              image: '/speaker/8.png',
+            },
+      */
       {
         name: 'عبد المجيد أنصاري',
         bio: 'رئيس مجلس الإدارة واستراتيجي الاستثمار العالمي، قائد ذو رؤية يعيد تعريف مشهد التمويل العالمي، وأكثر من عقدين من الخبرة في الاستثمارات عبر الحدود ورأس المال الاستثماري. بصفته المهندس وراء بعض أكثر الصفقات تحولًا في المنطقة.',
         image: '/speaker/3.png',
       },
-      {
-        name: 'جاتين باجاج',
-        bio: 'مدرب معتمد في مكافحة غسيل الأموال والاحتيال، والمنتجات والسياسات المصرفية، حقق زيادة بنسبة 23٪ في الإنتاجية والاحتفاظ بالموظفين في المنظمة السابقة.',
-        image: '/speaker/12.png',
-      },
+      /* 
+            {
+              name: 'جاتين باجاج',
+              bio: 'مدرب معتمد في مكافحة غسيل الأموال والاحتيال، والمنتجات والسياسات المصرفية، حقق زيادة بنسبة 23٪ في الإنتاجية والاحتفاظ بالموظفين في المنظمة السابقة.',
+              image: '/speaker/12.png',
+            },
+      */
       {
         name: 'مظفر أحمد',
         bio: 'مظفر أحمد هو قائد عالمي في مجال الذكاء الاصطناعي، ومؤلف، ومدافع عن الذكاء الاصطناعي المسؤول. مؤسس شبكة حوكمة الذكاء الاصطناعي المسؤول (RAGN) ورئيس مجلس إدارة Kazma Technology، يقود الابتكار القائم على الذكاء الاصطناعي. بصفته الرئيس التنفيذي للذكاء الاصطناعي في Data Automation ومؤسس ChatWeft، يقود حلول الذكاء الاصطناعي القابلة للتطوير. كمتحدث ومؤلف مطلوب، يقدم المشورة للمؤسسات العالمية حول استراتيجية الذكاء الاصطناعي التوليدي المسؤول.',

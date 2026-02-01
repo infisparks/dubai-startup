@@ -1028,9 +1028,9 @@ const StatusView: React.FC<any> = ({ t, isApproved, paymentStatus, formData, set
             statusDesc = t.status.approvedDesc;
         } else {
             statusColor = "bg-blue-50 text-blue-700 border-blue-200";
-            statusIcon = <DollarSign className="w-5 h-5" />;
-            statusTitle = "Application Approved - Payment Required";
-            statusDesc = "Your application has been accepted. Please complete the payment to receive your Founder Pass.";
+            statusIcon = <CheckCircle2 className="w-5 h-5" />;
+            statusTitle = "Application Approved";
+            statusDesc = "Your application has been accepted. You can download your Founder Pass below.";
         }
     }
 
@@ -1136,6 +1136,7 @@ const StatusView: React.FC<any> = ({ t, isApproved, paymentStatus, formData, set
                     <p className="text-sm opacity-90">{statusDesc}</p>
                 </div>
                 {/* Pay Button Logic */}
+                {/* Pay Button Logic Removed - Direct Approval for Event */}{/*
                 {isApproved && !isPaid && (
                     <div className="flex flex-col gap-4 w-full md:w-auto">
                         <label className="flex items-center gap-2 bg-white/50 p-3 rounded-lg border border-slate-200 cursor-pointer hover:bg-white/80 transition-colors">
@@ -1160,10 +1161,11 @@ const StatusView: React.FC<any> = ({ t, isApproved, paymentStatus, formData, set
                         </button>
                     </div>
                 )}
+                */}
             </div>
 
-            {/* ONLY SHOW BADGE IF PAID */}
-            {isApproved && isPaid && userId && (
+            {/* ONLY SHOW BADGE IF PAID (Modified to allow unpaid) */}
+            {isApproved && userId && (
                 <div className="flex flex-col items-center space-y-6 py-6 animate-fadeIn">
                     <div
                         onClick={handleDownloadBadge}
@@ -1278,7 +1280,7 @@ const StatusView: React.FC<any> = ({ t, isApproved, paymentStatus, formData, set
                                         textTransform: 'uppercase',
                                         letterSpacing: '0.05em'
                                     }}>
-                                        Founder Access {isGala && "+ Gala Dinner"}
+                                        Founder Access
                                     </span>
                                 </div>
                             </div>
@@ -1348,7 +1350,7 @@ const StatusView: React.FC<any> = ({ t, isApproved, paymentStatus, formData, set
                         <DataItem label={t.stage} value={formData.stage} />
                         <DataItem label={t.earningStatus} value={formData.earningStatus} />
                         <DataItem label={t.domain} value={formData.domain === 'Other' ? `${formData.domain} (${formData.domainOtherSpec})` : formData.domain} />
-                        <DataItem label="Pass Type" value={isGala ? "Founder + Gala Dinner" : "Founder Pass (Standard)"} />
+                        <DataItem label="Pass Type" value={"Founder Pass (Standard)"} />
 
                         <div className="md:col-span-2 grid grid-cols-2 md:grid-cols-4 gap-6 bg-slate-50 p-4 rounded-lg border border-slate-100">
                             <DataItem label={t.turnover} value={formData.turnover} />
