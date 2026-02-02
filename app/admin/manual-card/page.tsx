@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react"
 import { supabase } from "@/lib/supabaseConfig"
-import { Download, Save, User, Building2, Mail, CreditCard, RefreshCw, Trash2, CheckCircle, Ticket, Settings, Plus, X, Palette } from "lucide-react"
+import { Download, Save, User, Building2, Mail, CreditCard, RefreshCw, Trash2, CheckCircle, Ticket, Settings, Plus, X, Palette, Search, Pencil } from "lucide-react"
 import html2canvas from "html2canvas"
 import QRCode from "react-qr-code"
 
@@ -27,6 +27,7 @@ export default function ManualCardPage() {
     const [loading, setLoading] = useState(false);
     const [recentCards, setRecentCards] = useState<ManualCard[]>([]);
     const [roles, setRoles] = useState<AccessRole[]>([]);
+    const [searchTerm, setSearchTerm] = useState("");
 
     // Form State
     const [formData, setFormData] = useState<{
@@ -40,6 +41,8 @@ export default function ManualCardPage() {
         role: '', // Will default after fetch
         email: ''
     });
+
+    const [editingCardId, setEditingCardId] = useState<string | null>(null);
 
     // Badge Generation State
     const badgeRef = useRef<HTMLDivElement>(null);
@@ -76,7 +79,7 @@ export default function ManualCardPage() {
             .from('manual_id_cards')
             .select('*')
             .order('created_at', { ascending: false })
-            .limit(20);
+            .limit(50); // Increased limit slightly since we have search now
 
         if (data) setRecentCards(data as ManualCard[]);
     };
@@ -155,28 +158,51 @@ export default function ManualCardPage() {
         setLoading(true);
 
         try {
-            // 1. Save to Database
-            const { data, error } = await supabase
-                .from('manual_id_cards')
-                .insert([{
-                    full_name: formData.full_name,
-                    company_name: formData.company_name,
-                    role: formData.role,
-                    email: formData.email || null
-                }])
-                .select()
-                .single();
+            let cardData: ManualCard;
 
-            if (error) throw error;
+            if (editingCardId) {
+                // UPDATE logic
+                const { data, error } = await supabase
+                    .from('manual_id_cards')
+                    .update({
+                        full_name: formData.full_name,
+                        company_name: formData.company_name,
+                        role: formData.role,
+                        email: formData.email || null
+                    })
+                    .eq('id', editingCardId)
+                    .select()
+                    .single();
 
-            const newCard = data as ManualCard;
-            setRecentCards([newCard, ...recentCards]);
+                if (error) throw error;
+                cardData = data as ManualCard;
 
-            // 2. Trigger Download
-            setBadgeData(newCard);
-            setTimeout(() => downloadBadge(newCard), 500);
+                // Update local state
+                setRecentCards(prev => prev.map(c => c.id === cardData.id ? cardData : c));
+                setEditingCardId(null);
+            } else {
+                // INSERT logic
+                const { data, error } = await supabase
+                    .from('manual_id_cards')
+                    .insert([{
+                        full_name: formData.full_name,
+                        company_name: formData.company_name,
+                        role: formData.role,
+                        email: formData.email || null
+                    }])
+                    .select()
+                    .single();
 
-            // Reset Form - keep role or reset? let's keep role for faster entry
+                if (error) throw error;
+                cardData = data as ManualCard;
+                setRecentCards([cardData, ...recentCards]);
+            }
+
+            // Trigger Download for both cases
+            setBadgeData(cardData);
+            setTimeout(() => downloadBadge(cardData), 500);
+
+            // Reset Form (keep role since user might print cards in batch for same role)
             setFormData({
                 ...formData,
                 full_name: '',
@@ -185,12 +211,34 @@ export default function ManualCardPage() {
             });
 
         } catch (err: any) {
-            console.error("Error creating card:", err);
-            alert("Failed to create card: " + err.message);
+            console.error("Error saving card:", err);
+            alert("Failed to save card: " + err.message);
         } finally {
             setLoading(false);
         }
     };
+
+    const handleEditCard = (card: ManualCard) => {
+        setEditingCardId(card.id);
+        setFormData({
+            full_name: card.full_name,
+            company_name: card.company_name,
+            role: card.role,
+            email: card.email || ''
+        });
+        // Scroll to top
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+    const cancelEditCard = () => {
+        setEditingCardId(null);
+        setFormData({
+            ...formData,
+            full_name: '',
+            company_name: '',
+            email: ''
+        });
+    }
 
     const downloadBadge = async (card: ManualCard) => {
         if (!badgeRef.current) return;
@@ -230,6 +278,13 @@ export default function ManualCardPage() {
     const currentRoleConfig = roles.find(r => r.role_name === formData.role) || roles[0];
     const badgeRoleConfig = badgeData ? (roles.find(r => r.role_name === badgeData.role) || roles[0]) : null;
 
+    // Filter Logic
+    const filteredCards = recentCards.filter(card =>
+        card.full_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        card.company_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        card.role.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
     return (
         <div className="min-h-screen bg-slate-50 p-6 lg:p-10">
             <div className="max-w-4xl mx-auto space-y-8">
@@ -240,7 +295,7 @@ export default function ManualCardPage() {
                         <Ticket className="w-8 h-8 text-teal-600" />
                         <div>
                             <h1 className="text-2xl font-bold text-slate-900">Manual ID Card Generator</h1>
-                            <p className="text-slate-600">Create instant ID cards for dynamic roles.</p>
+                            <p className="text-slate-600">Create & Manage instant ID cards for dynamic roles.</p>
                         </div>
                     </div>
                     <button
@@ -253,7 +308,17 @@ export default function ManualCardPage() {
 
                 {/* Creation Form */}
                 <div className="bg-white rounded-xl shadow-lg border border-slate-200 p-6 md:p-8">
-                    <h2 className="text-lg font-bold text-slate-800 mb-6 border-b pb-2">New Card Details</h2>
+                    <h2 className="text-lg font-bold text-slate-800 mb-6 border-b pb-2 flex justify-between items-center">
+                        {editingCardId ? 'Edit Card Details' : 'New Card Details'}
+                        {editingCardId && (
+                            <button
+                                onClick={cancelEditCard}
+                                className="text-sm font-normal text-slate-500 hover:text-red-500 hover:bg-red-50 px-2 py-1 rounded transition"
+                            >
+                                Cancel Edit
+                            </button>
+                        )}
+                    </h2>
                     <form onSubmit={handleGenerate} className="space-y-6">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
@@ -325,10 +390,10 @@ export default function ManualCardPage() {
                             <button
                                 type="submit"
                                 disabled={loading}
-                                className="flex items-center gap-2 bg-teal-600 hover:bg-teal-700 text-white px-8 py-3 rounded-xl font-bold shadow-md transition-all disabled:opacity-50"
+                                className={`flex items-center gap-2 text-white px-8 py-3 rounded-xl font-bold shadow-md transition-all disabled:opacity-50 ${editingCardId ? 'bg-indigo-600 hover:bg-indigo-700' : 'bg-teal-600 hover:bg-teal-700'}`}
                             >
-                                {loading ? <RefreshCw className="w-5 h-5 animate-spin" /> : <Download className="w-5 h-5" />}
-                                Generate & Download Card
+                                {loading ? <RefreshCw className="w-5 h-5 animate-spin" /> : (editingCardId ? <Save className="w-5 h-5" /> : <Download className="w-5 h-5" />)}
+                                {editingCardId ? 'Update & Regenerate Card' : 'Generate & Download Card'}
                             </button>
                         </div>
                     </form>
@@ -336,17 +401,33 @@ export default function ManualCardPage() {
 
                 {/* Recent History */}
                 <div className="bg-white rounded-xl shadow-sm border border-slate-200">
-                    <div className="p-6 border-b border-slate-100 flex justify-between items-center">
+                    <div className="p-6 border-b border-slate-100 flex flex-col sm:flex-row justify-between items-center gap-4">
                         <h3 className="font-bold text-slate-800">Recent Generated Cards</h3>
-                        <button onClick={fetchRecentCards} className="text-sm text-slate-500 hover:text-teal-600 flex items-center gap-1">
-                            <RefreshCw className="w-3 h-3" /> Refresh
-                        </button>
+
+                        <div className="flex items-center gap-3 w-full sm:w-auto">
+                            {/* Search */}
+                            <div className="relative w-full sm:w-64">
+                                <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+                                <input
+                                    placeholder="Search history..."
+                                    value={searchTerm}
+                                    onChange={e => setSearchTerm(e.target.value)}
+                                    className="w-full pl-9 pr-4 py-2 border border-slate-200 rounded-lg text-sm outline-none focus:border-teal-500 transition-colors"
+                                />
+                            </div>
+
+                            <button onClick={fetchRecentCards} className="text-sm text-slate-500 hover:text-teal-600 flex items-center gap-1">
+                                <RefreshCw className="w-3 h-3" />
+                            </button>
+                        </div>
                     </div>
                     <div className="divide-y divide-slate-100">
-                        {recentCards.length === 0 ? (
-                            <div className="p-8 text-center text-slate-500">No recent cards found.</div>
+                        {filteredCards.length === 0 ? (
+                            <div className="p-8 text-center text-slate-500">
+                                {searchTerm ? 'No matches found.' : 'No recent cards found.'}
+                            </div>
                         ) : (
-                            recentCards.map(card => {
+                            filteredCards.map(card => {
                                 const roleConfig = roles.find(r => r.role_name === card.role) || { bg_gradient: '#333', accent_color: '#888' };
                                 return (
                                     <div key={card.id} className="p-4 flex flex-col sm:flex-row items-center justify-between gap-4 hover:bg-slate-50 group">
@@ -363,6 +444,13 @@ export default function ManualCardPage() {
                                             </div>
                                         </div>
                                         <div className="flex gap-2 w-full sm:w-auto justify-end">
+                                            <button
+                                                onClick={() => handleEditCard(card)}
+                                                className="px-3 py-1.5 border border-slate-200 hover:border-indigo-500 hover:text-indigo-600 rounded-lg text-sm font-medium transition-colors flex items-center gap-2"
+                                                title="Edit details"
+                                            >
+                                                <Pencil className="w-4 h-4" />
+                                            </button>
                                             <button
                                                 onClick={() => handleHistoryDownload(card)}
                                                 className="px-3 py-1.5 border border-slate-200 hover:border-teal-500 hover:text-teal-600 rounded-lg text-sm font-medium transition-colors flex items-center gap-2"
