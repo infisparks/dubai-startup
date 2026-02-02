@@ -65,6 +65,13 @@ const dashboardLinks = [
         href: "/admin/scanner",
         color: "bg-indigo-600",
     },
+    {
+        title: "Manual ID Cards",
+        description: "Create and download ID cards for users manually.",
+        icon: Ticket,
+        href: "/admin/manual-card",
+        color: "bg-teal-600",
+    },
 ];
 
 export default function AdminLandingPage() {
