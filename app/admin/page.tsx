@@ -4,7 +4,7 @@
 import React, { useMemo } from "react"
 import Link from "next/link"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { ArrowRight, Users, Mic, Store, Stethoscope, Briefcase, Settings, Ticket } from "lucide-react"
+import { ArrowRight, Users, Mic, Store, Stethoscope, Briefcase, Settings, Ticket, Scan } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
 // Define the structure for the navigation cards
@@ -57,6 +57,13 @@ const dashboardLinks = [
         icon: Ticket,
         href: "/admin/visitor",
         color: "bg-orange-600",
+    },
+    {
+        title: "Lead Scanner",
+        description: "Verify attendee badges, check payment status and gala access instantly.",
+        icon: Scan,
+        href: "/admin/scanner",
+        color: "bg-indigo-600",
     },
 ];
 
