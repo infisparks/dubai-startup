@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-import { useState, useEffect, useMemo, Dispatch, SetStateAction } from "react"
+import { useState, useEffect, useMemo, useRef, Dispatch, SetStateAction } from "react"
 import { Session } from "@supabase/supabase-js"
 // Assuming you have these components.
 import Header from "@/components/header"
@@ -13,6 +13,9 @@ import {
   DollarSign, Calendar, FileCheck
 } from "lucide-react"
 import * as XLSX from 'xlsx';
+import html2canvas from "html2canvas"
+import QRCode from "react-qr-code"
+import { Download, CreditCard } from "lucide-react"
 
 // --- 1. Define Types ---
 
@@ -461,6 +464,7 @@ export default function AdminStartupsPage() {
                     <button onClick={() => handleDisapprove(startup.user_id)} className="inline-flex items-center justify-center gap-1 px-3 py-1.5 rounded-lg text-white bg-red-600 hover:bg-red-700 transition"><X className="w-4 h-4" /><span className="hidden sm:inline">{t.disapprove}</span></button>
                   }
                   <button onClick={() => { setSelectedStartup(startup); setEditModalOpen(true); }} className="inline-flex items-center justify-center gap-1 px-3 py-1.5 border border-slate-300 rounded-lg text-slate-700 bg-white hover:bg-slate-50 transition"><Edit className="w-4 h-4" /><span className="hidden sm:inline">{t.edit}</span></button>
+                  <button onClick={() => handleDownloadCard(startup)} className="inline-flex items-center justify-center gap-1 px-3 py-1.5 border border-slate-300 rounded-lg text-slate-700 bg-white hover:bg-slate-50 transition" title="Download ID Card"><Download className="w-4 h-4" /><span className="hidden sm:inline">Card</span></button>
                   <button onClick={() => { setSelectedStartup(startup); setDeleteModalOpen(true); }} className="inline-flex items-center justify-center gap-1 px-3 py-1.5 rounded-lg text-white bg-slate-400 hover:bg-slate-500 transition"><Trash2 className="w-4 h-4" /><span className="hidden sm:inline">{t.delete}</span></button>
                 </td>
               </tr>
@@ -470,6 +474,49 @@ export default function AdminStartupsPage() {
       </div>
     );
   };
+
+  // --- Badge Generation Logic ---
+  const badgeRef = useRef<HTMLDivElement>(null);
+  const [badgeStartup, setBadgeStartup] = useState<FounderProfile | null>(null);
+
+  const handleDownloadCard = async (startup: FounderProfile) => {
+    setBadgeStartup(startup);
+    // Allow time for state to update and DOM to render
+    setTimeout(() => generateBadge(startup), 500);
+  };
+
+  const generateBadge = async (startup: FounderProfile) => {
+    if (!badgeRef.current) return;
+
+    try {
+      const canvas = await html2canvas(badgeRef.current, {
+        scale: 4,
+        useCORS: true,
+        allowTaint: true,
+        backgroundColor: null,
+        logging: false,
+        onclone: (clonedDoc) => {
+          const element = clonedDoc.getElementById('admin-badge-content');
+          if (element) {
+            element.style.visibility = 'visible';
+          }
+        }
+      });
+
+      const image = canvas.toDataURL("image/png", 1.0);
+      const link = document.createElement("a");
+      link.href = image;
+      link.download = `Investarise-Pass-${startup.founder_name?.replace(/\s+/g, '-') || 'Founder'}.png`;
+      link.click();
+
+      // Clear after download
+      setBadgeStartup(null);
+    } catch (error) {
+      console.error("Error generating badge:", error);
+      alert("Could not download badge. Please try again.");
+    }
+  };
+
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-50">
@@ -497,7 +544,159 @@ export default function AdminStartupsPage() {
       <Footer language={language} />
       {editModalOpen && selectedStartup && <EditModal startup={selectedStartup} onClose={() => setEditModalOpen(false)} onSave={handleEditSave} onApprovePayment={handleApprovePayment} t={t} />}
       {deleteModalOpen && selectedStartup && <DeleteModal startup={selectedStartup} onClose={() => setDeleteModalOpen(false)} onDelete={handleDelete} t={t} />}
+
+      {/* Hidden Badge Template for Generation */}
+      <div style={{ position: 'absolute', top: '-9999px', left: '-9999px' }}>
+        {badgeStartup && (
+          <div
+            ref={badgeRef}
+            id="admin-badge-content"
+            className="relative rounded-2xl shadow-2xl overflow-hidden"
+            style={{
+              background: 'radial-gradient(circle at top right, #1e293b 0%, #0f172a 100%)',
+              border: '1px solid #334155',
+              fontFamily: 'Arial, sans-serif',
+              width: '340px',
+              minHeight: '500px',
+              boxSizing: 'border-box',
+              position: 'relative',
+              display: 'flex',
+              flexDirection: 'column'
+            }}
+          >
+            <div style={{ position: 'absolute', top: '-100px', left: '-50px', width: '300px', height: '300px', background: 'radial-gradient(circle, rgba(197,160,89,0.1) 0%, rgba(0,0,0,0) 70%)', borderRadius: '50%', pointerEvents: 'none' }}></div>
+            <div style={{
+              padding: '30px 20px 20px 20px',
+              textAlign: 'center',
+              borderBottom: '1px solid rgba(255,255,255,0.1)',
+              position: 'relative',
+              zIndex: 10
+            }}>
+              <h5 style={{
+                color: '#94a3b8',
+                fontSize: '10px',
+                letterSpacing: '0.2em',
+                textTransform: 'uppercase',
+                margin: '0 0 8px 0'
+              }}>
+                Official Event Pass
+              </h5>
+              <h2 style={{
+                color: '#C5A059',
+                fontSize: '22px',
+                fontWeight: '900',
+                textTransform: 'uppercase',
+                letterSpacing: '0.05em',
+                lineHeight: '1.2',
+                margin: 0,
+                textShadow: '0 2px 10px rgba(197,160,89,0.3)'
+              }}>
+                INVESTARISE<br />GLOBAL
+              </h2>
+            </div>
+            <div style={{
+              flex: 1,
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              padding: '30px 24px',
+              textAlign: 'center',
+              position: 'relative',
+              zIndex: 10
+            }}>
+              <div style={{
+                width: '180px',
+                padding: '12px',
+                margin: '0 auto 24px auto',
+                borderRadius: '12px',
+                border: '2px solid #C5A059',
+                background: 'rgba(255, 255, 255, 0.03)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                boxShadow: '0 4px 20px rgba(0,0,0,0.2)'
+              }}>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/logo-white.png"
+                  alt="Logo"
+                  style={{
+                    width: '100%',
+                    height: 'auto',
+                    objectFit: 'contain'
+                  }}
+                />
+              </div>
+              <h1 style={{
+                color: '#ffffff',
+                fontSize: '28px',
+                fontWeight: '800',
+                margin: '0 0 8px 0',
+                lineHeight: '1.2',
+                wordWrap: 'break-word',
+                textTransform: 'uppercase'
+              }}>
+                {badgeStartup.founder_name || 'Founder'}
+              </h1>
+              <p style={{
+                color: '#cbd5e1',
+                fontSize: '16px',
+                fontWeight: '500',
+                margin: '0 0 20px 0',
+                opacity: 0.9,
+                textTransform: 'uppercase'
+              }}>
+                {badgeStartup.company_name}
+              </p>
+              <div style={{ display: 'flex', justifyContent: 'center' }}>
+                <span style={{
+                  color: '#C5A059',
+                  fontSize: '14px',
+                  fontWeight: 'bold',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.05em'
+                }}>
+                  Founder Access
+                </span>
+              </div>
+            </div>
+            <div style={{
+              background: '#ffffff',
+              padding: '25px 20px',
+              borderTop: '4px solid #C5A059',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              position: 'relative',
+              zIndex: 10
+            }}>
+              <div style={{ textAlign: 'left' }}>
+                <p style={{ color: '#64748b', fontSize: '9px', textTransform: 'uppercase', fontWeight: 'bold', margin: '0 0 2px 0' }}>
+                  Event Date
+                </p>
+                <p style={{ color: '#0f172a', fontSize: '12px', fontWeight: 'bold', margin: '0 0 10px 0' }}>
+                  FEB 2026
+                </p>
+                <p style={{ color: '#64748b', fontSize: '9px', textTransform: 'uppercase', fontWeight: 'bold', margin: '0 0 2px 0' }}>
+                  Pass ID
+                </p>
+                <p style={{ color: '#0f172a', fontSize: '11px', fontFamily: 'monospace', margin: 0 }}>
+                  {badgeStartup.user_id.slice(0, 8)}
+                </p>
+              </div>
+              <div style={{
+                padding: '4px',
+                border: '1px solid #e2e8f0',
+                borderRadius: '8px'
+              }}>
+                <QRCode value={badgeStartup.user_id} size={80} fgColor="#000000" bgColor="#ffffff" />
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
+
   );
 }
 

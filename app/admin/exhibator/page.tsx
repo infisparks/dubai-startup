@@ -1,15 +1,17 @@
 // @/app/admin/exhibitor-dashboard/page.tsx
 "use client"
 
-import React, { useEffect, useState, useMemo, useCallback } from "react"
+import React, { useEffect, useState, useMemo, useCallback, useRef } from "react"
 import { supabase } from "@/lib/supabaseConfig"
 import {
     Filter, Search, Users, CheckCircle, Clock, X, Loader2,
-    Save, Store, XCircle, User, Link as LinkIcon, Phone, Mail, FileText, Trash2
+    Save, Store, XCircle, User, Link as LinkIcon, Phone, Mail, FileText, Trash2, Download
 } from "lucide-react"
 import { useForm, Controller } from 'react-hook-form';
 import { cn } from "@/lib/utils"
 import * as XLSX from 'xlsx';
+import html2canvas from "html2canvas"
+import QRCode from "react-qr-code"
 
 // --- Types ---
 
@@ -582,6 +584,48 @@ export default function AdminExhibitorDashboard() {
         return <span className="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800"><Clock className="w-3.5 h-3.5" /> Pending</span>;
     };
 
+    // --- Badge Generation Logic ---
+    const badgeRef = useRef<HTMLDivElement>(null);
+    const [badgeProfile, setBadgeProfile] = useState<ExhibitorProfile | null>(null);
+
+    const handleDownloadCard = async (profile: ExhibitorProfile) => {
+        setBadgeProfile(profile);
+        // Allow time for state to update and DOM to render
+        setTimeout(() => generateBadge(profile), 500);
+    };
+
+    const generateBadge = async (profile: ExhibitorProfile) => {
+        if (!badgeRef.current) return;
+
+        try {
+            const canvas = await html2canvas(badgeRef.current, {
+                scale: 4,
+                useCORS: true,
+                allowTaint: true,
+                backgroundColor: null,
+                logging: false,
+                onclone: (clonedDoc) => {
+                    const element = clonedDoc.getElementById('exhibitor-badge-content');
+                    if (element) {
+                        element.style.visibility = 'visible';
+                    }
+                }
+            });
+
+            const image = canvas.toDataURL("image/png", 1.0);
+            const link = document.createElement("a");
+            link.href = image;
+            link.download = `Investarise-Exhibitor-${profile.company_name.replace(/\s+/g, '-')}.png`;
+            link.click();
+
+            // Clear after download
+            setBadgeProfile(null);
+        } catch (error) {
+            console.error("Error generating badge:", error);
+            alert("Could not download badge. Please try again.");
+        }
+    };
+
     return (
         <div className="min-h-screen bg-slate-50 p-6 lg:p-10">
             <div className="max-w-7xl mx-auto">
@@ -714,10 +758,16 @@ export default function AdminExhibitorDashboard() {
                                             </td>
                                             <td className="px-6 py-4 text-right">
                                                 <button
-                                                    onClick={() => setSelectedProfileForModal(p)}
                                                     className="inline-flex items-center justify-center gap-1 px-3 py-1.5 border border-indigo-200 rounded-lg text-indigo-700 bg-indigo-50 hover:bg-indigo-100 transition text-sm font-medium"
                                                 >
                                                     Review
+                                                </button>
+                                                <button
+                                                    onClick={() => handleDownloadCard(p)}
+                                                    className="inline-flex items-center justify-center gap-1 px-3 py-1.5 border border-slate-300 rounded-lg text-slate-700 bg-white hover:bg-slate-50 transition text-sm font-medium ml-2"
+                                                    title="Download ID Card"
+                                                >
+                                                    <Download className="w-4 h-4" /> Card
                                                 </button>
                                                 <button
                                                     onClick={(e) => {
@@ -758,6 +808,157 @@ export default function AdminExhibitorDashboard() {
                     onConfirm={handleDeleteProfile}
                 />
             )}
+
+            {/* Hidden Badge Template for Generation */}
+            <div style={{ position: 'absolute', top: '-9999px', left: '-9999px' }}>
+                {badgeProfile && (
+                    <div
+                        ref={badgeRef}
+                        id="exhibitor-badge-content"
+                        className="relative rounded-2xl shadow-2xl overflow-hidden"
+                        style={{
+                            background: 'radial-gradient(circle at top right, #1e293b 0%, #0f172a 100%)',
+                            border: '1px solid #334155',
+                            fontFamily: 'Arial, sans-serif',
+                            width: '340px',
+                            minHeight: '500px',
+                            boxSizing: 'border-box',
+                            position: 'relative',
+                            display: 'flex',
+                            flexDirection: 'column'
+                        }}
+                    >
+                        <div style={{ position: 'absolute', top: '-100px', left: '-50px', width: '300px', height: '300px', background: 'radial-gradient(circle, rgba(197,160,89,0.1) 0%, rgba(0,0,0,0) 70%)', borderRadius: '50%', pointerEvents: 'none' }}></div>
+                        <div style={{
+                            padding: '30px 20px 20px 20px',
+                            textAlign: 'center',
+                            borderBottom: '1px solid rgba(255,255,255,0.1)',
+                            position: 'relative',
+                            zIndex: 10
+                        }}>
+                            <h5 style={{
+                                color: '#94a3b8',
+                                fontSize: '10px',
+                                letterSpacing: '0.2em',
+                                textTransform: 'uppercase',
+                                margin: '0 0 8px 0'
+                            }}>
+                                Official Event Pass
+                            </h5>
+                            <h2 style={{
+                                color: '#C5A059',
+                                fontSize: '22px',
+                                fontWeight: '900',
+                                textTransform: 'uppercase',
+                                letterSpacing: '0.05em',
+                                lineHeight: '1.2',
+                                margin: 0,
+                                textShadow: '0 2px 10px rgba(197,160,89,0.3)'
+                            }}>
+                                INVESTARISE<br />GLOBAL
+                            </h2>
+                        </div>
+                        <div style={{
+                            flex: 1,
+                            display: 'flex',
+                            flexDirection: 'column',
+                            justifyContent: 'center',
+                            padding: '30px 24px',
+                            textAlign: 'center',
+                            position: 'relative',
+                            zIndex: 10
+                        }}>
+                            <div style={{
+                                width: '180px',
+                                padding: '12px',
+                                margin: '0 auto 24px auto',
+                                borderRadius: '12px',
+                                border: '2px solid #C5A059',
+                                background: 'rgba(255, 255, 255, 0.03)',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                boxShadow: '0 4px 20px rgba(0,0,0,0.2)'
+                            }}>
+                                {/* eslint-disable-next-line @next/next/no-img-element */}
+                                <img
+                                    src="/logo-white.png"
+                                    alt="Logo"
+                                    style={{
+                                        width: '100%',
+                                        height: 'auto',
+                                        objectFit: 'contain'
+                                    }}
+                                />
+                            </div>
+                            <h1 style={{
+                                color: '#ffffff',
+                                fontSize: '24px',
+                                fontWeight: '800',
+                                margin: '0 0 8px 0',
+                                lineHeight: '1.2',
+                                wordWrap: 'break-word',
+                                textTransform: 'uppercase'
+                            }}>
+                                {badgeProfile.contact_personname || 'Exhibitor'}
+                            </h1>
+                            <p style={{
+                                color: '#cbd5e1',
+                                fontSize: '16px',
+                                fontWeight: '500',
+                                margin: '0 0 20px 0',
+                                opacity: 0.9,
+                                textTransform: 'uppercase'
+                            }}>
+                                {badgeProfile.company_name}
+                            </p>
+                            <div style={{ display: 'flex', justifyContent: 'center' }}>
+                                <span style={{
+                                    color: '#C5A059',
+                                    fontSize: '14px',
+                                    fontWeight: 'bold',
+                                    textTransform: 'uppercase',
+                                    letterSpacing: '0.05em'
+                                }}>
+                                    Exhibitor Access
+                                </span>
+                            </div>
+                        </div>
+                        <div style={{
+                            background: '#ffffff',
+                            padding: '25px 20px',
+                            borderTop: '4px solid #C5A059',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'space-between',
+                            position: 'relative',
+                            zIndex: 10
+                        }}>
+                            <div style={{ textAlign: 'left' }}>
+                                <p style={{ color: '#64748b', fontSize: '9px', textTransform: 'uppercase', fontWeight: 'bold', margin: '0 0 2px 0' }}>
+                                    Event Date
+                                </p>
+                                <p style={{ color: '#0f172a', fontSize: '12px', fontWeight: 'bold', margin: '0 0 10px 0' }}>
+                                    FEB 2026
+                                </p>
+                                <p style={{ color: '#64748b', fontSize: '9px', textTransform: 'uppercase', fontWeight: 'bold', margin: '0 0 2px 0' }}>
+                                    Pass ID
+                                </p>
+                                <p style={{ color: '#0f172a', fontSize: '11px', fontFamily: 'monospace', margin: 0 }}>
+                                    {badgeProfile.user_id.slice(0, 8)}
+                                </p>
+                            </div>
+                            <div style={{
+                                padding: '4px',
+                                border: '1px solid #e2e8f0',
+                                borderRadius: '8px'
+                            }}>
+                                <QRCode value={badgeProfile.user_id} size={80} fgColor="#000000" bgColor="#ffffff" />
+                            </div>
+                        </div>
+                    </div>
+                )}
+            </div>
         </div>
     );
 }
