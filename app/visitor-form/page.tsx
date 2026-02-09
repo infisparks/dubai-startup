@@ -270,7 +270,7 @@ export default function VisitorFormPage() {
                     <Lock className="w-12 h-12 text-[#740001] mx-auto mb-4" />
                     <h2 className="text-2xl font-bold text-slate-900 mb-4">{t.loginRequired}</h2>
                     <p className="text-slate-600 mb-6">{t.loginRequiredDesc}</p>
-                    <button onClick={() => setShowAuthPopup(true)} className="px-8 py-3 bg-[#740001] text-white rounded-xl font-bold hover:bg-[#940200] transition-all flex items-center justify-center gap-2 mx-auto">
+                    <button onClick={() => setShowAuthPopup(true)} className="px-8 py-3 bg-[#740001] text-white rounded-xl font-bold hover:bg-[#023c7a] transition-all flex items-center justify-center gap-2 mx-auto">
                         <LogIn className="w-5 h-5" /> {t.login}
                     </button>
                 </div>
@@ -355,7 +355,7 @@ export default function VisitorFormPage() {
 
                     <button
                         type="submit"
-                        className="w-full py-4 bg-[#740001] text-white rounded-xl font-bold shadow-lg hover:bg-[#940200] transition-all flex items-center justify-center gap-2"
+                        className="w-full py-4 bg-[#740001] text-white rounded-xl font-bold shadow-lg hover:bg-[#023c7a] transition-all flex items-center justify-center gap-2"
                     >
                         {hasExistingProfile ? t.update : t.submit} <ArrowRight className="w-5 h-5" />
                     </button>
@@ -438,7 +438,7 @@ const VisitorStatusView: React.FC<any> = ({ t, paymentStatus, formData, setStep,
                     <button
                         onClick={handlePayNow}
                         disabled={processingPayment}
-                        className="w-full md:w-auto px-8 py-3 bg-[#740001] text-white rounded-xl font-bold hover:bg-[#940200] transition-all shadow-lg flex items-center justify-center gap-2"
+                        className="w-full md:w-auto px-8 py-3 bg-[#740001] text-white rounded-xl font-bold hover:bg-[#023c7a] transition-all shadow-lg flex items-center justify-center gap-2"
                     >
                         {processingPayment ? "Redirecting..." : <><CreditCard className="w-5 h-5" /> Pay Now</>}
                     </button>
@@ -536,7 +536,7 @@ const ThankYouPopup = ({ onClose, t }: { onClose: () => void, t: any }) => (
             <p className="text-slate-600 mb-8">{t.thankYou.message}</p>
             <button
                 onClick={onClose}
-                className="w-full py-3 bg-[#740001] text-white rounded-xl font-bold shadow-lg hover:bg-[#940200] transition-all"
+                className="w-full py-3 bg-[#740001] text-white rounded-xl font-bold shadow-lg hover:bg-[#023c7a] transition-all"
             >
                 {t.thankYou.close}
             </button>

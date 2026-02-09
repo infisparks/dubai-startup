@@ -82,18 +82,18 @@ export default function Header({ language = "en", setLanguage, userEmail }: Head
   // However, white text on white bg won't work. So for 'unscrolled' (top of home), we need dark text.
 
   const baseStyle = effectiveScrolled
-    ? "text-[#bf1e2e] hover:text-[#940200] hover:bg-slate-50"
-    : "text-[#bf1e2e] hover:text-[#940200] hover:bg-white/50"
+    ? "text-[#034FA3] hover:text-[#023c7a] hover:bg-slate-50"
+    : "text-white hover:text-white/80 hover:bg-white/10"
 
   const iconColor = effectiveScrolled
-    ? "text-[#bf1e2e] hover:bg-slate-100"
-    : "text-[#bf1e2e] hover:bg-white/10"
+    ? "text-[#034FA3] hover:bg-slate-100"
+    : "text-white hover:bg-white/10"
 
   return (
     <header
-      className={`w-full top-0 z-50 transition-all duration-500 relative lg:fixed bg-white lg:bg-transparent ${effectiveScrolled
-        ? "lg:bg-white/95 lg:backdrop-blur-md lg:border-b lg:border-slate-200 lg:shadow-sm"
-        : "lg:border-transparent"
+      className={`w-full top-0 z-50 transition-all duration-500 fixed ${effectiveScrolled
+        ? "bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm"
+        : "bg-transparent border-transparent"
         }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -101,7 +101,7 @@ export default function Header({ language = "en", setLanguage, userEmail }: Head
           {/* Mobile Logo */}
           <Link href="/" className="lg:hidden">
             <Image
-              src="/logo.png"
+              src={effectiveScrolled ? "/logo.png" : "/logo-white.png"}
               alt="Investarise"
               width={120}
               height={40}
@@ -109,8 +109,16 @@ export default function Header({ language = "en", setLanguage, userEmail }: Head
             />
           </Link>
 
-          {/* Desktop Spacer (keeps layout balanced as requested previously) */}
-          <div className="hidden lg:block w-52"></div>
+          {/* Desktop Logo */}
+          <Link href="/" className="hidden lg:block">
+            <Image
+              src={effectiveScrolled ? "/logo.png" : "/logo-white.png"}
+              alt="Investarise"
+              width={140}
+              height={50}
+              className="h-12 w-auto"
+            />
+          </Link>
 
           {/* Desktop Navigation - Updated */}
           <nav className="hidden lg:flex items-center gap-1">
@@ -131,13 +139,16 @@ export default function Header({ language = "en", setLanguage, userEmail }: Head
 
             {/* User Info & Logout */}
             {userEmail && (
-              <div className="hidden md:flex items-center space-x-3 border-r border-slate-200 pr-3">
-                <span className={`text-sm font-medium flex items-center gap-1 text-[#bf1e2e]`}>
+              <div className={`hidden md:flex items-center space-x-3 border-r pr-3 ${effectiveScrolled ? "border-slate-200" : "border-white/20"}`}>
+                <span className={`text-sm font-medium flex items-center gap-1 ${effectiveScrolled ? "text-[#034FA3]" : "text-white"}`}>
                   <UserIcon className="w-4 h-4" /> {userEmail}
                 </span>
                 <button
                   onClick={handleLogout}
-                  className="flex items-center gap-2 px-3 py-1.5 text-sm bg-[#bf1e2e] text-white rounded-lg hover:bg-[#940200] transition"
+                  className={`flex items-center gap-2 px-3 py-1.5 text-sm rounded-lg transition ${effectiveScrolled
+                    ? "bg-[#034FA3] text-white hover:bg-[#023c7a]"
+                    : "bg-white/20 text-white hover:bg-white/30 backdrop-blur-sm"
+                    }`}
                 >
                   <LogOut className="w-4 h-4" />
                   <span>{t.logout}</span>
@@ -157,8 +168,8 @@ export default function Header({ language = "en", setLanguage, userEmail }: Head
             <Link
               href="/registration"
               className={`hidden sm:flex px-4 py-2 rounded-lg font-medium text-sm shadow-md transition-colors ${effectiveScrolled
-                ? "bg-[#bf1e2e] text-white hover:bg-[#940200]"
-                : "bg-[#bf1e2e] text-white hover:bg-[#940200]"
+                ? "bg-[#034FA3] text-white hover:bg-[#023c7a]"
+                : "bg-white text-[#034FA3] hover:bg-slate-100"
                 }`}
             >
               {t.register}
@@ -186,7 +197,7 @@ export default function Header({ language = "en", setLanguage, userEmail }: Head
               <Link
                 key={item.key}
                 href={item.href}
-                className={`block px-4 py-2 rounded-lg font-medium text-sm text-slate-800 hover:bg-slate-50 hover:text-[#D32F2F]`}
+                className={`block px-4 py-2 rounded-lg font-medium text-sm text-slate-800 hover:bg-slate-50 hover:text-[#034FA3]`}
                 onClick={() => setMobileMenuOpen(false)} // Close menu on click
               >
                 {t[item.key]}
@@ -199,7 +210,7 @@ export default function Header({ language = "en", setLanguage, userEmail }: Head
                   <span className="flex items-center gap-1 font-medium">
                     <UserIcon className="w-4 h-4" /> {userEmail}
                   </span>
-                  <button onClick={handleLogout} className="text-red-500 hover:text-red-700 font-semibold">
+                  <button onClick={handleLogout} className="text-[#034FA3] hover:text-[#023c7a] font-semibold">
                     {t.logout}
                   </button>
                 </div>
@@ -208,7 +219,7 @@ export default function Header({ language = "en", setLanguage, userEmail }: Head
               {/* ⭐ FIX: Combined Registration Button for Mobile */}
               <Link
                 href="/registration"
-                className={`block px-4 py-2 rounded-lg text-center font-medium text-sm bg-[#bf1e2e] text-white hover:bg-[#940200]`}
+                className={`block px-4 py-2 rounded-lg text-center font-medium text-sm bg-[#034FA3] text-white hover:bg-[#023c7a]`}
                 onClick={() => setMobileMenuOpen(false)} // Close menu on click
               >
                 {t.register}

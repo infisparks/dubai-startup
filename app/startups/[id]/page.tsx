@@ -331,7 +331,7 @@ export default function StartupDetailPage() {
     }
 
     if (error) {
-        return <FeedbackCard message={t.error} description={error} icon={AlertTriangle} iconColor="text-red-500" />;
+        return <FeedbackCard message={t.error} description={error} icon={AlertTriangle} iconColor="text-blue-500" />;
     }
 
     if (!startup) {
@@ -464,7 +464,7 @@ const LeftColumn: React.FC<ColumnProps> = ({
                   engagementLoading
                     ? 'bg-slate-100 text-slate-400 border-slate-200 cursor-not-allowed'
                     : likeData.userLiked
-                      ? 'bg-red-50 text-red-600 border-red-300 hover:bg-red-100'
+                      ? 'bg-blue-50 text-blue-600 border-blue-300 hover:bg-blue-100'
                       : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100 hover:border-slate-300'
                 }`}
               >
@@ -617,11 +617,11 @@ const RightColumn: React.FC<Pick<ColumnProps, 'startup' | 't'>> = ({ startup, t 
                         href={startup.pitch_deck_url}
                         target="_blank" 
                         rel="noopener noreferrer"
-                        className="flex items-center gap-3 p-3 sm:p-3.5 bg-slate-50 hover:bg-red-50 border border-transparent hover:border-red-200 rounded-lg transition-all duration-200 group"
+                        className="flex items-center gap-3 p-3 sm:p-3.5 bg-slate-50 hover:bg-blue-50 border border-transparent hover:border-blue-200 rounded-lg transition-all duration-200 group"
                     >
-                        <FileText className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-red-600 flex-shrink-0" />
+                        <FileText className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-blue-600 flex-shrink-0" />
                         <span className="text-xs sm:text-sm font-medium text-slate-800 truncate flex-1">{t.downloadPitchDeck}</span>
-                        <Download className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-slate-400 group-hover:text-red-600 transition-colors" />
+                        <Download className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-slate-400 group-hover:text-blue-600 transition-colors" />
                     </a>
                 )}
                 {!startup.company_linkedin && !startup.pitch_deck_url && (

@@ -42,7 +42,7 @@ const dashboardLinks = [
         description: "Process pitching applications for the 10-minute presentation slots.",
         icon: Mic,
         href: "/admin/pitching",
-        color: "bg-red-600",
+        color: "bg-blue-600",
     },
     {
         title: "Platform Users",

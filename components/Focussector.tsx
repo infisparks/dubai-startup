@@ -9,7 +9,7 @@ interface FocusSectorsProps {
   language: 'en' | 'ar'
 }
 
-const PRIMARY_COLOR = "#bf1e2e"
+const PRIMARY_COLOR = "#034FA3"
 
 // --- Data Structure (Updated to use optimized .jpg images) ---
 const translations = {
@@ -75,7 +75,7 @@ const SectorCard: React.FC<{ sector: (typeof translations.en.sectors)[0]; isRtl:
 
         {/* Overlay */}
         <div
-          className="absolute inset-0 bg-gradient-to-t from-[#940200]/80 via-[#940200]/30 to-black/10 group-hover:from-[#940200]/90 transition-all duration-500"
+          className="absolute inset-0 bg-gradient-to-t from-[#023c7a]/80 via-[#023c7a]/30 to-black/10 group-hover:from-[#023c7a]/90 transition-all duration-500"
         />
 
         {/* Icon Badge */}
@@ -170,7 +170,7 @@ export default function FocusSectors({
           <p className="mt-4 text-sm sm:text-base text-slate-600 max-w-4xl mx-auto leading-relaxed">
             {t.subtitle}
           </p>
-          <div className="mt-6 h-1.5 w-20 bg-gradient-to-r from-[#bf1e2e] to-[#940200] rounded-full mx-auto" />
+          <div className="mt-6 h-1.5 w-20 bg-gradient-to-r from-[#034FA3] to-[#023c7a] rounded-full mx-auto" />
         </div>
 
         {/* --- Mobile Carousel Wrapper --- */}
@@ -179,7 +179,7 @@ export default function FocusSectors({
           {/* Left Arrow */}
           <button
             onClick={() => scroll('left')}
-            className={`absolute top-1/2 -translate-y-1/2 left-0 z-10 p-3 bg-white/80 backdrop-blur-sm rounded-full shadow-lg text-[#bf1e2e] border border-slate-200 hover:bg-slate-100 transition-opacity
+            className={`absolute top-1/2 -translate-y-1/2 left-0 z-10 p-3 bg-white/80 backdrop-blur-sm rounded-full shadow-lg text-[#034FA3] border border-slate-200 hover:bg-slate-100 transition-opacity
                        md:hidden ${isScrollStart ? 'opacity-0' : 'opacity-100'}`}
             aria-label="Scroll left"
           >
@@ -205,7 +205,7 @@ export default function FocusSectors({
           {/* Right Arrow */}
           <button
             onClick={() => scroll('right')}
-            className={`absolute top-1/2 -translate-y-1/2 right-0 z-10 p-3 bg-white/80 backdrop-blur-sm rounded-full shadow-lg text-[#bf1e2e] border border-slate-200 hover:bg-slate-100 transition-opacity
+            className={`absolute top-1/2 -translate-y-1/2 right-0 z-10 p-3 bg-white/80 backdrop-blur-sm rounded-full shadow-lg text-[#034FA3] border border-slate-200 hover:bg-slate-100 transition-opacity
                        md:hidden ${isScrollEnd ? 'opacity-0' : 'opacity-100'}`}
             aria-label="Scroll right"
           >

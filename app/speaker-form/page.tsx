@@ -480,12 +480,12 @@ export default function SpeakerFormPage() {
         if (!user || needsVerification) {
             if (needsVerification) return <EmailVerificationNotice language={language} />;
             return (
-                <div className="max-w-xl mx-auto mt-16 p-8 text-center bg-red-50 border-2 border-[#740001]/20 rounded-xl shadow-lg animate-fadeIn">
+                <div className="max-w-xl mx-auto mt-16 p-8 text-center bg-blue-50 border-2 border-[#740001]/20 rounded-xl shadow-lg animate-fadeIn">
                     <h2 className="text-2xl font-bold text-slate-900 mb-4">{t.loginRequired}</h2>
                     <p className="text-slate-700 mb-6">{t.loginRequiredDesc}</p>
                     <button
                         onClick={() => setShowAuthPopup(true)}
-                        className="px-8 py-3 bg-[#740001] text-white rounded-lg font-semibold hover:bg-[#940200] transition-all shadow-lg flex items-center justify-center gap-2 mx-auto"
+                        className="px-8 py-3 bg-[#740001] text-white rounded-lg font-semibold hover:bg-[#023c7a] transition-all shadow-lg flex items-center justify-center gap-2 mx-auto"
                     >
                         <LogIn className="w-5 h-5" /> {t.login}
                     </button>
@@ -617,7 +617,7 @@ const SpeakerFormView: React.FC<SpeakerFormViewProps> = ({
                             ].map((field) => (
                                 <div key={field.name}>
                                     <label className="block text-sm font-semibold text-slate-900 mb-2">
-                                        {field.label} {field.required && <span className="text-red-500">*</span>}
+                                        {field.label} {field.required && <span className="text-blue-500">*</span>}
                                     </label>
                                     <input
                                         type={field.type}
@@ -635,7 +635,7 @@ const SpeakerFormView: React.FC<SpeakerFormViewProps> = ({
 
                             <div>
                                 <label className="block text-sm font-semibold text-slate-900 mb-2">
-                                    {t.reference} <span className="text-red-500">*</span>
+                                    {t.reference} <span className="text-blue-500">*</span>
                                 </label>
                                 <select
                                     name="reference"
@@ -655,7 +655,7 @@ const SpeakerFormView: React.FC<SpeakerFormViewProps> = ({
                             {formData.reference === "Other" && (
                                 <div>
                                     <label className="block text-sm font-semibold text-slate-900 mb-2">
-                                        {t.referenceOther} <span className="text-red-500">*</span>
+                                        {t.referenceOther} <span className="text-blue-500">*</span>
                                     </label>
                                     <input
                                         type="text"
@@ -672,7 +672,7 @@ const SpeakerFormView: React.FC<SpeakerFormViewProps> = ({
                             {/* Bio */}
                             <div>
                                 <label className="block text-sm font-semibold text-slate-900 mb-2">
-                                    {t.speakerBio} <span className="text-red-500">*</span>
+                                    {t.speakerBio} <span className="text-blue-500">*</span>
                                 </label>
                                 <textarea
                                     name="speakerBio"
@@ -695,7 +695,7 @@ const SpeakerFormView: React.FC<SpeakerFormViewProps> = ({
                                 <button
                                     type="button"
                                     onClick={handleNext}
-                                    className="flex-1 px-6 py-3 bg-[#740001] text-white rounded-lg font-semibold hover:bg-[#940200] transition-all flex items-center justify-center gap-2 shadow-lg hover:shadow-xl"
+                                    className="flex-1 px-6 py-3 bg-[#740001] text-white rounded-lg font-semibold hover:bg-[#023c7a] transition-all flex items-center justify-center gap-2 shadow-lg hover:shadow-xl"
                                     disabled={isApproved}
                                 >
                                     {t.next} <ArrowRight className="w-4 h-4" />
@@ -714,7 +714,7 @@ const SpeakerFormView: React.FC<SpeakerFormViewProps> = ({
                             ].map((field) => (
                                 <div key={field.name}>
                                     <label className="block text-sm font-semibold text-slate-900 mb-2">
-                                        {field.label} {field.required && <span className="text-red-500">*</span>}
+                                        {field.label} {field.required && <span className="text-blue-500">*</span>}
                                     </label>
                                     <input
                                         type={field.type}
@@ -732,7 +732,7 @@ const SpeakerFormView: React.FC<SpeakerFormViewProps> = ({
                             {/* Topic Abstract */}
                             <div>
                                 <label className="block text-sm font-semibold text-slate-900 mb-2">
-                                    {t.topicAbstract} <span className="text-red-500">*</span>
+                                    {t.topicAbstract} <span className="text-blue-500">*</span>
                                 </label>
                                 <textarea
                                     name="topicAbstract"
@@ -751,7 +751,7 @@ const SpeakerFormView: React.FC<SpeakerFormViewProps> = ({
                             {/* Headshot Upload */}
                             <div>
                                 <label className="block text-sm font-semibold text-slate-900 mb-2">
-                                    {t.headshot} {formData.profilePhotoUrl ? "(Optional Update)" : <span className="text-red-500">*</span>}
+                                    {t.headshot} {formData.profilePhotoUrl ? "(Optional Update)" : <span className="text-blue-500">*</span>}
                                 </label>
                                 <div className={`border-2 border-dashed rounded-lg p-6 text-center transition-all ${isApproved ? 'border-slate-200 bg-slate-50' : 'border-slate-300 hover:border-[#740001] hover:bg-slate-50 cursor-pointer'}`}>
                                     <input
@@ -790,7 +790,7 @@ const SpeakerFormView: React.FC<SpeakerFormViewProps> = ({
                                 </button>
                                 <button
                                     type="submit"
-                                    className="flex-1 px-6 py-3 bg-[#740001] text-white rounded-lg font-semibold hover:bg-[#940200] transition-all shadow-lg hover:shadow-xl flex items-center justify-center gap-2"
+                                    className="flex-1 px-6 py-3 bg-[#740001] text-white rounded-lg font-semibold hover:bg-[#023c7a] transition-all shadow-lg hover:shadow-xl flex items-center justify-center gap-2"
                                     disabled={isApproved}
                                 >
                                     {hasExistingProfile ? t.update : t.submit} {hasExistingProfile && <Save className="w-4 h-4" />}

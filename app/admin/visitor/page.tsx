@@ -221,8 +221,8 @@ export default function AdminVisitorsPage() {
 
     const renderContent = () => {
         if (loading) return <div className="text-center p-12">{t.loading}</div>;
-        if (!isAdmin) return <div className="p-12 text-center text-red-600 font-bold">{t.notAuthorized}</div>;
-        if (error) return <div className="p-12 text-center text-red-600">{error}</div>;
+        if (!isAdmin) return <div className="p-12 text-center text-blue-600 font-bold">{t.notAuthorized}</div>;
+        if (error) return <div className="p-12 text-center text-blue-600">{error}</div>;
 
         return (
             <div className="overflow-x-auto bg-white rounded-xl shadow-lg border border-slate-100">
@@ -254,7 +254,7 @@ export default function AdminVisitorsPage() {
                                 </td>
                                 <td className="px-6 py-4">
                                     <div className="flex flex-col gap-1">
-                                        <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold w-fit ${visitor.payment_status === 'paid' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
+                                        <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold w-fit ${visitor.payment_status === 'paid' ? 'bg-green-100 text-green-700' : 'bg-blue-100 text-blue-700'}`}>
                                             {visitor.payment_status === 'paid' ? <CheckCircle className="w-3 h-3" /> : <Clock className="w-3 h-3" />}
                                             {visitor.payment_status.toUpperCase()}
                                         </span>
@@ -263,7 +263,7 @@ export default function AdminVisitorsPage() {
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium flex gap-2">
                                     <button onClick={() => { setSelectedVisitor(visitor); setEditModalOpen(true); }} className="p-2 text-indigo-600 hover:bg-indigo-50 rounded-lg transition"><Edit className="w-4 h-4" /></button>
-                                    <button onClick={() => { setSelectedVisitor(visitor); setDeleteModalOpen(true); }} className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition"><Trash2 className="w-4 h-4" /></button>
+                                    <button onClick={() => { setSelectedVisitor(visitor); setDeleteModalOpen(true); }} className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition"><Trash2 className="w-4 h-4" /></button>
                                 </td>
                             </tr>
                         ))}
@@ -349,7 +349,7 @@ const EditVisitorModal = ({ visitor, onClose, onSave, onApprovePayment, t }: any
 
                     <div className="flex gap-3 pt-4">
                         <button type="button" onClick={onClose} className="flex-1 py-2 border rounded-xl font-bold hover:bg-slate-50">Cancel</button>
-                        <button type="submit" disabled={isSaving} className="flex-1 py-2 bg-[#740001] text-white rounded-xl font-bold hover:bg-[#940200] disabled:bg-slate-400">
+                        <button type="submit" disabled={isSaving} className="flex-1 py-2 bg-[#740001] text-white rounded-xl font-bold hover:bg-[#023c7a] disabled:bg-slate-400">
                             {isSaving ? "Saving..." : "Save Changes"}
                         </button>
                     </div>
@@ -374,10 +374,10 @@ const DeleteVisitorModal = ({ visitor, onClose, onDelete, t }: any) => {
             <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md p-6" onClick={e => e.stopPropagation()}>
                 <h3 className="text-xl font-bold text-slate-900 mb-2">Delete Visitor Registration</h3>
                 <p className="text-sm text-slate-500 mb-4">Are you sure you want to delete **{visitor.full_name}**? This cannot be undone.</p>
-                <input value={confirmText} onChange={e => setConfirmText(e.target.value)} placeholder="Type 'confirm delete'" className="w-full px-4 py-2 border rounded-xl mb-6 outline-none focus:border-red-500" />
+                <input value={confirmText} onChange={e => setConfirmText(e.target.value)} placeholder="Type 'confirm delete'" className="w-full px-4 py-2 border rounded-xl mb-6 outline-none focus:border-blue-500" />
                 <div className="flex gap-3">
                     <button onClick={onClose} className="flex-1 py-2 border rounded-xl font-bold">Cancel</button>
-                    <button onClick={handleDelete} disabled={!isConfirmed} className="flex-1 py-2 bg-red-600 text-white rounded-xl font-bold disabled:bg-red-300">Delete Permanently</button>
+                    <button onClick={handleDelete} disabled={!isConfirmed} className="flex-1 py-2 bg-blue-600 text-white rounded-xl font-bold disabled:bg-blue-300">Delete Permanently</button>
                 </div>
             </div>
         </div>

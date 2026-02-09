@@ -57,7 +57,7 @@ export default function PastSpeakers({ language = 'en' }: PastSpeakersProps) {
 
             {/* Abstract Modern Background */}
             <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-slate-200 to-transparent" />
-            <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#bf1e2e]/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/3 pointer-events-none mix-blend-multiply" />
+            <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#034FA3]/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/3 pointer-events-none mix-blend-multiply" />
             <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-[#c4925f]/10 rounded-full blur-[100px] translate-y-1/3 -translate-x-1/4 pointer-events-none mix-blend-multiply" />
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -65,8 +65,8 @@ export default function PastSpeakers({ language = 'en' }: PastSpeakersProps) {
                 {/* Header Section */}
                 <div className="flex flex-col md:flex-row md:items-end md:justify-between mb-8 gap-6">
                     <div className="max-w-2xl">
-                        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-50 border border-red-100 text-[#bf1e2e] text-xs font-semibold tracking-wide uppercase mb-3">
-                            <Star className="w-3 h-3 fill-[#bf1e2e]" />
+                        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-100 text-[#034FA3] text-xs font-semibold tracking-wide uppercase mb-3">
+                            <Star className="w-3 h-3 fill-[#034FA3]" />
                             <span>Legacy of Excellence</span>
                         </div>
                         <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight leading-tight">
@@ -80,7 +80,7 @@ export default function PastSpeakers({ language = 'en' }: PastSpeakersProps) {
                     <div className="hidden md:block pb-1">
                         <Link
                             href="/past-speakers"
-                            className="group inline-flex items-center gap-2 text-sm font-semibold text-[#bf1e2e] hover:text-[#940200] transition-colors"
+                            className="group inline-flex items-center gap-2 text-sm font-semibold text-[#034FA3] hover:text-[#023c7a] transition-colors"
                         >
                             {t.viewAll}
                             <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
@@ -112,7 +112,7 @@ export default function PastSpeakers({ language = 'en' }: PastSpeakersProps) {
                               transition-all duration-300 group-hover:shadow-[0_20px_40px_rgb(191,30,46,0.08)] group-hover:-translate-y-1.5 flex flex-col items-center text-center relative overflow-hidden z-10">
 
                                     {/* Hover Gradient Overlay */}
-                                    <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-[#bf1e2e] to-[#c4925f] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
+                                    <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-[#034FA3] to-[#c4925f] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
 
                                     {/* Image */}
                                     <div className="relative mb-4">
@@ -128,7 +128,7 @@ export default function PastSpeakers({ language = 'en' }: PastSpeakersProps) {
                                     </div>
 
                                     {/* Content */}
-                                    <h3 className="text-base sm:text-lg font-bold text-slate-800 mb-2 group-hover:text-[#bf1e2e] transition-colors line-clamp-1">
+                                    <h3 className="text-base sm:text-lg font-bold text-slate-800 mb-2 group-hover:text-[#034FA3] transition-colors line-clamp-1">
                                         {speaker.name}
                                     </h3>
 
@@ -147,13 +147,13 @@ export default function PastSpeakers({ language = 'en' }: PastSpeakersProps) {
                                 href="/past-speakers"
                                 className="flex flex-col items-center justify-center w-full h-[80%] 
                             rounded-3xl border-2 border-dashed border-slate-200 
-                            hover:border-[#bf1e2e]/50 hover:bg-red-50/50
+                            hover:border-[#034FA3]/50 hover:bg-blue-50/50
                             group transition-all duration-300 cursor-pointer text-center p-4"
                             >
-                                <div className="w-10 h-10 bg-white rounded-full shadow-sm flex items-center justify-center mb-3 group-hover:scale-110 transition-transform text-slate-400 group-hover:text-[#bf1e2e]">
+                                <div className="w-10 h-10 bg-white rounded-full shadow-sm flex items-center justify-center mb-3 group-hover:scale-110 transition-transform text-slate-400 group-hover:text-[#034FA3]">
                                     <ArrowRight className="w-5 h-5" />
                                 </div>
-                                <span className="text-sm font-bold text-slate-600 group-hover:text-[#bf1e2e] transition-colors">
+                                <span className="text-sm font-bold text-slate-600 group-hover:text-[#034FA3] transition-colors">
                                     {t.viewAll}
                                 </span>
                             </Link>
@@ -165,7 +165,7 @@ export default function PastSpeakers({ language = 'en' }: PastSpeakersProps) {
                 <div className="md:hidden mt-2 text-center">
                     <Link
                         href="/past-speakers"
-                        className="inline-flex items-center gap-2 text-sm font-bold text-[#bf1e2e] bg-red-50 px-6 py-3 rounded-full hover:bg-red-100 transition-colors"
+                        className="inline-flex items-center gap-2 text-sm font-bold text-[#034FA3] bg-blue-50 px-6 py-3 rounded-full hover:bg-blue-100 transition-colors"
                     >
                         {t.viewAll}
                         <ArrowRight className="w-4 h-4" />

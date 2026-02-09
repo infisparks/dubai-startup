@@ -113,8 +113,8 @@ export default function ApprovedStartupsList({ language }: ApprovedStartupsListP
 
   if (error) {
     return (
-        <div className="flex flex-col items-center justify-center text-center p-12 bg-red-50 border border-red-200 rounded-lg">
-            <AlertTriangle className="w-12 h-12 text-red-500 mb-4" />
+        <div className="flex flex-col items-center justify-center text-center p-12 bg-blue-50 border border-blue-200 rounded-lg">
+            <AlertTriangle className="w-12 h-12 text-blue-500 mb-4" />
             <h3 className="text-xl font-bold text-slate-900">{t.error}</h3>
             <p className="text-slate-600">{error}</p>
         </div>

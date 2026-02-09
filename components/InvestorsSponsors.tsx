@@ -279,7 +279,7 @@ export default function InvestorsSponsors({ language = 'en' }: InvestorsSponsors
                     <p className="mt-4 text-lg text-slate-600 max-w-3xl mx-auto">
                         {t.subtitle}
                     </p>
-                    <div className="mt-6 h-1.5 w-24 bg-gradient-to-r from-[#bf1e2e] to-[#940200] rounded-full mx-auto" />
+                    <div className="mt-6 h-1.5 w-24 bg-gradient-to-r from-[#034FA3] to-[#023c7a] rounded-full mx-auto" />
                 </div>
 
                 <div className="relative -mx-4 px-4 sm:mx-0 sm:px-0">
@@ -303,38 +303,40 @@ export default function InvestorsSponsors({ language = 'en' }: InvestorsSponsors
                             return (
                                 <div
                                     key={`${investor.name}-${idx}`}
-                                    className="flex flex-col items-center text-center bg-slate-50 rounded-3xl p-6 shadow-lg hover:shadow-xl transition-shadow border border-slate-100/50 hover:border-[#bf1e2e]/10
-                             w-[85vw] flex-shrink-0
-                             sm:w-[300px]"
+                                    className="relative flex flex-col items-center text-center bg-white rounded-2xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 border border-slate-100
+                                     w-[280px] sm:w-[320px] flex-shrink-0 group hover:-translate-y-1"
                                 >
-                                    <div className="relative w-40 h-40 rounded-full mb-6 overflow-hidden shadow-md flex-shrink-0 border-4 border-white">
+                                    <div className="relative w-32 h-32 sm:w-40 sm:h-40 rounded-full mb-6 p-1 bg-gradient-to-tr from-slate-100 to-slate-50 border border-slate-200 shadow-inner">
                                         <Image
                                             src={investor.image}
                                             alt={investor.name}
                                             width={160}
                                             height={160}
-                                            className="w-full h-full object-cover"
+                                            className="w-full h-full object-cover rounded-full"
                                         />
                                     </div>
-                                    <h3 className="text-xl font-bold text-slate-900 mb-2 hover:text-[#bf1e2e] transition-colors">
+
+                                    <h3 className="text-lg sm:text-xl font-bold text-slate-900 mb-1 group-hover:text-[#034FA3] transition-colors line-clamp-1">
                                         {investor.name}
                                     </h3>
 
-                                    <div className="flex-grow flex flex-col w-full">
+                                    <div className="w-12 h-0.5 bg-[#034FA3]/20 mb-4 rounded-full group-hover:w-20 transition-all duration-500" />
+
+                                    <div className="flex-grow flex flex-col w-full text-left">
                                         <p
-                                            className={`text-sm text-slate-600 leading-relaxed flex-grow whitespace-pre-wrap ${!isExpanded ? 'line-clamp-2' : ''
-                                                }`}
+                                            className={`text-sm text-slate-600 leading-relaxed ${!isExpanded ? 'line-clamp-4' : ''
+                                                } text-center`}
                                         >
                                             {investor.bio}
                                         </p>
-
-                                        <button
-                                            onClick={() => toggleExpand(investor.name)}
-                                            className="text-sm font-semibold text-[#bf1e2e] bg-red-50 hover:bg-red-100 rounded-full px-4 py-1.5 transition-colors mt-4 self-center flex-shrink-0"
-                                        >
-                                            {isExpanded ? t.readLess : t.readMore}
-                                        </button>
                                     </div>
+
+                                    <button
+                                        onClick={() => toggleExpand(investor.name)}
+                                        className="mt-4 text-xs font-bold text-[#034FA3] uppercase tracking-wider hover:text-[#023c7a] transition-colors"
+                                    >
+                                        {isExpanded ? t.readLess : t.readMore}
+                                    </button>
                                 </div>
                             )
                         })}

@@ -313,7 +313,7 @@ export default function ManualCardPage() {
                         {editingCardId && (
                             <button
                                 onClick={cancelEditCard}
-                                className="text-sm font-normal text-slate-500 hover:text-red-500 hover:bg-red-50 px-2 py-1 rounded transition"
+                                className="text-sm font-normal text-slate-500 hover:text-blue-500 hover:bg-blue-50 px-2 py-1 rounded transition"
                             >
                                 Cancel Edit
                             </button>
@@ -460,7 +460,7 @@ export default function ManualCardPage() {
                                             </button>
                                             <button
                                                 onClick={() => handleDeleteCard(card.id)}
-                                                className="px-3 py-1.5 border border-red-200 hover:bg-red-50 text-red-600 rounded-lg text-sm font-medium transition-colors flex items-center gap-2"
+                                                className="px-3 py-1.5 border border-blue-200 hover:bg-blue-50 text-blue-600 rounded-lg text-sm font-medium transition-colors flex items-center gap-2"
                                                 title="Delete record"
                                             >
                                                 <Trash2 className="w-4 h-4" />
@@ -566,7 +566,7 @@ export default function ManualCardPage() {
                                             </button>
                                             <button
                                                 onClick={() => handleDeleteRole(role.id)}
-                                                className="p-1.5 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded transition"
+                                                className="p-1.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded transition"
                                                 title="Delete Role"
                                             >
                                                 <Trash2 className="w-4 h-4" />

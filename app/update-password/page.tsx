@@ -89,9 +89,9 @@ export default function UpdatePasswordPage() {
     if (error) {
       return (
         <div className="text-center">
-          <XCircle className="w-12 h-12 mx-auto text-red-500 mb-4" />
+          <XCircle className="w-12 h-12 mx-auto text-blue-500 mb-4" />
           <h3 className="text-xl font-semibold text-slate-800 mb-2">Error</h3>
-          <p className="text-red-600 mb-4">{error}</p>
+          <p className="text-blue-600 mb-4">{error}</p>
           <button 
              onClick={() => router.push("/")}
              className="text-[#013371] hover:underline font-medium"

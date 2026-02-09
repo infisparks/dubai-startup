@@ -81,7 +81,7 @@ export default function FounderPage({ language = 'en' }: FounderPageProps) {
     <section className="py-20 sm:py-28 bg-white overflow-hidden relative" dir={isRtl ? 'rtl' : 'ltr'}>
       {/* Background Decor */}
       <div className="absolute top-0 left-0 w-full h-[500px] bg-gradient-to-b from-slate-50 to-white -z-10" />
-      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-[#bf1e2e]/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
+      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-[#034FA3]/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
@@ -90,7 +90,7 @@ export default function FounderPage({ language = 'en' }: FounderPageProps) {
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 tracking-tight">
             {t.sectionTitle}
           </h2>
-          <div className="mt-6 h-1 w-24 bg-gradient-to-r from-[#bf1e2e] to-[#940200] rounded-full mx-auto" />
+          <div className="mt-6 h-1 w-24 bg-gradient-to-r from-[#034FA3] to-[#023c7a] rounded-full mx-auto" />
         </div>
 
         {/* Founders Grid */}
@@ -103,7 +103,7 @@ export default function FounderPage({ language = 'en' }: FounderPageProps) {
               {/* Image & Header */}
               <div className="flex flex-col sm:flex-row gap-6 items-start mb-6 w-full">
                 <div className="relative w-28 h-28 sm:w-32 sm:h-32 shrink-0">
-                  <div className="absolute inset-0 bg-gradient-to-br from-[#bf1e2e]/20 to-[#c4925f]/20 rounded-full blur-lg opacity-50 group-hover:opacity-100 transition-opacity duration-500" />
+                  <div className="absolute inset-0 bg-gradient-to-br from-[#034FA3]/20 to-[#c4925f]/20 rounded-full blur-lg opacity-50 group-hover:opacity-100 transition-opacity duration-500" />
                   <Image
                     src={founder.image}
                     alt={founder.name}
@@ -111,13 +111,13 @@ export default function FounderPage({ language = 'en' }: FounderPageProps) {
                     className="object-cover rounded-full border-4 border-white shadow-md relative z-10"
                   />
                   {/* Decorative badge icon */}
-                  <div className="absolute -bottom-1 -right-1 z-20 bg-white p-1.5 rounded-full shadow-sm border border-slate-100 text-[#bf1e2e]">
-                    <Quote size={14} fill="currentColor" className="text-[#bf1e2e]" />
+                  <div className="absolute -bottom-1 -right-1 z-20 bg-white p-1.5 rounded-full shadow-sm border border-slate-100 text-[#034FA3]">
+                    <Quote size={14} fill="currentColor" className="text-[#034FA3]" />
                   </div>
                 </div>
 
                 <div className="pt-2">
-                  <h3 className="text-2xl font-bold text-slate-900 group-hover:text-[#bf1e2e] transition-colors duration-300">
+                  <h3 className="text-2xl font-bold text-slate-900 group-hover:text-[#034FA3] transition-colors duration-300">
                     {founder.name}
                   </h3>
                   <div className="h-0.5 w-12 bg-[#c4925f]/30 mt-2 mb-3" />
@@ -127,8 +127,8 @@ export default function FounderPage({ language = 'en' }: FounderPageProps) {
 
                   {/* Social Links Placeholder */}
                   <div className="flex gap-3 mt-4 opacity-60 group-hover:opacity-100 transition-opacity duration-300">
-                    <button className="text-slate-400 hover:text-[#bf1e2e] transition-colors"><Linkedin size={18} /></button>
-                    <button className="text-slate-400 hover:text-[#bf1e2e] transition-colors"><Twitter size={18} /></button>
+                    <button className="text-slate-400 hover:text-[#034FA3] transition-colors"><Linkedin size={18} /></button>
+                    <button className="text-slate-400 hover:text-[#034FA3] transition-colors"><Twitter size={18} /></button>
                   </div>
                 </div>
               </div>
@@ -152,7 +152,7 @@ export default function FounderPage({ language = 'en' }: FounderPageProps) {
               {/* Read More Trigger */}
               <button
                 onClick={() => toggleExpand(index)}
-                className="mt-4 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#bf1e2e] hover:text-[#940200] transition-colors group/btn"
+                className="mt-4 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#034FA3] hover:text-[#023c7a] transition-colors group/btn"
               >
                 {expandedIndex === index ? t.readLess : t.readMore}
                 {expandedIndex === index ? (

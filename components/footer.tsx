@@ -71,41 +71,52 @@ export default function Footer({ language = 'en' }: FooterProps) {
   const isRtl = language === 'ar'
 
   return (
-    <footer className="bg-[#740001] text-white relative overflow-hidden" dir={isRtl ? 'rtl' : 'ltr'}>
-      {/* Background Elements - Strong Brand Red */}
+    <footer className="relative bg-[#034FA3] text-white overflow-hidden" dir={isRtl ? 'rtl' : 'ltr'}>
+      {/* Background Elements - Premium Blue Gradient */}
+      <div className="absolute inset-0 bg-gradient-to-b from-[#034FA3] to-[#012a5c]" />
+
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {/* Darker red accents for depth */}
-        <div className="absolute -top-1/2 -right-1/4 w-[800px] h-[800px] bg-[#500000] rounded-full blur-[120px] opacity-60" />
-        <div className="absolute -bottom-1/2 -left-1/4 w-[600px] h-[600px] bg-[#c4925f] rounded-full blur-[100px] opacity-30" />
+        {/* Dynamic Orbs */}
+        <div className="absolute -top-[400px] -right-[200px] w-[800px] h-[800px] bg-[#023c7a] rounded-full blur-[120px] opacity-60 mix-blend-multiply" />
+        <div className="absolute -bottom-[400px] -left-[200px] w-[800px] h-[800px] bg-[#c4925f] rounded-full blur-[120px] opacity-20" />
       </div>
 
-      {/* Subtle Pattern Texture */}
-      <div className="absolute inset-0 opacity-[0.05] pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] bg-repeat" />
+      {/* Grid Pattern Overlay */}
+      <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[linear-gradient(rgba(255,255,255,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.1)_1px,transparent_1px)] bg-[size:40px_40px]" />
 
       <div className="relative z-10">
-        {/* Hero CTA Section - Floating Card Style */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-12 lg:pb-16">
-          <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-3xl p-8 lg:p-12 shadow-2xl hover:border-white/30 transition-all duration-500">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+        {/* Hero CTA Section - Glassmorphism */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-16">
+          <div className="relative overflow-hidden rounded-3xl bg-white/5 backdrop-blur-xl border border-white/10 p-8 lg:p-12 shadow-[0_32px_64px_-16px_rgba(0,0,0,0.3)] group hover:border-white/20 transition-all duration-500">
+            {/* Inner Glow */}
+            <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10">
               {/* Left Content */}
               <div className={isRtl ? 'text-right' : 'text-left'}>
-                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold mb-4 leading-tight tracking-tight text-white drop-shadow-sm">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/20 text-white/90 text-xs font-bold uppercase tracking-widest mb-6">
+                  <span className="w-2 h-2 rounded-full bg-[#c4925f] animate-pulse" />
+                  IGIS 2026
+                </div>
+
+                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black mb-6 leading-tight tracking-tight text-white">
                   {t.tagline}
                 </h2>
-                <p className="text-white/80 text-base sm:text-lg leading-relaxed mb-8 font-light max-w-lg">
+                <p className="text-blue-100 text-lg leading-relaxed mb-8 max-w-lg font-light">
                   {t.description}
                 </p>
+
                 <button
                   onClick={() => router.push('/registration')}
-                  className="inline-flex items-center gap-3 px-8 py-4 bg-white text-[#740001] hover:bg-[#c4925f] hover:text-white rounded-xl font-bold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+                  className="group relative inline-flex items-center gap-3 px-8 py-4 bg-white text-[#034FA3] hover:bg-[#c4925f] hover:text-white rounded-xl font-bold transition-all duration-300 shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:shadow-[0_0_30px_rgba(196,146,95,0.5)] overflow-hidden"
                 >
-                  <span className="uppercase tracking-wider text-sm">{t.registerNow}</span>
-                  <ArrowRight className="w-5 h-5" />
+                  <span className="relative z-10 uppercase tracking-wider text-sm">{t.registerNow}</span>
+                  <ArrowRight className="relative z-10 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </button>
               </div>
 
               {/* Right Contact Info */}
-              <div className={`space-y-4 ${isRtl ? 'text-right' : 'text-left'}`}>
+              <div className="flex flex-col gap-4">
                 {[
                   { icon: Mail, label: t.email, value: t.emailAddr, href: `mailto:${t.emailAddr}` },
                   { icon: Phone, label: t.call, value: t.phone, href: 'tel:+971554721421' },
@@ -116,14 +127,14 @@ export default function Footer({ language = 'en' }: FooterProps) {
                     <a
                       key={idx}
                       href={item.href}
-                      className="flex items-center gap-4 p-4 rounded-xl bg-black/20 hover:bg-black/30 border border-white/10 hover:border-white/20 transition-all duration-300 group backdrop-blur-sm"
+                      className="flex items-center gap-5 p-5 rounded-2xl bg-black/20 hover:bg-white/10 border border-white/5 hover:border-white/20 transition-all duration-300 group/item backdrop-blur-sm"
                     >
-                      <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center group-hover:scale-110 transition-transform">
-                        <Icon className="w-5 h-5 text-[#c4925f] group-hover:text-white transition-colors" />
+                      <div className="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center group-hover/item:scale-110 group-hover/item:bg-[#c4925f] transition-all duration-300 shadow-inner">
+                        <Icon className="w-6 h-6 text-[#c4925f] group-hover/item:text-white transition-colors" />
                       </div>
-                      <div className="min-w-0">
-                        <p className="text-xs text-white/60 font-medium uppercase tracking-widest mb-0.5">{item.label}</p>
-                        <p className="text-sm sm:text-base text-white font-semibold truncate">{item.value}</p>
+                      <div>
+                        <p className="text-xs text-blue-200 font-bold uppercase tracking-widest mb-1 opacity-70">{item.label}</p>
+                        <p className="text-white text-lg font-semibold tracking-tight group-hover/item:text-[#c4925f] transition-colors">{item.value}</p>
                       </div>
                     </a>
                   )
@@ -134,13 +145,39 @@ export default function Footer({ language = 'en' }: FooterProps) {
         </div>
 
         {/* Main Footer Links */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 border-t border-white/10 bg-black/10 backdrop-blur-sm rounded-t-3xl mt-8">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-10 lg:gap-8 mb-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-12 lg:gap-8 mb-16 border-t border-white/10 pt-16">
 
             {/* Brand Section */}
-            <div className="lg:col-span-1">
-              <div className="mb-6">
-                <img src="/logo-white.png" alt="Investarise" className="w-48 h-auto" />
+            <div className="lg:col-span-2 pr-8">
+              <div className="mb-8">
+                <div className="relative w-48 h-16">
+                  <img src="/logo-white.png" alt="Investarise" className="w-auto h-12 object-contain" />
+                </div>
+              </div>
+              <p className="text-blue-100/70 text-sm leading-relaxed mb-8 max-w-sm">
+                Connecting the world's most ambitious founders with the strategic capital they need to build the future.
+              </p>
+
+              {/* Social Links */}
+              <div className="flex gap-3">
+                {[
+                  { icon: Facebook, label: 'Facebook', href: 'https://www.facebook.com/profile.php?id=61585203620830&sk=about' },
+                  { icon: Instagram, label: 'Instagram', href: 'https://www.instagram.com/investariseglobal/' },
+                  { icon: Linkedin, label: 'LinkedIn', href: 'https://www.linkedin.com/company/investarise-global/?viewAsMember=true' },
+                ].map((social) => {
+                  const Icon = social.icon
+                  return (
+                    <a
+                      key={social.label}
+                      href={social.href}
+                      className="w-10 h-10 bg-white/5 hover:bg-[#c4925f] rounded-lg flex items-center justify-center transition-all duration-300 border border-white/10 hover:border-transparent group"
+                      aria-label={social.label}
+                    >
+                      <Icon className="w-5 h-5 text-white/70 group-hover:text-white transition-colors" />
+                    </a>
+                  )
+                })}
               </div>
             </div>
 
@@ -156,7 +193,9 @@ export default function Footer({ language = 'en' }: FooterProps) {
               },
               {
                 title: t.platform, links: [
-                  { label: t.sponsorship, href: '/#sponsorship' }
+                  { label: t.sponsorship, href: '/#sponsorship' },
+                  { label: "Invest", href: "/#invest" },
+                  { label: "Partner", href: "/#partner" }
                 ]
               },
               {
@@ -167,14 +206,15 @@ export default function Footer({ language = 'en' }: FooterProps) {
                 ]
               }
             ].map((section, idx) => (
-              <div key={idx}>
-                <h4 className="font-bold text-white mb-6 text-sm uppercase tracking-widest border-b border-[#c4925f]/50 pb-2 inline-block">
+              <div key={idx} className="lg:pl-8">
+                <h4 className="font-bold text-white mb-6 text-sm uppercase tracking-widest flex items-center gap-2">
+                  <span className="w-1 h-1 bg-[#c4925f] rounded-full"></span>
                   {section.title}
                 </h4>
                 <ul className="space-y-4">
                   {section.links.map((link) => (
                     <li key={link.label}>
-                      <a href={link.href} className="text-white/70 hover:text-white hover:translate-x-1 transition-all duration-300 text-sm font-medium inline-block">
+                      <a href={link.href} className="text-blue-100/60 hover:text-white hover:translate-x-1 transition-all duration-300 text-sm font-medium block">
                         {link.label}
                       </a>
                     </li>
@@ -182,47 +222,18 @@ export default function Footer({ language = 'en' }: FooterProps) {
                 </ul>
               </div>
             ))}
-
-            {/* Social Links */}
-            <div>
-              <h4 className="font-bold text-white mb-6 text-sm uppercase tracking-widest border-b border-[#c4925f]/50 pb-2 inline-block">
-                {t.followUs}
-              </h4>
-              <div className="flex gap-4">
-                {[
-                  { icon: Facebook, label: 'Facebook', href: 'https://www.facebook.com/profile.php?id=61585203620830&sk=about' },
-                  { icon: Instagram, label: 'Instagram', href: 'https://www.instagram.com/investariseglobal/' },
-                  { icon: Linkedin, label: 'LinkedIn', href: 'https://www.linkedin.com/company/investarise-global/?viewAsMember=true' },
-                ].map((social) => {
-                  const Icon = social.icon
-                  return (
-                    <a
-                      key={social.label}
-                      href={social.href}
-                      className="w-10 h-10 bg-white/10 hover:bg-[#c4925f] rounded-lg flex items-center justify-center transition-all duration-300 border border-white/10 hover:border-transparent group"
-                      title={social.label}
-                    >
-                      <Icon className="w-5 h-5 text-white/90 group-hover:text-white transition-colors" />
-                    </a>
-                  )
-                })}
-              </div>
-            </div>
           </div>
 
           {/* Copyright Divider */}
-          <div className="border-t border-white/10 pt-8 mt-8">
-            <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-white/50 font-light">
-              <p>{t.copyright}</p>
-              <div className="flex gap-6">
-                <a href="/privacy-policy" className="hover:text-white transition-colors">
-                  {t.privacy}
-                </a>
-                <div className="w-px bg-white/20" />
-                <a href="/terms-of-service" className="hover:text-white transition-colors">
-                  {t.terms}
-                </a>
-              </div>
+          <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row items-center justify-between gap-6 text-xs text-blue-100/40">
+            <p>{t.copyright}</p>
+            <div className="flex gap-8">
+              <a href="/privacy-policy" className="hover:text-white transition-colors">
+                {t.privacy}
+              </a>
+              <a href="/terms-of-service" className="hover:text-white transition-colors">
+                {t.terms}
+              </a>
             </div>
           </div>
         </div>

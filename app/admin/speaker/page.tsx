@@ -76,14 +76,14 @@ const ToggleSwitch = ({ label, checked, onChange }: any) => (
     <div className="flex items-center justify-between p-3 border border-slate-200 rounded-lg bg-slate-50">
         <label className="text-sm font-medium text-slate-700 flex flex-col">
             {label}
-            <span className={`text-xs mt-0.5 font-bold ${checked ? 'text-green-600' : 'text-red-600'}`}>
+            <span className={`text-xs mt-0.5 font-bold ${checked ? 'text-green-600' : 'text-blue-600'}`}>
                 {checked ? 'APPROVED' : 'PENDING / DISAPPROVED'}
             </span>
         </label>
         <button
             type="button"
             onClick={() => onChange(!checked)}
-            className={`${checked ? 'bg-green-600' : 'bg-red-600'} relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none`}
+            className={`${checked ? 'bg-green-600' : 'bg-blue-600'} relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none`}
         >
             <span aria-hidden="true" className={`${checked ? 'translate-x-5' : 'translate-x-0'} pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out`} />
         </button>
@@ -99,7 +99,7 @@ const DeleteConfirmModal = ({ profile, onClose, onConfirm }: { profile: SpeakerP
             <div className="bg-white rounded-xl shadow-2xl w-full max-w-md p-6" onClick={e => e.stopPropagation()}>
                 <h3 className="text-xl font-bold text-slate-900 mb-2">Confirm Delete</h3>
                 <p className="text-slate-600 mb-4">
-                    Are you sure you want to delete speaker <span className="font-semibold text-red-600">{profile.name}</span>?
+                    Are you sure you want to delete speaker <span className="font-semibold text-blue-600">{profile.name}</span>?
                     This action cannot be undone.
                 </p>
                 <p className="text-sm text-slate-500 mb-4">
@@ -110,7 +110,7 @@ const DeleteConfirmModal = ({ profile, onClose, onConfirm }: { profile: SpeakerP
                     value={confirmText}
                     onChange={(e) => setConfirmText(e.target.value)}
                     placeholder="Type 'confirm delete' here"
-                    className="w-full px-4 py-2 border border-slate-300 rounded-lg mb-6 focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none"
+                    className="w-full px-4 py-2 border border-slate-300 rounded-lg mb-6 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
                 />
                 <div className="flex gap-3 justify-end">
                     <button
@@ -122,7 +122,7 @@ const DeleteConfirmModal = ({ profile, onClose, onConfirm }: { profile: SpeakerP
                     <button
                         disabled={!isValid}
                         onClick={onConfirm}
-                        className={`px-4 py-2 text-sm font-medium text-white rounded-lg transition ${isValid ? 'bg-red-600 hover:bg-red-700' : 'bg-red-300 cursor-not-allowed'}`}
+                        className={`px-4 py-2 text-sm font-medium text-white rounded-lg transition ${isValid ? 'bg-blue-600 hover:bg-blue-700' : 'bg-blue-300 cursor-not-allowed'}`}
                     >
                         Delete Permanently
                     </button>
@@ -563,7 +563,7 @@ export default function AdminSpeakerDashboard() {
                                                     </button>
                                                     <button
                                                         onClick={() => setSelectedProfileForDelete(p)}
-                                                        className="inline-flex items-center justify-center p-1.5 border border-red-100 rounded-lg text-red-600 bg-red-50 hover:bg-red-100 transition"
+                                                        className="inline-flex items-center justify-center p-1.5 border border-blue-100 rounded-lg text-blue-600 bg-blue-50 hover:bg-blue-100 transition"
                                                         title="Delete Speaker"
                                                     >
                                                         <XCircle className="w-4 h-4" />

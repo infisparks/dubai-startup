@@ -437,10 +437,10 @@ export default function ExhibitorFormPage() {
         if (!user || needsVerification) {
             if (needsVerification) return <EmailVerificationNotice language={language} />;
             return (
-                <div className="max-w-xl mx-auto mt-16 p-8 text-center bg-red-50 border-2 border-[#740001]/20 rounded-xl shadow-lg animate-fadeIn">
+                <div className="max-w-xl mx-auto mt-16 p-8 text-center bg-blue-50 border-2 border-[#740001]/20 rounded-xl shadow-lg animate-fadeIn">
                     <h2 className="text-2xl font-bold text-slate-900 mb-4">{t.loginRequired}</h2>
                     <p className="text-slate-700 mb-6">{t.loginRequiredDesc}</p>
-                    <button onClick={() => setShowAuthPopup(true)} className="px-8 py-3 bg-[#740001] text-white rounded-lg font-semibold hover:bg-[#940200] transition-all flex items-center justify-center gap-2 mx-auto">
+                    <button onClick={() => setShowAuthPopup(true)} className="px-8 py-3 bg-[#740001] text-white rounded-lg font-semibold hover:bg-[#023c7a] transition-all flex items-center justify-center gap-2 mx-auto">
                         <LogIn className="w-5 h-5" /> {t.login}
                     </button>
                 </div>
@@ -516,7 +516,7 @@ const ExhibitorFormView: React.FC<any> = ({ t, formData, handleInputChange, hand
                 ].map((field) => (
                     <div key={field.name}>
                         <label className="block text-sm font-semibold text-slate-900 mb-2">
-                            {field.label} {field.required && <span className="text-red-500">*</span>}
+                            {field.label} {field.required && <span className="text-blue-500">*</span>}
                         </label>
                         <input
                             type={field.type}
@@ -533,7 +533,7 @@ const ExhibitorFormView: React.FC<any> = ({ t, formData, handleInputChange, hand
 
                 <div>
                     <label className="block text-sm font-semibold text-slate-900 mb-2">
-                        {t.contactPhone} <span className="text-red-500">*</span>
+                        {t.contactPhone} <span className="text-blue-500">*</span>
                     </label>
                     <PhoneInput
                         placeholder={t.placeholder.contactPhone}
@@ -547,7 +547,7 @@ const ExhibitorFormView: React.FC<any> = ({ t, formData, handleInputChange, hand
 
                 <div>
                     <label className="block text-sm font-semibold text-slate-900 mb-2">
-                        {t.boothType} <span className="text-red-500">*</span>
+                        {t.boothType} <span className="text-blue-500">*</span>
                     </label>
                     <select
                         name="boothType"
@@ -566,7 +566,7 @@ const ExhibitorFormView: React.FC<any> = ({ t, formData, handleInputChange, hand
 
                 <div>
                     <label className="block text-sm font-semibold text-slate-900 mb-2">
-                        {t.reference} <span className="text-red-500">*</span>
+                        {t.reference} <span className="text-blue-500">*</span>
                     </label>
                     <select
                         name="reference"
@@ -586,7 +586,7 @@ const ExhibitorFormView: React.FC<any> = ({ t, formData, handleInputChange, hand
                 {formData.reference === "Other" && (
                     <div>
                         <label className="block text-sm font-semibold text-slate-900 mb-2">
-                            {t.referenceOther} <span className="text-red-500">*</span>
+                            {t.referenceOther} <span className="text-blue-500">*</span>
                         </label>
                         <input
                             type="text"
@@ -602,7 +602,7 @@ const ExhibitorFormView: React.FC<any> = ({ t, formData, handleInputChange, hand
 
                 <div>
                     <label className="block text-sm font-semibold text-slate-900 mb-2">
-                        {t.companyDescription} <span className="text-red-500">*</span>
+                        {t.companyDescription} <span className="text-blue-500">*</span>
                     </label>
                     <textarea
                         name="companyDescription"
@@ -620,7 +620,7 @@ const ExhibitorFormView: React.FC<any> = ({ t, formData, handleInputChange, hand
 
                 <div>
                     <label className="block text-sm font-semibold text-slate-900 mb-2">
-                        {t.companyLogo} {formData.companyLogoUrl ? "(Optional Update)" : <span className="text-red-500">*</span>}
+                        {t.companyLogo} {formData.companyLogoUrl ? "(Optional Update)" : <span className="text-blue-500">*</span>}
                     </label>
                     <div className={`border-2 border-dashed rounded-lg p-6 text-center transition-all ${isApproved ? 'border-slate-200 bg-slate-50' : 'border-slate-300 hover:border-[#740001] hover:bg-slate-50 cursor-pointer'}`}>
                         <input
@@ -650,7 +650,7 @@ const ExhibitorFormView: React.FC<any> = ({ t, formData, handleInputChange, hand
                 <div className="pt-6">
                     <button
                         type="submit"
-                        className="w-full px-6 py-3 bg-[#740001] text-white rounded-lg font-semibold hover:bg-[#940200] transition-all shadow-lg hover:shadow-xl flex items-center justify-center gap-2"
+                        className="w-full px-6 py-3 bg-[#740001] text-white rounded-lg font-semibold hover:bg-[#023c7a] transition-all shadow-lg hover:shadow-xl flex items-center justify-center gap-2"
                         disabled={isApproved}
                     >
                         {hasExistingProfile ? t.update : t.submit} {hasExistingProfile && <Save className="w-4 h-4" />}
@@ -752,7 +752,7 @@ const ExhibitorStatusView: React.FC<any> = ({ t, isApproved, paymentStatus, form
                     <button
                         onClick={handlePayNow}
                         disabled={processingPayment}
-                        className="bg-[#740001] text-white px-6 py-3 rounded-lg font-bold hover:bg-[#940200] transition-colors shadow-md flex items-center gap-2"
+                        className="bg-[#740001] text-white px-6 py-3 rounded-lg font-bold hover:bg-[#023c7a] transition-colors shadow-md flex items-center gap-2"
                     >
                         {processingPayment ? "Processing..." : <> <CreditCard className="w-5 h-5" /> Pay Fee</>}
                     </button>
@@ -1006,7 +1006,7 @@ const ThankYouPopup = ({ onClose, t }: { onClose: () => void, t: Translations })
                 </div>
                 <button
                     onClick={onClose}
-                    className="w-full py-3.5 bg-[#740001] text-white rounded-xl font-bold shadow-lg shadow-[#740001]/20 hover:bg-[#940200] hover:scale-[1.02] active:scale-[0.98] transition-all duration-200"
+                    className="w-full py-3.5 bg-[#740001] text-white rounded-xl font-bold shadow-lg shadow-[#740001]/20 hover:bg-[#023c7a] hover:scale-[1.02] active:scale-[0.98] transition-all duration-200"
                 >
                     {t.thankYou.close}
                 </button>

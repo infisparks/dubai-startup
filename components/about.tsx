@@ -174,10 +174,10 @@ const FeaturesTicker = ({ features, isRtl }: { features: { title: string; desc: 
                 {repeatedFeatures.map((feature, i) => (
                     <div
                         key={i}
-                        className={`flex-shrink-0 w-64 sm:w-72 p-5 bg-white border border-gray-200 shadow-sm rounded-lg hover:shadow-lg transition-all duration-300 hover:border-[#bf1e2e]/20 group ${isRtl ? 'text-right' : 'text-left'
+                        className={`flex-shrink-0 w-64 sm:w-72 p-5 bg-white border border-gray-200 shadow-sm rounded-lg hover:shadow-lg transition-all duration-300 hover:border-[#034FA3]/20 group ${isRtl ? 'text-right' : 'text-left'
                             }`}
                     >
-                        <h4 className="text-sm font-bold text-[#bf1e2e] mb-2 group-hover:text-[#940200] transition-colors">
+                        <h4 className="text-sm font-bold text-[#034FA3] mb-2 group-hover:text-[#023c7a] transition-colors">
                             {feature.title}
                         </h4>
                         <p className="text-xs text-[#58585a] leading-normal group-hover:text-black transition-colors">
@@ -206,7 +206,7 @@ export default function About({ language = 'en' }: AboutProps) {
             <section id="about" className="relative py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8 bg-[#f9f9f9] overflow-hidden">
                 {/* Background Gradients - Light & Red/Gold */}
                 <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                    <div className="absolute top-[-10%] right-[-5%] w-[500px] h-[500px] bg-[#bf1e2e]/5 rounded-full blur-[120px]" />
+                    <div className="absolute top-[-10%] right-[-5%] w-[500px] h-[500px] bg-[#034FA3]/5 rounded-full blur-[120px]" />
                     <div className="absolute bottom-[-10%] left-[-5%] w-[500px] h-[500px] bg-[#c4925f]/10 rounded-full blur-[120px]" />
                 </div>
 
@@ -215,29 +215,29 @@ export default function About({ language = 'en' }: AboutProps) {
                         {/* Header Column */}
                         <div className={`flex-1 ${isRtl ? 'lg:order-2 text-right' : 'lg:order-1 text-left'}`}>
                             <div className={`inline-flex items-center gap-2 mb-3 ${isRtl ? 'flex-row-reverse' : 'flex-row'}`}>
-                                <div className="w-1.5 h-1.5 rounded-full bg-[#bf1e2e] animate-pulse" />
-                                <span className="text-[10px] font-bold tracking-[0.2em] text-[#bf1e2e] uppercase">Our Vision</span>
+                                <div className="w-1.5 h-1.5 rounded-full bg-[#034FA3] animate-pulse" />
+                                <span className="text-[10px] font-bold tracking-[0.2em] text-[#034FA3] uppercase">Our Vision</span>
                             </div>
 
                             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#333] mb-2 tracking-tight">
                                 {t.aboutUsTitle}
                             </h2>
 
-                            <h3 className="text-lg sm:text-xl font-medium mb-6 text-[#940200]">
+                            <h3 className="text-lg sm:text-xl font-medium mb-6 text-[#023c7a]">
                                 {t.investorsTitle}
                             </h3>
 
-                            <div className={`hidden lg:block w-16 h-1 bg-gradient-to-r from-[#bf1e2e] to-[#940200] rounded-full ${isRtl ? 'mr-auto' : 'ml-0'}`} />
+                            <div className={`hidden lg:block w-16 h-1 bg-gradient-to-r from-[#034FA3] to-[#023c7a] rounded-full ${isRtl ? 'mr-auto' : 'ml-0'}`} />
                         </div>
 
                         {/* Content Column */}
                         <div className={`flex-[1.5] ${isRtl ? 'lg:order-1' : 'lg:order-2'}`}>
                             <div className="relative group">
-                                <div className="absolute -inset-0.5 bg-gradient-to-r from-[#bf1e2e]/20 to-[#c4925f]/20 rounded-xl blur opacity-30 group-hover:opacity-50 transition duration-500" />
+                                <div className="absolute -inset-0.5 bg-gradient-to-r from-[#034FA3]/20 to-[#c4925f]/20 rounded-xl blur opacity-30 group-hover:opacity-50 transition duration-500" />
                                 <div className="relative bg-white border border-gray-100 shadow-md rounded-xl p-6 sm:p-8 transition-all duration-300">
                                     <p className="text-sm sm:text-base text-[#58585a] leading-relaxed font-normal whitespace-pre-line tracking-wide">
                                         {expandedText ? t.aboutDescription : t.aboutPartial}
-                                        {!expandedText && <span className="text-[#bf1e2e] font-medium ml-1">...</span>}
+                                        {!expandedText && <span className="text-[#034FA3] font-medium ml-1">...</span>}
                                     </p>
 
                                     {!expandedText && (
@@ -248,9 +248,9 @@ export default function About({ language = 'en' }: AboutProps) {
                                     <div className={`mt-6 flex ${isRtl ? 'justify-end' : 'justify-start'}`}>
                                         <button
                                             onClick={() => setExpandedText(!expandedText)}
-                                            className="group/btn inline-flex items-center gap-2 text-xs font-bold text-[#bf1e2e] hover:text-[#940200] transition-colors uppercase tracking-wider"
+                                            className="group/btn inline-flex items-center gap-2 text-xs font-bold text-[#034FA3] hover:text-[#023c7a] transition-colors uppercase tracking-wider"
                                         >
-                                            <span className="border-b border-[#bf1e2e]/30 group-hover/btn:border-[#940200] pb-0.5 transition-all">
+                                            <span className="border-b border-[#034FA3]/30 group-hover/btn:border-[#023c7a] pb-0.5 transition-all">
                                                 {expandedText ? t.readLess : t.readMore}
                                             </span>
                                             {expandedText ?
@@ -273,7 +273,7 @@ export default function About({ language = 'en' }: AboutProps) {
                     <div className="mt-8 sm:mt-12 text-center border-t border-gray-200 pt-6 sm:pt-8 w-full max-w-2xl mx-auto">
                         <p className="text-[10px] sm:text-xs text-gray-400 font-bold tracking-wide uppercase">
                             Investarise Global Investor Summit – 2026
-                            <span className="hidden sm:inline mx-2 text-[#bf1e2e]">|</span>
+                            <span className="hidden sm:inline mx-2 text-[#034FA3]">|</span>
                             <span className="block sm:inline mt-1 sm:mt-0 text-gray-500">Shaping Tomorrow's Economy</span>
                         </p>
                     </div>
@@ -281,16 +281,6 @@ export default function About({ language = 'en' }: AboutProps) {
                 </div>
 
             </section>
-
-            <style>{`
-        .no-scrollbar::-webkit-scrollbar {
-          display: none;
-        }
-        .no-scrollbar {
-          -ms-overflow-style: none;
-          scrollbar-width: none;
-        }
-      `}</style>
         </>
     )
 }

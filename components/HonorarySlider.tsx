@@ -142,7 +142,7 @@ export default function HonorarySlider({ language = 'en' }: HonorarySliderProps)
         <section className="relative py-12 bg-white overflow-hidden">
             {/* Background Decor */}
             <div className="absolute inset-0 pointer-events-none">
-                <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-[#bf1e2e]/5 rounded-full blur-[120px] opacity-70 -translate-y-1/2 translate-x-1/2" />
+                <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-[#034FA3]/5 rounded-full blur-[120px] opacity-70 -translate-y-1/2 translate-x-1/2" />
                 <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-[#c4925f]/10 rounded-full blur-[120px] opacity-40 translate-y-1/2 -translate-x-1/2" />
             </div>
 
@@ -152,92 +152,91 @@ export default function HonorarySlider({ language = 'en' }: HonorarySliderProps)
                         <div className="flex">
                             {t.guests.map((guest, index) => (
                                 <div key={index} className="flex-[0_0_100%] min-w-0 relative px-4">
-                                    <div className={`flex flex-col lg:flex-row items-center gap-10 lg:gap-16 ${isRtl ? 'lg:flex-row-reverse' : ''}`}>
+                                    <div className={`relative flex flex-col lg:flex-row items-stretch gap-8 lg:gap-12 bg-white rounded-3xl p-6 sm:p-8 shadow-xl border border-slate-100/80 transition-all duration-500 hover:shadow-2xl hover:border-[#034FA3]/20 group ${isRtl ? 'lg:flex-row-reverse' : ''}`}>
 
-                                        {/* Image Section */}
-                                        <div className="w-[85%] sm:w-[60%] lg:w-[32%] relative group/img perspective-1000 mx-auto lg:mx-0">
-                                            <div className="absolute -inset-3 bg-gradient-to-tr from-[#bf1e2e]/20 via-[#c4925f]/20 to-[#bf1e2e]/20 rounded-2xl opacity-60 blur-md group-hover/img:opacity-80 transition-opacity duration-700" />
-                                            <div className="relative rounded-2xl overflow-hidden shadow-2xl transform transition-transform duration-700 group-hover/img:scale-[1.02] bg-white aspect-[3/4.5]">
+                                        {/* Image Section - 35% */}
+                                        <div className="w-full lg:w-[35%] relative shrink-0">
+                                            <div className="relative aspect-[3/4] w-full rounded-2xl overflow-hidden shadow-lg group-hover:shadow-2xl transition-all duration-500">
                                                 <Image
                                                     src={guest.image}
                                                     alt={guest.name}
                                                     fill
-                                                    className="object-cover transform transition-transform duration-[2000ms] group-hover/img:scale-105"
-                                                    priority
+                                                    className="object-cover transition-transform duration-700 group-hover:scale-105"
+                                                    priority={index === 0}
                                                 />
-                                                {/* Floating Badge */}
+                                                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-80" />
+
+                                                {/* Floating Badge on Image */}
                                                 <div className={`absolute top-4 ${isRtl ? 'right-4' : 'left-4'} z-20`}>
-                                                    <div className="flex items-center gap-1.5 bg-white/90 backdrop-blur-md px-3 py-1.5 rounded-full shadow-lg border border-[#bf1e2e]/20">
+                                                    <div className="flex items-center gap-2 bg-white/95 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-lg border border-white/20">
                                                         {guest.type === 'sheikha' ? (
-                                                            <Star className="w-3.5 h-3.5 text-[#bf1e2e] fill-current" />
+                                                            <Star className="w-3.5 h-3.5 text-[#dbb46e] fill-current" />
                                                         ) : (
-                                                            <Crown className="w-3.5 h-3.5 text-[#bf1e2e] fill-current" />
+                                                            <Crown className="w-3.5 h-3.5 text-[#dbb46e] fill-current" />
                                                         )}
-                                                        <span className="text-[10px] font-bold uppercase tracking-widest text-[#bf1e2e]">{guest.badgePrefix}</span>
+                                                        <span className="text-[10px] font-bold uppercase tracking-widest text-slate-800">{guest.badgePrefix}</span>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
 
-                                        {/* Content Section */}
-                                        <div className={`w-full lg:w-[68%] ${isRtl ? 'text-right' : 'text-left'} self-start`}>
+                                        {/* Content Section - 65% */}
+                                        <div className={`flex flex-col justify-center w-full lg:w-[65%] ${isRtl ? 'text-right' : 'text-left'}`}>
                                             <div className="space-y-6">
-                                                {/* Header */}
-                                                <div className="space-y-4">
-                                                    <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#bf1e2e]/5 border border-[#bf1e2e]/20 text-[#bf1e2e] ${isRtl ? 'flex-row-reverse' : ''}`}>
-                                                        <Star className="w-3.5 h-3.5 fill-current" />
-                                                        <span className="text-[10px] sm:text-xs font-semibold tracking-widest uppercase">{guest.badge}</span>
+
+                                                {/* Header & Title */}
+                                                <div>
+                                                    <div className={`inline-flex items-center gap-2 mb-3 px-3 py-1 rounded-full bg-[#034FA3]/5 border border-[#034FA3]/10 text-[#034FA3] ${isRtl ? 'flex-row-reverse' : ''}`}>
+                                                        <Award className="w-4 h-4" />
+                                                        <span className="text-xs font-bold tracking-widest uppercase">{guest.badge}</span>
                                                     </div>
 
-                                                    <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-[#bf1e2e] leading-tight tracking-tight">
-                                                        <span className="block mb-1 opacity-90 text-2xl sm:text-3xl lg:text-4xl font-bold">
-                                                            {guest.titlePrefix}
-                                                        </span>
+                                                    <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 leading-tight mb-2">
+                                                        <span className="block text-xl sm:text-2xl text-[#034FA3] font-medium mb-1 opacity-90">{guest.titlePrefix}</span>
                                                         {guest.displayName}
                                                     </h2>
 
-                                                    <p className={`text-lg sm:text-xl text-[#58585a] font-medium ${isRtl ? 'border-r-4 pr-3' : 'border-l-4 pl-3'} border-[#c4925f]`}>
+                                                    <p className="text-lg text-[#c4925f] font-semibold tracking-wide flex items-center gap-2">
+                                                        <span className="w-8 h-0.5 bg-[#c4925f] inline-block rounded-full"></span>
                                                         {guest.role}
                                                     </p>
                                                 </div>
 
                                                 {/* Bio */}
-                                                <div className="space-y-3 text-[#58585a] text-base leading-relaxed font-normal">
-                                                    {guest.bio.slice(0, isExpanded ? guest.bio.length : 2).map((paragraph, pIndex) => (
-                                                        <p key={pIndex} className="transition-opacity hover:opacity-100 opacity-90 hover:text-black">
+                                                <div className="space-y-4">
+                                                    {guest.bio.slice(0, isExpanded ? guest.bio.length : 1).map((paragraph, pIndex) => (
+                                                        <p key={pIndex} className="text-slate-600 text-base leading-relaxed">
                                                             {paragraph}
                                                         </p>
                                                     ))}
-                                                    {guest.bio.length > 2 && (
-                                                        <button
-                                                            onClick={() => setIsExpanded(!isExpanded)}
-                                                            className={`mt-2 inline-flex items-center gap-2 text-[#bf1e2e] font-bold text-xs uppercase tracking-wider hover:gap-3 transition-all ${isRtl ? 'flex-row-reverse' : ''}`}
-                                                        >
-                                                            {isExpanded ? t.readLess : t.readMore}
-                                                            <TrendingUp className={`w-3.5 h-3.5 transition-transform duration-500 ${isExpanded ? 'rotate-180' : ''} ${isRtl ? '-scale-x-100' : ''}`} />
-                                                        </button>
-                                                    )}
+
+                                                    <button
+                                                        onClick={() => setIsExpanded(!isExpanded)}
+                                                        className={`flex items-center gap-2 text-[#034FA3] font-bold text-xs uppercase tracking-wider hover:gap-3 transition-all mt-2 group/btn ${isRtl ? 'flex-row-reverse' : ''}`}
+                                                    >
+                                                        {isExpanded ? t.readLess : t.readMore}
+                                                        <ChevronRight className={`w-4 h-4 transition-transform duration-300 ${isExpanded ? '-rotate-90' : 'rotate-90'} group-hover/btn:translate-x-1`} />
+                                                    </button>
                                                 </div>
 
-                                                {/* Stats */}
-                                                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-4">
+                                                {/* Stats Grid */}
+                                                <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 border-t border-slate-100 pt-6 mt-2">
                                                     {guest.stats.map((stat, sIndex) => {
                                                         const Icon = stat.icon
                                                         return (
-                                                            <div key={sIndex} className="group/stat relative bg-white p-4 rounded-xl border border-gray-100 shadow-sm hover:shadow-lg hover:border-[#bf1e2e]/20 transition-all duration-300">
-                                                                <div className="mb-2 w-8 h-8 rounded-lg bg-[#bf1e2e]/5 flex items-center justify-center text-[#bf1e2e] group-hover/stat:bg-[#bf1e2e] group-hover/stat:text-white transition-colors">
-                                                                    <Icon className="w-4 h-4" />
+                                                            <div key={sIndex} className="group/stat">
+                                                                <div className={`flex items-center gap-3 mb-1 ${isRtl ? 'flex-row-reverse' : ''}`}>
+                                                                    <div className="p-1.5 rounded-lg bg-[#034FA3]/5 text-[#034FA3] group-hover/stat:bg-[#034FA3] group-hover/stat:text-white transition-colors duration-300">
+                                                                        <Icon className="w-4 h-4" />
+                                                                    </div>
+                                                                    <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">{stat.label}</p>
                                                                 </div>
-                                                                <p className="text-xl font-bold text-slate-800 mb-0.5 group-hover/stat:text-[#bf1e2e] transition-colors">
-                                                                    {stat.value}
-                                                                </p>
-                                                                <p className="text-[10px] text-gray-500 font-medium uppercase tracking-wider group-hover/stat:text-gray-700">
-                                                                    {stat.label}
-                                                                </p>
+                                                                <p className={`text-lg font-bold text-slate-800 ${isRtl ? 'pr-9' : 'pl-9'}`}>{stat.value}</p>
                                                             </div>
                                                         )
                                                     })}
                                                 </div>
+
                                             </div>
                                         </div>
                                     </div>
@@ -248,14 +247,14 @@ export default function HonorarySlider({ language = 'en' }: HonorarySliderProps)
 
                     {/* Navigation Buttons */}
                     <button
-                        className="absolute top-1/2 -translate-y-1/2 left-0 sm:-left-4 z-30 p-2 rounded-full bg-white/80 backdrop-blur-sm border border-gray-200 shadow-lg text-[#bf1e2e] hover:bg-[#bf1e2e] hover:text-white transition-all transform hover:scale-110 active:scale-95 lg:block hidden"
+                        className="absolute top-1/2 -translate-y-1/2 left-0 sm:-left-4 z-30 p-2 rounded-full bg-white/80 backdrop-blur-sm border border-gray-200 shadow-lg text-[#034FA3] hover:bg-[#034FA3] hover:text-white transition-all transform hover:scale-110 active:scale-95 lg:block hidden"
                         onClick={scrollPrev}
                         aria-label="Previous slide"
                     >
                         <ChevronLeft className="w-5 h-5" />
                     </button>
                     <button
-                        className="absolute top-1/2 -translate-y-1/2 right-0 sm:-right-4 z-30 p-2 rounded-full bg-white/80 backdrop-blur-sm border border-gray-200 shadow-lg text-[#bf1e2e] hover:bg-[#bf1e2e] hover:text-white transition-all transform hover:scale-110 active:scale-95 lg:block hidden"
+                        className="absolute top-1/2 -translate-y-1/2 right-0 sm:-right-4 z-30 p-2 rounded-full bg-white/80 backdrop-blur-sm border border-gray-200 shadow-lg text-[#034FA3] hover:bg-[#034FA3] hover:text-white transition-all transform hover:scale-110 active:scale-95 lg:block hidden"
                         onClick={scrollNext}
                         aria-label="Next slide"
                     >
@@ -268,7 +267,7 @@ export default function HonorarySlider({ language = 'en' }: HonorarySliderProps)
                             <button
                                 key={index}
                                 onClick={() => scrollTo(index)}
-                                className={`h-2 rounded-full transition-all duration-300 ${selectedIndex === index ? 'w-8 bg-[#bf1e2e]' : 'w-2 bg-gray-300 hover:bg-gray-400'
+                                className={`h-2 rounded-full transition-all duration-300 ${selectedIndex === index ? 'w-8 bg-[#034FA3]' : 'w-2 bg-gray-300 hover:bg-gray-400'
                                     }`}
                                 aria-label={`Go to slide ${index + 1}`}
                             />

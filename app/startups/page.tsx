@@ -281,7 +281,7 @@ export default function StartupsPage() {
     const gridClass = "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4";
 
     if (loading) return <div className={gridClass}>{[...Array(10)].map((_, i) => <StartupCardSkeleton key={i} />)}</div>;
-    if (error) return <FeedbackCard message={t.error} description={t.errorDesc} icon={AlertTriangle} iconColor="text-red-500" />;
+    if (error) return <FeedbackCard message={t.error} description={t.errorDesc} icon={AlertTriangle} iconColor="text-blue-500" />;
     if (allStartups.length === 0) return <FeedbackCard message={t.noStartups} description={t.noStartupsDesc} icon={Rocket} iconColor="text-[#013371]" />;
     if (filteredStartups.length === 0) return <FeedbackCard message={t.noResults} description={t.noResultsDesc} icon={Search} iconColor="text-slate-500" />;
 
@@ -408,13 +408,13 @@ const StartupCard: React.FC<StartupCardProps> = ({ startup, t, isInvestor, engag
             <button
               onClick={(e) => isInvestor ? onToggleLike(startup.user_id, e) : e.preventDefault()}
               className={`p-2 rounded-full transition-all duration-200 flex items-center gap-2 ${eng.userLiked
-                  ? 'text-red-500 bg-red-50'
-                  : 'text-slate-400 hover:text-red-500 hover:bg-red-50'
+                  ? 'text-blue-500 bg-blue-50'
+                  : 'text-slate-400 hover:text-blue-500 hover:bg-blue-50'
                 } ${!isInvestor ? 'cursor-default' : ''}`}
               title={isInvestor ? "Like this startup" : "Likes"}
             >
               <Heart className={`w-5 h-5 ${eng.userLiked ? 'fill-current' : ''}`} />
-              <span className={`text-sm font-semibold ${eng.userLiked ? 'text-red-600' : 'text-slate-600'}`}>
+              <span className={`text-sm font-semibold ${eng.userLiked ? 'text-blue-600' : 'text-slate-600'}`}>
                 {eng.likes > 0 ? eng.likes : ""}
               </span>
             </button>

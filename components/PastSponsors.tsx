@@ -21,8 +21,8 @@ export default function PastSponsors() {
     return (
         <section className="py-12 bg-slate-50 border-t border-slate-100 overflow-hidden">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8 text-center">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-50 border border-red-100 text-[#bf1e2e] text-xs font-semibold tracking-wide uppercase mb-3">
-                    <Star className="w-3 h-3 fill-[#bf1e2e]" />
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-100 text-[#034FA3] text-xs font-semibold tracking-wide uppercase mb-3">
+                    <Star className="w-3 h-3 fill-[#034FA3]" />
                     <span>Our Legacy Partners</span>
                 </div>
                 <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">

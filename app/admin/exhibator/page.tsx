@@ -97,14 +97,14 @@ const ToggleSwitch = ({ label, checked, onChange }: any) => (
     <div className="flex items-center justify-between p-3 border border-slate-200 rounded-lg bg-slate-50">
         <label className="text-sm font-medium text-slate-700 flex flex-col">
             {label}
-            <span className={`text-xs mt-0.5 font-bold ${checked ? 'text-green-600' : 'text-red-600'}`}>
+            <span className={`text-xs mt-0.5 font-bold ${checked ? 'text-green-600' : 'text-blue-600'}`}>
                 {checked ? 'APPROVED' : 'PENDING / DISAPPROVED'}
             </span>
         </label>
         <button
             type="button"
             onClick={() => onChange(!checked)}
-            className={`${checked ? 'bg-green-600' : 'bg-red-600'} relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none`}
+            className={`${checked ? 'bg-green-600' : 'bg-blue-600'} relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none`}
         >
             <span aria-hidden="true" className={`${checked ? 'translate-x-5' : 'translate-x-0'} pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out`} />
         </button>
@@ -402,7 +402,7 @@ const DeleteConfirmModal: React.FC<DeleteConfirmModalProps> = ({ profile, onClos
         <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black bg-opacity-50 backdrop-blur-sm" onClick={onClose}>
             <div className="bg-white rounded-xl shadow-2xl w-full max-w-md overflow-hidden" onClick={e => e.stopPropagation()}>
                 <div className="p-6">
-                    <div className="flex items-center gap-3 text-red-600 mb-4">
+                    <div className="flex items-center gap-3 text-blue-600 mb-4">
                         <XCircle className="w-8 h-8" />
                         <h3 className="text-xl font-bold text-slate-900">Confirm Deletion</h3>
                     </div>
@@ -411,14 +411,14 @@ const DeleteConfirmModal: React.FC<DeleteConfirmModalProps> = ({ profile, onClos
                     </p>
                     <div className="bg-slate-50 p-4 rounded-lg mb-4 border border-slate-200">
                         <label className="block text-sm font-medium text-slate-700 mb-2">
-                            Please type <span className="font-mono font-bold text-red-600">confirm delete</span> to proceed:
+                            Please type <span className="font-mono font-bold text-blue-600">confirm delete</span> to proceed:
                         </label>
                         <input
                             type="text"
                             value={confirmText}
                             onChange={(e) => setConfirmText(e.target.value)}
                             placeholder="Type here..."
-                            className="w-full px-4 py-2 bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
+                            className="w-full px-4 py-2 bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
                     </div>
                     <div className="flex gap-3 mt-6">
@@ -431,7 +431,7 @@ const DeleteConfirmModal: React.FC<DeleteConfirmModalProps> = ({ profile, onClos
                         <button
                             onClick={handleDelete}
                             disabled={!isConfirmed || isDeleting}
-                            className="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 disabled:bg-red-300 transition font-medium flex items-center justify-center gap-2"
+                            className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-blue-300 transition font-medium flex items-center justify-center gap-2"
                         >
                             {isDeleting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Trash2 className="w-4 h-4" />}
                             Delete Permanently
@@ -774,7 +774,7 @@ export default function AdminExhibitorDashboard() {
                                                         e.stopPropagation();
                                                         setSelectedProfileForDelete(p);
                                                     }}
-                                                    className="inline-flex items-center justify-center p-2 border border-red-200 rounded-lg text-red-700 bg-red-50 hover:bg-red-100 transition text-sm font-medium ml-2"
+                                                    className="inline-flex items-center justify-center p-2 border border-blue-200 rounded-lg text-blue-700 bg-blue-50 hover:bg-blue-100 transition text-sm font-medium ml-2"
                                                     title="Delete Application"
                                                 >
                                                     <Trash2 className="w-4 h-4" />

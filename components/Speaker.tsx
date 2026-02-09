@@ -166,7 +166,7 @@ export default function SpeakersPage({ language = 'en' }: SpeakersPageProps) {
           <p className="mt-4 text-lg text-slate-600 max-w-3xl mx-auto">
             {t.subtitle}
           </p>
-          <div className="mt-6 h-1.5 w-24 bg-gradient-to-r from-[#bf1e2e] to-[#940200] rounded-full mx-auto" />
+          <div className="mt-6 h-1.5 w-24 bg-gradient-to-r from-[#034FA3] to-[#023c7a] rounded-full mx-auto" />
         </div>
 
         <div className="relative -mx-4 px-4 sm:mx-0 sm:px-0">
@@ -190,7 +190,7 @@ export default function SpeakersPage({ language = 'en' }: SpeakersPageProps) {
               return (
                 <div
                   key={`${speaker.name}-${idx}`}
-                  className="flex flex-col items-center text-center bg-slate-50 rounded-3xl p-6 shadow-lg hover:shadow-xl hover:border-[#bf1e2e]/10 transition-all duration-300
+                  className="flex flex-col items-center text-center bg-slate-50 rounded-3xl p-6 shadow-lg hover:shadow-xl hover:border-[#034FA3]/10 transition-all duration-300
                              w-[85vw] flex-shrink-0
                              sm:w-80"
                 >
@@ -203,7 +203,7 @@ export default function SpeakersPage({ language = 'en' }: SpeakersPageProps) {
                       className="w-full h-full object-cover"
                     />
                   </div>
-                  <h3 className="text-xl font-bold text-slate-900 mb-2 hover:text-[#bf1e2e] transition-colors">
+                  <h3 className="text-xl font-bold text-slate-900 mb-2 hover:text-[#034FA3] transition-colors">
                     {speaker.name}
                   </h3>
 
@@ -217,7 +217,7 @@ export default function SpeakersPage({ language = 'en' }: SpeakersPageProps) {
 
                     <button
                       onClick={() => toggleExpand(speaker.name)}
-                      className="text-sm font-semibold text-[#bf1e2e] bg-red-50 hover:bg-red-100 rounded-full px-4 py-1.5 transition-colors mt-4 self-center flex-shrink-0"
+                      className="text-sm font-semibold text-[#034FA3] bg-blue-50 hover:bg-blue-100 rounded-full px-4 py-1.5 transition-colors mt-4 self-center flex-shrink-0"
                     >
                       {isExpanded ? t.readLess : t.readMore}
                     </button>

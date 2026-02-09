@@ -468,12 +468,12 @@ export default function InvestorFormPage() {
 
         if (!isUserLoggedInAndVerified) {
             return (
-                <div className="max-w-xl mx-auto mt-16 p-8 text-center bg-red-50 border-2 border-[#740001]/20 rounded-xl shadow-lg animate-fadeIn">
+                <div className="max-w-xl mx-auto mt-16 p-8 text-center bg-blue-50 border-2 border-[#740001]/20 rounded-xl shadow-lg animate-fadeIn">
                     <h2 className="text-2xl font-bold text-slate-900 mb-4">{t.loginRequired}</h2>
                     <p className="text-slate-700 mb-6">{t.loginRequiredDesc}</p>
                     <button
                         onClick={() => setShowAuthPopup(true)}
-                        className="px-8 py-3 bg-[#740001] text-white rounded-lg font-semibold hover:bg-[#940200] transition-all shadow-lg flex items-center justify-center gap-2 mx-auto"
+                        className="px-8 py-3 bg-[#740001] text-white rounded-lg font-semibold hover:bg-[#023c7a] transition-all shadow-lg flex items-center justify-center gap-2 mx-auto"
                     >
                         <LogIn className="w-5 h-5" /> {t.login}
                     </button>
@@ -625,7 +625,7 @@ const InvestorFormView: React.FC<InvestorFormViewProps> = ({
                             ].map((field) => (
                                 <div key={field.name}>
                                     <label className="block text-sm font-semibold text-slate-900 mb-2">
-                                        {field.label} {field.required && <span className="text-red-500">*</span>}
+                                        {field.label} {field.required && <span className="text-blue-500">*</span>}
                                     </label>
                                     <input
                                         type={field.type}
@@ -643,7 +643,7 @@ const InvestorFormView: React.FC<InvestorFormViewProps> = ({
 
                             <div>
                                 <label className="block text-sm font-semibold text-slate-900 mb-2">
-                                    {t.reference} <span className="text-red-500">*</span>
+                                    {t.reference} <span className="text-blue-500">*</span>
                                 </label>
                                 <select
                                     name="reference"
@@ -663,7 +663,7 @@ const InvestorFormView: React.FC<InvestorFormViewProps> = ({
                             {formData.reference === "Other" && (
                                 <div>
                                     <label className="block text-sm font-semibold text-slate-900 mb-2">
-                                        {t.referenceOther} <span className="text-red-500">*</span>
+                                        {t.referenceOther} <span className="text-blue-500">*</span>
                                     </label>
                                     <input
                                         type="text"
@@ -688,7 +688,7 @@ const InvestorFormView: React.FC<InvestorFormViewProps> = ({
                                 <button
                                     type="button"
                                     onClick={handleNext}
-                                    className="flex-1 px-6 py-3 bg-[#740001] text-white rounded-lg font-semibold hover:bg-[#940200] transition-all flex items-center justify-center gap-2 shadow-lg hover:shadow-xl"
+                                    className="flex-1 px-6 py-3 bg-[#740001] text-white rounded-lg font-semibold hover:bg-[#023c7a] transition-all flex items-center justify-center gap-2 shadow-lg hover:shadow-xl"
                                     disabled={isApproved} // Disable next if approved
                                 >
                                     {t.next} <ArrowRight className="w-4 h-4" />
@@ -709,7 +709,7 @@ const InvestorFormView: React.FC<InvestorFormViewProps> = ({
                             ].map((field) => (
                                 <div key={field.name}>
                                     <label className="block text-sm font-semibold text-slate-900 mb-2">
-                                        {field.label} <span className="text-red-500">*</span>
+                                        {field.label} <span className="text-blue-500">*</span>
                                     </label>
                                     <select
                                         name={field.name}
@@ -731,7 +731,7 @@ const InvestorFormView: React.FC<InvestorFormViewProps> = ({
 
                             <div>
                                 <label className="block text-sm font-semibold text-slate-900 mb-3">
-                                    {t.areas} <span className="text-red-500">*</span>
+                                    {t.areas} <span className="text-blue-500">*</span>
                                 </label>
                                 <div className={`grid grid-cols-2 gap-3 ${isApproved ? 'opacity-70 pointer-events-none' : ''}`}>
                                     {t.interests.map((interest: string) => (
@@ -762,7 +762,7 @@ const InvestorFormView: React.FC<InvestorFormViewProps> = ({
                                 </button>
                                 <button
                                     type="submit"
-                                    className="flex-1 px-6 py-3 bg-[#740001] text-white rounded-lg font-semibold hover:bg-[#940200] transition-all shadow-lg hover:shadow-xl flex items-center justify-center gap-2"
+                                    className="flex-1 px-6 py-3 bg-[#740001] text-white rounded-lg font-semibold hover:bg-[#023c7a] transition-all shadow-lg hover:shadow-xl flex items-center justify-center gap-2"
                                     disabled={isApproved} // Disable submit if approved
                                 >
                                     {hasExistingProfile ? t.update : t.submit} {hasExistingProfile && <Save className="w-4 h-4" />}

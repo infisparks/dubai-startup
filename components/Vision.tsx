@@ -93,7 +93,7 @@ export default function VisionAndGoals({ language = 'en' }: VisionAndGoalsProps)
     <section id="vision" className="w-full bg-white py-20 sm:py-28" dir={isRtl ? 'rtl' : 'ltr'}>
       {/* Background Gradients */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute -top-[20%] -right-[10%] w-[600px] h-[600px] bg-[#bf1e2e]/5 rounded-full blur-[100px]" />
+        <div className="absolute -top-[20%] -right-[10%] w-[600px] h-[600px] bg-[#034FA3]/5 rounded-full blur-[100px]" />
         <div className="absolute -bottom-[20%] -left-[10%] w-[600px] h-[600px] bg-[#c4925f]/10 rounded-full blur-[100px]" />
       </div>
 
@@ -105,10 +105,10 @@ export default function VisionAndGoals({ language = 'en' }: VisionAndGoalsProps)
           {/* Left Column: Vision */}
           <div className="space-y-8">
             <div>
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#bf1e2e]/10 border border-[#bf1e2e]/20 text-[#bf1e2e] mb-6">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#034FA3]/10 border border-[#034FA3]/20 text-[#034FA3] mb-6">
                 <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#bf1e2e] opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-[#940200]"></span>
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#034FA3] opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-[#023c7a]"></span>
                 </span>
                 <span className="text-xs font-bold tracking-widest uppercase">{t.title}</span>
               </div>
@@ -116,7 +116,7 @@ export default function VisionAndGoals({ language = 'en' }: VisionAndGoalsProps)
               <h2 className="text-4xl sm:text-5xl font-bold text-slate-900 leading-tight tracking-tight mb-6">
                 {t.visionTitle}
               </h2>
-              <p className="text-lg sm:text-xl text-slate-600 leading-relaxed font-light border-l-4 border-[#bf1e2e] pl-6">
+              <p className="text-lg sm:text-xl text-slate-600 leading-relaxed font-light border-l-4 border-[#034FA3] pl-6">
                 {t.visionDesc}
               </p>
             </div>
@@ -136,8 +136,8 @@ export default function VisionAndGoals({ language = 'en' }: VisionAndGoalsProps)
                 const isRed = index % 2 === 0
 
                 return (
-                  <div key={index} className="group p-6 bg-white rounded-2xl border border-slate-100 shadow-[0_4px_20px_rgb(0,0,0,0.03)] hover:shadow-[0_10px_40px_rgb(191,30,46,0.08)] hover:border-[#bf1e2e]/10 transition-all duration-300">
-                    <div className={`w-12 h-12 rounded-xl mb-4 flex items-center justify-center transition-colors duration-300 ${isRed ? 'bg-[#bf1e2e]/10 text-[#bf1e2e] group-hover:bg-[#bf1e2e] group-hover:text-white'
+                  <div key={index} className="group p-6 bg-white rounded-2xl border border-slate-100 shadow-[0_4px_20px_rgb(0,0,0,0.03)] hover:shadow-[0_10px_40px_rgba(3,79,163,0.08)] hover:border-[#034FA3]/10 transition-all duration-300">
+                    <div className={`w-12 h-12 rounded-xl mb-4 flex items-center justify-center transition-colors duration-300 ${isRed ? 'bg-[#034FA3]/10 text-[#034FA3] group-hover:bg-[#034FA3] group-hover:text-white'
                       : 'bg-[#c4925f]/10 text-[#c4925f] group-hover:bg-[#c4925f] group-hover:text-white'
                       }`}>
                       <IconComponent />

@@ -386,14 +386,14 @@ export default function AdminStartupsPage() {
 
   // --- Render ---
   const renderStatusBadge = (isApproved: boolean | null) => {
-    if (isApproved === false) return <span className="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-800"><XCircle className="w-3.5 h-3.5" />{t.disapproved}</span>;
+    if (isApproved === false) return <span className="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800"><XCircle className="w-3.5 h-3.5" />{t.disapproved}</span>;
     return isApproved ? <span className="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800"><CheckCircle className="w-3.5 h-3.5" />{t.approved}</span> : <span className="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800"><Clock className="w-3.5 h-3.5" />{t.pending}</span>;
   };
 
   const renderContent = () => {
     if (loading) return <div className="text-center p-12 text-slate-600 font-medium">{t.loading}</div>;
-    if (!isAdmin) return <FeedbackCard message={t.notAuthorized} description={t.notAuthorizedDesc} icon={Shield} iconColor="text-red-500" />;
-    if (error) return <FeedbackCard message={t.error} description={error} icon={AlertTriangle} iconColor="text-red-500" />;
+    if (!isAdmin) return <FeedbackCard message={t.notAuthorized} description={t.notAuthorizedDesc} icon={Shield} iconColor="text-blue-500" />;
+    if (error) return <FeedbackCard message={t.error} description={error} icon={AlertTriangle} iconColor="text-blue-500" />;
     if (allStartups.length === 0) return <FeedbackCard message={t.noStartups} description={t.noStartupsDesc} icon={AlertTriangle} iconColor="text-yellow-500" />;
     if (filteredStartups.length === 0) return <FeedbackCard message={t.noResults} description={t.noResultsDesc} icon={Search} iconColor="text-slate-500" />;
 
@@ -461,7 +461,7 @@ export default function AdminStartupsPage() {
                   {startup.is_approved === false ?
                     <button onClick={() => handleApprove(startup.user_id)} className="inline-flex items-center justify-center gap-1 px-3 py-1.5 rounded-lg text-white bg-green-600 hover:bg-green-700 transition"><Check className="w-4 h-4" /><span className="hidden sm:inline">{t.approve}</span></button>
                     :
-                    <button onClick={() => handleDisapprove(startup.user_id)} className="inline-flex items-center justify-center gap-1 px-3 py-1.5 rounded-lg text-white bg-red-600 hover:bg-red-700 transition"><X className="w-4 h-4" /><span className="hidden sm:inline">{t.disapprove}</span></button>
+                    <button onClick={() => handleDisapprove(startup.user_id)} className="inline-flex items-center justify-center gap-1 px-3 py-1.5 rounded-lg text-white bg-blue-600 hover:bg-blue-700 transition"><X className="w-4 h-4" /><span className="hidden sm:inline">{t.disapprove}</span></button>
                   }
                   <button onClick={() => { setSelectedStartup(startup); setEditModalOpen(true); }} className="inline-flex items-center justify-center gap-1 px-3 py-1.5 border border-slate-300 rounded-lg text-slate-700 bg-white hover:bg-slate-50 transition"><Edit className="w-4 h-4" /><span className="hidden sm:inline">{t.edit}</span></button>
                   <button onClick={() => handleDownloadCard(startup)} className="inline-flex items-center justify-center gap-1 px-3 py-1.5 border border-slate-300 rounded-lg text-slate-700 bg-white hover:bg-slate-50 transition" title="Download ID Card"><Download className="w-4 h-4" /><span className="hidden sm:inline">Card</span></button>
@@ -983,13 +983,13 @@ const DeleteModal: React.FC<DeleteModalProps> = ({ startup, onClose, onDelete, t
         </div>
         <div className="p-6 space-y-4">
           <p className="text-md text-slate-700 font-semibold">**{startup.company_name}**</p>
-          <p className="text-sm text-red-600 font-medium"><AlertTriangle className="w-4 h-4 inline mr-1" />{t.deleteWarning}</p>
+          <p className="text-sm text-blue-600 font-medium"><AlertTriangle className="w-4 h-4 inline mr-1" />{t.deleteWarning}</p>
           <p className="text-sm text-slate-600">{t.deleteConfirmText}</p>
-          <input type="text" value={confirmText} onChange={(e) => setConfirmText(e.target.value)} className="w-full px-4 py-2 text-sm bg-white border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500" placeholder="confirm delete" />
+          <input type="text" value={confirmText} onChange={(e) => setConfirmText(e.target.value)} className="w-full px-4 py-2 text-sm bg-white border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="confirm delete" />
         </div>
         <div className="flex justify-end items-center gap-3 p-6 bg-slate-50 border-t rounded-b-xl">
           <button type="button" onClick={onClose} disabled={isDeleting} className="px-5 py-2.5 border border-slate-300 text-sm font-medium rounded-xl shadow-sm text-slate-700 bg-white hover:bg-slate-100 transition">{t.cancel}</button>
-          <button type="button" onClick={handleDelete} disabled={!isConfirmed || isDeleting} className="px-5 py-2.5 rounded-xl shadow-md text-white bg-red-600 hover:bg-red-700 disabled:bg-red-300 transition">{isDeleting ? (t.loading + "...") : t.deleteButton}</button>
+          <button type="button" onClick={handleDelete} disabled={!isConfirmed || isDeleting} className="px-5 py-2.5 rounded-xl shadow-md text-white bg-blue-600 hover:bg-blue-700 disabled:bg-blue-300 transition">{isDeleting ? (t.loading + "...") : t.deleteButton}</button>
         </div>
       </div>
     </div>
@@ -1000,7 +1000,7 @@ const DeleteModal: React.FC<DeleteModalProps> = ({ startup, onClose, onDelete, t
 
 const FormInput: React.FC<{ name: string, label: string, value: string, onChange: (e: React.ChangeEvent<HTMLInputElement>) => void, type?: string, required?: boolean, placeholder?: string, icon?: React.ReactNode }> = ({ name, label, value, onChange, type = 'text', required = false, placeholder = '', icon }) => (
   <div>
-    <label htmlFor={name} className="block text-sm font-medium text-slate-700 mb-1">{label} {required && <span className="text-red-500">*</span>}</label>
+    <label htmlFor={name} className="block text-sm font-medium text-slate-700 mb-1">{label} {required && <span className="text-blue-500">*</span>}</label>
     <div className="relative">
       {icon && <div className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">{icon}</div>}
       <input type={type} id={name} name={name} value={value} onChange={onChange} required={required} placeholder={placeholder} className={`block w-full ${icon ? 'pl-9' : 'px-4'} pr-4 py-2 bg-white border border-slate-300 rounded-lg shadow-sm text-sm focus:outline-none focus:ring-indigo-600 focus:border-indigo-600 transition`} />
@@ -1018,8 +1018,8 @@ const FormTextArea: React.FC<{ name: string, label: string, value: string, onCha
 // Toggle for Approval (Big colored toggle)
 const ToggleSwitch: React.FC<{ name: string, label: string, checked: boolean, onChange: (checked: boolean) => void, t: Translations }> = ({ name, label, checked, onChange, t }) => (
   <div className="flex items-center justify-between p-3 border border-slate-200 rounded-lg bg-slate-50">
-    <label htmlFor={name} className="text-sm font-medium text-slate-700 flex flex-col">{label}<span className={`text-xs mt-0.5 font-bold ${checked ? 'text-green-600' : 'text-red-600'}`}>{checked ? t.approved : t.disapproved}</span></label>
-    <button type="button" onClick={() => onChange(!checked)} className={`${checked ? 'bg-green-600' : 'bg-red-600'} relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none`} role="switch" aria-checked={checked}>
+    <label htmlFor={name} className="text-sm font-medium text-slate-700 flex flex-col">{label}<span className={`text-xs mt-0.5 font-bold ${checked ? 'text-green-600' : 'text-blue-600'}`}>{checked ? t.approved : t.disapproved}</span></label>
+    <button type="button" onClick={() => onChange(!checked)} className={`${checked ? 'bg-green-600' : 'bg-blue-600'} relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none`} role="switch" aria-checked={checked}>
       <span aria-hidden="true" className={`${checked ? 'translate-x-5' : 'translate-x-0'} pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out`} />
     </button>
   </div>

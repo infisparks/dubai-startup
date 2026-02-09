@@ -50,7 +50,7 @@ export default function PrincePage({ language = 'en' }: PrincePageProps) {
       {/* Background - Clean White with subtle Red accents */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         {/* Soft Red/Gold Blobs for Depth */}
-        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-[#bf1e2e]/5 rounded-full blur-[120px] opacity-70 -translate-y-1/2 translate-x-1/2" />
+        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-[#034FA3]/5 rounded-full blur-[120px] opacity-70 -translate-y-1/2 translate-x-1/2" />
         <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-[#c4925f]/10 rounded-full blur-[120px] opacity-40 translate-y-1/2 -translate-x-1/2" />
       </div>
 
@@ -60,7 +60,7 @@ export default function PrincePage({ language = 'en' }: PrincePageProps) {
           {/* Image Section */}
           <div className="w-[85%] sm:w-[60%] lg:w-[32%] relative group perspective-1000 mx-auto lg:mx-0">
             {/* Decorative Border */}
-            <div className="absolute -inset-3 bg-gradient-to-tr from-[#bf1e2e]/20 via-[#c4925f]/20 to-[#bf1e2e]/20 rounded-2xl opacity-60 blur-md group-hover:opacity-80 transition-opacity duration-700" />
+            <div className="absolute -inset-3 bg-gradient-to-tr from-[#034FA3]/20 via-[#c4925f]/20 to-[#034FA3]/20 rounded-2xl opacity-60 blur-md group-hover:opacity-80 transition-opacity duration-700" />
 
             <div className="relative rounded-2xl overflow-hidden shadow-2xl transform transition-transform duration-700 group-hover:scale-[1.02] bg-white aspect-[3/4.5]">
               <Image
@@ -73,9 +73,9 @@ export default function PrincePage({ language = 'en' }: PrincePageProps) {
 
               {/* Floating Badge */}
               <div className={`absolute top-4 ${isRtl ? 'right-4' : 'left-4'} z-20`}>
-                <div className="flex items-center gap-1.5 bg-white/90 backdrop-blur-md px-3 py-1.5 rounded-full shadow-lg border border-[#bf1e2e]/20">
-                  <Crown className="w-3.5 h-3.5 text-[#bf1e2e] fill-current" />
-                  <span className="text-[10px] font-bold uppercase tracking-widest text-[#bf1e2e]">Royal Guest</span>
+                <div className="flex items-center gap-1.5 bg-white/90 backdrop-blur-md px-3 py-1.5 rounded-full shadow-lg border border-[#034FA3]/20">
+                  <Crown className="w-3.5 h-3.5 text-[#034FA3] fill-current" />
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-[#034FA3]">Royal Guest</span>
                 </div>
               </div>
             </div>
@@ -87,12 +87,12 @@ export default function PrincePage({ language = 'en' }: PrincePageProps) {
 
               {/* Header */}
               <div className="space-y-3">
-                <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#bf1e2e]/5 border border-[#bf1e2e]/20 text-[#bf1e2e] ${isRtl ? 'flex-row-reverse' : ''}`}>
+                <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#034FA3]/5 border border-[#034FA3]/20 text-[#034FA3] ${isRtl ? 'flex-row-reverse' : ''}`}>
                   <Star className="w-3.5 h-3.5 fill-current" />
                   <span className="text-[10px] sm:text-xs font-semibold tracking-widest uppercase">{t.guestOfHonor}</span>
                 </div>
 
-                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-[#bf1e2e] leading-tight tracking-tight">
+                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-[#034FA3] leading-tight tracking-tight">
                   {t.princeName}
                 </h2>
 
@@ -115,13 +115,13 @@ export default function PrincePage({ language = 'en' }: PrincePageProps) {
                 {t.stats.map((stat, idx) => {
                   const Icon = stat.icon
                   return (
-                    <div key={idx} className="group relative bg-white p-4 rounded-xl border border-gray-100 shadow-sm hover:shadow-lg hover:border-[#bf1e2e]/20 transition-all duration-300">
+                    <div key={idx} className="group relative bg-white p-4 rounded-xl border border-gray-100 shadow-sm hover:shadow-lg hover:border-[#034FA3]/20 transition-all duration-300">
 
-                      <div className="mb-2 w-8 h-8 rounded-lg bg-[#bf1e2e]/5 flex items-center justify-center text-[#bf1e2e] group-hover:bg-[#bf1e2e] group-hover:text-white transition-colors">
+                      <div className="mb-2 w-8 h-8 rounded-lg bg-[#034FA3]/5 flex items-center justify-center text-[#034FA3] group-hover:bg-[#034FA3] group-hover:text-white transition-colors">
                         <Icon className="w-4 h-4" />
                       </div>
 
-                      <p className="text-xl font-bold text-slate-800 mb-0.5 group-hover:text-[#bf1e2e] transition-colors">
+                      <p className="text-xl font-bold text-slate-800 mb-0.5 group-hover:text-[#034FA3] transition-colors">
                         {stat.value}
                       </p>
                       <p className="text-[10px] text-gray-500 font-medium uppercase tracking-wider group-hover:text-gray-700">

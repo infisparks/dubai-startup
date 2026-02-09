@@ -205,7 +205,7 @@ export default function ScannerPage() {
     const StatusBadge = ({ status, label }: { status: string, label?: string }) => {
         const isPaid = status === 'paid';
         return (
-            <div className={`flex items-center gap-2 px-3 py-1.5 rounded-full border ${isPaid ? 'bg-green-50 border-green-200 text-green-700' : 'bg-red-50 border-red-200 text-red-700'}`}>
+            <div className={`flex items-center gap-2 px-3 py-1.5 rounded-full border ${isPaid ? 'bg-green-50 border-green-200 text-green-700' : 'bg-blue-50 border-blue-200 text-blue-700'}`}>
                 {isPaid ? <CheckCircle className="w-5 h-5" /> : <XCircle className="w-5 h-5" />}
                 <div className="flex flex-col leading-none">
                     <span className="text-xs font-bold uppercase">{label || "Payment Status"}</span>
@@ -296,11 +296,11 @@ export default function ScannerPage() {
                 <div className="w-full max-w-4xl mx-auto space-y-6">
 
                     {error && (
-                        <div className="bg-red-50 border border-red-200 rounded-2xl p-6 flex items-start gap-4 animate-in fade-in slide-in-from-bottom-4">
-                            <XCircle className="w-8 h-8 text-red-600 shrink-0 mt-0.5" />
+                        <div className="bg-blue-50 border border-blue-200 rounded-2xl p-6 flex items-start gap-4 animate-in fade-in slide-in-from-bottom-4">
+                            <XCircle className="w-8 h-8 text-blue-600 shrink-0 mt-0.5" />
                             <div>
-                                <h3 className="text-lg font-bold text-red-900">Verification Failed</h3>
-                                <p className="text-red-700 mt-1">{error}</p>
+                                <h3 className="text-lg font-bold text-blue-900">Verification Failed</h3>
+                                <p className="text-blue-700 mt-1">{error}</p>
                             </div>
                         </div>
                     )}
@@ -340,7 +340,7 @@ export default function ScannerPage() {
 
                                 {/* 1. FOUNDER / STARTUP DETAILS */}
                                 {result.profile.is_startup && (
-                                    <div className={`space-y-4 rounded-xl p-5 border ${result.founderDetails?.payment_status === 'paid' ? 'bg-slate-50 border-slate-200' : 'bg-red-50 border-red-200'}`}>
+                                    <div className={`space-y-4 rounded-xl p-5 border ${result.founderDetails?.payment_status === 'paid' ? 'bg-slate-50 border-slate-200' : 'bg-blue-50 border-blue-200'}`}>
                                         <div className="flex items-center gap-2 mb-2">
                                             <Building className="w-5 h-5 text-blue-600" />
                                             <h3 className="text-lg font-bold text-slate-800">Founder Details</h3>
@@ -378,7 +378,7 @@ export default function ScannerPage() {
                                                 </div>
                                             </>
                                         ) : (
-                                            <p className="text-sm text-red-500 italic">Startup profile data missing.</p>
+                                            <p className="text-sm text-blue-500 italic">Startup profile data missing.</p>
                                         )}
                                     </div>
                                 )}
@@ -410,7 +410,7 @@ export default function ScannerPage() {
                                                 </div>
                                             </>
                                         ) : (
-                                            <p className="text-sm text-red-500 italic">Exhibitor profile data missing.</p>
+                                            <p className="text-sm text-blue-500 italic">Exhibitor profile data missing.</p>
                                         )}
                                     </div>
                                 )}

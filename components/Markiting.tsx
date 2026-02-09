@@ -116,7 +116,7 @@ const GridCta = ({ language }: { language: 'en' | 'ar' }) => {
           className="absolute inset-0 w-full h-full object-cover z-0 grayscale"
         />
         {/* Overlay for text readability */}
-        <div className="absolute inset-0 bg-[#940200] bg-opacity-80 group-hover:bg-opacity-90 transition-all duration-300 z-10" />
+        <div className="absolute inset-0 bg-[#023c7a] bg-opacity-80 group-hover:bg-opacity-90 transition-all duration-300 z-10" />
 
         <div className="relative z-20 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 h-full">
           <div className={isRtl ? 'text-right' : ''}>
@@ -130,7 +130,7 @@ const GridCta = ({ language }: { language: 'en' | 'ar' }) => {
 
           <Link
             href="/registration"
-            className="flex-shrink-0 px-5 py-2 text-sm bg-white text-[#bf1e2e] font-semibold rounded-lg transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 whitespace-nowrap inline-block text-center"
+            className="flex-shrink-0 px-5 py-2 text-sm bg-white text-[#034FA3] font-semibold rounded-lg transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 whitespace-nowrap inline-block text-center"
           >
             {t.button}
           </Link>
@@ -152,7 +152,7 @@ export default function MarketingStrategy({ language = 'en' }: MarketingStrategy
     >
       {/* Minimal Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-0 right-0 w-80 h-80 bg-[#bf1e2e]/5 rounded-full blur-3xl opacity-30" />
+        <div className="absolute top-0 right-0 w-80 h-80 bg-[#034FA3]/5 rounded-full blur-3xl opacity-30" />
         <div className="absolute bottom-0 left-0 w-80 h-80 bg-[#c4925f]/10 rounded-full blur-3xl opacity-30" />
       </div>
 
@@ -162,8 +162,8 @@ export default function MarketingStrategy({ language = 'en' }: MarketingStrategy
         {/* Header - Compact */}
         <div className="mb-8">
           <div className="inline-flex items-center gap-2 mb-2">
-            <div className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-[#bf1e2e] to-[#c4925f]" />
-            <span className="text-xs font-semibold tracking-widest text-[#bf1e2e] uppercase">Strategy</span>
+            <div className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-[#034FA3] to-[#c4925f]" />
+            <span className="text-xs font-semibold tracking-widest text-[#034FA3] uppercase">Strategy</span>
           </div>
 
           <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-800 mb-2 tracking-tight">
@@ -205,13 +205,13 @@ export default function MarketingStrategy({ language = 'en' }: MarketingStrategy
                   {/* Icon + Title Row */}
                   <div className="flex items-start gap-2.5 mb-3">
                     <div className="relative flex-shrink-0">
-                      <div className="w-10 h-10 bg-gradient-to-br from-[#bf1e2e]/5 to-[#c4925f]/10 rounded-lg flex items-center justify-center border border-[#bf1e2e]/10 group-hover:border-[#c4925f]/30 transition-colors duration-300">
-                        <IconComponent className="w-5 h-5 text-[#bf1e2e]" />
+                      <div className="w-10 h-10 bg-gradient-to-br from-[#034FA3]/5 to-[#c4925f]/10 rounded-lg flex items-center justify-center border border-[#034FA3]/10 group-hover:border-[#c4925f]/30 transition-colors duration-300">
+                        <IconComponent className="w-5 h-5 text-[#034FA3]" />
                       </div>
                     </div>
 
                     <div className={`${isRtl ? 'text-right' : ''}`}>
-                      <h3 className="text-xs sm:text-sm font-bold text-slate-800 leading-tight group-hover:text-[#bf1e2e] transition-colors">
+                      <h3 className="text-xs sm:text-sm font-bold text-slate-800 leading-tight group-hover:text-[#034FA3] transition-colors">
                         {strategy.title}
                       </h3>
                     </div>
@@ -223,8 +223,8 @@ export default function MarketingStrategy({ language = 'en' }: MarketingStrategy
                       {strategy.items.map((item, itemIndex) => (
                         <div key={itemIndex} className="flex items-start gap-2">
                           <div className="flex-shrink-0 mt-0.5">
-                            <div className="w-3 h-3 rounded-full bg-gradient-to-br from-[#bf1e2e]/10 to-[#c4925f]/10 flex items-center justify-center border border-[#bf1e2e]/20 flex-shrink-0">
-                              <FiCheck className="w-2 h-2 text-[#bf1e2e]" />
+                            <div className="w-3 h-3 rounded-full bg-gradient-to-br from-[#034FA3]/10 to-[#c4925f]/10 flex items-center justify-center border border-[#034FA3]/20 flex-shrink-0">
+                              <FiCheck className="w-2 h-2 text-[#034FA3]" />
                             </div>
                           </div>
                           <span className="text-xs text-slate-500 leading-tight font-light">
@@ -238,7 +238,7 @@ export default function MarketingStrategy({ language = 'en' }: MarketingStrategy
                       <p className="text-xs text-slate-500 leading-tight font-light mb-2">
                         {strategy.description}
                       </p>
-                      <div className="inline-flex items-center gap-1 text-[#bf1e2e] font-semibold text-xs opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <div className="inline-flex items-center gap-1 text-[#034FA3] font-semibold text-xs opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                         {language === 'en' ? 'More' : 'المزيد'}
                         <FiArrowRight className="w-3 h-3" />
                       </div>

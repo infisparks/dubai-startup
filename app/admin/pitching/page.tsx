@@ -327,14 +327,14 @@ export default function AdminPitchingPage() {
     };
 
     const renderStatusBadge = (isApproved: boolean | null) => {
-        if (isApproved === false) return <span className="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-800"><XCircle className="w-3.5 h-3.5" />{t.disapproved}</span>;
+        if (isApproved === false) return <span className="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800"><XCircle className="w-3.5 h-3.5" />{t.disapproved}</span>;
         return isApproved ? <span className="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800"><CheckCircle className="w-3.5 h-3.5" />{t.approved}</span> : <span className="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800"><Clock className="w-3.5 h-3.5" />{t.pending}</span>;
     };
 
     const renderContent = () => {
         if (loading) return <div className="text-center p-12 text-slate-600 font-medium">{t.loading}</div>;
-        if (!isAdmin) return <FeedbackCard message={t.notAuthorized} description={t.notAuthorizedDesc} icon={Shield} iconColor="text-red-500" />;
-        if (error) return <FeedbackCard message={t.error} description={error} icon={AlertTriangle} iconColor="text-red-500" />;
+        if (!isAdmin) return <FeedbackCard message={t.notAuthorized} description={t.notAuthorizedDesc} icon={Shield} iconColor="text-blue-500" />;
+        if (error) return <FeedbackCard message={t.error} description={error} icon={AlertTriangle} iconColor="text-blue-500" />;
         if (allPitching.length === 0) return <FeedbackCard message={t.noStartups} description={t.noStartupsDesc} icon={AlertTriangle} iconColor="text-yellow-500" />;
         if (filteredPitching.length === 0) return <FeedbackCard message={t.noResults} description={t.noResultsDesc} icon={Search} iconColor="text-slate-500" />;
 
@@ -391,7 +391,7 @@ export default function AdminPitchingPage() {
                                     {profile.is_approved === false ?
                                         <button onClick={() => handleApprove(profile.user_id)} className="inline-flex items-center justify-center gap-1 px-3 py-1.5 rounded-lg text-white bg-green-600 hover:bg-green-700 transition"><Check className="w-4 h-4" /><span className="hidden sm:inline">{t.approve}</span></button>
                                         :
-                                        <button onClick={() => handleDisapprove(profile.user_id)} className="inline-flex items-center justify-center gap-1 px-3 py-1.5 rounded-lg text-white bg-red-600 hover:bg-red-700 transition"><X className="w-4 h-4" /><span className="hidden sm:inline">{t.disapprove}</span></button>
+                                        <button onClick={() => handleDisapprove(profile.user_id)} className="inline-flex items-center justify-center gap-1 px-3 py-1.5 rounded-lg text-white bg-blue-600 hover:bg-blue-700 transition"><X className="w-4 h-4" /><span className="hidden sm:inline">{t.disapprove}</span></button>
                                     }
                                     <button onClick={() => { setSelectedPitching(profile); setEditModalOpen(true); }} className="inline-flex items-center justify-center gap-1 px-3 py-1.5 border border-slate-300 rounded-lg text-slate-700 bg-white hover:bg-slate-50 transition"><Edit className="w-4 h-4" /><span className="hidden sm:inline">{t.edit}</span></button>
                                     <button onClick={() => { setSelectedPitching(profile); setDeleteModalOpen(true); }} className="inline-flex items-center justify-center gap-1 px-3 py-1.5 rounded-lg text-white bg-slate-400 hover:bg-slate-500 transition"><Trash2 className="w-4 h-4" /><span className="hidden sm:inline">{t.delete}</span></button>
@@ -543,12 +543,12 @@ const DeleteModal: React.FC<{ profile: PitchingProfile, onClose: () => void, onD
                 </div>
                 <div className="p-6 space-y-4">
                     <p className="text-md text-slate-700 font-semibold">{profile.company_name}</p>
-                    <p className="text-sm text-red-600 font-medium"><AlertTriangle className="w-4 h-4 inline mr-1" />{t.deleteWarning}</p>
-                    <input type="text" value={confirmText} onChange={(e) => setConfirmText(e.target.value)} className="w-full px-4 py-2 text-sm border border-slate-300 rounded-lg shadow-sm focus:ring-2 focus:ring-red-500" placeholder="confirm delete" />
+                    <p className="text-sm text-blue-600 font-medium"><AlertTriangle className="w-4 h-4 inline mr-1" />{t.deleteWarning}</p>
+                    <input type="text" value={confirmText} onChange={(e) => setConfirmText(e.target.value)} className="w-full px-4 py-2 text-sm border border-slate-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500" placeholder="confirm delete" />
                 </div>
                 <div className="flex justify-end gap-3 p-6 bg-slate-50 border-t rounded-b-xl">
                     <button type="button" onClick={onClose} className="px-5 py-2.5 border border-slate-300 rounded-xl bg-white hover:bg-slate-100">Cancel</button>
-                    <button type="button" onClick={handleDelete} disabled={!isConfirmed || isDeleting} className="px-5 py-2.5 rounded-xl text-white bg-red-600 hover:bg-red-700 disabled:bg-red-300">Delete</button>
+                    <button type="button" onClick={handleDelete} disabled={!isConfirmed || isDeleting} className="px-5 py-2.5 rounded-xl text-white bg-blue-600 hover:bg-blue-700 disabled:bg-blue-300">Delete</button>
                 </div>
             </div>
         </div>
@@ -557,7 +557,7 @@ const DeleteModal: React.FC<{ profile: PitchingProfile, onClose: () => void, onD
 
 const FormInput: React.FC<{ name: string, label: string, value: string, onChange: (e: React.ChangeEvent<HTMLInputElement>) => void, type?: string, required?: boolean, placeholder?: string }> = ({ name, label, value, onChange, type = 'text', required = false, placeholder = '' }) => (
     <div>
-        <label htmlFor={name} className="block text-sm font-medium text-slate-700 mb-1">{label} {required && <span className="text-red-500">*</span>}</label>
+        <label htmlFor={name} className="block text-sm font-medium text-slate-700 mb-1">{label} {required && <span className="text-blue-500">*</span>}</label>
         <input type={type} id={name} name={name} value={value} onChange={onChange} required={required} placeholder={placeholder} className="block w-full px-4 py-2 border border-slate-300 rounded-lg shadow-sm text-sm focus:ring-indigo-600 transition" />
     </div>
 );
@@ -571,8 +571,8 @@ const FormTextArea: React.FC<{ name: string, label: string, value: string, onCha
 
 const ToggleSwitch: React.FC<{ name: string, label: string, checked: boolean, onChange: (checked: boolean) => void, t: Translations }> = ({ name, label, checked, onChange, t }) => (
     <div className="flex items-center justify-between p-3 border border-slate-200 rounded-lg bg-slate-50">
-        <label htmlFor={name} className="text-sm font-medium text-slate-700 flex flex-col">{label}<span className={`text-xs mt-0.5 font-bold ${checked ? 'text-green-600' : 'text-red-600'}`}>{checked ? t.approved : t.disapproved}</span></label>
-        <button type="button" onClick={() => onChange(!checked)} className={`${checked ? 'bg-green-600' : 'bg-red-600'} relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none`} role="switch">
+        <label htmlFor={name} className="text-sm font-medium text-slate-700 flex flex-col">{label}<span className={`text-xs mt-0.5 font-bold ${checked ? 'text-green-600' : 'text-blue-600'}`}>{checked ? t.approved : t.disapproved}</span></label>
+        <button type="button" onClick={() => onChange(!checked)} className={`${checked ? 'bg-green-600' : 'bg-blue-600'} relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none`} role="switch">
             <span aria-hidden="true" className={`${checked ? 'translate-x-5' : 'translate-x-0'} pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out`} />
         </button>
     </div>

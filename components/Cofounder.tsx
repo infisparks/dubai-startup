@@ -75,7 +75,7 @@ export default function CoFoundersPage({ language = 'en' }: CoFoundersPageProps)
           <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight">
             {t.title}
           </h2>
-          <div className="mt-4 h-1 w-20 bg-gradient-to-r from-[#bf1e2e] to-[#940200] rounded-full mx-auto" />
+          <div className="mt-4 h-1 w-20 bg-gradient-to-r from-[#034FA3] to-[#023c7a] rounded-full mx-auto" />
         </div>
 
         {/* Co-Founders Grid */}
@@ -92,7 +92,7 @@ export default function CoFoundersPage({ language = 'en' }: CoFoundersPageProps)
               >
                 {/* Image Section */}
                 <div className="relative shrink-0 mx-auto md:mx-0">
-                  <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full p-1 bg-gradient-to-br from-[#bf1e2e]/10 to-[#c4925f]/10 shadow-inner overflow-hidden">
+                  <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full p-1 bg-gradient-to-br from-[#034FA3]/10 to-[#c4925f]/10 shadow-inner overflow-hidden">
                     <Image
                       src={founder.image}
                       alt={founder.name}
@@ -103,14 +103,14 @@ export default function CoFoundersPage({ language = 'en' }: CoFoundersPageProps)
                     />
                   </div>
                   {/* Decorative Quote Icon */}
-                  <div className="absolute -bottom-1 -right-1 bg-white p-1.5 rounded-full shadow-sm border border-slate-100 text-[#bf1e2e]">
+                  <div className="absolute -bottom-1 -right-1 bg-white p-1.5 rounded-full shadow-sm border border-slate-100 text-[#034FA3]">
                     <Quote size={12} fill="currentColor" />
                   </div>
                 </div>
 
                 {/* Content Section */}
                 <div className="flex-grow text-center md:text-start w-full">
-                  <h3 className="text-xl sm:text-2xl font-bold text-slate-900 group-hover:text-[#bf1e2e] transition-colors duration-300 mb-1">
+                  <h3 className="text-xl sm:text-2xl font-bold text-slate-900 group-hover:text-[#034FA3] transition-colors duration-300 mb-1">
                     {founder.name}
                   </h3>
                   <div className="inline-block px-3 py-1 rounded-full bg-slate-50 border border-slate-100 mb-3 group-hover:border-[#c4925f]/30 transition-colors">
@@ -131,7 +131,7 @@ export default function CoFoundersPage({ language = 'en' }: CoFoundersPageProps)
 
                   <button
                     onClick={() => toggleExpand(founder.name)}
-                    className="inline-flex items-center gap-1.5 text-xs font-bold text-[#bf1e2e] hover:text-[#940200] uppercase tracking-wider mt-4 group/btn transition-colors"
+                    className="inline-flex items-center gap-1.5 text-xs font-bold text-[#034FA3] hover:text-[#023c7a] uppercase tracking-wider mt-4 group/btn transition-colors"
                   >
                     {isExpanded ? t.readLess : t.readMore}
                     {isExpanded ? (
