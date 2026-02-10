@@ -4,7 +4,8 @@ import React, { useRef, useState, useEffect } from 'react'
 import Image from 'next/image'
 import { pastSpeakersData } from "@/lib/past-speakers-data"
 import Link from 'next/link'
-import { ArrowRight, Star } from 'lucide-react'
+import { motion } from 'framer-motion'
+import { ArrowRight, Star, Quote, Award, Sparkles, ShieldCheck, Linkedin, Globe } from 'lucide-react'
 
 interface PastSpeakersProps {
     language: 'en' | 'ar'
@@ -12,34 +13,36 @@ interface PastSpeakersProps {
 
 const translations = {
     en: {
-        title: 'Past Speakers',
-        subtitle: 'Visionaries who have shaped our journey.',
-        viewAll: 'View All Speakers',
+        title: 'Legacy Speakers',
+        subtitle: 'The visionaries and industry icons who have headlined our previous summits.',
+        viewAll: 'View All Alumni',
     },
     ar: {
         title: 'المتحدثون السابقون',
-        subtitle: 'أصحاب الرؤى الذين شكلوا رحلتنا.',
-        viewAll: 'عرض جميع المتحدثين',
+        subtitle: 'أصحاب الرؤى ورموز الصناعة الذين تصدروا قمنا السابقة.',
+        viewAll: 'عرض جميع الخريجين',
     },
 }
 
 export default function PastSpeakers({ language = 'en' }: PastSpeakersProps) {
     const t = translations[language]
+    const isRtl = language === 'ar'
     const scrollContainerRef = useRef<HTMLDivElement>(null)
     const [isPaused, setIsPaused] = useState(false)
 
     // Repeat speakers for seamless loop
-    const repeatedSpeakers = [...pastSpeakersData.slice(0, 10), ...pastSpeakersData.slice(0, 10), ...pastSpeakersData.slice(0, 10), ...pastSpeakersData.slice(0, 10)]
+    const repeatedSpeakers = [...pastSpeakersData.slice(0, 10), ...pastSpeakersData.slice(0, 10), ...pastSpeakersData.slice(0, 10)]
 
     useEffect(() => {
         const el = scrollContainerRef.current
         if (!el) return
 
         let animationId: number
+        const speed = 0.5
+
         const animate = () => {
             if (!isPaused) {
-                const speed = 0.5 // Adjust speed for smoothness
-                if (el.scrollLeft >= el.scrollWidth / 2) {
+                if (el.scrollLeft >= el.scrollWidth / 1.5) {
                     el.scrollLeft = 0
                 } else {
                     el.scrollLeft += speed
@@ -53,46 +56,63 @@ export default function PastSpeakers({ language = 'en' }: PastSpeakersProps) {
     }, [isPaused])
 
     return (
-        <section className="py-12 sm:py-16 relative overflow-hidden bg-slate-50">
-
-            {/* Abstract Modern Background */}
+        <section className="py-20 bg-[#F8FAFC] relative overflow-hidden" dir={isRtl ? 'rtl' : 'ltr'}>
+            {/* Background elements */}
             <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-slate-200 to-transparent" />
-            <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#034FA3]/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/3 pointer-events-none mix-blend-multiply" />
-            <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-[#c4925f]/10 rounded-full blur-[100px] translate-y-1/3 -translate-x-1/4 pointer-events-none mix-blend-multiply" />
+            <div className="absolute -top-24 -right-24 w-96 h-96 bg-blue-500/5 rounded-full blur-[100px] pointer-events-none" />
 
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-
-                {/* Header Section */}
-                <div className="flex flex-col md:flex-row md:items-end md:justify-between mb-8 gap-6">
-                    <div className="max-w-2xl">
-                        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-100 text-[#034FA3] text-xs font-semibold tracking-wide uppercase mb-3">
-                            <Star className="w-3 h-3 fill-[#034FA3]" />
-                            <span>Legacy of Excellence</span>
-                        </div>
-                        <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight leading-tight">
+            <div className="max-w-7xl mx-auto px-6 relative z-10">
+                {/* Header Section - Modern and Tighter */}
+                <div className="flex flex-col md:flex-row md:items-end md:justify-between mb-16 gap-8">
+                    <div className="max-w-xl">
+                        <motion.div
+                            initial={{ opacity: 0, y: 15 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-200/50 border border-slate-200 text-slate-500 text-[9px] font-black uppercase tracking-[0.3em] mb-4"
+                        >
+                            <ShieldCheck size={12} className="text-[#034FA3]" />
+                            Institutional Legacy
+                        </motion.div>
+                        <motion.h2
+                            initial={{ opacity: 0, y: 15 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            className="text-3xl sm:text-5xl font-black text-slate-900 tracking-tighter mb-4"
+                        >
                             {t.title}
-                        </h2>
-                        <p className="mt-3 text-base sm:text-lg text-slate-600 leading-relaxed">
+                        </motion.h2>
+                        <motion.p
+                            initial={{ opacity: 0, y: 15 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            className="text-slate-500 text-sm sm:text-base font-medium"
+                        >
                             {t.subtitle}
-                        </p>
+                        </motion.p>
                     </div>
 
-                    <div className="hidden md:block pb-1">
+                    <motion.div
+                        initial={{ opacity: 0, x: 20 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true }}
+                        className="hidden md:block"
+                    >
                         <Link
                             href="/past-speakers"
-                            className="group inline-flex items-center gap-2 text-sm font-semibold text-[#034FA3] hover:text-[#023c7a] transition-colors"
+                            className="group flex items-center gap-3 text-[10px] font-black uppercase tracking-[0.2em] text-[#034FA3] hover:text-[#023757] transition-all"
                         >
                             {t.viewAll}
-                            <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                            <ArrowRight size={16} className="group-hover:translate-x-1.5 transition-transform" />
                         </Link>
-                    </div>
+                    </motion.div>
                 </div>
 
-                {/* Carousel Container */}
-                <div className="relative group/carousel">
-                    {/* Gradient Masks */}
-                    <div className="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-slate-50 to-transparent z-10 pointer-events-none" />
-                    <div className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-slate-50 to-transparent z-10 pointer-events-none" />
+                {/* Auto-Scrolling Ticker */}
+                <div className="relative group/ticker">
+                    {/* Edge Shades */}
+                    <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-[#F8FAFC] via-[#F8FAFC]/50 to-transparent z-10 pointer-events-none" />
+                    <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-[#F8FAFC] via-[#F8FAFC]/50 to-transparent z-10 pointer-events-none" />
 
                     <div
                         ref={scrollContainerRef}
@@ -100,78 +120,71 @@ export default function PastSpeakers({ language = 'en' }: PastSpeakersProps) {
                         onMouseLeave={() => setIsPaused(false)}
                         onTouchStart={() => setIsPaused(true)}
                         onTouchEnd={() => setIsPaused(false)}
-                        className="flex overflow-x-auto gap-4 pb-8 pt-4 px-2 no-scrollbar
-                       scrollbar-none [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none]"
+                        className="flex flex-nowrap overflow-x-auto no-scrollbar gap-8 py-8 px-4 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
                     >
                         {repeatedSpeakers.map((speaker, idx) => (
                             <div
                                 key={`${speaker.name}-${idx}`}
-                                className="flex-shrink-0 w-[240px] sm:w-[260px] group relative"
+                                className="flex-shrink-0 w-[240px] sm:w-[280px] group relative"
                             >
-                                <div className="bg-white rounded-[1.5rem] p-5 h-full border border-slate-100 shadow-[0_2px_10px_rgb(0,0,0,0.03)] 
-                              transition-all duration-300 group-hover:shadow-[0_20px_40px_rgb(191,30,46,0.08)] group-hover:-translate-y-1.5 flex flex-col items-center text-center relative overflow-hidden z-10">
+                                {/* Legacy Card Stack Effect */}
+                                <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-[85%] h-5 bg-white border border-slate-100 rounded-t-[1.5rem] -z-10 transition-all duration-500 group-hover:-top-3" />
 
-                                    {/* Hover Gradient Overlay */}
-                                    <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-[#034FA3] to-[#c4925f] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
+                                <div className="relative bg-white rounded-[2rem] border border-slate-100 p-6 flex flex-col h-[320px] shadow-[0_10px_30px_-15px_rgba(0,0,0,0.05)] transition-all duration-500 group-hover:shadow-[0_30px_60px_-20px_rgba(0,0,0,0.08)] group-hover:-translate-y-1">
 
-                                    {/* Image */}
-                                    <div className="relative mb-4">
-                                        <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full overflow-hidden border-4 border-slate-50 group-hover:border-white shadow-sm transition-colors duration-300 mx-auto">
+                                    {/* Legacy Status Strip */}
+                                    <div className="h-1 w-12 bg-[#034FA3]/20 rounded-full mb-6 group-hover:w-20 group-hover:bg-[#034FA3] transition-all duration-500" />
+
+                                    {/* Portrait stage */}
+                                    <div className="relative mb-6">
+                                        <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full overflow-hidden border-2 border-slate-50 shadow-md group-hover:scale-110 group-hover:rotate-2 transition-all duration-500 mx-auto bg-slate-50">
                                             <Image
                                                 src={speaker.image}
                                                 alt={speaker.name}
-                                                width={112}
-                                                height={112}
-                                                className="w-full h-full object-cover object-center transform group-hover:scale-110 transition-transform duration-500"
+                                                width={96}
+                                                height={96}
+                                                className="w-full h-full object-cover"
                                             />
+                                        </div>
+                                        <div className="absolute -bottom-1 -right-1 bg-white p-1 rounded-md shadow-sm border border-slate-100 opacity-0 group-hover:opacity-100 transition-opacity">
+                                            <Award size={12} className="text-[#034FA3]" />
                                         </div>
                                     </div>
 
                                     {/* Content */}
-                                    <h3 className="text-base sm:text-lg font-bold text-slate-800 mb-2 group-hover:text-[#034FA3] transition-colors line-clamp-1">
-                                        {speaker.name}
-                                    </h3>
+                                    <div className="text-center flex-grow">
+                                        <h3 className="text-base sm:text-lg font-black text-slate-900 mb-2 truncate group-hover:text-[#034FA3] transition-colors leading-tight">
+                                            {speaker.name}
+                                        </h3>
 
-                                    <div className="w-full h-px bg-slate-50 my-2" />
+                                        <div className="h-px w-6 bg-slate-100 mx-auto mb-3" />
 
-                                    <p className="text-xs sm:text-sm text-slate-500 font-medium leading-relaxed line-clamp-3">
-                                        {speaker.bio}
-                                    </p>
+                                        <p className="text-[10px] sm:text-[11px] text-slate-500 font-bold leading-relaxed line-clamp-3 uppercase tracking-wider">
+                                            {speaker.bio}
+                                        </p>
+                                    </div>
+
+                                    {/* Subtle Interaction Row */}
+                                    <div className="mt-4 pt-4 border-t border-slate-50 flex items-center justify-center gap-4 opacity-0 group-hover:opacity-100 transition-opacity">
+                                        <Linkedin size={14} className="text-slate-300 hover:text-[#0A66C2] transition-colors cursor-pointer" />
+                                        <Globe size={14} className="text-slate-200 hover:text-blue-400 transition-colors cursor-pointer" />
+                                    </div>
                                 </div>
                             </div>
                         ))}
-
-                        {/* "View More" Slide at the end of the data loop (it will repeat) */}
-                        <div className="flex-shrink-0 w-[180px] flex items-center justify-center">
-                            <Link
-                                href="/past-speakers"
-                                className="flex flex-col items-center justify-center w-full h-[80%] 
-                            rounded-3xl border-2 border-dashed border-slate-200 
-                            hover:border-[#034FA3]/50 hover:bg-blue-50/50
-                            group transition-all duration-300 cursor-pointer text-center p-4"
-                            >
-                                <div className="w-10 h-10 bg-white rounded-full shadow-sm flex items-center justify-center mb-3 group-hover:scale-110 transition-transform text-slate-400 group-hover:text-[#034FA3]">
-                                    <ArrowRight className="w-5 h-5" />
-                                </div>
-                                <span className="text-sm font-bold text-slate-600 group-hover:text-[#034FA3] transition-colors">
-                                    {t.viewAll}
-                                </span>
-                            </Link>
-                        </div>
                     </div>
                 </div>
 
-                {/* Mobile View All Button */}
-                <div className="md:hidden mt-2 text-center">
+                {/* Mobile Alumni Link */}
+                <div className="md:hidden mt-8 text-center px-4">
                     <Link
                         href="/past-speakers"
-                        className="inline-flex items-center gap-2 text-sm font-bold text-[#034FA3] bg-blue-50 px-6 py-3 rounded-full hover:bg-blue-100 transition-colors"
+                        className="inline-flex items-center justify-center w-full gap-2 text-[10px] font-black uppercase tracking-widest text-white bg-[#034FA3] px-8 py-4 rounded-2xl shadow-lg active:scale-95 transition-all"
                     >
                         {t.viewAll}
-                        <ArrowRight className="w-4 h-4" />
+                        <ArrowRight size={14} />
                     </Link>
                 </div>
-
             </div>
         </section>
     )

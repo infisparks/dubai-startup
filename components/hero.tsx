@@ -45,8 +45,8 @@ export default function Hero({ language }: HeroProps) {
           className="w-full h-full object-cover"
         >
           <source
-            src="https://infisparks.github.io/images/investa.mp4"
-            type="video/mp4"
+            src="https://infisparks.github.io/images/invest.webm"
+            type="video/webm"
           />
           Your browser does not support the video tag.
         </video>
@@ -62,7 +62,7 @@ export default function Hero({ language }: HeroProps) {
               <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-2 sm:mb-3 leading-tight tracking-tight">
                 {t.headline}
                 <br />
-                <span className="bg-gradient-to-r from-[#1e7fc1] to-[#5da3d5] bg-clip-text text-transparent">
+                <span className="bg-gradient-to-r from-[#1e7fc1] to-[#5da3d5] bg-clip-text text-transparent drop-shadow-[0_0_2px_rgba(255,255,255,0.8)]">
                   {t.headline2}
                 </span>
               </h1>

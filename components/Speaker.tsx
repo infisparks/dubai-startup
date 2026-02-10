@@ -2,6 +2,8 @@
 
 import React, { useState, useRef, useEffect } from 'react'
 import Image from 'next/image'
+import { motion } from 'framer-motion'
+import { ChevronDown, ChevronUp, Quote, Award, Sparkles, Mic2, Globe, ShieldCheck, Linkedin } from 'lucide-react'
 
 interface SpeakersPageProps {
   language: 'en' | 'ar'
@@ -9,110 +11,116 @@ interface SpeakersPageProps {
 
 const translations = {
   en: {
-    title: 'Our Speakers',
-    subtitle:
-      'Investarise Global Investors Summit 2026 welcome our prestigious speakers.',
-    footer: "Investarise Global Investor Summit - 2026: Shaping Tomorrow's Economy",
-    readMore: 'Read More',
-    readLess: 'Read Less',
+    title: 'Distinguished Speakers',
+    subtitle: 'The collective intelligence driving the 2026 Global Investor Summit.',
+    footer: "Global Investor Summit — Official Speaker Delegation",
+    readMore: 'Bio',
+    readLess: 'Close',
     speakers: [
       {
+        id: 'sushil',
         name: 'Sushil Sharma',
-        bio: 'Founder and CEO of Marwari Catalysts, fueling the startup ecosystem in Tier 2 & 3 cities. Angel investor in 100+ startups, with a focus on gender diversity and innovation.',
+        role: 'Founder & CEO, Marwari Catalysts',
+        bio: 'Founder and CEO of Marwari Catalysts, fueling the startup ecosystem in Tier 2 & 3 cities. Angel investor in 100+ startups.',
         image: '/speaker/14.png',
+        badge: 'Keynote'
       },
       {
+        id: 'manav',
         name: 'Dr. Manav Ahuja',
-        bio: 'Driving business success with modern strategies, backed by 25+ years in business and consultancy, and a doctorate in Human Psychology. Supported 100 entrepreneurs and trained 1,000 sales professionals.',
+        role: 'Strategic Business Consultant',
+        bio: 'Driving business success with modern strategies, backed by 25+ years in business and consultancy.',
         image: '/speaker/11.png',
+        badge: 'Visionary'
       },
-      /* 
-            {
-              name: 'Dr. Alexandru Nedelcu',
-              bio: 'Dr. Alexandru Nedelcu is known for excellent patient care, innovative treatments, and a compassionate dedication to helping cancer patients.',
-              image: '/speaker/8.png',
-            },
-      */
       {
+        id: 'majid',
         name: 'Abdulmajid Ansari',
-        bio: 'Serial Entrepreneur, Founder ARBA Accelerator LLP, Head of Business Incubation AIKTC',
+        role: 'Founder ARBA Accelerator',
+        bio: 'Serial Entrepreneur, Founder ARBA Accelerator LLP, Head of Business Incubation AIKTC.',
         image: '/speaker/3.png',
+        badge: 'Innovation'
       },
-      /* 
-            {
-              name: 'Jatin Bajaj',
-              bio: 'Certified trainer for AML & Fraud, Banking Products and Policies, have achieved 23% increase in the productivity and the retention with the last organization',
-              image: '/speaker/12.png',
-            },
-      */
       {
+        id: 'muzaffar',
         name: 'Muzaffar Ahmad',
-        bio: 'Muzaffar Ahmad is a globally recognized AI leader, author, and advocate for Responsible AI. Founder of RAGN and Chairman of Kazma Technology, he drives AI-led innovation and secure digital transformation. As CAIO at Data Automation and Founder of ChatWeft, he leads scalable AI solutions. A sought-after speaker and author, he advises global organizations on Responsible GenAI strategy, aligning innovation with regulation and human values.',
+        role: 'Global AI Leader & CAIO',
+        bio: 'Muzaffar Ahmad is a globally recognized AI leader and CAIO at Data Automation.',
         image: '/speaker/15.png',
+        badge: 'AI Strategist'
       },
       {
-        name: 'Prof Dr Yasir Amin A.Latif',
-        bio: 'Highly accomplished General and Endocrine Surgeon with over 26 years of clinical experience. Internationally recognized for pioneering scar-free Transoral Endoscopic Endocrine Surgery and introducing the globally cited "Dubai Triangle" and "Amin’s Triangle" anatomical landmarks.',
+        id: 'yasir',
+        name: 'Prof. Dr. Yasir Amin',
+        role: 'General & Endocrine Surgeon',
+        bio: 'Internationally recognized pioneer of scar-free Transoral Endoscopic Endocrine Surgery.',
         image: '/speaker/18.png',
+        badge: 'Expert'
       },
       {
+        id: 'anirudh',
         name: 'Anirudh Tripathy',
-        bio: 'Anirudh Tripathy is an Investment Banker and Technology Specialist with over 26 years of global experience in Strategic Asset Management, Investment Banking, and Cross-Border Transactions. He is the Founder, Managing Director & CEO of KPM ASSET Group, a USA-based multi-disciplinary investment banking firm established in 1999. With deep expertise in capital structuring, global investments, and transaction advisory, he specializes across sectors including AI, Blockchain, IT, Pharmaceuticals, Real Estate & Infrastructure, and Defense Technology. He also serves on multiple global advisory boards and is the Global President of CFTIF, supporting international trade and investment ecosystems.',
+        role: 'MD, KPM ASSET Group',
+        bio: 'Investment Banker and Technology Specialist with 26+ years of global experience.',
         image: '/speaker/29.png',
+        badge: 'Investment'
       },
     ],
   },
   ar: {
-    title: 'المتحدثون لدينا',
-    subtitle:
-      'ترحب قمة إنفستارايز العالمية للاستثمار 2026 بمتحدثينا المتميزين في هذا الحدث',
-    footer: 'قمة إنفستارايز العالمية للمستثمرين - 2026: تشكيل اقتصاد الغد',
-    readMore: 'اقرأ المزيد',
-    readLess: 'اقرأ أقل',
+    title: 'المتحدثون المتميزون',
+    subtitle: 'الذكاء الجماعي الذي يقود قمة المستثمرين العالمية 2026.',
+    footer: 'قمة المستثمرين العالمية — وفد المتحدثين الرسمي',
+    readMore: 'السيرة الذاتية',
+    readLess: 'إغلاق',
     speakers: [
       {
+        id: 'sushil',
         name: 'سوشيل شارما',
-        bio: 'المؤسس والرئيس التنفيذي لشركة Marwari Catalysts، التي تغذي نظام الشركات الناشئة في مدن المستوى 2 و 3. مستثمر ملاك في أكثر من 100 شركة ناشئة، مع التركيز على التنوع بين الجنسين والابتكار.',
+        role: 'المؤسس والرئيس التنفيذي، Marwari Catalysts',
+        bio: 'المؤسس والرئيس التنفيذي لشركة Marwari Catalysts، التي تغذي نظام الشركات الناشئة.',
         image: '/speaker/14.png',
+        badge: 'متحدث رئيسي'
       },
       {
+        id: 'manav',
         name: 'د. ماناف أهوجا',
-        bio: 'تحويل نجاح الأعمال بنهج حديث. 25+ عامًا من الخبرة الغنية في الأعمال والاستشارات، حاصل على درجة الدكتوراه في علم النفس البشري. قام برعاية أعمال 100 رائد أعمال، ودرب 1000 مرشح على أعمال المبيعات.',
+        role: 'استشاري أعمال استراتيجي',
+        bio: 'قيادة نجاح الأعمال باستراتيجيات حديثة، مدعومة بخبرة تزيد عن 25 عامًا.',
         image: '/speaker/11.png',
+        badge: 'صاحب رؤية'
       },
-      /* 
-            {
-              name: 'د. ألكسندرو نيديلكو',
-              bio: 'أسس الدكتور ألكسندرو نيديلكو سمعة للتميز في رعاية المرضى، والنهج العلاجية المبتكرة، والالتزام الرحيم بتحسين حياة المتأثرين بالسرطان.',
-              image: '/speaker/8.png',
-            },
-      */
       {
+        id: 'majid',
         name: 'عبد المجيد أنصاري',
-        bio: 'رئيس مجلس الإدارة واستراتيجي الاستثمار العالمي، قائد ذو رؤية يعيد تعريف مشهد التمويل العالمي، وأكثر من عقدين من الخبرة في الاستثمارات عبر الحدود ورأس المال الاستثماري. بصفته المهندس وراء بعض أكثر الصفقات تحولًا في المنطقة.',
+        role: 'رائد أعمال متسلسل',
+        bio: 'رائد أعمال متسلسل، مؤسس ARBA Accelerator LLP، ورئيس حضانة الأعمال AIKTC.',
         image: '/speaker/3.png',
+        badge: 'قائد الابتكار'
       },
-      /* 
-            {
-              name: 'جاتين باجاج',
-              bio: 'مدرب معتمد في مكافحة غسيل الأموال والاحتيال، والمنتجات والسياسات المصرفية، حقق زيادة بنسبة 23٪ في الإنتاجية والاحتفاظ بالموظفين في المنظمة السابقة.',
-              image: '/speaker/12.png',
-            },
-      */
       {
+        id: 'muzaffar',
         name: 'مظفر أحمد',
-        bio: 'مظفر أحمد هو قائد عالمي في مجال الذكاء الاصطناعي، ومؤلف، ومدافع عن الذكاء الاصطناعي المسؤول. مؤسس شبكة حوكمة الذكاء الاصطناعي المسؤول (RAGN) ورئيس مجلس إدارة Kazma Technology، يقود الابتكار القائم على الذكاء الاصطناعي. بصفته الرئيس التنفيذي للذكاء الاصطناعي في Data Automation ومؤسس ChatWeft، يقود حلول الذكاء الاصطناعي القابلة للتطوير. كمتحدث ومؤلف مطلوب، يقدم المشورة للمؤسسات العالمية حول استراتيجية الذكاء الاصطناعي التوليدي المسؤول.',
+        role: 'قائد عالمي في الذكاء الاصطناعي',
+        bio: 'قائد عالمي في الذكاء الاصطناعي ورئيس قسم الذكاء الاصطناعي في Data Automation.',
         image: '/speaker/15.png',
+        badge: 'خبير ذكاء اصطناعي'
       },
       {
-        name: 'Prof Dr Yasir Amin A.Latif',
-        bio: 'Highly accomplished General and Endocrine Surgeon with over 26 years of clinical experience. Internationally recognized for pioneering scar-free Transoral Endoscopic Endocrine Surgery and introducing the globally cited "Dubai Triangle" and "Amin’s Triangle" anatomical landmarks.',
+        id: 'yasir',
+        name: 'أ.د. ياسر أمين',
+        role: 'جراح الغدد الصماء العام',
+        bio: 'معترف به دوليًا لريادته في جراحة الغدد الصماء بالمنظار عبر الفم دون ندبات.',
         image: '/speaker/18.png',
+        badge: 'خبير عالمي'
       },
       {
+        id: 'anirudh',
         name: 'أنيروده تريباتي',
-        bio: 'أنيروده تريباتي هو مصرفي استثماري وأخصائي تكنولوجيا يتمتع بخبرة عالمية تزيد عن 26 عامًا في إدارة الأصول الإستراتيجية والخدمات المصرفية الاستثمارية والمعاملات عبر الحدود. وهو المؤسس والعضو المنتدب والرئيس التنفيذي لمجموعة KPM ASSET Group، وهي شركة مصرفية استثمارية متعددة التخصصات مقرها الولايات المتحدة الأمريكية وتأسست في عام 1999. بفضل خبرته العميقة في هيكلة رأس المال والاستثمارات العالمية والمعاملات استشارية، فإنه متخصص في قطاعات تشمل الذكاء الاصطناعي، بلوكتشين، تكنولوجيا المعلومات، الأدوية، العقارات والبنية التحتية، وتكنولوجيا الدفاع. كما يشغل عضوية العديد من المجالس الاستشارية العالمية وهو الرئيس العالمي لـ CFTIF، حيث يدعم أنظمة التجارة والاستثمار الدولية.',
+        role: 'العضو المنتدب، مجموعة KPM ASSET',
+        bio: 'مصرفي استثماري وأخصائي تكنولوجيا بخبرة 26 عامًا عالميًا.',
         image: '/speaker/29.png',
+        badge: 'عملاق الاستثمار'
       },
     ],
   },
@@ -120,30 +128,23 @@ const translations = {
 
 export default function SpeakersPage({ language = 'en' }: SpeakersPageProps) {
   const t = translations[language]
-  const [expandedIds, setExpandedIds] = useState<string[]>([])
+  const isRtl = language === 'ar'
   const [isPaused, setIsPaused] = useState(false)
   const scrollContainerRef = useRef<HTMLDivElement>(null)
 
-  // Repeat speakers for seamless loop
-  const repeatedSpeakers = [...t.speakers, ...t.speakers, ...t.speakers, ...t.speakers]
-
-  const toggleExpand = (name: string) => {
-    setExpandedIds((prev) =>
-      prev.includes(name)
-        ? prev.filter((n) => n !== name)
-        : [...prev, name]
-    )
-  }
+  // Duplicating speakers for smooth infinite scroll
+  const repeatedSpeakers = [...t.speakers, ...t.speakers, ...t.speakers]
 
   useEffect(() => {
     const el = scrollContainerRef.current
     if (!el) return
 
     let animationId: number
+    const speed = 0.5 // Scrolling speed
+
     const animate = () => {
       if (!isPaused) {
-        const speed = 0.5 // Adjust speed for smoothness
-        if (el.scrollLeft >= el.scrollWidth / 2) {
+        if (el.scrollLeft >= el.scrollWidth / 1.5) {
           el.scrollLeft = 0
         } else {
           el.scrollLeft += speed
@@ -157,22 +158,44 @@ export default function SpeakersPage({ language = 'en' }: SpeakersPageProps) {
   }, [isPaused])
 
   return (
-    <section id="speakers" className="relative py-16 sm:py-24 lg:py-32 px-4 sm:px-6 lg:px-8 bg-white overflow-hidden">
+    <section id="speakers" className="relative py-20 bg-white overflow-hidden" dir={isRtl ? 'rtl' : 'ltr'}>
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(3,79,163,0.02)_0%,transparent_70%)]" />
+
       <div className="max-w-7xl mx-auto relative z-10 w-full">
-        <div className="text-center mb-12 lg:mb-16">
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 leading-tight">
+        {/* Header Section - Compact */}
+        <div className="text-center mb-12 sm:mb-16">
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-100 text-[#034FA3] text-[9px] font-black uppercase tracking-[0.2em] mb-4"
+          >
+            <Mic2 size={12} />
+            Voice of Innovation
+          </motion.div>
+          <motion.h2
+            initial={{ opacity: 0, y: 15 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-3xl sm:text-5xl font-black text-slate-900 tracking-tighter mb-4"
+          >
             {t.title}
-          </h2>
-          <p className="mt-4 text-lg text-slate-600 max-w-3xl mx-auto">
+          </motion.h2>
+          <motion.p
+            initial={{ opacity: 0, y: 15 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-slate-500 text-sm sm:text-base font-medium max-w-xl mx-auto px-4"
+          >
             {t.subtitle}
-          </p>
-          <div className="mt-6 h-1.5 w-24 bg-gradient-to-r from-[#034FA3] to-[#023c7a] rounded-full mx-auto" />
+          </motion.p>
         </div>
 
-        <div className="relative -mx-4 px-4 sm:mx-0 sm:px-0">
-          {/* Gradient Masks */}
-          <div className="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
-          <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
+        {/* Auto-Scrolling Modern Ticker */}
+        <div className="relative">
+          {/* Edge Fades */}
+          <div className="absolute left-0 top-0 bottom-0 w-20 sm:w-40 bg-gradient-to-r from-white via-white/40 to-transparent z-10 pointer-events-none" />
+          <div className="absolute right-0 top-0 bottom-0 w-20 sm:w-40 bg-gradient-to-l from-white via-white/40 to-transparent z-10 pointer-events-none" />
 
           <div
             ref={scrollContainerRef}
@@ -180,58 +203,86 @@ export default function SpeakersPage({ language = 'en' }: SpeakersPageProps) {
             onMouseLeave={() => setIsPaused(false)}
             onTouchStart={() => setIsPaused(true)}
             onTouchEnd={() => setIsPaused(false)}
-            className="flex flex-nowrap overflow-x-auto no-scrollbar gap-4 px-2 py-4
-                       sm:gap-8 sm:py-8
-                       [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+            className="flex flex-nowrap overflow-x-auto no-scrollbar gap-6 py-10 px-4 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
           >
-            {repeatedSpeakers.map((speaker, idx) => {
-              const isExpanded = expandedIds.includes(speaker.name)
+            {repeatedSpeakers.map((speaker, idx) => (
+              <div
+                key={`${speaker.id}-${idx}`}
+                className="group relative flex-shrink-0 w-[280px] sm:w-[320px]"
+              >
+                {/* Speaker Card Stack Effect */}
+                <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-[90%] h-6 bg-slate-50 border border-slate-100 rounded-t-[1.5rem] -z-10" />
 
-              return (
-                <div
-                  key={`${speaker.name}-${idx}`}
-                  className="flex flex-col items-center text-center bg-slate-50 rounded-3xl p-6 shadow-lg hover:shadow-xl hover:border-[#034FA3]/10 transition-all duration-300
-                             w-[85vw] flex-shrink-0
-                             sm:w-80"
-                >
-                  <div className="relative w-40 h-40 rounded-full mb-6 overflow-hidden shadow-md flex-shrink-0 border-4 border-white">
-                    <Image
-                      src={speaker.image}
-                      alt={speaker.name}
-                      width={160}
-                      height={160}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <h3 className="text-xl font-bold text-slate-900 mb-2 hover:text-[#034FA3] transition-colors">
-                    {speaker.name}
-                  </h3>
+                <div className="relative bg-white rounded-[2rem] border border-slate-100 overflow-hidden shadow-[0_15px_30px_-10px_rgba(0,0,0,0.05)] group-hover:shadow-[0_25px_50px_-15px_rgba(3,79,163,0.1)] transition-all duration-500 h-[380px] flex flex-col">
 
-                  <div className="flex-grow flex flex-col w-full">
-                    <p
-                      className={`text-sm text-slate-600 leading-relaxed flex-grow whitespace-pre-wrap ${!isExpanded ? 'line-clamp-2' : ''
-                        }`}
-                    >
-                      {speaker.bio}
-                    </p>
+                  {/* Identity Bar */}
+                  <div className="h-1.5 w-full bg-gradient-to-r from-[#034FA3] to-[#023757]" />
 
-                    <button
-                      onClick={() => toggleExpand(speaker.name)}
-                      className="text-sm font-semibold text-[#034FA3] bg-blue-50 hover:bg-blue-100 rounded-full px-4 py-1.5 transition-colors mt-4 self-center flex-shrink-0"
-                    >
-                      {isExpanded ? t.readLess : t.readMore}
-                    </button>
+                  <div className="p-6 sm:p-8 flex flex-col h-full">
+                    {/* Portrait Row */}
+                    <div className="flex justify-between items-start mb-6">
+                      <div className="relative w-20 h-20 sm:w-24 sm:h-24">
+                        <div className="absolute -inset-4 bg-[#034FA3]/5 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                        <div className="relative w-full h-full rounded-2xl overflow-hidden border border-slate-100 shadow-xl transition-all duration-500 group-hover:scale-105 group-hover:-rotate-3 translate-z-10 bg-slate-50">
+                          <Image
+                            src={speaker.image}
+                            alt={speaker.name}
+                            fill
+                            className="object-cover"
+                          />
+                        </div>
+                      </div>
+                      <div className="px-2 py-0.5 bg-slate-50 border border-slate-100 rounded-lg">
+                        <span className="text-[7px] font-black uppercase tracking-widest text-slate-400 group-hover:text-[#034FA3] transition-colors">{speaker.badge}</span>
+                      </div>
+                    </div>
+
+                    {/* Information */}
+                    <div className="flex-grow">
+                      <span className="text-[8px] font-black text-[#034FA3]/40 uppercase tracking-[0.2em] mb-1 block leading-none">Global Delegate</span>
+                      <h3 className="text-lg sm:text-xl font-black text-slate-900 tracking-tight leading-tight mb-1 transition-colors duration-300 group-hover:text-[#034FA3]">
+                        {speaker.name}
+                      </h3>
+                      <p className="text-[9px] sm:text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-relaxed mb-4">
+                        {speaker.role}
+                      </p>
+
+                      <p className="text-xs sm:text-sm text-slate-500 leading-relaxed line-clamp-3 font-medium">
+                        {speaker.bio}
+                      </p>
+                    </div>
+
+                    {/* Static Interaction Row */}
+                    <div className="mt-6 pt-5 border-t border-slate-50 flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <Sparkles size={12} className="text-amber-400/20 group-hover:text-amber-400 transition-colors" />
+                        <span className="text-[8px] font-black text-slate-300 uppercase tracking-widest">Summit 2026</span>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <Linkedin size={14} className="text-slate-200 group-hover:text-[#0A66C2] transition-colors cursor-pointer" />
+                        <Globe size={14} className="text-slate-100 group-hover:text-blue-200 transition-colors" />
+                      </div>
+                    </div>
                   </div>
                 </div>
-              )
-            })}
+              </div>
+            ))}
           </div>
         </div>
 
-        <div className="text-center mt-16">
-          <p className="text-sm font-semibold text-slate-500 tracking-wide">
-            {t.footer}
-          </p>
+        {/* Global Footer Insight */}
+        <div className="text-center mt-12">
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-slate-50 border border-slate-100 shadow-sm"
+          >
+            <ShieldCheck size={14} className="text-[#034FA3]" />
+            <p className="text-[9px] sm:text-[10px] font-bold text-slate-500 uppercase tracking-widest leading-none">
+              {t.footer}
+            </p>
+            <Sparkles size={14} className="text-amber-400" />
+          </motion.div>
         </div>
       </div>
     </section>

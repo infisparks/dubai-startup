@@ -1,153 +1,191 @@
 'use client'
 
 import React from 'react'
+import { motion } from 'framer-motion'
+import { Handshake, Lightbulb, Globe, Award, Users, ShieldCheck, Sparkles, TrendingUp, Target } from 'lucide-react'
 
 interface EventOverviewProps {
   language: 'en' | 'ar'
 }
 
-// Reusing and streamlining Icon components for a professional look
-const CalendarIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5"><path fillRule="evenodd" d="M6.75 2.25A.75.75 0 017.5 3v1.5h9V3A.75.75 0 0118 3v1.5h.75a3 3 0 013 3v11.25a3 3 0 01-3 3H5.25a3 3 0 01-3-3V7.5a3 3 0 013-3H6.75V3zm-1.5 9A.75.75 0 003 12v4.5a.75.75 0 00.75.75h16.5a.75.75 0 00.75-.75V12a.75.75 0 00-.75-.75H3.75z" clipRule="evenodd" /></svg>
-)
-
-const MapPinIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5"><path fillRule="evenodd" d="M11.54 22.351A.75.75 0 0112 22.5c.183 0 .355-.06.45-.149L21 13.325a.75.75 0 000-1.22l-9.45-8.824a.75.75 0 00-1.06 0L3 12.105a.75.75 0 000 1.22l9.45 8.824zM12 11.25a2.25 2.25 0 100-4.5 2.25 2.25 0 000 4.5z" clipRule="evenodd" /></svg>
-)
-
-const HandshakeIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5"><path d="M7.834 5.378a5.23 5.23 0 011.053-.082c.758 0 1.396.34 1.761.884l.321.503a5.55 5.55 0 003.393 2.913 1.5 1.5 0 001.371-2.001c-.815-1.928.109-4.745 1.605-6.551.411-.476.96-.787 1.564-.903a.75.75 0 01.444.97c-.256.46-.57.882-.901 1.26l-.28.311c-1.615 1.776-2.455 4.303-1.96 6.368a2.5 2.5 0 01-2.545 2.569 2.5 2.5 0 01-2.4-1.636l-.304-.54a.75.75 0 00-.736-.457h-.146a.75.75 0 00-.638.307l-.37.556C9.284 18.57 9 20 9 20.25a.75.75 0 01-1.5 0c0-.188 0-.397.025-.592l.006-.051a3.011 3.011 0 00-.713-1.801 20.975 20.975 0 01-1.892-2.146l-.527-.645a.75.75 0 01.996-1.127l.796.885c.347.385.673.744.975 1.054.424.43.81.82 1.157 1.168a18.23 18.23 0 00-.81-3.665.75.75 0 01.385-.82l2.35-.959a7.5 7.5 0 00-1.677-4.187.75.75 0 01-.183-.557l-.023-.195a4.491 4.491 0 00-.745-1.528 5.23 5.23 0 01-1.171-.85l-.136-.129c-.702-.663-1.34-1.37-1.823-2.105a.75.75 0 011.086-.968zM5.313 17.5a.75.75 0 10-1.06 1.06l-.578-.577a.75.75 0 00-1.06 1.06l.578.577-1.06 1.06a.75.75 0 101.06 1.06L4.753 20.5l.578.578a.75.75 0 001.06-1.06l-.578-.578 1.06-1.06a.75.75 0 00-1.06-1.06z" /></svg>
-)
-
-const LightbulbIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5"><path d="M11.644 1.63a.75.75 0 10-.888-1.26c-3.116 1.16-5.188 4.144-5.188 7.596 0 4.12 3.25 7.451 7.5 7.451s7.5-3.33 7.5-7.451c0-3.452-2.072-6.435-5.188-7.596zM12 17.25a.75.75 0 00-.75.75v2.25H9a.75.75 0 000 1.5h6a.75.75 0 000-1.5h-2.25V18a.75.75 0 00-.75-.75z" /></svg>
-)
-
-const GlobeAltIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5"><path fillRule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM12.75 6a.75.75 0 00-1.5 0v6c0 .414.336.75.75.75h4.5a.75.75 0 000-1.5h-3.75V6z" clipRule="evenodd" /></svg>
-)
-
-// Data structure
 const translations = {
   en: {
-    title: 'Event Overview',
-    intro:
-      "Investarise Global Investors Summit 2026 is a premier international platform designed to unite over 100 investors, 250 startups and SME's, and 20 speakers, alongside global partners.",
-    keyStakeholders: 'Key Stakeholders',
-    stakeholders: [
-      { count: '100+', label: 'Investors' },
-      { count: '250+', label: "Startups and SME's" },
-      { count: '20+', label: 'Speakers' },
+    title: 'Institutional Overview',
+    tagline: 'Global Capital Strategy',
+    intro: "The premier platform uniting over 100 investors, 250+ startups, and 20 visionary speakers.",
+    mandate: 'Strategic Mandate',
+    themePhrase: 'Pitch • Connect • Prosper',
+    stats: [
+      { id: 1, count: '100+', label: 'Investors', icon: Award },
+      { id: 2, count: '250+', label: "Startups", icon: TrendingUp },
+      { id: 3, count: '20+', label: 'Speakers', icon: Users },
     ],
-    summitTheme: 'Summit Theme',
-    themePhrase: '"Pitch. Connect. Prosper."',
-    coreObjectives: 'Core Objectives',
     objectives: [
-      { icon: HandshakeIcon, title: 'Enable Fundraising', desc: 'Helping startups secure investment opportunities and achieve scale.' },
-      { icon: LightbulbIcon, title: 'Drive Innovation', desc: 'Encouraging breakthrough ideas and facilitating technology adoption.' },
-      { icon: GlobeAltIcon, title: 'Cross-Border Investment', desc: 'Connecting global investors with high-growth emerging markets.' },
+      {
+        id: 1,
+        icon: Handshake,
+        title: 'Capital Mobilization',
+        desc: 'Accelerating growth through sophisticated institutional capital.'
+      },
+      {
+        id: 2,
+        icon: Lightbulb,
+        title: 'Innovation Governance',
+        desc: 'Establishing the standards for technological excellence.'
+      },
+      {
+        id: 3,
+        icon: Globe,
+        title: 'Cross-Border Synergy',
+        desc: 'Optimizing international investment corridors and market entry.'
+      },
     ],
   },
   ar: {
-    title: 'نظرة عامة على الحدث',
-    intro:
-      'قمة إنفستارايز العالمية للاستثمار 2026 هي منصة دولية رائدة تهدف إلى جمع أكثر من 100 مستثمر و 250 شركة ناشئة وشركات صغيرة ومتوسطة و 20 متحدثين، بالإضافة إلى الشركاء العالميين.',
-    keyStakeholders: 'أصحاب المصلحة الرئيسيون',
-    stakeholders: [
-      { count: '50+', label: 'مستثمر' },
-      { count: '250+', label: 'شركة ناشئة وشركات صغيرة ومتوسطة' },
-      { count: '10+', label: 'متحدث' },
+    title: 'نظرة عامة مؤسسية',
+    tagline: 'استراتيجية رأس المال العالمي',
+    intro: 'المنصة الرائدة التي تجمع أكثر من 100 مستثمر و 250 شركة ناشئة و 20 متحدثاً متميزاً.',
+    mandate: 'التفويض الاستراتيجي',
+    themePhrase: 'اطرح • اتصل • ازدهر',
+    stats: [
+      { id: 1, count: '100+', label: 'مستثمر', icon: Award },
+      { id: 2, count: '250+', label: 'شركة ناشئة', icon: TrendingUp },
+      { id: 3, count: '20+', label: 'متحدث', icon: Users },
     ],
-    summitTheme: 'شعار القمة',
-    themePhrase: '"اطرح. اتصل. ازدهر."',
-    coreObjectives: 'الأهداف الأساسية',
     objectives: [
-      { icon: HandshakeIcon, title: 'تمكين جمع التبرعات', desc: 'مساعدة الشركات الناشئة على تأمين فرص الاستثمار وتحقيق التوسع.' },
-      { icon: LightbulbIcon, title: 'دفع الابتكار', desc: 'تشجيع الأفكار الرائدة وتسهيل تبني التكنولوجيا.' },
-      { icon: GlobeAltIcon, title: 'الاستثمار عبر الحدود', desc: 'ربط المستثمرين العالميين بالأسواق الناشئة عالية النمو.' },
+      {
+        id: 1,
+        icon: Handshake,
+        title: 'حشد رأس المال',
+        desc: 'تسريع النمو من خلال رأس المال المؤسسي المتطور.'
+      },
+      {
+        id: 2,
+        icon: Lightbulb,
+        title: 'حوكمة الابتكار',
+        desc: 'وضع معايير التميز التكنولوجي والأفكار الرائدة.'
+      },
+      {
+        id: 3,
+        icon: Globe,
+        title: 'التآزر عبر الحدود',
+        desc: 'تحسين ممرات الاستثمار الدولية وتسهيل الدخول إلى الأسواق.'
+      },
     ],
   },
 }
 
 export default function EventOverview({ language = 'en' }: EventOverviewProps) {
   const t = translations[language]
+  const isRtl = language === 'ar'
 
   return (
-    <section className="relative py-16 sm:py-24 lg:py-32 px-4 sm:px-6 lg:px-8 bg-[#f9f9f9] overflow-hidden">
-      {/* Background Orbs by Red/Gold */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -left-40 w-80 h-80 bg-[#034FA3]/5 rounded-full blur-3xl opacity-50" />
-        <div className="absolute -bottom-40 -right-40 w-80 h-80 bg-[#c4925f]/10 rounded-full blur-3xl opacity-50" />
-      </div>
+    <section className="relative py-16 sm:py-20 bg-[#FBFBFC] overflow-hidden" dir={isRtl ? 'rtl' : 'ltr'}>
+      {/* Precision Grid Background */}
+      <div className="absolute inset-0 opacity-[0.03] pointer-events-none"
+        style={{ backgroundImage: 'radial-gradient(#034FA3 0.5px, transparent 0.5px)', backgroundSize: '24px 24px' }} />
 
-      <div className="max-w-7xl mx-auto relative z-10 w-full">
-        {/* Main Title, Intro, and Theme */}
-        <div className="text-center mb-10 lg:mb-16">
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-800 leading-tight">
-            {t.title}
-          </h2>
-          <p className="mt-4 text-sm sm:text-base text-slate-600 max-w-4xl mx-auto leading-relaxed">
-            {t.intro}
-          </p>
-          {/* Theme Highlight */}
-          <div className="mt-8">
-            <h3 className="text-base font-semibold text-slate-700 uppercase tracking-wider mb-2">
-              {t.summitTheme}
-            </h3>
-            <p className="text-2xl sm:text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-[#034FA3] to-[#023c7a] italic">
-              {t.themePhrase}
-            </p>
-          </div>
-        </div>
+      <div className="max-w-6xl mx-auto px-6 relative z-10 w-full">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
 
-        {/* 1. KEY STAKEHOLDERS (High-Contrast Stat Block) */}
-        <div className="bg-[#023c7a] text-white rounded-xl shadow-2xl p-6 sm:p-8 lg:p-10 mb-16 lg:mb-20">
-          <div className="grid grid-cols-3 gap-6 text-center">
-            {t.stakeholders.map((stat, index) => (
-              <div
-                key={index}
-                className="flex flex-col items-center border-r border-[#034FA3] last:border-r-0"
-              >
-                <p className="text-4xl sm:text-5xl font-extrabold text-[#c4925f]">
-                  {stat.count}
-                </p>
-                <p className="mt-1 text-xs sm:text-sm uppercase tracking-widest font-medium text-blue-100">
-                  {stat.label}
-                </p>
+          {/* Institutional Portfolio Card (Left) */}
+          <div className="lg:col-span-5">
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="relative bg-white rounded-[2rem] p-8 sm:p-10 border border-slate-100 shadow-[0_20px_50px_-12px_rgba(0,0,0,0.05)] overflow-hidden"
+            >
+              {/* Technical Header */}
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                <span className="text-[8px] font-black uppercase tracking-[0.4em] text-slate-400">Institutional Protocol</span>
               </div>
-            ))}
-          </div>
-        </div>
 
-        {/* 2. DATE, VENUE, AND OBJECTIVES (Dual-Column Layout) */}
-        {/* Column 2: Core Objectives (Icon-Rich List) - Centered and Full Width */}
-        <div className="lg:col-span-3 bg-white p-6 rounded-2xl shadow-lg border border-slate-100">
-          <h4 className="text-xl font-bold text-slate-900 mb-6 border-b border-slate-100 pb-3 text-center">
-            {t.coreObjectives}
-          </h4>
+              <h2 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tighter mb-4 leading-tight">
+                {t.title}
+              </h2>
+              <p className="text-xs sm:text-sm text-slate-500 font-medium leading-relaxed mb-8 opacity-80">
+                {t.intro}
+              </p>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {t.objectives.map((obj, index) => {
-              const IconComponent = obj.icon
-              const isBlue = index % 2 === 0;
+              {/* Stat Grid */}
+              <div className="grid grid-cols-3 gap-4 mb-8">
+                {t.stats.map((stat) => {
+                  const Icon = stat.icon
+                  return (
+                    <div key={stat.id} className="text-center p-3 rounded-2xl bg-slate-50/50 border border-slate-50 hover:bg-white hover:border-slate-100 hover:shadow-sm transition-all">
+                      <Icon size={14} className="mx-auto mb-2 text-[#034FA3] opacity-60" />
+                      <div className="text-xl font-black text-slate-900">{stat.count}</div>
+                      <div className="text-[7px] font-bold text-slate-400 uppercase tracking-widest">{stat.label}</div>
+                    </div>
+                  )
+                })}
+              </div>
 
-              return (
-                <div key={index} className="flex flex-col items-center text-center gap-4 p-4 rounded-xl hover:bg-slate-50 transition-colors">
-                  <div className={`flex-shrink-0 p-4 rounded-full ${isBlue ? 'bg-[#034FA3]/10 text-[#034FA3]' : 'bg-[#c4925f]/10 text-[#c4925f]'}`}>
-                    <IconComponent />
-                  </div>
-                  <div>
-                    <h5 className="text-lg font-bold text-slate-900 mb-2">
-                      {obj.title}
-                    </h5>
-                    <p className="text-sm text-slate-600 leading-relaxed px-2">
-                      {obj.desc}
-                    </p>
-                  </div>
+              {/* Mandate Footer */}
+              <div className="pt-6 border-t border-slate-50 flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Target size={12} className="text-[#034FA3]" />
+                  <span className="text-[9px] font-black uppercase tracking-widest text-[#034FA3]">{t.mandate}</span>
                 </div>
-              )
-            })}
+                <div className="text-[10px] font-black text-slate-900 italic opacity-40">{t.themePhrase}</div>
+              </div>
+
+              {/* Corner Accent */}
+              <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-[#034FA3]/5 to-transparent rounded-bl-[4rem]" />
+            </motion.div>
           </div>
+
+          {/* Mission Objectives (Right) */}
+          <div className="lg:col-span-7">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-4">
+              {t.objectives.map((obj, index) => {
+                const Icon = obj.icon
+                return (
+                  <motion.div
+                    key={obj.id}
+                    initial={{ opacity: 0, y: 15 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: index * 0.1 }}
+                    className="group relative"
+                  >
+                    <div className="relative bg-white/50 backdrop-blur-sm rounded-2xl p-5 border border-slate-100 flex items-center gap-6 transition-all duration-300 hover:shadow-lg hover:bg-white group-hover:-translate-y-1">
+                      <div className="shrink-0 w-12 h-12 rounded-xl bg-white shadow-sm flex items-center justify-center text-[#034FA3] group-hover:bg-[#034FA3] group-hover:text-white transition-all duration-500 border border-slate-50">
+                        <Icon size={20} />
+                      </div>
+                      <div className="flex-grow">
+                        <div className="flex items-center gap-2 mb-1">
+                          <h5 className="text-sm sm:text-base font-black text-slate-900 tracking-tight">
+                            {obj.title}
+                          </h5>
+                          <div className="h-px flex-grow bg-slate-50" />
+                          <Sparkles size={12} className="text-amber-500 opacity-0 group-hover:opacity-40 transition-opacity" />
+                        </div>
+                        <p className="text-[11px] sm:text-xs text-slate-500 font-medium leading-relaxed opacity-80">
+                          {obj.desc}
+                        </p>
+                      </div>
+                    </div>
+                  </motion.div>
+                )
+              })}
+            </div>
+
+            {/* Legend Component */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              className="mt-8 flex items-center justify-end gap-3 px-2"
+            >
+              <div className="flex -space-x-1.5 opacity-40">
+                {[1, 2, 3].map(i => <div key={i} className="w-2.5 h-2.5 rounded-full border border-white bg-slate-200" />)}
+              </div>
+              <span className="text-[8px] font-black text-slate-300 uppercase tracking-widest leading-none">Global Partnership Synergy Matrix</span>
+            </motion.div>
+          </div>
+
         </div>
       </div>
     </section>

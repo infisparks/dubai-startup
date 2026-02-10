@@ -46,7 +46,7 @@ export default function PastSponsors() {
                                 <img
                                     src={sponsor.logo}
                                     alt={sponsor.name}
-                                    className="h-12 sm:h-16 w-auto object-contain max-w-[150px] grayscale group-hover:grayscale-0 transition-all duration-300"
+                                    className="h-12 sm:h-16 w-auto object-contain max-w-[150px] transition-all duration-300"
                                 />
                             </div>
                         ))}
@@ -62,7 +62,7 @@ export default function PastSponsors() {
                                 <img
                                     src={sponsor.logo}
                                     alt={sponsor.name}
-                                    className="h-12 sm:h-16 w-auto object-contain max-w-[150px] grayscale group-hover:grayscale-0 transition-all duration-300"
+                                    className="h-12 sm:h-16 w-auto object-contain max-w-[150px] transition-all duration-300"
                                 />
                             </div>
                         ))}
@@ -78,7 +78,7 @@ export default function PastSponsors() {
                                 <img
                                     src={sponsor.logo}
                                     alt={sponsor.name}
-                                    className="h-12 sm:h-16 w-auto object-contain max-w-[150px] grayscale group-hover:grayscale-0 transition-all duration-300"
+                                    className="h-12 sm:h-16 w-auto object-contain max-w-[150px] transition-all duration-300"
                                 />
                             </div>
                         ))}

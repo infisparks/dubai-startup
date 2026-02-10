@@ -2,7 +2,8 @@
 
 import React, { useState } from 'react'
 import Image from 'next/image'
-import { Linkedin, Twitter, ChevronDown, ChevronUp, Quote } from 'lucide-react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { Linkedin, Twitter, ChevronDown, ChevronUp, Quote, Award, ShieldCheck, Sparkles } from 'lucide-react'
 
 interface FounderPageProps {
   language: 'en' | 'ar'
@@ -10,158 +11,184 @@ interface FounderPageProps {
 
 const content = {
   en: {
-    sectionTitle: 'Our Visionary Leaders',
+    sectionTitle: 'Visionary Founders',
+    tagline: 'Architects of Strategic Growth',
     founders: [
       {
+        id: 'kishan',
         name: 'Kishan Kumar Verma',
-        role: 'Chief Executive Officer, Investarise Global',
+        role: 'CEO, Investarise Global',
         image: '/speaker/4.png',
+        color: 'from-blue-600 to-indigo-700',
         bio: [
-          "An accomplished retail & business banking leader with over 25 years of diversified experience across the UAE and India, specializing in Sales & Distribution Management, Payroll Acquisition, Credit Cards, Personal Finance, Mortgage, SME, and Strategic Business Growth.",
-          "A fiercely driven start-up catalyst, he excels in launching new business lines, leading digital transformation, and building high-performing, cross-functional teams. With a proven track record in driving bank-wide digital strategy, he has played a pivotal role in shaping organizational roadmaps, strengthening revenue models, and accelerating digital adoption.",
-          "Recognized for consistently delivering double- and triple-digit growth, he blends strategic foresight with hands-on execution to penetrate new markets, enhance profitability, and achieve sustainable revenue expansion.",
+          "An accomplished retail & business banking leader with over 25 years of diversified experience across the UAE and India, specializing in Strategic Business Growth.",
+          "A fiercely driven start-up catalyst, he excels in launching new business lines and leading digital transformation.",
+          "Recognized for consistently delivering double- and triple-digit growth, he blends strategic foresight with hands-on execution to enhance profitability."
         ]
       },
       {
+        id: 'sushil',
         name: 'Sushil Sharma',
         role: 'Founder & CEO, Marwari Catalysts',
         image: '/speaker/14.png',
+        color: 'from-amber-500 to-orange-600',
         bio: [
-          "Founder and CEO of Marwari Catalysts, fueling the startup ecosystem in Tier 2 & 3 cities. A visionary leader committed to empowering entrepreneurs and driving innovation across emerging markets.",
-          "Angel investor in 100+ startups, with a strong focus on gender diversity and inclusive growth. His deep expertise in venture capital and startup acceleration has helped numerous early-stage companies scale and succeed.",
-          "He believes in the power of community and mentorship, actively working to bridge the gap between talent and opportunity in the startup landscape."
+          "Founder and CEO of Marwari Catalysts, fueling the startup ecosystem in Tier 2 & 3 cities. A visionary leader committed to empowering entrepreneurs.",
+          "Angel investor in 100+ startups, with a strong focus on inclusive growth. His expertise has helped numerous early-stage companies scale.",
+          "He believes in the power of community and mentorship, bridging the gap between talent and opportunity."
         ]
       }
     ],
-    readMore: 'Read Biography',
-    readLess: 'Close Biography',
-    connect: 'Connect'
+    readMore: 'Biography',
+    readLess: 'Close',
   },
   ar: {
-    sectionTitle: 'قادتنا أصحاب الرؤية',
+    sectionTitle: 'المؤسسون أصحاب الرؤية',
+    tagline: 'مهندسو النمو الاستراتيجي',
     founders: [
       {
+        id: 'kishan',
         name: 'كيشان كومار فيرما',
-        role: 'الرئيس التنفيذي',
+        role: 'الرئيس التنفيذي، Investarise Global',
         image: '/speaker/4.png',
+        color: 'from-blue-600 to-indigo-700',
         bio: [
-          "قائد بارز في الخدمات المصرفية للأفراد والأعمال يتمتع بخبرة متنوعة تزيد عن 25 عامًا في الإمارات العربية المتحدة والهند، ومتخصص في إدارة المبيعات والتوزيع، واكتساب كشوف المرتبات، وبطاقات الائتمان، والتمويل الشخصي.",
-          "بصفته محفزًا قويًا للشركات الناشئة، فهو يتفوق في إطلاق خطوط أعمال جديدة، وقيادة التحول الرقمي، وبناء فرق عالية الأداء ومتعددة الوظائف.",
-          "يشتهر بتقديم نمو مزدوج وثلاثي الأرقام باستمرار، ويمزج بين البصيرة الاستراتيجية والتنفيذ العملي لاختراق أسواق جديدة، وتعزيز الربحية."
+          "قائد بارز في الخدمات المصرفية يتمتع بخبرة تزيد عن 25 عامًا في الإمارات والهند، متخصص في النمو الاستراتيجي.",
+          "محفز قوي للشركات الناشئة، يتفوق في قيادة التحول الرقمي وبناء فرق عالية الأداء.",
+          "معروف بتحقيق نمو مزدوج وثلاثي الأرقام باستمرار، يمزج بين البصيرة الاستراتيجية والتنفيذ العملي."
         ]
       },
       {
+        id: 'sushil',
         name: 'سوشيل شارما',
         role: 'المؤسس والرئيس التنفيذي، Marwari Catalysts',
         image: '/speaker/14.png',
+        color: 'from-amber-500 to-orange-600',
         bio: [
-          "المؤسس والرئيس التنفيذي لشركة Marwari Catalysts، التي تغذي نظام الشركات الناشئة في مدن المستوى 2 و 3. قائد صاحب رؤية ملتزم بتمكين رواد الأعمال ودفع الابتكار عبر الأسواق الناشئة.",
-          "مستثمر ملاك في أكثر من 100 شركة ناشئة، مع تركيز قوي على التنوع بين الجنسين والنمو الشامل. ساعدت خبرته العميقة في رأس المال الاستثماري وتسريع الشركات الناشئة العديد من الشركات في مرحلة مبكرة على التوسع والنجاح.",
-          "إنه يؤمن بقوة المجتمع والإرشاد، ويعمل بنشاط لسد الفجوة بين الموهبة والفرصة في مشهد الشركات الناشئة."
+          "المؤسس والرئيس التنفيذي لـ Marwari Catalysts، يغذي نظام الشركات الناشئة ويهتم بتمكين رواد الأعمال.",
+          "مستثمر ملاك في أكثر من 100 شركة ناشئة، ساعدت خبرته العديد من الشركات على النجاح.",
+          "يؤمن بقوة المجتمع والإرشاد، ويعمل بنشاط لسد الفجوة بين الموهبة والفرصة."
         ]
       }
     ],
-    readMore: 'اقرأ السيرة الذاتية',
-    readLess: 'إغلاق السيرة الذاتية',
-    connect: 'تواصل'
+    readMore: 'السيرة الذاتية',
+    readLess: 'إغلاق',
   }
 }
 
 export default function FounderPage({ language = 'en' }: FounderPageProps) {
   const t = content[language]
   const isRtl = language === 'ar'
-  // Use independent state for each founder expansion
-  const [expandedIndex, setExpandedIndex] = useState<number | null>(null)
-
-  const toggleExpand = (index: number) => {
-    setExpandedIndex(expandedIndex === index ? null : index)
-  }
+  const [expandedId, setExpandedId] = useState<string | null>(null)
 
   return (
-    <section className="py-20 sm:py-28 bg-white overflow-hidden relative" dir={isRtl ? 'rtl' : 'ltr'}>
-      {/* Background Decor */}
-      <div className="absolute top-0 left-0 w-full h-[500px] bg-gradient-to-b from-slate-50 to-white -z-10" />
-      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-[#034FA3]/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
+    <section className="py-20 bg-white relative overflow-hidden" dir={isRtl ? 'rtl' : 'ltr'}>
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(3,79,163,0.02)_0%,transparent_70%)]" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
-        {/* Section Header */}
-        <div className="text-center mb-20">
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 tracking-tight">
+      <div className="max-w-6xl mx-auto px-6 relative z-10">
+        <div className="text-center mb-16">
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-100 text-[#034FA3] text-[9px] font-black uppercase tracking-[0.2em] mb-4"
+          >
+            <ShieldCheck size={12} />
+            Lead Governance
+          </motion.div>
+          <motion.h2
+            initial={{ opacity: 0, y: 15 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-3xl sm:text-5xl font-black text-slate-900 tracking-tighter mb-4"
+          >
             {t.sectionTitle}
-          </h2>
-          <div className="mt-6 h-1 w-24 bg-gradient-to-r from-[#034FA3] to-[#023c7a] rounded-full mx-auto" />
+          </motion.h2>
+          <motion.p
+            initial={{ opacity: 0, y: 15 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-slate-500 text-sm sm:text-base font-medium max-w-xl mx-auto"
+          >
+            {t.tagline}
+          </motion.p>
         </div>
 
-        {/* Founders Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
           {t.founders.map((founder, index) => (
-            <div
-              key={index}
-              className="group relative bg-white rounded-[2rem] p-8 sm:p-10 border border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.08)] transition-all duration-500 flex flex-col items-start"
+            <motion.div
+              key={founder.id}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+              className="group relative"
             >
-              {/* Image & Header */}
-              <div className="flex flex-col sm:flex-row gap-6 items-start mb-6 w-full">
-                <div className="relative w-28 h-28 sm:w-32 sm:h-32 shrink-0">
-                  <div className="absolute inset-0 bg-gradient-to-br from-[#034FA3]/20 to-[#c4925f]/20 rounded-full blur-lg opacity-50 group-hover:opacity-100 transition-opacity duration-500" />
-                  <Image
-                    src={founder.image}
-                    alt={founder.name}
-                    fill
-                    className="object-cover rounded-full border-4 border-white shadow-md relative z-10"
-                  />
-                  {/* Decorative badge icon */}
-                  <div className="absolute -bottom-1 -right-1 z-20 bg-white p-1.5 rounded-full shadow-sm border border-slate-100 text-[#034FA3]">
-                    <Quote size={14} fill="currentColor" className="text-[#034FA3]" />
+              <div className="relative bg-white rounded-[2rem] border border-slate-100 overflow-hidden shadow-[0_20px_40px_-12px_rgba(0,0,0,0.05)] transition-all duration-500">
+                <div className={`h-1.5 w-full bg-gradient-to-r ${founder.color}`} />
+
+                <div className="p-6 sm:p-10">
+                  <div className="flex flex-col sm:flex-row gap-6 items-start mb-8">
+                    <div className="relative shrink-0">
+                      <div className="relative w-24 h-24 sm:w-32 sm:h-32 rounded-2xl overflow-hidden border border-slate-100 shadow-xl group-hover:scale-105 transition-transform duration-500">
+                        <Image
+                          src={founder.image}
+                          alt={founder.name}
+                          fill
+                          className="object-cover"
+                        />
+                      </div>
+                      <div className={`absolute -bottom-1 -right-1 bg-gradient-to-br ${founder.color} p-2 rounded-lg shadow-lg text-white`}>
+                        <Award size={14} />
+                      </div>
+                    </div>
+
+                    <div className="pt-1">
+                      <div className="flex items-center gap-2 mb-2">
+                        <span className="text-[8px] font-black uppercase tracking-[0.2em] text-[#034FA3]/60">Executive Board</span>
+                      </div>
+                      <h3 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight leading-tight mb-2 group-hover:text-[#034FA3] transition-colors">
+                        {founder.name}
+                      </h3>
+                      <p className="text-[10px] sm:text-xs font-bold text-slate-400 uppercase tracking-widest leading-relaxed">
+                        {founder.role}
+                      </p>
+
+                      <div className="flex items-center gap-3 mt-4">
+                        <a href="#" className="w-8 h-8 rounded-lg bg-slate-50 border border-slate-100 flex items-center justify-center text-slate-400 hover:bg-[#0A66C2] hover:text-white transition-all">
+                          <Linkedin size={14} />
+                        </a>
+                        <a href="#" className="w-8 h-8 rounded-lg bg-slate-50 border border-slate-100 flex items-center justify-center text-slate-400 hover:bg-black hover:text-white transition-all">
+                          <Twitter size={14} />
+                        </a>
+                      </div>
+                    </div>
                   </div>
-                </div>
 
-                <div className="pt-2">
-                  <h3 className="text-2xl font-bold text-slate-900 group-hover:text-[#034FA3] transition-colors duration-300">
-                    {founder.name}
-                  </h3>
-                  <div className="h-0.5 w-12 bg-[#c4925f]/30 mt-2 mb-3" />
-                  <p className="text-sm font-semibold text-slate-500 uppercase tracking-wide">
-                    {founder.role}
-                  </p>
+                  <div className="relative">
+                    <div className={`space-y-3 text-xs sm:text-sm text-slate-500 leading-relaxed font-medium transition-all duration-500 overflow-hidden ${expandedId === founder.id ? 'max-h-[800px]' : 'max-h-[100px]'}`}>
+                      {founder.bio.map((para, i) => (
+                        <p key={i}>{para}</p>
+                      ))}
+                    </div>
+                    {!expandedId && <div className="absolute bottom-0 left-0 w-full h-10 bg-gradient-to-t from-white to-transparent pointer-events-none" />}
+                  </div>
 
-                  {/* Social Links Placeholder */}
-                  <div className="flex gap-3 mt-4 opacity-60 group-hover:opacity-100 transition-opacity duration-300">
-                    <button className="text-slate-400 hover:text-[#034FA3] transition-colors"><Linkedin size={18} /></button>
-                    <button className="text-slate-400 hover:text-[#034FA3] transition-colors"><Twitter size={18} /></button>
+                  <div className="mt-6 pt-6 border-t border-slate-50 flex items-center justify-between">
+                    <button
+                      onClick={() => setExpandedId(expandedId === founder.id ? null : founder.id)}
+                      className="group/btn flex items-center gap-2 text-[9px] font-black uppercase tracking-widest text-[#034FA3]"
+                    >
+                      <span>{expandedId === founder.id ? t.readLess : t.readMore}</span>
+                      <ChevronDown size={12} className={`transition-transform ${expandedId === founder.id ? 'rotate-180' : ''}`} />
+                    </button>
+                    <Sparkles size={12} className="text-amber-500 opacity-20 group-hover:opacity-100 transition-opacity" />
                   </div>
                 </div>
               </div>
 
-              {/* Bio Content */}
-              <div className="relative w-full">
-                <div className={`prose prose-sm max-w-none text-slate-600 leading-relaxed text-justify transition-all duration-500 overflow-hidden ${expandedIndex === index ? 'max-h-[1000px]' : 'max-h-[120px] mask-gradient-bottom'}`}>
-                  {founder.bio.map((paragraph, i) => (
-                    <p key={i} className={i === 0 ? "mb-4" : "mb-4"}>
-                      {paragraph}
-                    </p>
-                  ))}
-                </div>
-
-                {/* Gradient Overlay when collapsed */}
-                {expandedIndex !== index && (
-                  <div className="absolute bottom-0 left-0 w-full h-16 bg-gradient-to-t from-white to-transparent pointer-events-none" />
-                )}
-              </div>
-
-              {/* Read More Trigger */}
-              <button
-                onClick={() => toggleExpand(index)}
-                className="mt-4 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#034FA3] hover:text-[#023c7a] transition-colors group/btn"
-              >
-                {expandedIndex === index ? t.readLess : t.readMore}
-                {expandedIndex === index ? (
-                  <ChevronUp size={14} className="group-hover/btn:-translate-y-0.5 transition-transform" />
-                ) : (
-                  <ChevronDown size={14} className="group-hover/btn:translate-y-0.5 transition-transform" />
-                )}
-              </button>
-            </div>
+              <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-[90%] h-8 bg-slate-50/50 rounded-t-[1.5rem] -z-10 transition-all duration-500" />
+            </motion.div>
           ))}
         </div>
       </div>
