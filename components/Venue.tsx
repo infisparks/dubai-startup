@@ -12,9 +12,9 @@ interface VenueSectionProps {
 // Data structure for text content
 const translations = {
   en: {
-    title: 'The Venue: Taj Exotica Resort & Spa The Palm',
-    mainDescription: `Investarise Global Investors Summit 2026 will be hosted at the prestigious Taj Exotica Resort & Spa The Palm, sophisticated and distinctive venues includes two stunning Royale Ballrooms and eight contemporary meeting rooms`,
-    imageCaption: 'The iconic Taj Exotica Resort & Spa The Palm',
+    title: 'The Venue',
+    mainDescription: `Investarise Global Investors Summit details will be updated for upcoming events.`,
+    imageCaption: 'Event Venue',
     highlightsTitle: 'Venue Highlights',
     highlights: [
       {
@@ -35,9 +35,9 @@ const translations = {
     ],
   },
   ar: {
-    title: 'المكان: منتجع وسبا تاج إكزوتيكا النخلة',
-    mainDescription: `ستُعقد قمة إنفستارايز العالمية للاستثمار 2026 في منتجع وسبا تاج إكزوتيكا النخلة المرموق، وتتضمن أماكن الاجتماعات المتطورة والمميزة قاعتي رويال للحفلات وثماني غرف اجتماعات عصرية.`,
-    imageCaption: 'منتجع وسبا تاج إكزوتيكا النخلة الأيقوني',
+    title: 'المكان',
+    mainDescription: `سيتم تحديث تفاصيل قمة إنفستارايز العالمية للاستثمار للفعاليات القادمة.`,
+    imageCaption: 'مكان الحدث',
     highlightsTitle: 'أبرز مميزات المكان',
     highlights: [
       {
@@ -106,7 +106,7 @@ export default function VenueSection({
         <div className="flex flex-col items-center lg:items-start space-y-3">
           <Image
             src={venueImageSrc}
-            alt="Taj Exotica Resort & Spa The Palm"
+            alt="Venue"
             width={600}
             height={400}
             className="w-full max-w-lg lg:max-w-none h-auto rounded-lg shadow-2xl transition-transform duration-500 hover:scale-[1.01] hover:shadow-cyan-400/30"

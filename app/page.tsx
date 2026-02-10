@@ -96,7 +96,7 @@ export default function Home() {
 
         <div className="mt-16 space-y-16">
           <FocusSectors language={language} />
-          <VenueSection language={language} venueImageSrc={"/taj.jpg"} />
+// <VenueSection language={language} venueImageSrc={"/taj.jpg"} />
         </div>
       </section>
 

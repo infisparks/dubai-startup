@@ -13,8 +13,6 @@ const translations = {
     headline: "Investarise Global Investors",
     headline2: "Summit 2026",
     tagline: "PITCH. CONNECT. PROSPER.",
-    location: "Taj Exotica Resort & Spa The Palm",
-    date: "February 5th 2026",
     statsInvestors: "100+ Investors",
     statsStartups: "250+ Startups and SME's",
     statsSpeakers: "20+ Speakers",
@@ -23,8 +21,6 @@ const translations = {
     headline: "قمة إنفسترايز العالمية للاستثمار",
     headline2: "2026",
     tagline: "اعرض. تواصل. ازدهر.",
-    location: "منتجع وسبا تاج إكزوتيكا النخلة",
-    date: "5 فبراير 2026",
     statsInvestors: "100+ مستثمر",
     statsStartups: "250+ شركة ناشئة والشركات الصغيرة والمتوسطة",
     statsSpeakers: "20+ متحدثين",
@@ -75,18 +71,8 @@ export default function Hero({ language }: HeroProps) {
               </p>
             </div>
 
-            {/* Event Details - Compact & Clean */}
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-6 mb-6 sm:mb-8 text-white/90 animate-fade-in-up animation-delay-200">
-              <div className="flex items-center gap-2">
-                <MapPin className="w-4 h-4 text-[#7db9e8]" />
-                <span className="text-xs sm:text-sm font-medium">{t.location}</span>
-              </div>
-              <div className="hidden sm:block w-px h-4 bg-white/30"></div>
-              <div className="flex items-center gap-2">
-                <Calendar className="w-4 h-4 text-[#7db9e8]" />
-                <span className="text-xs sm:text-sm font-medium">{t.date}</span>
-              </div>
-            </div>
+            {/* Removed Event Details as event is completed */}
+
 
             {/* Stats - Inline without cards, centered */}
             <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 mb-6 sm:mb-8 animate-fade-in-up animation-delay-400">

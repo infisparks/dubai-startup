@@ -33,10 +33,6 @@ const translations = {
     title: 'Event Overview',
     intro:
       "Investarise Global Investors Summit 2026 is a premier international platform designed to unite over 100 investors, 250 startups and SME's, and 20 speakers, alongside global partners.",
-    dateLabel: 'Summit Dates',
-    date: 'February 5th 2026',
-    venueLabel: 'Location',
-    venue: 'Taj Exotica Resort and Spa Palm Jumeirah Dubai',
     keyStakeholders: 'Key Stakeholders',
     stakeholders: [
       { count: '100+', label: 'Investors' },
@@ -56,10 +52,6 @@ const translations = {
     title: 'نظرة عامة على الحدث',
     intro:
       'قمة إنفستارايز العالمية للاستثمار 2026 هي منصة دولية رائدة تهدف إلى جمع أكثر من 100 مستثمر و 250 شركة ناشئة وشركات صغيرة ومتوسطة و 20 متحدثين، بالإضافة إلى الشركاء العالميين.',
-    dateLabel: 'تواريخ القمة',
-    date: '5 فبراير 2026',
-    venueLabel: 'الموقع',
-    venue: 'منتجع وسبا تاج إكزوتيكا، نخلة جميرا، دبي',
     keyStakeholders: 'أصحاب المصلحة الرئيسيون',
     stakeholders: [
       { count: '50+', label: 'مستثمر' },
@@ -128,79 +120,33 @@ export default function EventOverview({ language = 'en' }: EventOverviewProps) {
         </div>
 
         {/* 2. DATE, VENUE, AND OBJECTIVES (Dual-Column Layout) */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
-          {/* Column 1: Date & Venue (Sleek Information Block) */}
-          <div className="lg:col-span-1 bg-white p-6 rounded-2xl shadow-lg border border-slate-100 h-fit">
-            <h4 className="text-lg font-bold text-[#034FA3] uppercase tracking-wider mb-4">
-              {t.venueLabel} & {t.dateLabel}
-            </h4>
+        {/* Column 2: Core Objectives (Icon-Rich List) - Centered and Full Width */}
+        <div className="lg:col-span-3 bg-white p-6 rounded-2xl shadow-lg border border-slate-100">
+          <h4 className="text-xl font-bold text-slate-900 mb-6 border-b border-slate-100 pb-3 text-center">
+            {t.coreObjectives}
+          </h4>
 
-            <div className="space-y-6">
-              {/* Date */}
-              <div className="flex items-start gap-3">
-                <div className="flex-shrink-0 p-2 bg-[#034FA3]/10 text-[#034FA3] rounded-lg">
-                  <CalendarIcon />
-                </div>
-                <div>
-                  <p className="text-sm font-medium text-slate-500">
-                    {t.dateLabel}
-                  </p>
-                  <p className="text-lg font-semibold text-slate-900">
-                    {t.date}
-                  </p>
-                </div>
-              </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {t.objectives.map((obj, index) => {
+              const IconComponent = obj.icon
+              const isBlue = index % 2 === 0;
 
-              {/* Venue */}
-              <div className="flex items-start gap-3">
-                <div className="flex-shrink-0 p-2 bg-[#c4925f]/10 text-[#c4925f] rounded-lg">
-                  <MapPinIcon />
-                </div>
-                <div>
-                  <p className="text-sm font-medium text-slate-500">
-                    {t.venueLabel}
-                  </p>
-                  <p className="text-lg font-semibold text-slate-900">
-                    {t.venue}
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Small divider */}
-            <div className="mt-6 pt-4 border-t border-slate-100">
-              <p className="text-xs text-slate-400">Palm Jumeirah, Dubai</p>
-            </div>
-          </div>
-
-          {/* Column 2: Core Objectives (Icon-Rich List) */}
-          <div className="lg:col-span-2 bg-white p-6 rounded-2xl shadow-lg border border-slate-100">
-            <h4 className="text-xl font-bold text-slate-900 mb-6 border-b border-slate-100 pb-3">
-              {t.coreObjectives}
-            </h4>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-8">
-              {t.objectives.map((obj, index) => {
-                const IconComponent = obj.icon
-                const isRed = index % 2 === 0;
-
-                return (
-                  <div key={index} className="flex items-start gap-4">
-                    <div className={`flex-shrink-0 p-3 rounded-xl ${isRed ? 'bg-[#034FA3]/10 text-[#034FA3]' : 'bg-[#c4925f]/10 text-[#c4925f]'}`}>
-                      <IconComponent />
-                    </div>
-                    <div>
-                      <h5 className="text-base font-semibold text-slate-900">
-                        {obj.title}
-                      </h5>
-                      <p className="mt-1 text-xs text-slate-600">
-                        {obj.desc}
-                      </p>
-                    </div>
+              return (
+                <div key={index} className="flex flex-col items-center text-center gap-4 p-4 rounded-xl hover:bg-slate-50 transition-colors">
+                  <div className={`flex-shrink-0 p-4 rounded-full ${isBlue ? 'bg-[#034FA3]/10 text-[#034FA3]' : 'bg-[#c4925f]/10 text-[#c4925f]'}`}>
+                    <IconComponent />
                   </div>
-                )
-              })}
-            </div>
+                  <div>
+                    <h5 className="text-lg font-bold text-slate-900 mb-2">
+                      {obj.title}
+                    </h5>
+                    <p className="text-sm text-slate-600 leading-relaxed px-2">
+                      {obj.desc}
+                    </p>
+                  </div>
+                </div>
+              )
+            })}
           </div>
         </div>
       </div>

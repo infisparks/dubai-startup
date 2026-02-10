@@ -63,14 +63,7 @@ export default function HomeBannerPopup() {
                 <div className="bg-white p-5 sm:p-6 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-5 shrink-0">
 
                     <div className="flex flex-col gap-2 text-center sm:text-left w-full sm:w-auto">
-                        <div className="flex items-center justify-center sm:justify-start gap-2 text-slate-700 font-medium text-sm sm:text-base">
-                            <Calendar className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600 shrink-0" />
-                            <span>5th February 2026</span>
-                        </div>
-                        <div className="flex items-center justify-center sm:justify-start gap-2 text-slate-600 text-xs sm:text-sm">
-                            <MapPin className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600 shrink-0" />
-                            <span>Taj Exotica Resort & Spa, The Palm, Dubai</span>
-                        </div>
+                        {/* Event details removed as it is completed */}
                     </div>
 
                     <Link
