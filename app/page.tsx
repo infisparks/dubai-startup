@@ -15,7 +15,7 @@ import Footer from "@/components/footer"
 import ScrollToTop from "@/components/scroll-to-top"
 import HonorarySlider from "@/components/HonorarySlider"
 import DrBuAbdullah from "@/components/DrBuAbdullah"
-import FounderPage from "@/components/Founder"
+
 import CoFoundersPage from "@/components/Cofounder"
 import ApprovedStartupsList from "@/components/ApprovedStartupsList"
 import Speaker from "@/components/Speaker"
@@ -60,7 +60,7 @@ export default function Home() {
       {/* Core Team - Subtle Gradient */}
       <section className="py-16 bg-gradient-to-b from-slate-50 to-white">
         <div className="space-y-16 container mx-auto px-4">
-          <FounderPage language={language} />
+
           {/* <ApprovedStartupsList language={language}/> */}
           <CoFoundersPage language={language} />
         </div>

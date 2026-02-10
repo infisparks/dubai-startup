@@ -26,14 +26,6 @@ const translations = {
                 badge: 'Chairman'
             },
             {
-                id: 'sushil',
-                name: 'Sushil Sharma',
-                role: 'Founder & CEO, Marwari Catalysts',
-                bio: 'Fueling the startup ecosystem in Tier 2 & 3 cities. Angel investor in 100+ startups, with a focus on gender diversity and inclusive innovation across global markets.',
-                image: '/speaker/14.png',
-                badge: 'Venture Capitalist'
-            },
-            {
                 id: 'bhandari',
                 name: 'Bhimkanta Bhandari',
                 role: 'Chairman & Managing Director',
@@ -161,14 +153,6 @@ const translations = {
                 bio: 'استراتيجي إماراتي متميز يتمتع بخبرة قيادية عليا عبر القطاعين الحكومي والخاص. الرئيس التنفيذي السابق لمؤسسة محمد بن راشد آل مكتوم.',
                 image: '/speaker/21.png',
                 badge: 'رئيس مجلس الإدارة'
-            },
-            {
-                id: 'sushil',
-                name: 'سوشيل شارما',
-                role: 'المؤسس والرئيس التنفيذي، Marwari Catalysts',
-                bio: 'تغذية النظام البيئي للشركات الناشئة ومستثمر ملاك في أكثر من 100 شركة ناشئة، مع التركيز على التنوع والابتكار الشامل.',
-                image: '/speaker/14.png',
-                badge: 'مستثمر مغامر'
             },
             {
                 id: 'bhandari',

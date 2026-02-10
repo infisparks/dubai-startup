@@ -17,6 +17,15 @@ const translations = {
     readLess: 'Close',
     coFounders: [
       {
+        id: 'kishan',
+        name: 'Kishan Kumar Verma',
+        role: 'CEO, Investarise Global',
+        bio: 'An accomplished retail & business banking leader with over 25 years of diversified experience across the UAE and India, specializing in Strategic Business Growth. A fiercely driven start-up catalyst, he excels in launching new business lines and leading digital transformation. Recognized for consistently delivering double- and triple-digit growth, he blends strategic foresight with hands-on execution to enhance profitability.',
+        image: '/speaker/4.png',
+        color: 'from-blue-600 to-indigo-700',
+        badge: 'CEO'
+      },
+      {
         id: 'sanjay',
         name: 'Sanjay Bhambri',
         role: 'Co-Founder & Strategy Lead',
@@ -43,6 +52,15 @@ const translations = {
     readMore: 'السيرة الذاتية',
     readLess: 'إغلاق',
     coFounders: [
+      {
+        id: 'kishan',
+        name: 'كيشان كومار فيرما',
+        role: 'الرئيس التنفيذي، Investarise Global',
+        bio: 'قائد بارز في الخدمات المصرفية يتمتع بخبرة تزيد عن 25 عامًا في الإمارات والهند، متخصص في النمو الاستراتيجي. محفز قوي للشركات الناشئة، يتفوق في قيادة التحول الرقمي وبناء فرق عالية الأداء. معروف بتحقيق نمو مزدوج وثلاثي الأرقام باستمرار، يمزج بين البصيرة الاستراتيجية والتنفيذ العملي.',
+        image: '/speaker/4.png',
+        color: 'from-blue-600 to-indigo-700',
+        badge: 'الرئيس التنفيذي'
+      },
       {
         id: 'sanjay',
         name: 'سانجاي بهامبري',
@@ -106,7 +124,7 @@ export default function CoFoundersPage({ language = 'en' }: CoFoundersPageProps)
           </motion.p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
           {t.coFounders.map((founder, index) => (
             <motion.div
               key={founder.id}
@@ -119,9 +137,9 @@ export default function CoFoundersPage({ language = 'en' }: CoFoundersPageProps)
               <div className="absolute -top-3 -right-3 w-full h-full bg-slate-100/50 rounded-[2rem] -z-10 group-hover:-top-4 group-hover:-right-4 transition-all duration-500 border border-slate-200" />
 
               <div className="relative bg-white rounded-[2rem] p-6 sm:p-8 border border-slate-200 shadow-lg overflow-hidden transition-all duration-500">
-                <div className="flex flex-col md:flex-row gap-6 items-start relative z-10">
-                  <div className="relative shrink-0 mx-auto md:mx-0">
-                    <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl p-1 bg-slate-50 border border-slate-100 overflow-hidden group-hover:border-slate-300 transition-colors">
+                <div className="flex flex-col gap-6 items-center text-center relative z-10">
+                  <div className="relative shrink-0">
+                    <div className="w-28 h-28 rounded-2xl p-1 bg-slate-50 border border-slate-100 overflow-hidden group-hover:border-slate-300 transition-colors">
                       <Image
                         src={founder.image}
                         alt={founder.name}
@@ -135,10 +153,10 @@ export default function CoFoundersPage({ language = 'en' }: CoFoundersPageProps)
                     </div>
                   </div>
 
-                  <div className="flex-grow w-full text-center md:text-start">
-                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 mb-2">
+                  <div className="flex-grow w-full">
+                    <div className="flex flex-col items-center justify-between gap-3 mb-2">
                       <div>
-                        <h3 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight group-hover:text-[#034FA3] transition-colors">
+                        <h3 className="text-xl font-black text-slate-900 tracking-tight group-hover:text-[#034FA3] transition-colors">
                           {founder.name}
                         </h3>
                         <p className="text-[9px] font-bold text-emerald-600 uppercase tracking-[0.2em] mt-0.5">
@@ -153,7 +171,7 @@ export default function CoFoundersPage({ language = 'en' }: CoFoundersPageProps)
 
                     <div className="relative">
                       <Quote size={16} className="text-slate-100 absolute -top-3 -left-1 -z-10" />
-                      <div className={`text-xs sm:text-sm text-slate-500 leading-relaxed text-justify md:text-left font-medium transition-all duration-500 overflow-hidden ${expandedId === founder.id ? 'max-h-[500px]' : 'max-h-[100px]'}`}>
+                      <div className={`text-xs text-slate-500 leading-relaxed text-center font-medium transition-all duration-500 overflow-hidden ${expandedId === founder.id ? 'max-h-[500px]' : 'max-h-[100px]'}`}>
                         {founder.bio}
                       </div>
                       {!expandedId && <div className="absolute bottom-0 left-0 w-full h-8 bg-gradient-to-t from-white to-transparent" />}

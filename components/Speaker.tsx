@@ -18,14 +18,6 @@ const translations = {
     readLess: 'Close',
     speakers: [
       {
-        id: 'sushil',
-        name: 'Sushil Sharma',
-        role: 'Founder & CEO, Marwari Catalysts',
-        bio: 'Founder and CEO of Marwari Catalysts, fueling the startup ecosystem in Tier 2 & 3 cities. Angel investor in 100+ startups.',
-        image: '/speaker/14.png',
-        badge: 'Keynote'
-      },
-      {
         id: 'manav',
         name: 'Dr. Manav Ahuja',
         role: 'Strategic Business Consultant',
@@ -74,14 +66,6 @@ const translations = {
     readMore: 'السيرة الذاتية',
     readLess: 'إغلاق',
     speakers: [
-      {
-        id: 'sushil',
-        name: 'سوشيل شارما',
-        role: 'المؤسس والرئيس التنفيذي، Marwari Catalysts',
-        bio: 'المؤسس والرئيس التنفيذي لشركة Marwari Catalysts، التي تغذي نظام الشركات الناشئة.',
-        image: '/speaker/14.png',
-        badge: 'متحدث رئيسي'
-      },
       {
         id: 'manav',
         name: 'د. ماناف أهوجا',
