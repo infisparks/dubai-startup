@@ -83,7 +83,7 @@ export default function AboutSection({ language }: AboutSectionProps) {
                                 </motion.div>
                             </motion.div>
 
-                            {/* Bottom Image (Audience) - Hidden on Mobile */}
+                            {/* Bottom Video (Audience) - Hidden on Mobile */}
                             <motion.div
                                 initial={{ opacity: 0, y: 30 }}
                                 whileInView={{ opacity: 1, y: 0 }}
@@ -91,17 +91,26 @@ export default function AboutSection({ language }: AboutSectionProps) {
                                 transition={{ duration: 0.8, delay: 0.2 }}
                                 className="hidden lg:flex col-span-12 -mt-56 relative z-30 justify-center"
                             >
-                                <div className="w-[90%] rounded-tl-[100px] rounded-br-[100px] rounded-tr-[30px] rounded-bl-[30px] overflow-hidden aspect-[4/3] relative border-[12px] border-white">
-                                    <Image
-                                        src="/event/event2.jpg"
-                                        alt="Investarise Audience"
-                                        fill
-                                        className="object-cover"
-                                    />
-                                    <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent flex items-center justify-center">
-                                        <div className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center cursor-pointer hover:bg-white/40 transition-all border border-white/30">
-                                            <Play className="text-white fill-white ml-1" size={24} />
-                                        </div>
+                                <div className="w-[90%] rounded-tl-[100px] rounded-br-[100px] rounded-tr-[30px] rounded-bl-[30px] overflow-hidden aspect-[4/3] relative border-[12px] border-white bg-slate-100">
+                                    <video
+                                        autoPlay
+                                        muted
+                                        loop
+                                        playsInline
+                                        className="w-full h-full object-cover"
+                                    >
+                                        <source src="https://infisparks.github.io/images/invest.webm" type="video/webm" />
+                                        Your browser does not support the video tag.
+                                    </video>
+                                    <div className="absolute inset-0 bg-gradient-to-t from-slate-900/40 via-transparent to-transparent flex items-center justify-center">
+                                        <a
+                                            href="https://www.youtube.com/watch?v=7ultkv0IWoU"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center cursor-pointer hover:bg-white/40 transition-all border border-white/30 group/play"
+                                        >
+                                            <Play className="text-white fill-white ml-1 group-hover/play:scale-110 transition-transform" size={24} />
+                                        </a>
                                     </div>
                                 </div>
                             </motion.div>

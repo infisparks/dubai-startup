@@ -5,8 +5,8 @@ import { useState, useEffect, useCallback, useMemo, Dispatch, SetStateAction, us
 import { Session, User as SupabaseUser } from "@supabase/supabase-js"
 import Header from "@/components/header"
 import Footer from "@/components/footer"
-import AuthPopup from "@/components/AuthPopup"
-import EmailVerificationNotice from "@/components/EmailVerificationNotice"
+import AuthPopup from "@/components/bincomponent/AuthPopup"
+import EmailVerificationNotice from "@/components/bincomponent/EmailVerificationNotice"
 import { CheckCircle2, LogIn, Edit, Save, Lock, TrendingUp, CreditCard, Download, Ticket, User, Mail, Phone, Calendar, ArrowRight } from "lucide-react"
 import { supabase } from "@/lib/supabaseConfig"
 import PhoneInput, { isValidPhoneNumber } from 'react-phone-number-input'

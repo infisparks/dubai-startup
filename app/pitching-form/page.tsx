@@ -5,8 +5,8 @@ import { useState, useEffect, useCallback, useMemo, Dispatch, SetStateAction, us
 import { Session, User as SupabaseUser } from "@supabase/supabase-js"
 import Header from "@/components/header"
 import Footer from "@/components/footer"
-import AuthPopup from "@/components/AuthPopup"
-import EmailVerificationNotice from "@/components/EmailVerificationNotice"
+import AuthPopup from "@/components/bincomponent/AuthPopup"
+import EmailVerificationNotice from "@/components/bincomponent/EmailVerificationNotice"
 import QRCode from "react-qr-code"
 import html2canvas from "html2canvas"
 import {

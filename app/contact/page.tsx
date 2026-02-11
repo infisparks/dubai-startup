@@ -3,7 +3,7 @@
 import React, { useState } from 'react'
 import Header from "@/components/header"
 import Footer from "@/components/footer"
-import Contact from "@/components/contact"
+import Contact from "@/components/bincomponent/contact"
 
 export default function ContactPage() {
     const [language, setLanguage] = useState<"en" | "ar">("en")
