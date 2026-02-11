@@ -20,8 +20,8 @@ const translations = {
         joinUs: 'Join us at the Investarise Global Summit – Dubai 2026, where ideas meet opportunity.',
         showMore: 'Show More',
         showLess: 'Show Less',
-        stats: '15+',
-        statsLabel: 'Years of Global Impact',
+        stats: '100+',
+        statsLabel: 'Global Investors',
     },
     ar: {
         badge: 'رؤية عالمية 2026',
@@ -33,8 +33,8 @@ const translations = {
         joinUs: 'انضم إلينا في قمة إنفسترايز العالمية – دبي 2026، حيث تلتقي الأفكار بالفرص.',
         showMore: 'عرض المزيد',
         showLess: 'عرض أقل',
-        stats: '15+',
-        statsLabel: 'عاماً من الأثر العالمي',
+        stats: '100+',
+        statsLabel: 'مستثمر عالمي',
     }
 }
 
@@ -76,9 +76,9 @@ export default function AboutSection({ language }: AboutSectionProps) {
                                     whileInView={{ scale: 1, opacity: 1 }}
                                     viewport={{ once: true }}
                                     transition={{ delay: 0.4 }}
-                                    className="hidden lg:flex absolute -top-12 -right-16 w-44 h-56 bg-[#034FA3] rounded-[2.5rem] p-6 flex-col items-center justify-center text-center text-white shadow-2xl border-[10px] border-white z-40"
+                                    className="hidden lg:flex absolute -top-10 -right-12 w-40 h-48 bg-[#034FA3] rounded-[2rem] p-5 flex-col items-center justify-center text-center text-white shadow-2xl border-[8px] border-white z-40"
                                 >
-                                    <span className="text-5xl font-black mb-1">{t.stats}</span>
+                                    <span className="text-4xl font-black mb-1">{t.stats}</span>
                                     <p className="text-[10px] font-black leading-tight uppercase tracking-[0.2em] opacity-90">{t.statsLabel}</p>
                                 </motion.div>
                             </motion.div>
