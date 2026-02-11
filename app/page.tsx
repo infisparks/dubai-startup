@@ -3,36 +3,19 @@
 import { useState } from "react"
 import Header from "@/components/header"
 import Hero from "@/components/hero"
-import About from "@/components/about"
-import InvestariseAdvantage from "@/components/investarise-advantage"
-import FeaturedStartups from "@/components/featured-startups"
-import HowItWorks from "@/components/how-it-works"
-import InvestorBenefits from "@/components/investor-benefits"
-import Testimonials from "@/components/testimonials"
-import Newsletter from "@/components/newsletter"
-import Contact from "@/components/contact"
+import BrandLogoTicker from "@/components/BrandLogoTicker"
+import AboutSection from "@/components/AboutSection"
+import HonorarySlider from "@/components/bincomponent/HonorarySlider"
+import CoFoundersPage from "@/components/bincomponent/Cofounder"
+import SpeakersPage from "@/components/bincomponent/Speaker"
+import InstitutionalInvestors from "@/components/bincomponent/InvestorsSponsors"
+import VisionSection from "@/components/bincomponent/Vision"
+import Gallery from "@/components/bincomponent/Gallery"
+import FocusSectors from "@/components/bincomponent/Focussector"
+import EventOverview from "@/components/bincomponent/Eventoverview"
 import Footer from "@/components/footer"
 import ScrollToTop from "@/components/scroll-to-top"
-import HonorarySlider from "@/components/HonorarySlider"
-import DrBuAbdullah from "@/components/DrBuAbdullah"
 
-import CoFoundersPage from "@/components/Cofounder"
-import ApprovedStartupsList from "@/components/ApprovedStartupsList"
-import Speaker from "@/components/Speaker"
-import PastSpeakers from "@/components/PastSpeakers"
-import Gallery from "@/components/Gallery"
-import PastSponsors from "@/components/PastSponsors"
-import EventOverview from "@/components/Eventoverview"
-import VisionAndGoals from "@/components/Vision"
-import { LandPlot } from "lucide-react"
-import FocusSectors from "@/components/Focussector"
-import VenueSection from "@/components/Venue"
-import Schedule from "@/components/Schedules"
-import MarketingStrategy from "@/components/Markiting"
-import OurTeam from "@/components/Team"
-import SponsorshipPackages from "@/components/Sponser"
-import SpeakerMajid from "@/components/Speaker-majid"
-import InvestorsSponsors from "@/components/InvestorsSponsors"
 export default function Home() {
   const [language, setLanguage] = useState<"en" | "ar">("en")
 
@@ -40,82 +23,40 @@ export default function Home() {
     <div className="min-h-screen bg-white">
       <Header language={language} setLanguage={setLanguage} />
 
-      {/* Hero Section - Full Screen */}
-      <Hero language={language} />
+      <main>
+        {/* Hero Section */}
+        <Hero language={language} />
 
-      {/* Introduction & Vision - Light Gray Background */}
-      <section className="bg-slate-50 relative overflow-hidden">
-        <About language={language} />
-        <div className="container mx-auto py-8">
-          <VisionAndGoals language={language} />
-        </div>
-      </section>
+        {/* Brand Logo Ticker */}
+        <BrandLogoTicker />
 
-      {/* High Profile Attendees - White Background */}
-      <section className="py-16 bg-white">
+        {/* About Section */}
+        <AboutSection language={language} />
+
+        {/* Honorary Guests Section */}
         <HonorarySlider language={language} />
-        {/* <DrBuAbdullah language={language} /> */}
-      </section>
 
-      {/* Core Team - Subtle Gradient */}
-      <section className="py-16 bg-gradient-to-b from-slate-50 to-white">
-        <div className="space-y-16 container mx-auto px-4">
+        {/* Strategic Co-Founders Section */}
+        <CoFoundersPage language={language} />
 
-          {/* <ApprovedStartupsList language={language}/> */}
-          <CoFoundersPage language={language} />
-        </div>
-      </section>
+        {/* Distinguished Speakers Section */}
+        <SpeakersPage language={language} />
 
-      {/* Speakers - Premium Dark/Brand Contrast or Clean White */}
-      <section className="py-20 bg-white">
-        <Speaker language={language} />
-        <div className="mt-12">
-          <PastSpeakers language={language} />
-        </div>
-      </section>
+        {/* Institutional Investors Section */}
+        <InstitutionalInvestors language={language} />
 
-      {/* Investors & Sponsors - Light Background */}
-      <section className="py-20 bg-slate-50">
-        <InvestorsSponsors language={language} />
-      </section>
+        {/* Strategic Vision Section */}
+        <VisionSection language={language} />
 
-      {/* Gallery & Highlights */}
-      <section className="py-20 bg-white">
-        <Gallery language={language} />
-      </section>
-
-      {/* Partners */}
-      <section className="py-12 bg-slate-50 border-t border-slate-100">
-        <PastSponsors />
-      </section>
-
-      {/* Event Details & Logistics - White */}
-      <section className="py-20 bg-white">
+        {/* Event Overview Section */}
         <EventOverview language={language} />
-        {/* <SpeakerMajid language={language} /> */}
 
-        <div className="mt-16 space-y-16">
-          <FocusSectors language={language} />
-// <VenueSection language={language} venueImageSrc={"/taj.jpg"} />
-        </div>
-      </section>
+        {/* Event Gallery Section */}
+        <Gallery language={language} />
 
-      {/* Commercials - Gradient */}
-      <section className="py-20 bg-gradient-to-br from-slate-50 via-white to-blue-50/30">
-        <MarketingStrategy language={language} />
-        {/* <OurTeam language={language} /> */}
-        <div className="mt-16">
-          <SponsorshipPackages language={language} />
-        </div>
-      </section>
-
-      {/* <FeaturedStartups language={language} />
-      <HowItWorks language={language} />
-      <InvestorBenefits language={language} />
-      <Testimonials language={language} />
-      <Newsletter language={language} />
-      <Contact language={language} /> */}
-      {/* <InvestariseAdvantage language={language} /> */}
+        {/* Focus Sectors Section */}
+        <FocusSectors language={language} />
+      </main>
 
       <Footer language={language} />
       <ScrollToTop />

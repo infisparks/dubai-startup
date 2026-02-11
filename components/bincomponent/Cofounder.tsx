@@ -17,24 +17,6 @@ const translations = {
     readLess: 'Close',
     coFounders: [
       {
-        id: 'kishan',
-        name: 'Kishan Kumar Verma',
-        role: 'CEO, Investarise Global',
-        bio: 'An accomplished retail & business banking leader with over 25 years of diversified experience across the UAE and India, specializing in Strategic Business Growth. A fiercely driven start-up catalyst, he excels in launching new business lines and leading digital transformation. Recognized for consistently delivering double- and triple-digit growth, he blends strategic foresight with hands-on execution to enhance profitability.',
-        image: '/speaker/4.png',
-        color: 'from-blue-600 to-indigo-700',
-        badge: 'CEO'
-      },
-      {
-        id: 'sanjay',
-        name: 'Sanjay Bhambri',
-        role: 'Co-Founder & Strategy Lead',
-        bio: 'Specialized in international business development, global strategy, and management consulting. Experienced in building cross-border partnerships, market expansion, and investor engagement.',
-        image: '/speaker/10.png',
-        color: 'from-blue-500 to-cyan-500',
-        badge: 'Strategy'
-      },
-      {
         id: 'farid',
         name: 'Farid Ahmed',
         role: 'Oil & Gas Industry Expert',
@@ -42,34 +24,34 @@ const translations = {
         image: '/speaker/1.png',
         imgClass: 'scale-[1.25] -translate-y-1',
         color: 'from-emerald-500 to-teal-600',
-        badge: 'Industry'
+        badge: 'Co-Founder'
+      },
+      {
+        id: 'kishan',
+        name: 'Kishan Kumar Verma',
+        role: 'Founder & CEO, Investarise Global',
+        bio: 'An accomplished retail & business banking leader with over 25 years of diversified experience across the UAE and India, specializing in Strategic Business Growth. A fiercely driven start-up catalyst, he excels in launching new business lines and leading digital transformation. Recognized for consistently delivering double- and triple-digit growth, he blends strategic foresight with hands-on execution to enhance profitability.',
+        image: '/speaker/4.png',
+        color: 'from-blue-600 to-indigo-700',
+        badge: 'Founder'
+      },
+      {
+        id: 'sanjay',
+        name: 'Sanjay Bhambri',
+        role: 'Strategy Lead',
+        bio: 'Specialized in international business development, global strategy, and management consulting. Experienced in building cross-border partnerships, market expansion, and investor engagement.',
+        image: '/speaker/10.png',
+        color: 'from-blue-500 to-cyan-500',
+        badge: 'Co-Founder'
       },
     ],
   },
   ar: {
-    title: 'المؤسسون المشاركون',
+    title: 'المؤسسون والمؤسسون المشاركون',
     tagline: 'قيادة التحالفات العالمية',
     readMore: 'السيرة الذاتية',
     readLess: 'إغلاق',
     coFounders: [
-      {
-        id: 'kishan',
-        name: 'كيشان كومار فيرما',
-        role: 'الرئيس التنفيذي، Investarise Global',
-        bio: 'قائد بارز في الخدمات المصرفية يتمتع بخبرة تزيد عن 25 عامًا في الإمارات والهند، متخصص في النمو الاستراتيجي. محفز قوي للشركات الناشئة، يتفوق في قيادة التحول الرقمي وبناء فرق عالية الأداء. معروف بتحقيق نمو مزدوج وثلاثي الأرقام باستمرار، يمزج بين البصيرة الاستراتيجية والتنفيذ العملي.',
-        image: '/speaker/4.png',
-        color: 'from-blue-600 to-indigo-700',
-        badge: 'الرئيس التنفيذي'
-      },
-      {
-        id: 'sanjay',
-        name: 'سانجاي بهامبري',
-        role: 'المؤسس المشارك ورئيس الاستراتيجية',
-        bio: 'متخصص في تطوير الأعمال الدولية والاستراتيجية العالمية. خبير في بناء الشراكات عبر الحدود وتوسيع الأسواق.',
-        image: '/speaker/5.png',
-        color: 'from-blue-500 to-cyan-500',
-        badge: 'الاستراتيجية'
-      },
       {
         id: 'farid',
         name: 'فريد أحمد',
@@ -78,7 +60,25 @@ const translations = {
         image: '/speaker/6.png',
         imgClass: 'scale-[1.25] -translate-y-1',
         color: 'from-emerald-500 to-teal-600',
-        badge: 'الصناعة'
+        badge: 'مؤسس مشارك'
+      },
+      {
+        id: 'kishan',
+        name: 'كيشان كومار فيرما',
+        role: 'المؤسس والرئيس التنفيذي، Investarise Global',
+        bio: 'قائد بارز في الخدمات المصرفية يتمتع بخبرة تزيد عن 25 عامًا في الإمارات والهند، متخصص في النمو الاستراتيجي. محفز قوي للشركات الناشئة، يتفوق في قيادة التحول الرقمي وبناء فرق عالية الأداء. معروف بتحقيق نمو مزدوج وثلاثي الأرقام باستمرار، يمزج بين البصيرة الاستراتيجية والتنفيذ العملي.',
+        image: '/speaker/4.png',
+        color: 'from-blue-600 to-indigo-700',
+        badge: 'المؤسس'
+      },
+      {
+        id: 'sanjay',
+        name: 'سانجاي بهامبري',
+        role: 'رئيس الاستراتيجية',
+        bio: 'متخصص في تطوير الأعمال الدولية والاستراتيجية العالمية. خبير في بناء الشراكات عبر الحدود وتوسيع الأسواق.',
+        image: '/speaker/5.png',
+        color: 'from-blue-500 to-cyan-500',
+        badge: 'مؤسس مشارك'
       },
     ],
   },

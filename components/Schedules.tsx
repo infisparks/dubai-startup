@@ -39,6 +39,7 @@ const agendaData = {
                 { iconKey: 'Coffee', title: 'Networking Lunch', description: 'An opportunity for informal connections and discussions among participants.' },
                 { iconKey: 'Message', title: 'Investor-Startup Roundtables', description: 'Structured sessions facilitating direct interaction between investors and startups.' },
                 { iconKey: 'Award', title: 'Gala Dinner', description: 'A formal evening event designed for high-level networking and relationship building.' },
+                { iconKey: 'Layout', title: ' ', description: ' ', hoverText: 'Dubai Saudi' },
             ]
         },
         section2: {
@@ -74,6 +75,7 @@ const agendaData = {
                 { iconKey: 'Coffee', title: 'غداء التواصل', description: 'فرصة للتواصل غير الرسمي والمناقشات بين المشاركين.' },
                 { iconKey: 'Message', title: 'طاولات مستديرة', description: 'جلسات منظمة تسهل التفاعل المباشر بين المستثمرين والشركات الناشئة.' },
                 { iconKey: 'Award', title: 'حفل العشاء', description: 'حدث مسائي رسمي مصمم للتواصل رفيع المستوى وبناء العلاقات.' },
+                { iconKey: 'Layout', title: ' ', description: ' ', hoverText: 'دبي السعودية' },
             ]
         },
         section2: {
@@ -140,13 +142,13 @@ export default function SummitAgenda({ language = 'en' }: SummitAgendaProps) {
                         {t.section1.cards.map((card, idx) => {
                             const Icon = AgendaIconMap[card.iconKey] || FiStar
                             return (
-                                <div key={idx} className="flex gap-4 p-4 rounded-xl bg-white border border-slate-200 shadow-sm hover:shadow-md hover:border-blue-500 transition-all duration-300 group">
+                                <div key={idx} className="flex gap-4 p-4 rounded-xl bg-white border border-slate-200 shadow-sm hover:shadow-md hover:border-blue-500 transition-all duration-300 group relative">
                                     <div className="flex-shrink-0">
                                         <div className="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center group-hover:bg-blue-100 transition-colors">
                                             <Icon className="w-5 h-5 text-blue-600" />
                                         </div>
                                     </div>
-                                    <div>
+                                    <div className="flex-grow">
                                         <h3 className="text-base font-bold text-slate-900 mb-1 group-hover:text-blue-600 transition-colors">
                                             {card.title}
                                         </h3>
@@ -154,6 +156,12 @@ export default function SummitAgenda({ language = 'en' }: SummitAgendaProps) {
                                             {card.description}
                                         </p>
                                     </div>
+                                    {/* Hover Overlay for Blank Event */}
+                                    {card.hoverText && (
+                                        <div className="absolute inset-0 bg-blue-600/90 text-white flex items-center justify-center rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 backdrop-blur-sm">
+                                            <span className="text-lg font-black tracking-widest uppercase">{card.hoverText}</span>
+                                        </div>
+                                    )}
                                 </div>
                             )
                         })}
