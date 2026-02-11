@@ -26,7 +26,12 @@ const translations = {
     about: "About",
     pastSpeakers: "Past Speakers",
     gallery: "Gallery",
-    agenda: "Agenda 2026",
+    events: "Events",
+    dubaiFeb2026: "Dubai Feb 2026",
+    investors: "Investors",
+    awards: "Awards",
+    podcast: "Podcast",
+    speakers: "Speakers",
     register: "Register",
     login: "Login",
     logout: "Logout",
@@ -39,7 +44,12 @@ const translations = {
     about: "حول",
     pastSpeakers: "المتحدثون السابقون",
     gallery: "المعرض",
-    agenda: "أجندة 2026",
+    events: "الفعاليات",
+    dubaiFeb2026: "دبي فبراير 2026",
+    investors: "المستثمرون",
+    awards: "الجوائز",
+    podcast: "البودكاست",
+    speakers: "المتحدثون",
     register: "التسجيل",
     login: "تسجيل الدخول",
     logout: "تسجيل الخروج",
@@ -51,6 +61,9 @@ export default function Header({ language = "en", setLanguage, userEmail }: Head
   const pathname = usePathname()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const [activeDropdown, setActiveDropdown] = useState<string | null>(null)
+  const [mobileDropdownOpen, setMobileDropdownOpen] = useState<string | null>(null)
+
   const t = translations[language]
   const isRtl = language === "ar"
 
@@ -75,8 +88,22 @@ export default function Header({ language = "en", setLanguage, userEmail }: Head
   const navItems = [
     { key: "home", href: "/#home" },
     { key: "about", href: "/#about" },
-    { key: "agenda", href: "/agenda-2026" },
+    {
+      key: "events",
+      dropdown: {
+        title: "dubaiFeb2026",
+        items: [
+          { key: "investors", href: "/investors" },
+          { key: "awards", href: "/awards" },
+          { key: "podcast", href: "/podcast" },
+          { key: "speakers", href: "/past-speakers" },
+          { key: "gallery", href: "/gallery" },
+        ]
+      }
+    },
   ]
+
+  const isHomePage = pathname === "/"
 
   return (
     <header
@@ -86,28 +113,28 @@ export default function Header({ language = "en", setLanguage, userEmail }: Head
       <div className="pointer-events-auto">
         {/* Top Info Bar - Animated Hide on Scroll */}
         <AnimatePresence mode="wait">
-          {!scrolled && (
+          {((isHomePage && !scrolled) || (!isHomePage)) && (
             <motion.div
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: "auto", opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
               transition={{ duration: 0.3, ease: "easeInOut" }}
-              className="hidden lg:block bg-black text-white/90 border-b border-white/10 overflow-hidden"
+              className={`hidden lg:block border-b overflow-hidden ${isHomePage && !scrolled ? 'bg-black text-white/90 border-white/10' : 'bg-slate-50 text-slate-600 border-slate-200'}`}
             >
               <div className="max-w-7xl mx-auto px-6 py-2 flex justify-between items-center text-[12px] font-medium">
                 <div className="flex items-center gap-6">
-                  <div className="flex items-center gap-2 group cursor-pointer hover:text-white transition-colors">
+                  <div className={`flex items-center gap-2 group cursor-pointer transition-colors ${isHomePage && !scrolled ? 'hover:text-white' : 'hover:text-[#034FA3]'}`}>
                     <MapPin size={12} className="text-[#034FA3]" />
                     <span className="tracking-tight">{t.address}</span>
                   </div>
-                  <div className="w-px h-3 bg-white/10" />
-                  <div className="flex items-center gap-2 group cursor-pointer hover:text-white transition-colors">
+                  <div className={`w-px h-3 ${isHomePage && !scrolled ? 'bg-white/10' : 'bg-slate-200'}`} />
+                  <div className={`flex items-center gap-2 group cursor-pointer transition-colors ${isHomePage && !scrolled ? 'hover:text-white' : 'hover:text-[#034FA3]'}`}>
                     <Mail size={12} className="text-[#034FA3]" />
                     <span className="tracking-tight">{t.email}</span>
                   </div>
                 </div>
                 <div className="flex items-center gap-5">
-                  <div className="flex items-center gap-4 border-r border-white/10 pr-6 mr-1">
+                  <div className={`flex items-center gap-4 border-r pr-6 mr-1 ${isHomePage && !scrolled ? 'border-white/10' : 'border-slate-200'}`}>
                     {[Linkedin, Twitter, Instagram, Facebook].map((Icon, idx) => (
                       <Link key={idx} href="#" className="hover:text-[#034FA3] transition-all hover:scale-110">
                         <Icon size={13} />
@@ -129,7 +156,7 @@ export default function Header({ language = "en", setLanguage, userEmail }: Head
                       </button>
                     ) : (
                       <>
-                        <Link href="/login" className="hover:text-white transition-colors">{t.login}</Link>
+                        <Link href="/login" className={`transition-colors ${isHomePage && !scrolled ? 'hover:text-white' : 'hover:text-slate-900'}`}>{t.login}</Link>
                         <Link href="/registration" className="bg-[#034FA3]/20 text-[#034FA3] hover:bg-[#034FA3] hover:text-white px-3 py-1 rounded-md transition-all font-bold">
                           {t.register}
                         </Link>
@@ -145,12 +172,12 @@ export default function Header({ language = "en", setLanguage, userEmail }: Head
         {/* Main Header Container */}
         <motion.div
           animate={{
-            marginTop: scrolled ? "0px" : "8px"
+            marginTop: (scrolled || !isHomePage) ? "0px" : "8px"
           }}
           className={`transition-all duration-500 w-full relative flex justify-center px-4 sm:px-6`}
         >
           <div
-            className={`w-full max-w-7xl flex items-center justify-between transition-all duration-500 overflow-hidden ${scrolled
+            className={`w-full max-w-7xl flex items-center justify-between transition-all duration-500 overflow-visible ${(scrolled || !isHomePage)
               ? 'bg-white/95 backdrop-blur-xl shadow-[0_10px_40px_rgba(0,0,0,0.15)] rounded-b-2xl border border-white/20 border-t-0'
               : 'bg-transparent rounded-2xl lg:rounded-[2.5rem]'
               }`}
@@ -159,15 +186,15 @@ export default function Header({ language = "en", setLanguage, userEmail }: Head
             {/* Logo Section */}
             <Link
               href="/"
-              className={`flex items-center justify-center group relative transition-all duration-500 ${scrolled ? 'px-4 py-2 lg:px-6' : 'px-6 py-4 lg:px-8'
+              className={`flex items-center justify-center group relative transition-all duration-500 ${(scrolled || !isHomePage) ? 'px-4 py-2 lg:px-6' : 'px-6 py-4 lg:px-8'
                 }`}
             >
               <Image
-                src={scrolled ? "/logo.png" : "/logo-white.png"}
+                src={(scrolled || !isHomePage) ? "/logo.png" : "/logo-white.png"}
                 alt="Investarise"
                 width={200}
                 height={60}
-                className={`w-auto object-contain drop-shadow-lg transition-all duration-500 relative z-10 ${scrolled ? 'h-6 lg:h-7' : 'h-10 lg:h-12'
+                className={`w-auto object-contain drop-shadow-lg transition-all duration-500 relative z-10 ${(scrolled || !isHomePage) ? 'h-6 lg:h-7' : 'h-10 lg:h-12'
                   }`}
               />
             </Link>
@@ -175,21 +202,68 @@ export default function Header({ language = "en", setLanguage, userEmail }: Head
             {/* Desktop Navigation */}
             <nav className="hidden xl:flex items-center gap-10 px-8">
               {navItems.map((item, idx) => (
-                <Link
+                <div
                   key={item.key}
-                  href={item.href}
-                  className={`px-2 py-1.5 text-[14px] font-bold transition-all relative group flex items-center gap-2 ${scrolled ? 'text-[#021024] hover:text-[#034FA3]' : 'text-white hover:text-white/80'
-                    }`}
+                  onMouseEnter={() => item.dropdown && setActiveDropdown(item.key)}
+                  onMouseLeave={() => setActiveDropdown(null)}
+                  className="relative group"
                 >
-                  <span className="relative z-10">{t[item.key as keyof typeof t]}</span>
-                  <span className={`absolute bottom-0 left-0 w-0 h-0.5 rounded-full transition-all duration-300 group-hover:w-full ${scrolled ? 'bg-[#034FA3]' : 'bg-white'
-                    }`} />
-                  {item.key === 'pastSpeakers' && (
-                    <motion.div animate={{ rotate: [0, 15, -15, 0] }} transition={{ repeat: Infinity, duration: 2 }}>
-                      <Sparkles size={12} className={scrolled ? 'text-amber-500' : 'text-amber-300'} />
-                    </motion.div>
+                  {item.dropdown ? (
+                    <div className="flex items-center gap-1 cursor-pointer">
+                      <span className={`px-2 py-1.5 text-[14px] font-bold transition-all relative flex items-center gap-2 ${(scrolled || !isHomePage) ? (item.key === 'events' ? 'text-[#034FA3]' : 'text-[#021024] hover:text-[#034FA3]') : 'text-white hover:text-white/80'
+                        }`}>
+                        {t[item.key as keyof typeof t]}
+                        <ChevronDown size={14} className={`transition-transform duration-300 ${activeDropdown === item.key ? 'rotate-180' : ''}`} />
+                        {item.key === 'events' && (scrolled || !isHomePage) && (
+                          <motion.span
+                            initial={{ scale: 0 }}
+                            animate={{ scale: 1 }}
+                            className="absolute -top-1 -right-1 w-2 h-2 bg-[#034FA3] rounded-full border-2 border-white shadow-sm"
+                          />
+                        )}
+                      </span>
+                      <AnimatePresence>
+                        {activeDropdown === item.key && (
+                          <motion.div
+                            initial={{ opacity: 0, y: 15 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: 15 }}
+                            className="absolute top-full left-0 w-64 pt-2 z-50 text-slate-900"
+                          >
+                            <div className="bg-white rounded-2xl shadow-2xl border border-slate-100 overflow-hidden">
+                              <div className="p-4 bg-slate-50 border-b border-slate-100">
+                                <span className="text-[11px] font-black uppercase tracking-widest text-[#034FA3] opacity-60">
+                                  {t[item.dropdown.title as keyof typeof t]}
+                                </span>
+                              </div>
+                              <div className="p-2">
+                                {item.dropdown.items.map((subItem) => (
+                                  <Link
+                                    key={subItem.key}
+                                    href={subItem.href}
+                                    className="flex items-center gap-3 p-3 text-[13px] font-bold text-slate-600 hover:bg-slate-50 hover:text-[#034FA3] rounded-xl transition-all"
+                                  >
+                                    {t[subItem.key as keyof typeof t]}
+                                  </Link>
+                                ))}
+                              </div>
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  ) : (
+                    <Link
+                      href={item.href || '#'}
+                      className={`px-2 py-1.5 text-[14px] font-bold transition-all relative flex items-center gap-2 ${(scrolled || !isHomePage) ? 'text-[#021024] hover:text-[#034FA3]' : 'text-white hover:text-white/80'
+                        }`}
+                    >
+                      <span className="relative z-10">{t[item.key as keyof typeof t]}</span>
+                      <span className={`absolute bottom-0 left-0 w-0 h-0.5 rounded-full transition-all duration-300 group-hover:w-full ${(scrolled || !isHomePage) ? 'bg-[#034FA3]' : 'bg-white'
+                        }`} />
+                    </Link>
                   )}
-                </Link>
+                </div>
               ))}
             </nav>
 
@@ -269,14 +343,54 @@ export default function Header({ language = "en", setLanguage, userEmail }: Head
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: idx * 0.05 }}
                     >
-                      <Link
-                        href={item.href}
-                        onClick={() => setMobileMenuOpen(false)}
-                        className="flex items-center justify-between p-4 px-5 text-sm font-bold text-slate-600 hover:bg-white hover:text-[#034FA3] hover:shadow-sm rounded-xl transition-all group"
-                      >
-                        <span className="tracking-tight">{t[item.key as keyof typeof t]}</span>
-                        <ChevronDown size={14} className="-rotate-90 text-slate-300 group-hover:text-[#034FA3] transition-transform" />
-                      </Link>
+                      {item.dropdown ? (
+                        <>
+                          <button
+                            onClick={() => setMobileDropdownOpen(mobileDropdownOpen === item.key ? null : item.key)}
+                            className="flex items-center justify-between w-full p-4 px-5 text-sm font-bold text-slate-600 hover:bg-white hover:text-[#034FA3] hover:shadow-sm rounded-xl transition-all group"
+                          >
+                            <span className="tracking-tight">{t[item.key as keyof typeof t]}</span>
+                            <ChevronDown size={14} className={`transition-transform duration-300 ${mobileDropdownOpen === item.key ? 'rotate-180' : '-rotate-90'}`} />
+                          </button>
+                          <AnimatePresence>
+                            {mobileDropdownOpen === item.key && (
+                              <motion.div
+                                initial={{ height: 0, opacity: 0 }}
+                                animate={{ height: 'auto', opacity: 1 }}
+                                exit={{ height: 0, opacity: 0 }}
+                                className="overflow-hidden bg-white/50 rounded-xl mt-1 mb-2 border border-slate-100"
+                              >
+                                <div className="p-3 px-5 bg-slate-50 border-b border-slate-100">
+                                  <span className="text-[10px] font-black uppercase tracking-widest text-[#034FA3] opacity-60">
+                                    {t[item.dropdown.title as keyof typeof t]}
+                                  </span>
+                                </div>
+                                <div className="p-2 space-y-1">
+                                  {item.dropdown.items.map((subItem) => (
+                                    <Link
+                                      key={subItem.key}
+                                      href={subItem.href}
+                                      onClick={() => setMobileMenuOpen(false)}
+                                      className="block p-3 px-4 text-xs font-bold text-slate-500 hover:text-[#034FA3] transition-all"
+                                    >
+                                      {t[subItem.key as keyof typeof t]}
+                                    </Link>
+                                  ))}
+                                </div>
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
+                        </>
+                      ) : (
+                        <Link
+                          href={item.href || '#'}
+                          onClick={() => setMobileMenuOpen(false)}
+                          className="flex items-center justify-between p-4 px-5 text-sm font-bold text-slate-600 hover:bg-white hover:text-[#034FA3] hover:shadow-sm rounded-xl transition-all group"
+                        >
+                          <span className="tracking-tight">{t[item.key as keyof typeof t]}</span>
+                          <ChevronDown size={14} className="-rotate-90 text-slate-300 group-hover:text-[#034FA3] transition-transform" />
+                        </Link>
+                      )}
                     </motion.div>
                   ))}
                 </div>
