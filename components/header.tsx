@@ -204,7 +204,7 @@ export default function Header({ language = "en", setLanguage, userEmail }: Head
             </Link>
 
             {/* Desktop Navigation */}
-            <nav className="hidden xl:flex items-center gap-10 px-8">
+            <nav className="hidden lg:flex items-center gap-10 px-8">
               {navItems.map((item, idx) => (
                 <div
                   key={item.key}
@@ -295,7 +295,7 @@ export default function Header({ language = "en", setLanguage, userEmail }: Head
 
               {/* Mobile Menu Toggle */}
               <button
-                className={`xl:hidden rounded-lg bg-slate-50 text-slate-800 hover:bg-slate-100 shadow-sm border border-slate-200 transition-all ${scrolled ? 'p-1.5' : 'p-2'
+                className={`lg:hidden rounded-lg bg-slate-50 text-slate-800 hover:bg-slate-100 shadow-sm border border-slate-200 transition-all ${scrolled ? 'p-1.5' : 'p-2'
                   }`}
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               >

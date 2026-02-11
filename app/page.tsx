@@ -10,7 +10,7 @@ import CoFoundersPage from "@/components/bincomponent/Cofounder"
 import SpeakersPage from "@/components/bincomponent/Speaker"
 import InstitutionalInvestors from "@/components/bincomponent/InvestorsSponsors"
 import VisionSection from "@/components/bincomponent/Vision"
-import Gallery from "@/components/bincomponent/Gallery"
+import EventShowcase from "@/components/EventShowcase"
 import FocusSectors from "@/components/bincomponent/Focussector"
 import EventOverview from "@/components/bincomponent/Eventoverview"
 import Footer from "@/components/footer"
@@ -51,8 +51,8 @@ export default function Home() {
         {/* Event Overview Section */}
         <EventOverview language={language} />
 
-        {/* Event Gallery Section */}
-        <Gallery language={language} />
+        {/* Event Showcase / Gallery Section */}
+        <EventShowcase language={language} />
 
         {/* Focus Sectors Section */}
         <FocusSectors language={language} />
