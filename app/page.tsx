@@ -5,7 +5,7 @@ import Header from "@/components/header"
 import Hero from "@/components/hero"
 import BrandLogoTicker from "@/components/BrandLogoTicker"
 import AboutSection from "@/components/AboutSection"
-import HonorarySlider from "@/components/bincomponent/HonorarySlider"
+
 import CoFoundersPage from "@/components/bincomponent/Cofounder"
 import SpeakersPage from "@/components/bincomponent/Speaker"
 import InstitutionalInvestors from "@/components/bincomponent/InvestorsSponsors"
@@ -33,8 +33,7 @@ export default function Home() {
         {/* About Section */}
         <AboutSection language={language} />
 
-        {/* Honorary Guests Section */}
-        <HonorarySlider language={language} />
+
 
         {/* Strategic Co-Founders Section */}
         <CoFoundersPage language={language} />

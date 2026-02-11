@@ -25,6 +25,7 @@ const translations = {
     home: "Home",
     about: "About",
     pastSpeakers: "Past Speakers",
+    honoraryGuests: "Honorary Guests",
     gallery: "Gallery",
     events: "Events",
     dubaiFeb2026: "Dubai Feb 2026",
@@ -43,6 +44,7 @@ const translations = {
     home: "الرئيسية",
     about: "حول",
     pastSpeakers: "المتحدثون السابقون",
+    honoraryGuests: "ضيوف الشرف",
     gallery: "المعرض",
     events: "الفعاليات",
     dubaiFeb2026: "دبي فبراير 2026",
@@ -96,6 +98,7 @@ export default function Header({ language = "en", setLanguage, userEmail }: Head
           { key: "investors", href: "/investors" },
           { key: "awards", href: "/awards" },
           { key: "podcast", href: "/podcast" },
+          { key: "honoraryGuests", href: "/honorary-guests" },
           { key: "speakers", href: "/past-speakers" },
           { key: "gallery", href: "/gallery" },
         ]
