@@ -63,7 +63,7 @@ export default function AboutSection({ language }: AboutSectionProps) {
                             >
                                 <div className="rounded-tr-[100px] rounded-bl-[100px] rounded-tl-[30px] rounded-br-[30px] overflow-hidden aspect-[4/5] relative border-[8px] lg:border-[12px] border-white">
                                     <Image
-                                        src="/event/event1.jpg"
+                                        src="/event/event1.webp"
                                         alt="Global Summit Vision"
                                         fill
                                         className="object-cover transition-transform duration-700 hover:scale-110"
@@ -179,7 +179,7 @@ export default function AboutSection({ language }: AboutSectionProps) {
                                 className="relative w-full aspect-[21/9] rounded-[2rem] overflow-hidden shadow-xl border border-slate-100"
                             >
                                 <Image
-                                    src="/event/event1.jpg"
+                                    src="/event/event1.webp"
                                     alt="Global Networking"
                                     fill
                                     className="object-cover"
