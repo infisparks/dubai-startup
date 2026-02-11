@@ -21,7 +21,7 @@ interface HeaderProps {
 const translations = {
   en: {
     address: "Dubai, United Arab Emirates",
-    email: "info@investarise.com",
+    email: "info@investariseglobal.com",
     home: "Home",
     about: "About",
     pastSpeakers: "Past Speakers",
@@ -39,7 +39,7 @@ const translations = {
   },
   ar: {
     address: "دبي، الإمارات العربية المتحدة",
-    email: "info@investarise.com",
+    email: "info@investariseglobal.com",
     home: "الرئيسية",
     about: "حول",
     pastSpeakers: "المتحدثون السابقون",
@@ -135,8 +135,12 @@ export default function Header({ language = "en", setLanguage, userEmail }: Head
                 </div>
                 <div className="flex items-center gap-5">
                   <div className={`flex items-center gap-4 border-r pr-6 mr-1 ${isHomePage && !scrolled ? 'border-white/10' : 'border-slate-200'}`}>
-                    {[Linkedin, Twitter, Instagram, Facebook].map((Icon, idx) => (
-                      <Link key={idx} href="#" className="hover:text-[#034FA3] transition-all hover:scale-110">
+                    {[
+                      { Icon: Facebook, href: "https://www.facebook.com/profile.php?id=61585203620830&mibextid=ZbWKwL" },
+                      { Icon: Instagram, href: "https://www.instagram.com/investariseglobal?igsh=dTFzdTY5cXlrN3hi" },
+                      { Icon: Youtube, href: "https://www.youtube.com/@InvestariseGlobal" }
+                    ].map(({ Icon, href }, idx) => (
+                      <Link key={idx} href={href} target="_blank" rel="noopener noreferrer" className="hover:text-[#034FA3] transition-all hover:scale-110">
                         <Icon size={13} />
                       </Link>
                     ))}

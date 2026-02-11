@@ -2,8 +2,9 @@
 
 import React, { useState, useRef, useEffect } from 'react'
 import Image from 'next/image'
+import Link from 'next/link'
 import { motion } from 'framer-motion'
-import { ChevronDown, ChevronUp, Quote, Award, Sparkles, Mic2, Globe, ShieldCheck, Linkedin } from 'lucide-react'
+import { ChevronDown, ChevronUp, Quote, Award, Sparkles, Mic2, Globe, ShieldCheck, Linkedin, ArrowUpRight } from 'lucide-react'
 
 interface SpeakersPageProps {
   language: 'en' | 'ar'
@@ -255,7 +256,15 @@ export default function SpeakersPage({ language = 'en' }: SpeakersPageProps) {
         </div>
 
         {/* Global Footer Insight */}
-        <div className="text-center mt-12">
+        <div className="text-center mt-12 flex flex-col items-center gap-8">
+          <Link
+            href="/past-speakers"
+            className="group relative inline-flex items-center gap-2 px-8 py-3 bg-slate-50 border border-slate-100 rounded-full text-[10px] font-black uppercase tracking-[0.2em] text-[#034FA3] hover:bg-[#034FA3] hover:text-white transition-all duration-500 shadow-sm"
+          >
+            <span>{isRtl ? 'عرض جميع المتحدثين' : 'View All Speakers'}</span>
+            <ArrowUpRight size={14} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+          </Link>
+
           <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}

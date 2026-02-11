@@ -104,7 +104,7 @@ export default function AboutSection({ language }: AboutSectionProps) {
                                     </video>
                                     <div className="absolute inset-0 bg-gradient-to-t from-slate-900/40 via-transparent to-transparent flex items-center justify-center">
                                         <a
-                                            href="https://www.youtube.com/watch?v=7ultkv0IWoU"
+                                            href="https://www.youtube.com/@InvestariseGlobal"
                                             target="_blank"
                                             rel="noopener noreferrer"
                                             className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center cursor-pointer hover:bg-white/40 transition-all border border-white/30 group/play"

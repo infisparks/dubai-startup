@@ -33,9 +33,9 @@ const translations = {
     email: 'Email Disclosure',
     call: 'Direct Contact',
     visit: 'Global Access',
-    emailAddr: 'info@investarise.com',
+    emailAddr: 'info@investariseglobal.com',
     phone: '+971 55 472 1421',
-    website: 'investarise.com',
+    website: 'investariseglobal.com',
   },
   ar: {
     tagline: 'حيث يلتقي الابتكار برأس المال العالمي',
@@ -60,9 +60,9 @@ const translations = {
     email: 'البريد الإلكتروني',
     call: 'اتصال مباشر',
     visit: 'وصول عالمي',
-    emailAddr: 'info@investarise.com',
+    emailAddr: 'info@investariseglobal.com',
     phone: '+971 55 472 1421',
-    website: 'investarise.com',
+    website: 'investariseglobal.com',
   },
 }
 
@@ -93,10 +93,16 @@ export default function Footer({ language = 'en' }: FooterProps) {
               Architecting the nexus where the world's most ambitious founders meet strategic global capital.
             </p>
             <div className="flex gap-4">
-              {[Linkedin, Twitter, Instagram, Facebook].map((Icon, idx) => (
+              {[
+                { Icon: Facebook, href: "https://www.facebook.com/profile.php?id=61585203620830&mibextid=ZbWKwL" },
+                { Icon: Instagram, href: "https://www.instagram.com/investariseglobal?igsh=dTFzdTY5cXlrN3hi" },
+                { Icon: Youtube, href: "https://www.youtube.com/@InvestariseGlobal" }
+              ].map(({ Icon, href }, idx) => (
                 <a
                   key={idx}
-                  href="#"
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="w-12 h-12 rounded-2xl bg-white/[0.03] border border-white/5 flex items-center justify-center hover:bg-[#034FA3] hover:border-[#034FA3] hover:-translate-y-1 transition-all duration-500 group"
                 >
                   <Icon className="w-5 h-5 text-gray-400 group-hover:text-white" />
