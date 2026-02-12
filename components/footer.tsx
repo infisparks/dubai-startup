@@ -29,7 +29,7 @@ const translations = {
     contact: 'Contact',
     privacy: 'Privacy Policy',
     terms: 'Terms of Service',
-    copyright: `© ${new Date().getFullYear()} Investarise. All Rights Reserved.`,
+    copyright: `© ${new Date().getFullYear()} Infispark Technologies. All Rights Reserved.`,
     email: 'Email Disclosure',
     call: 'Direct Contact',
     visit: 'Global Access',
@@ -72,7 +72,7 @@ export default function Footer({ language = 'en' }: FooterProps) {
   const isRtl = language === 'ar'
 
   return (
-    <footer className="relative bg-[#020617] text-white pt-24 pb-12 overflow-hidden" dir={isRtl ? 'rtl' : 'ltr'}>
+    <footer id="main-footer" className="relative bg-[#020617] text-white pt-24 pb-12 overflow-hidden" dir={isRtl ? 'rtl' : 'ltr'}>
       {/* Cinematic Background Overlays */}
       <div className="absolute inset-0 z-0">
         <div className="absolute top-0 right-[-10%] w-[500px] h-[500px] bg-[#034FA3]/10 blur-[120px] rounded-full" />
@@ -157,11 +157,16 @@ export default function Footer({ language = 'en' }: FooterProps) {
         {/* Bottom Bar */}
         <div className="pt-12 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-8">
           <p className="text-[10px] font-black text-gray-600 uppercase tracking-widest">
-            {t.copyright}
+            {language === 'en' ? (
+              <>© {new Date().getFullYear()} <a href="https://infispark.in" target="_blank" rel="noopener noreferrer" className="text-[#4fa3f7] hover:text-white transition-colors">Infispark Technologies</a>. All Rights Reserved.</>
+            ) : (
+              t.copyright
+            )}
           </p>
           <div className="flex gap-8 text-[10px] font-black text-gray-600 uppercase tracking-widest">
             <Link href="/privacy-policy" className="hover:text-white transition-colors">{t.privacy}</Link>
             <Link href="/terms-of-service" className="hover:text-white transition-colors">{t.terms}</Link>
+            <a href="https://infispark.in" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Infispark</a>
           </div>
         </div>
       </div>

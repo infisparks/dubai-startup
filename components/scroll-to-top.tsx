@@ -7,6 +7,8 @@ export default function ScrollToTop() {
   const router = useRouter()
   const [isVisible, setIsVisible] = useState(false)
 
+  const [isFooterVisible, setIsFooterVisible] = useState(false)
+
   const toggleVisibility = () => {
     if (typeof window !== "undefined") {
       setIsVisible(window.scrollY > 300)
@@ -26,9 +28,27 @@ export default function ScrollToTop() {
     }
   }, [])
 
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsFooterVisible(entry.isIntersecting)
+      },
+      { threshold: 0.1 }
+    )
+
+    const footer = document.getElementById("main-footer")
+    if (footer) {
+      observer.observe(footer)
+    }
+
+    return () => {
+      if (footer) observer.unobserve(footer)
+    }
+  }, [])
+
   return (
     <>
-      {isVisible && (
+      {isVisible && !isFooterVisible && (
         <button
           onClick={scrollToTop}
           className="fixed bottom-8 right-8 z-40 w-12 h-12 bg-blue-600 text-white rounded-full flex items-center justify-center shadow-lg hover:bg-blue-700 transition-all hover:shadow-xl"
@@ -41,7 +61,7 @@ export default function ScrollToTop() {
       {/* Floating Invest Button */}
       <button
         onClick={() => router.push('/registration')}
-        className="fixed bottom-8 left-8 z-40 px-6 py-3 bg-amber-400 text-slate-900 rounded-full font-semibold shadow-lg hover:bg-amber-300 transition-all hover:shadow-xl hidden md:block"
+        className={`fixed bottom-8 left-8 z-40 px-6 py-3 bg-amber-400 text-slate-900 rounded-full font-semibold shadow-lg hover:bg-amber-300 transition-all hover:shadow-xl hidden md:block ${isFooterVisible ? 'opacity-0 pointer-events-none translate-y-10' : 'opacity-100 translate-y-0'}`}
       >
         {typeof window !== "undefined" && window.location.pathname === "/" ? "Register Now" : "Register Now"}
       </button>
