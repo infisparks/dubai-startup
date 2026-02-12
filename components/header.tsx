@@ -37,6 +37,7 @@ const translations = {
     login: "Login",
     logout: "Logout",
     cta: "Join Summit 2026",
+    tickets: "Tickets",
   },
   ar: {
     address: "دبي، الإمارات العربية المتحدة",
@@ -56,6 +57,7 @@ const translations = {
     login: "تسجيل الدخول",
     logout: "تسجيل الخروج",
     cta: "انضم للقمة 2026",
+    tickets: "تذاكر",
   },
 }
 
@@ -104,6 +106,7 @@ export default function Header({ language = "en", setLanguage, userEmail }: Head
         ]
       }
     },
+    { key: "tickets", href: "/tickets" },
   ]
 
   const isHomePage = pathname === "/"

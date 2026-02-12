@@ -2,7 +2,8 @@
 
 import React from 'react'
 import { motion } from 'framer-motion'
-import { Handshake, Lightbulb, Globe, Award, Users, ShieldCheck, Sparkles, TrendingUp, Target } from 'lucide-react'
+import { CheckCircle2, Phone, ArrowRight, Calendar, Users, Target, ShieldCheck } from 'lucide-react'
+import Link from 'next/link'
 
 interface EventOverviewProps {
   language: 'en' | 'ar'
@@ -10,69 +11,57 @@ interface EventOverviewProps {
 
 const translations = {
   en: {
-    title: 'Institutional Overview',
-    tagline: 'Global Capital Strategy',
-    intro: "The premier platform uniting over 100 investors, 250+ startups, and 20 visionary speakers.",
-    mandate: 'Strategic Mandate',
-    themePhrase: 'Pitch • Connect • Prosper',
-    stats: [
-      { id: 1, count: '100+', label: 'Investors', icon: Award },
-      { id: 2, count: '250+', label: "Startups", icon: TrendingUp },
-      { id: 3, count: '20+', label: 'Speakers', icon: Users },
+    tag: ' institutional Overview',
+    title: 'Architecting the Future of Global Investment',
+    description: 'We are dedicated to creating seamless, high-impact investment corridors. With a passion for innovation and attention to detail, our platform bridges the gap between visionary startups and institutional capital.',
+    features: [
+      {
+        title: 'Seamless Capital Mobilization',
+        desc: 'Discover the vision that drives this event—a commitment to bringing together innovators, leaders & changemakers to share knowledge.',
+        icon: Calendar
+      },
+      {
+        title: 'Strategic Innovation Governance',
+        desc: 'Establishing the standards for technological excellence and optimizing international market entry.',
+        icon: Target
+      }
     ],
-    objectives: [
-      {
-        id: 1,
-        icon: Handshake,
-        title: 'Capital Mobilization',
-        desc: 'Accelerating growth through sophisticated institutional capital.'
-      },
-      {
-        id: 2,
-        icon: Lightbulb,
-        title: 'Innovation Governance',
-        desc: 'Establishing the standards for technological excellence.'
-      },
-      {
-        id: 3,
-        icon: Globe,
-        title: 'Cross-Border Synergy',
-        desc: 'Optimizing international investment corridors and market entry.'
-      },
-    ],
+    buttons: {
+      learnMore: 'Learn More About',
+      call: 'Call Now!',
+      phone: '+971 55 472 1421'
+    },
+    stats: {
+      count: '100+',
+      label: 'Global Investors'
+    }
   },
   ar: {
-    title: 'نظرة عامة مؤسسية',
-    tagline: 'استراتيجية رأس المال العالمي',
-    intro: 'المنصة الرائدة التي تجمع أكثر من 100 مستثمر و 250 شركة ناشئة و 20 متحدثاً متميزاً.',
-    mandate: 'التفويض الاستراتيجي',
-    themePhrase: 'اطرح • اتصل • ازدهر',
-    stats: [
-      { id: 1, count: '100+', label: 'مستثمر', icon: Award },
-      { id: 2, count: '250+', label: 'شركة ناشئة', icon: TrendingUp },
-      { id: 3, count: '20+', label: 'متحدث', icon: Users },
+    tag: 'نظرة عامة مؤسسية',
+    title: 'هندسة مستقبل الاستثمار العالمي',
+    description: 'نحن مكرسون لإنشاء ممرات استثمارية سلسة وعالية التأثير. بشغف للابتكار واهتمام بالتفاصيل، تغلق منصتنا الفجوة بين الشركات الناشئة الرؤيوية ورأس المال المؤسسي.',
+    features: [
+      {
+        title: 'تعبئة رأس المال بسلاسة',
+        desc: 'اكتشف الرؤية التي تقود هذا الحدث — التزام بجمع المبتكرين والقادة وصناع التغيير لتبادل المعرفة.',
+        icon: Calendar
+      },
+      {
+        title: 'حكمة الابتكار الاستراتيجي',
+        desc: 'وضع معايير التميز التكنولوجي وتحسين الدخول إلى الأسواق الدولية.',
+        icon: Target
+      }
     ],
-    objectives: [
-      {
-        id: 1,
-        icon: Handshake,
-        title: 'حشد رأس المال',
-        desc: 'تسريع النمو من خلال رأس المال المؤسسي المتطور.'
-      },
-      {
-        id: 2,
-        icon: Lightbulb,
-        title: 'حوكمة الابتكار',
-        desc: 'وضع معايير التميز التكنولوجي والأفكار الرائدة.'
-      },
-      {
-        id: 3,
-        icon: Globe,
-        title: 'التآزر عبر الحدود',
-        desc: 'تحسين ممرات الاستثمار الدولية وتسهيل الدخول إلى الأسواق.'
-      },
-    ],
-  },
+    buttons: {
+      learnMore: 'المزيد عنا',
+      call: 'اتصل الآن!',
+      phone: '+971 55 472 1421'
+    },
+    stats: {
+      count: '100+',
+      label: 'مستثمر عالمي'
+    }
+  }
 }
 
 export default function EventOverview({ language = 'en' }: EventOverviewProps) {
@@ -80,114 +69,149 @@ export default function EventOverview({ language = 'en' }: EventOverviewProps) {
   const isRtl = language === 'ar'
 
   return (
-    <section className="relative py-16 sm:py-20 bg-[#FBFBFC] overflow-hidden" dir={isRtl ? 'rtl' : 'ltr'}>
-      {/* Precision Grid Background */}
-      <div className="absolute inset-0 opacity-[0.03] pointer-events-none"
-        style={{ backgroundImage: 'radial-gradient(#034FA3 0.5px, transparent 0.5px)', backgroundSize: '24px 24px' }} />
+    <section className="relative py-20 lg:py-28 bg-white overflow-hidden" dir={isRtl ? 'rtl' : 'ltr'}>
+      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
 
-      <div className="max-w-6xl mx-auto px-6 relative z-10 w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+          {/* Left Column: Images */}
+          <motion.div
+            initial={{ opacity: 0, x: -50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="relative"
+          >
+            {/* Dot Pattern Background */}
+            <div className="absolute -top-12 -left-12 w-64 h-64 bg-[radial-gradient(#034FA3_2px,transparent_2px)] [background-size:24px_24px] opacity-20" />
 
-          {/* Institutional Portfolio Card (Left) */}
-          <div className="lg:col-span-5">
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              className="relative bg-white rounded-[2rem] p-8 sm:p-10 border border-slate-100 shadow-[0_20px_50px_-12px_rgba(0,0,0,0.05)] overflow-hidden"
-            >
-              {/* Technical Header */}
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                <span className="text-[8px] font-black uppercase tracking-[0.4em] text-slate-400">Institutional Protocol</span>
-              </div>
+            {/* Main Image */}
+            <div className="relative z-10 rounded-[2.5rem] overflow-hidden shadow-2xl w-[90%] aspect-[4/5] lg:aspect-[3.5/4]">
+              <img
+                src="/day11.jpg"
+                alt="Investarise Event"
+                className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-700"
+              />
 
-              <h2 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tighter mb-4 leading-tight">
-                {t.title}
-              </h2>
-              <p className="text-xs sm:text-sm text-slate-500 font-medium leading-relaxed mb-8 opacity-80">
-                {t.intro}
-              </p>
+              {/* Overlay Gradient */}
+              <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/60 to-transparent" />
+            </div>
 
-              {/* Stat Grid */}
-              <div className="grid grid-cols-3 gap-4 mb-8">
-                {t.stats.map((stat) => {
-                  const Icon = stat.icon
-                  return (
-                    <div key={stat.id} className="text-center p-3 rounded-2xl bg-slate-50/50 border border-slate-50 hover:bg-white hover:border-slate-100 hover:shadow-sm transition-all">
-                      <Icon size={14} className="mx-auto mb-2 text-[#034FA3] opacity-60" />
-                      <div className="text-xl font-black text-slate-900">{stat.count}</div>
-                      <div className="text-[7px] font-bold text-slate-400 uppercase tracking-widest">{stat.label}</div>
-                    </div>
-                  )
-                })}
-              </div>
+            {/* Secondary Floating Image */}
+            <div className="absolute bottom-12 -right-4 lg:-right-12 w-[60%] aspect-square rounded-[2rem] border-8 border-white shadow-2xl z-20 overflow-hidden bg-white">
+              <img
+                src="/day2.jpg"
+                alt="Networking"
+                className="w-full h-full object-cover"
+              />
+            </div>
 
-              {/* Mandate Footer */}
-              <div className="pt-6 border-t border-slate-50 flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <Target size={12} className="text-[#034FA3]" />
-                  <span className="text-[9px] font-black uppercase tracking-widest text-[#034FA3]">{t.mandate}</span>
+            {/* Circular Badge */}
+            <div className="absolute top-[30%] -right-8 w-32 h-32 bg-white rounded-full flex items-center justify-center p-2 shadow-xl z-30 animate-spin-slow">
+              <div className="w-full h-full rounded-full border-2 border-dashed border-[#034FA3] flex items-center justify-center relative">
+                <svg className="w-full h-full absolute inset-0 text-[#034FA3]" viewBox="0 0 100 100">
+                  <path
+                    id="curve"
+                    d="M 50 50 m -37 0 a 37 37 0 1 1 74 0 a 37 37 0 1 1 -74 0"
+                    fill="transparent"
+                  />
+                  <text className="text-[10px] font-bold uppercase tracking-widest text-[#034FA3]">
+                    <textPath href="#curve" startOffset="0%">
+                      • View Schedule • View Schedule •
+                    </textPath>
+                  </text>
+                </svg>
+                <div className="w-12 h-12 bg-[#034FA3] rounded-full flex items-center justify-center text-white font-bold">
+                  <Calendar size={20} />
                 </div>
-                <div className="text-[10px] font-black text-slate-900 italic opacity-40">{t.themePhrase}</div>
               </div>
+            </div>
 
-              {/* Corner Accent */}
-              <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-[#034FA3]/5 to-transparent rounded-bl-[4rem]" />
-            </motion.div>
-          </div>
+            {/* Floating Stats Card */}
+            <div className="absolute bottom-24 -left-6 bg-[#1a1a2e] text-white p-5 rounded-2xl shadow-xl z-30 flex items-center gap-4 max-w-[200px]">
+              <div className="w-12 h-12 rounded-xl bg-[#034FA3] flex items-center justify-center shrink-0">
+                <Target className="w-6 h-6 text-white" />
+              </div>
+              <div>
+                <div className="text-2xl font-black">{t.stats.count}</div>
+                <div className="text-xs text-gray-400 capitalize">{t.stats.label}</div>
+              </div>
+            </div>
+          </motion.div>
 
-          {/* Mission Objectives (Right) */}
-          <div className="lg:col-span-7">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-4">
-              {t.objectives.map((obj, index) => {
-                const Icon = obj.icon
+          {/* Right Column: Content */}
+          <motion.div
+            initial={{ opacity: 0, x: 50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
+            <div className="flex items-center gap-2 mb-4">
+              <div className="w-2.5 h-2.5 rounded-full bg-[#034FA3]" />
+              <span className="text-sm font-bold text-[#034FA3] uppercase tracking-wider">{t.tag}</span>
+            </div>
+
+            <h2 className="text-4xl lg:text-5xl font-black text-slate-900 leading-[1.15] mb-6 tracking-tight">
+              {t.title}
+            </h2>
+
+            <p className="text-slate-500 text-lg leading-relaxed mb-10">
+              {t.description}
+            </p>
+
+            <div className="space-y-6 mb-10">
+              {t.features.map((feature, idx) => {
+                const Icon = feature.icon
                 return (
-                  <motion.div
-                    key={obj.id}
-                    initial={{ opacity: 0, y: 15 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: index * 0.1 }}
-                    className="group relative"
-                  >
-                    <div className="relative bg-white/50 backdrop-blur-sm rounded-2xl p-5 border border-slate-100 flex items-center gap-6 transition-all duration-300 hover:shadow-lg hover:bg-white group-hover:-translate-y-1">
-                      <div className="shrink-0 w-12 h-12 rounded-xl bg-white shadow-sm flex items-center justify-center text-[#034FA3] group-hover:bg-[#034FA3] group-hover:text-white transition-all duration-500 border border-slate-50">
-                        <Icon size={20} />
-                      </div>
-                      <div className="flex-grow">
-                        <div className="flex items-center gap-2 mb-1">
-                          <h5 className="text-sm sm:text-base font-black text-slate-900 tracking-tight">
-                            {obj.title}
-                          </h5>
-                          <div className="h-px flex-grow bg-slate-50" />
-                          <Sparkles size={12} className="text-amber-500 opacity-0 group-hover:opacity-40 transition-opacity" />
-                        </div>
-                        <p className="text-[11px] sm:text-xs text-slate-500 font-medium leading-relaxed opacity-80">
-                          {obj.desc}
-                        </p>
-                      </div>
+                  <div key={idx} className="flex gap-5 p-4 rounded-2xl bg-slate-50 border border-slate-100/50 hover:bg-white hover:shadow-md transition-all duration-300">
+                    <div className="shrink-0 w-14 h-14 rounded-2xl bg-[#034FA3]/10 flex items-center justify-center text-[#034FA3]">
+                      <Icon size={24} strokeWidth={2.5} />
                     </div>
-                  </motion.div>
+                    <div>
+                      <h4 className="text-lg font-bold text-slate-900 mb-1">{feature.title}</h4>
+                      <p className="text-sm text-slate-500 leading-relaxed font-medium">
+                        {feature.desc}
+                      </p>
+                    </div>
+                  </div>
                 )
               })}
             </div>
 
-            {/* Legend Component */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              className="mt-8 flex items-center justify-end gap-3 px-2"
-            >
-              <div className="flex -space-x-1.5 opacity-40">
-                {[1, 2, 3].map(i => <div key={i} className="w-2.5 h-2.5 rounded-full border border-white bg-slate-200" />)}
+            <div className="flex flex-col sm:flex-row items-center gap-6">
+              <Link
+                href="/#vision"
+                className="px-8 py-4 bg-[#034FA3] text-white rounded-full font-bold shadow-lg shadow-[#034FA3]/30 hover:shadow-xl hover:bg-[#023e8a] hover:-translate-y-1 transition-all flex items-center gap-2"
+              >
+                <span>{t.buttons.learnMore}</span>
+                <ArrowRight size={18} />
+              </Link>
+
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 rounded-full bg-[#034FA3]/10 flex items-center justify-center text-[#034FA3]">
+                  <Phone size={20} />
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">{t.buttons.call}</span>
+                  <a href={`tel:${t.buttons.phone}`} className="text-lg font-black text-slate-900 hover:text-[#034FA3] transition-colors">
+                    {t.buttons.phone}
+                  </a>
+                </div>
               </div>
-              <span className="text-[8px] font-black text-slate-300 uppercase tracking-widest leading-none">Global Partnership Synergy Matrix</span>
-            </motion.div>
-          </div>
+            </div>
+          </motion.div>
 
         </div>
       </div>
+
+      <style jsx>{`
+        @keyframes spin-slow {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+        .animate-spin-slow {
+          animation: spin-slow 12s linear infinite;
+        }
+      `}</style>
     </section>
   )
 }
