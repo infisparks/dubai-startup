@@ -51,7 +51,7 @@ export default function Home() {
         <EventOverview language={language} />
 
         {/* Event Showcase / Gallery Section */}
-        <EventShowcase language={language} />
+        {/* <EventShowcase language={language} /> */}
 
         {/* Focus Sectors Section */}
         <FocusSectors language={language} />
