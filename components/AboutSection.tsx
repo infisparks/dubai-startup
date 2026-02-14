@@ -13,11 +13,11 @@ const translations = {
     en: {
         badge: 'Global Vision 2026',
         subtitle: 'Raising the curtain..',
-        title: 'Investarise Global Investors Summit',
-        description: 'Investarise Global Investors Summit connects visionary founders with elite investors, venture capital firms, and family offices worldwide. Our mission is to empower innovation, dreams, and new ideas by creating a seamless bridge between ambition and capital.',
-        moreText1: 'The summit aims to empower entrepreneurs and high-potential businesses, particularly those from underrepresented or emerging markets, by providing them with direct access to investors, funding opportunities, and strategic guidance.',
-        moreText2: 'By cultivating an environment where ambition meets investment, the summit seeks to unlock new avenues for innovation, job creation, and economic progress on a global scale. Today, Investarise drives deal flow for over 100+ global investment networks, helping startups secure the right partnerships to scale.',
-        joinUs: 'Join us at the Investarise Global Summit – Dubai 2026, where ideas meet opportunity.',
+        title: 'Investarise Global',
+        description: 'Investarise Global connects visionary founders with elite investors, venture capital firms, and family offices worldwide. Our mission is to empower innovation, dreams, and new ideas by creating a seamless bridge between ambition and capital.',
+        moreText1: 'The event aims to empower entrepreneurs and high-potential businesses, particularly those from underrepresented or emerging markets, by providing them with direct access to investors, funding opportunities, and strategic guidance.',
+        moreText2: 'By cultivating an environment where ambition meets investment, our mission seeks to unlock new avenues for innovation, job creation, and economic progress on a global scale. Today, Investarise drives deal flow for over 100+ global investment networks, helping startups secure the right partnerships to scale.',
+        joinUs: 'Join us at the Investarise Global – Dubai 2026, where ideas meet opportunity.',
         showMore: 'Show More',
         showLess: 'Show Less',
         stats: '100+',
@@ -26,11 +26,11 @@ const translations = {
     ar: {
         badge: 'رؤية عالمية 2026',
         subtitle: 'رفع الستار..',
-        title: 'قمة إنفسترايز العالمية للمستثمرين',
-        description: 'تربط قمة إنفسترايز العالمية للمستثمرين المؤسسين الرؤيويين مع نخبة المستثمرين وشركات رأس المال الاستثماري والمكاتب العائلية في جميع أنحاء العالم. مهمتنا هي تمكين الابتكار والأحلام والأفكار الجديدة من خلال خلق جسر سلس بين الطموح ورأس المال.',
-        moreText1: 'تهدف القمة إلى تمكين رواد الأعمال والشركات ذات الإمكانات العالية، وخاصة أولئك الذين ينتمون إلى الأسواق الناشئة، من خلال توفير وصول مباشر للمستثمرين، وفرص التمويل، والتوجيه الاستراتيجي.',
-        moreText2: 'من خلال رعاية بيئة يلتقي فيها الطموح مع الاستثمار، تسعى القمة لفتح آفاق جديدة للابتكار، وخلق فرص العمل، والتقدم الاقتصادي على نطاق عالمي. اليوم، تقود إنفسترايز تدفق الصفقات لأكثر من 100+ شبكة استثمار عالمية.',
-        joinUs: 'انضم إلينا في قمة إنفسترايز العالمية – دبي 2026، حيث تلتقي الأفكار بالفرص.',
+        title: 'إنفسترايز العالمية',
+        description: 'تربط إنفسترايز العالمية المؤسسين الرؤيويين مع نخبة المستثمرين وشركات رأس المال الاستثماري والمكاتب العائلية في جميع أنحاء العالم. مهمتنا هي تمكين الابتكار والأحلام والأفكار الجديدة من خلال خلق جسر سلس بين الطموح ورأس المال.',
+        moreText1: 'تهدف الفعالية إلى تمكين رواد الأعمال والشركات ذات الإمكانات العالية، وخاصة أولئك الذين ينتمون إلى الأسواق الناشئة، من خلال توفير وصول مباشر للمستثمرين، وفرص التمويل، والتوجيه الاستراتيجي.',
+        moreText2: 'من خلال رعاية بيئة يلتقي فيها الطموح مع الاستثمار، تسعى رؤيتنا لفتح آفاق جديدة للابتكار، وخلق فرص العمل، والتقدم الاقتصادي على نطاق عالمي. اليوم، تقود إنفسترايز تدفق الصفقات لأكثر من 100+ شبكة استثمار عالمية.',
+        joinUs: 'انضم إلينا في إنفسترايز العالمية – دبي 2026، حيث تلتقي الأفكار بالفرص.',
         showMore: 'عرض المزيد',
         showLess: 'عرض أقل',
         stats: '100+',
@@ -59,12 +59,12 @@ export default function AboutSection({ language }: AboutSectionProps) {
                                 whileInView={{ opacity: 1, x: 0 }}
                                 viewport={{ once: true }}
                                 transition={{ duration: 0.8 }}
-                                className="col-span-12 lg:col-span-8 lg:col-start-3 relative z-10"
+                                className="hidden lg:block lg:col-span-8 lg:col-start-3 relative z-10"
                             >
                                 <div className="rounded-tr-[100px] rounded-bl-[100px] rounded-tl-[30px] rounded-br-[30px] overflow-hidden aspect-[4/5] relative border-[8px] lg:border-[12px] border-white">
                                     <Image
                                         src="/event/event1.webp"
-                                        alt="Global Summit Vision"
+                                        alt="Investarise Global Vision"
                                         fill
                                         className="object-cover transition-transform duration-700 hover:scale-110"
                                     />
@@ -89,9 +89,9 @@ export default function AboutSection({ language }: AboutSectionProps) {
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true }}
                                 transition={{ duration: 0.8, delay: 0.2 }}
-                                className="hidden lg:flex col-span-12 -mt-56 relative z-30 justify-center"
+                                className="col-span-12 lg:-mt-56 relative z-30 flex justify-center"
                             >
-                                <div className="w-[90%] rounded-tl-[100px] rounded-br-[100px] rounded-tr-[30px] rounded-bl-[30px] overflow-hidden aspect-[4/3] relative border-[12px] border-white bg-slate-100">
+                                <div className="w-full lg:w-[90%] rounded-tl-[100px] rounded-br-[100px] rounded-tr-[30px] rounded-bl-[30px] overflow-hidden aspect-[4/3] relative border-[8px] lg:border-[12px] border-white bg-slate-100">
                                     <video
                                         autoPlay
                                         muted

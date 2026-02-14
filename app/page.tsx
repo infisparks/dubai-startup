@@ -27,11 +27,11 @@ export default function Home() {
         {/* Hero Section */}
         <Hero language={language} />
 
-        {/* Brand Logo Ticker */}
-        <BrandLogoTicker />
-
         {/* About Section */}
         <AboutSection language={language} />
+
+        {/* Brand Logo Ticker */}
+        <BrandLogoTicker />
 
 
 
@@ -51,7 +51,6 @@ export default function Home() {
         <EventOverview language={language} />
 
         {/* Event Showcase / Gallery Section */}
-        {/* <EventShowcase language={language} /> */}
 
         {/* Focus Sectors Section */}
         <FocusSectors language={language} />

@@ -13,8 +13,8 @@ interface SpeakersPageProps {
 const translations = {
   en: {
     title: 'Distinguished Speakers',
-    subtitle: 'The collective intelligence driving the 2026 Global Investor Summit.',
-    footer: "Global Investor Summit — Official Speaker Delegation",
+    subtitle: 'The collective intelligence driving Investarise Global 2026.',
+    footer: "Investarise Global — Official Speaker Delegation",
     readMore: 'Bio',
     readLess: 'Close',
     speakers: [
@@ -62,8 +62,8 @@ const translations = {
   },
   ar: {
     title: 'المتحدثون المتميزون',
-    subtitle: 'الذكاء الجماعي الذي يقود قمة المستثمرين العالمية 2026.',
-    footer: 'قمة المستثمرين العالمية — وفد المتحدثين الرسمي',
+    subtitle: 'الذكاء الجماعي الذي يقود إنفسترايز العالمية 2026.',
+    footer: 'إنفسترايز العالمية — وفد المتحدثين الرسمي',
     readMore: 'السيرة الذاتية',
     readLess: 'إغلاق',
     speakers: [
@@ -241,7 +241,7 @@ export default function SpeakersPage({ language = 'en' }: SpeakersPageProps) {
                     <div className="mt-6 pt-5 border-t border-slate-50 flex items-center justify-between">
                       <div className="flex items-center gap-2">
                         <Sparkles size={12} className="text-amber-400/20 group-hover:text-amber-400 transition-colors" />
-                        <span className="text-[8px] font-black text-slate-300 uppercase tracking-widest">Summit 2026</span>
+                        <span className="text-[8px] font-black text-slate-300 uppercase tracking-widest">Global 2026</span>
                       </div>
                       <div className="flex items-center gap-3">
                         <Linkedin size={14} className="text-slate-200 group-hover:text-[#0A66C2] transition-colors cursor-pointer" />

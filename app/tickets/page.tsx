@@ -1,14 +1,39 @@
 "use client"
 
-import { useState } from "react"
-import { motion } from "framer-motion"
-import { Calendar, MapPin, ArrowRight, Clock, AlertCircle } from "lucide-react"
+import { useState, useEffect } from "react"
+import { motion, AnimatePresence } from "framer-motion"
+import { Calendar, MapPin, ArrowRight, Clock, AlertCircle, Sparkles, Zap, Lock } from "lucide-react"
 import Link from "next/link"
 import Header from "@/components/header"
 import Footer from "@/components/footer"
 
 export default function TicketsPage() {
     const [language, setLanguage] = useState<"en" | "ar">("en")
+
+    // Countdown Logic for February 25, 2026
+    const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 })
+
+    useEffect(() => {
+        const targetDate = new Date("2026-02-25T00:00:00").getTime()
+
+        const timer = setInterval(() => {
+            const now = new Date().getTime()
+            const difference = targetDate - now
+
+            if (difference > 0) {
+                setTimeLeft({
+                    days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+                    hours: Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+                    minutes: Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60)),
+                    seconds: Math.floor((difference % (1000 * 60)) / 1000),
+                })
+            } else {
+                clearInterval(timer)
+            }
+        }, 1000)
+
+        return () => clearInterval(timer)
+    }, [])
 
     // Mock Event Data
     const events = [
@@ -51,8 +76,98 @@ export default function TicketsPage() {
                     </motion.div>
                 </div>
 
-                {/* Compact Events List */}
                 <div className="max-w-5xl mx-auto px-6">
+                    {/* Featured Upcoming Event Card - Matching Standard Design */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="relative mb-8 overflow-hidden rounded-2xl bg-white border border-slate-200 shadow-sm hover:shadow-xl transition-all duration-500"
+                    >
+                        <div className="flex flex-col md:flex-row min-h-[220px]">
+
+                            {/* Left Side: Countdown Placeholder (In place of Event Image) */}
+                            <div className="md:w-72 bg-[#034FA3] relative shrink-0 flex flex-col items-center justify-center p-6 overflow-hidden">
+                                {/* Background Accents */}
+                                <div className="absolute inset-0 bg-gradient-to-br from-[#034FA3] to-[#012a57]" />
+                                <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full -mr-16 -mt-16 blur-xl" />
+
+                                <div className="relative z-10 w-full">
+                                    <div className="text-center mb-3">
+                                        <span className="text-[9px] font-black text-blue-200 uppercase tracking-[0.2em]">Launch Reveal</span>
+                                    </div>
+                                    <div className="grid grid-cols-4 gap-2">
+                                        {[
+                                            { val: timeLeft.days, label: 'D' },
+                                            { val: timeLeft.hours, label: 'H' },
+                                            { val: timeLeft.minutes, label: 'M' },
+                                            { val: timeLeft.seconds, label: 'S' }
+                                        ].map((item, i) => (
+                                            <div key={i} className="text-center">
+                                                <div className="h-10 flex items-center justify-center bg-white/10 rounded-lg border border-white/10 mb-1">
+                                                    <span className="text-sm font-black text-white tabular-nums">
+                                                        {String(item.val).padStart(2, '0')}
+                                                    </span>
+                                                </div>
+                                                <div className="text-[7px] font-bold text-blue-200/50 uppercase">
+                                                    {item.label}
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                <div className="absolute top-3 left-3 bg-white/95 text-[#034FA3] px-2.5 py-1 rounded-lg flex flex-col items-center shadow-lg z-20">
+                                    <span className="text-[8px] font-black uppercase tracking-tighter leading-none mb-0.5">TBA</span>
+                                    <span className="text-sm font-black leading-none">2026</span>
+                                </div>
+                            </div>
+
+                            {/* Right Side: Content (Matching standard design with blur) */}
+                            <div className="flex-1 p-6 flex flex-col justify-center relative bg-white">
+                                <div className="flex justify-between items-start mb-3">
+                                    <div className="inline-flex items-center gap-1.5 px-2 py-1 rounded bg-blue-50 text-[#034FA3] border border-blue-100 text-[10px] font-bold uppercase tracking-wide">
+                                        <Zap size={10} className="fill-current" />
+                                        <span>Registration Soon</span>
+                                    </div>
+                                </div>
+
+                                <div className="relative mb-3">
+                                    <h2 className="text-xl font-black text-slate-800 leading-tight blur-[5px] select-none opacity-40">
+                                        Undisclosed Dubai Elite Summit 2026
+                                    </h2>
+                                    <div className="absolute inset-0 flex items-center">
+                                        <div className="inline-flex items-center gap-2 text-[#034FA3] font-black text-xs uppercase tracking-widest bg-blue-50/50 px-3 py-1 rounded-lg border border-blue-100/50">
+                                            <Sparkles size={12} className="text-blue-500" />
+                                            <span>Revealing Soon</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="flex flex-wrap gap-x-6 gap-y-2 text-xs font-bold text-slate-500 mb-4 opacity-30 select-none">
+                                    <div className="flex items-center gap-1.5 blur-[4px]">
+                                        <MapPin className="w-3.5 h-3.5" />
+                                        <span>Prestigious Dubai Venue</span>
+                                    </div>
+                                    <div className="flex items-center gap-1.5 blur-[4px]">
+                                        <Clock className="w-3.5 h-3.5" />
+                                        <span>Full Event Schedule</span>
+                                    </div>
+                                </div>
+
+                                <div className="flex items-center justify-between mt-auto pt-4 border-t border-slate-50">
+                                    <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                                        Stay Tuned
+                                    </span>
+                                    <div className="inline-flex items-center gap-2 text-xs font-black text-blue-400 cursor-not-allowed">
+                                        <span>Details Locked</span>
+                                        <Lock size={12} />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </motion.div>
+
+                    {/* Compact Events List */}
                     <div className="space-y-6">
                         {events.map((event, idx) => (
                             <motion.div

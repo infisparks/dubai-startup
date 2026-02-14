@@ -4,6 +4,7 @@ import { ArrowRight, ChevronDown, MapPin } from "lucide-react"
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion"
 import { useRef, useState, useEffect } from "react"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 
 interface HeroProps {
   language: "en" | "ar"
@@ -11,9 +12,9 @@ interface HeroProps {
 
 const translations = {
   en: {
-    headline: "Investarise Global Investors",
-    headline2: "Summit 2026",
-    tagline: "PITCH • CONNECT • PROSPER",
+    headline: "Investarise Global",
+    headline2: "2026",
+    tagline: "Where Visionary Capital Builds Global Enterprises.",
     statsInvestors: "100+ Investors",
     statsStartups: "250+ Startups & SME's",
     statsSpeakers: "20+ Speakers",
@@ -22,14 +23,14 @@ const translations = {
     scrollHint: "Scroll to discover",
   },
   ar: {
-    headline: "قمة إنفسترايز العالمية للاستثمار",
+    headline: "إنفسترايز العالمية",
     headline2: "2026",
-    tagline: "اعرض • تواصل • ازدهر",
+    tagline: "حيث يبني رأس المال الرؤيوي مشاريع عالمية.",
     statsInvestors: "100+ مستثمر",
     statsStartups: "250+ شركة ناشئة",
     statsSpeakers: "20+ متحدثين",
     ctaPrimary: "سجل الآن",
-    ctaSecondary: "اكتشف القمة",
+    ctaSecondary: "اكتشف المزيد",
     scrollHint: "اكتشف المزيد",
   },
 }
@@ -38,6 +39,7 @@ export default function Hero({ language }: HeroProps) {
   const t = translations[language]
   const containerRef = useRef<HTMLDivElement>(null)
   const isRtl = language === "ar"
+  const router = useRouter()
 
   // Countdown Logic for February 25, 2026
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 })
@@ -106,28 +108,31 @@ export default function Hero({ language }: HeroProps) {
           style={{ opacity }}
           className="flex-1 flex flex-col items-center justify-center text-center max-w-5xl"
         >
+          {/* Headline */}
+          <motion.div
+            initial={{ opacity: 0, y: 5 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, delay: 0.1 }}
+            className="mb-4 lg:mb-6"
+          >
+            <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-black text-white leading-tight tracking-tight">
+              {t.headline}
+            </h1>
+          </motion.div>
+
           {/* Tagline */}
           <motion.div
             initial={{ opacity: 0, y: 5 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3 }}
-            className="mb-3 lg:mb-4"
-          >
-            <span className="text-white/70 text-[8px] lg:text-[10px] font-bold uppercase tracking-[0.4em]">
-              {t.tagline}
-            </span>
-          </motion.div>
-
-          {/* Headline - Further Reduced Font Sizes */}
-          <motion.div
-            initial={{ opacity: 0, y: 5 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3, delay: 0.1 }}
             className="mb-6 lg:mb-8"
           >
-            <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-black text-white leading-tight tracking-tight">
-              {t.headline}
-            </h1>
+            <span
+              className="text-white/90 text-[12px] lg:text-[18px] font-medium tracking-wide italic leading-relaxed"
+              style={{ fontFamily: 'Georgia, "Times New Roman", Times, serif' }}
+            >
+              “{t.tagline}”
+            </span>
           </motion.div>
 
           {/* Stats - Further Reduced Font Sizes */}
@@ -164,7 +169,8 @@ export default function Hero({ language }: HeroProps) {
             className="flex flex-row items-center justify-center gap-3 px-2"
           >
             <Link
-              href="/registration"
+              href="/tickets"
+              onClick={(e) => e.stopPropagation()}
               className="inline-flex items-center justify-center px-8 lg:px-7 py-2.5 lg:py-3 bg-[#034FA3] bg-gradient-to-br from-[#034FA3] to-[#023c7a] text-white font-black text-[11px] lg:text-[12px] uppercase tracking-widest rounded-lg transition-all border border-white/20 hover:shadow-[0_0_30px_rgba(3,79,163,0.6)] hover:-translate-y-0.5 active:scale-95 group relative overflow-hidden whitespace-nowrap"
             >
               <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -176,6 +182,7 @@ export default function Hero({ language }: HeroProps) {
             </Link>
             <a
               href="#about"
+              onClick={(e) => e.stopPropagation()}
               className="px-5 py-2.5 lg:px-7 lg:py-3 bg-white/10 backdrop-blur-md text-white font-black text-[11px] lg:text-[12px] uppercase tracking-widest rounded-lg border border-white/20 hover:bg-white/20 transition-all whitespace-nowrap"
             >
               {t.ctaSecondary}
@@ -248,7 +255,7 @@ export default function Hero({ language }: HeroProps) {
                   {language === 'en' ? 'Dubai, UAE' : 'دبي، الإمارات'}
                 </div>
                 <div className="hidden sm:block text-white/50 text-[7px] font-bold uppercase tracking-widest mt-0.5">
-                  {language === 'en' ? 'Global Investors Summit' : 'قمة المستثمرين العالمية'}
+                  {language === 'en' ? 'Global Investors' : 'المستثمرين العالمية'}
                 </div>
               </div>
             </div>

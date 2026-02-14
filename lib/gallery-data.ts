@@ -1,16 +1,1 @@
-export const galleryImages = [
-    '/gallery/gallery1.JPG',
-    '/gallery/gallery2.JPG',
-    '/gallery/gallery3.jpg',
-    '/gallery/gallery4.JPG',
-    '/gallery/gallery5.JPG',
-    '/gallery/gallery6.JPG',
-    '/gallery/gallery7.JPG',
-    '/gallery/gallery8.JPG',
-    '/gallery/gallery9.JPG',
-    '/gallery/gallery10.JPG',
-    '/gallery/gallery11.JPG',
-    '/gallery/gallery12.JPG',
-    '/gallery/gallery13.JPG',
-    '/gallery/gallery14.jpg',
-];
+export const galleryImages: string[] = [];

@@ -36,8 +36,8 @@ const translations = {
     register: "Register",
     login: "Login",
     logout: "Logout",
-    cta: "Join Summit 2026",
-    tickets: "Tickets",
+    cta: "Join Investarise Global",
+    getTicket: "Get Ticket",
   },
   ar: {
     address: "دبي، الإمارات العربية المتحدة",
@@ -56,8 +56,9 @@ const translations = {
     register: "التسجيل",
     login: "تسجيل الدخول",
     logout: "تسجيل الخروج",
-    cta: "انضم للقمة 2026",
+    cta: "انضم لإنفسترايز العالمية",
     tickets: "تذاكر",
+    getTicket: "احصل على التذكرة",
   },
 }
 
@@ -159,18 +160,11 @@ export default function Header({ language = "en", setLanguage, userEmail }: Head
                     <span>{language === "en" ? "العربية" : "English"}</span>
                   </button>
                   <div className="flex items-center gap-4 ml-2">
-                    {userEmail ? (
+                    {userEmail && (
                       <button onClick={handleLogout} className="text-red-400 hover:text-red-300 transition-colors flex items-center gap-1">
                         <LogOut size={13} />
                         <span>{t.logout}</span>
                       </button>
-                    ) : (
-                      <>
-                        <Link href="/login" className={`transition-colors ${isHomePage && !scrolled ? 'hover:text-white' : 'hover:text-slate-900'}`}>{t.login}</Link>
-                        <Link href="/registration" className="bg-[#034FA3]/20 text-[#034FA3] hover:bg-[#034FA3] hover:text-white px-3 py-1 rounded-md transition-all font-bold">
-                          {t.register}
-                        </Link>
-                      </>
                     )}
                   </div>
                 </div>
@@ -289,13 +283,13 @@ export default function Header({ language = "en", setLanguage, userEmail }: Head
                 <span>{language === "en" ? "العربية" : "English"}</span>
               </button>
               <Link
-                href="/registration"
+                href="/tickets"
                 className={`hidden md:flex items-center gap-2 font-black rounded-lg transition-all transform hover:-translate-y-0.5 active:scale-95 group shadow-sm ${scrolled
                   ? 'bg-[#034FA3] text-white px-3 py-1.5 text-[11px] hover:shadow-[0_0_20px_rgba(3,79,163,0.5)]'
                   : 'bg-white text-[#034FA3] px-5 py-2 text-[12px] hover:bg-white/90 shadow-lg shadow-white/10'
                   }`}
               >
-                <span>{t.register}</span>
+                <span>{t.getTicket}</span>
                 <ChevronDown size={11} className="-rotate-90 group-hover:translate-x-0.5 transition-transform" />
               </Link>
 
@@ -409,15 +403,14 @@ export default function Header({ language = "en", setLanguage, userEmail }: Head
               {/* Bottom Actions */}
               <div className="p-8 bg-white border-t border-slate-200 space-y-4">
                 <Link
-                  href="/registration"
+                  href="/tickets"
                   onClick={() => setMobileMenuOpen(false)}
                   className="flex items-center justify-center gap-3 w-full py-4 bg-[#034FA3] text-white font-black text-xs uppercase tracking-widest rounded-xl shadow-lg shadow-blue-500/10 active:scale-95 transition-all hover:bg-black"
                 >
                   <Sparkles size={14} className="text-amber-400" />
-                  <span>{t.cta}</span>
+                  <span>{t.getTicket}</span>
                 </Link>
-                <div className="grid grid-cols-2 gap-3 text-center">
-                  <Link href="/login" className="py-3.5 text-[11px] font-black uppercase tracking-wider text-slate-700 bg-slate-100 rounded-xl hover:bg-slate-200 transition-all">{t.login}</Link>
+                <div className="grid grid-cols-1 gap-3 text-center">
                   <button
                     onClick={() => {
                       setLanguage(language === "en" ? "ar" : "en")

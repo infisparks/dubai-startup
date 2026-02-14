@@ -12,7 +12,7 @@ interface FooterProps {
 const translations = {
   en: {
     tagline: 'Where Innovation Meets Global Capital',
-    description: 'Join the Investarise Global Investors Summit 2026 — an elite stage connecting visionary game-changers with high-net-worth powerhouses and institutional venture networks.',
+    description: 'Join Investarise Global 2026 — an elite stage connecting visionary game-changers with high-net-worth powerhouses and institutional venture networks.',
     registerNow: 'Register Now',
     company: 'Company',
     platform: 'Platform',
@@ -39,7 +39,7 @@ const translations = {
   },
   ar: {
     tagline: 'حيث يلتقي الابتكار برأس المال العالمي',
-    description: 'انضم إلى قمة إنفسترايز العالمية للاستثمار 2026 — منصة النخبة لربط رواد الأعمال الرؤيويين مع كبار المستثمرين والمؤسسات الاستثمارية.',
+    description: 'انضم إلى إنفسترايز العالمية 2026 — منصة النخبة لربط رواد الأعمال الرؤيويين مع كبار المستثمرين والمؤسسات الاستثمارية.',
     registerNow: 'سجل الآن',
     company: 'الشركة',
     platform: 'المنصة',

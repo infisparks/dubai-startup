@@ -14,7 +14,7 @@ const translations = {
     en: {
         title: 'Institutional Investors',
         subtitle: 'The strategic capital driving global innovation and sustainable growth.',
-        footer: "Global Investor Summit — Official Investor Delegation",
+        footer: "Investarise Global — Official Investor Delegation",
         readMore: 'Credentials',
         readLess: 'Close',
         investors: [
@@ -143,7 +143,7 @@ const translations = {
     ar: {
         title: 'المستثمرون المؤسسيون',
         subtitle: 'رأس المال الاستراتيجي الذي يقود الابتكار العالمي والنمو المستدام.',
-        footer: 'قمة المستثمرين العالمية — وفد المستثمرين الرسمي',
+        footer: 'إنفسترايز العالمية — وفد المستثمرين الرسمي',
         readMore: 'السيرة الذاتية',
         readLess: 'إغلاق',
         investors: [

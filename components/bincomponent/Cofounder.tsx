@@ -1,9 +1,9 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
-import { ChevronDown, Quote, Globe, UserCheck, Sparkles } from 'lucide-react'
+import { ChevronDown, Quote, Globe, UserCheck, Sparkles, ArrowUpRight, ShieldCheck } from 'lucide-react'
 
 interface CoFoundersPageProps {
   language: 'en' | 'ar'
@@ -88,6 +88,33 @@ export default function CoFoundersPage({ language = 'en' }: CoFoundersPageProps)
   const t = translations[language]
   const isRtl = language === 'ar'
   const [expandedId, setExpandedId] = useState<string | null>(null)
+  const [isPaused, setIsPaused] = useState(false)
+  const scrollContainerRef = useRef<HTMLDivElement>(null)
+
+  // Duplicating coFounders for smooth infinite scroll
+  const repeatedCoFounders = [...t.coFounders, ...t.coFounders, ...t.coFounders]
+
+  useEffect(() => {
+    const el = scrollContainerRef.current
+    if (!el) return
+
+    let animationId: number
+    const speed = 0.5 // Scrolling speed
+
+    const animate = () => {
+      if (!isPaused) {
+        if (el.scrollLeft >= el.scrollWidth / 1.5) {
+          el.scrollLeft = 0
+        } else {
+          el.scrollLeft += speed
+        }
+      }
+      animationId = requestAnimationFrame(animate)
+    }
+
+    animationId = requestAnimationFrame(animate)
+    return () => cancelAnimationFrame(animationId)
+  }, [isPaused])
 
   return (
     <section className="relative py-20 bg-slate-50 overflow-hidden" dir={isRtl ? 'rtl' : 'ltr'}>
@@ -124,27 +151,24 @@ export default function CoFoundersPage({ language = 'en' }: CoFoundersPageProps)
           </motion.p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+        {/* Desktop View: Static Grid */}
+        <div className="hidden md:grid grid-cols-3 gap-8 lg:gap-10">
           {t.coFounders.map((founder, index) => (
-            <motion.div
-              key={founder.id}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.1 }}
+            <div
+              key={`${founder.id}-${index}`}
               className="group relative"
             >
               <div className="absolute -top-3 -right-3 w-full h-full bg-slate-100/50 rounded-[2rem] -z-10 group-hover:-top-4 group-hover:-right-4 transition-all duration-500 border border-slate-200" />
 
-              <div className="relative bg-white rounded-[2rem] p-6 sm:p-8 border border-slate-200 shadow-lg overflow-hidden transition-all duration-500">
-                <div className="flex flex-col gap-6 items-center text-center relative z-10">
+              <div className="relative bg-white rounded-[2rem] p-6 sm:p-8 border border-slate-200 shadow-lg overflow-hidden transition-all duration-500 h-[450px] flex flex-col">
+                <div className="flex flex-col gap-6 items-center text-center relative z-10 h-full">
                   <div className="relative shrink-0">
-                    <div className="w-28 h-28 rounded-2xl p-1 bg-slate-50 border border-slate-100 overflow-hidden group-hover:border-slate-300 transition-colors">
+                    <div className="w-24 h-24 rounded-2xl p-1 bg-slate-50 border border-slate-100 overflow-hidden group-hover:border-slate-300 transition-colors">
                       <Image
                         src={founder.image}
                         alt={founder.name}
-                        width={112}
-                        height={112}
+                        width={96}
+                        height={96}
                         className={`w-full h-full rounded-xl object-cover transition-all duration-700 ${founder.imgClass || 'scale-110'}`}
                       />
                     </div>
@@ -154,44 +178,115 @@ export default function CoFoundersPage({ language = 'en' }: CoFoundersPageProps)
                   </div>
 
                   <div className="flex-grow w-full">
-                    <div className="flex flex-col items-center justify-between gap-3 mb-2">
+                    <div className="flex flex-col items-center justify-between gap-2 mb-1">
                       <div>
-                        <h3 className="text-xl font-black text-slate-900 tracking-tight group-hover:text-[#034FA3] transition-colors">
+                        <h3 className="text-xl font-black text-slate-900 tracking-tight group-hover:text-[#034FA3] transition-colors leading-tight">
                           {founder.name}
                         </h3>
-                        <p className="text-[9px] font-bold text-emerald-600 uppercase tracking-[0.2em] mt-0.5">
+                        <p className="text-[9px] font-black text-emerald-600 uppercase tracking-[0.2em] mt-0.5">
                           Executive Board
                         </p>
                       </div>
                     </div>
 
-                    <p className="text-[10px] sm:text-xs font-bold text-slate-400 uppercase tracking-widest leading-relaxed mb-4">
+                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-relaxed mb-4">
                       {founder.role}
                     </p>
 
                     <div className="relative">
-                      <Quote size={16} className="text-slate-100 absolute -top-3 -left-1 -z-10" />
-                      <div className={`text-xs text-slate-500 leading-relaxed text-center font-medium transition-all duration-500 overflow-hidden ${expandedId === founder.id ? 'max-h-[500px]' : 'max-h-[100px]'}`}>
+                      <Quote size={14} className="text-slate-100 absolute -top-2 -left-1 -z-10" />
+                      <div className="text-[12px] text-slate-500 leading-relaxed text-center font-medium line-clamp-6">
                         {founder.bio}
                       </div>
-                      {!expandedId && <div className="absolute bottom-0 left-0 w-full h-8 bg-gradient-to-t from-white to-transparent" />}
+                    </div>
+                  </div>
+
+                  <div className="mt-auto pt-4 border-t border-slate-50 flex items-center justify-between w-full">
+                    <div className="flex items-center gap-2">
+                      <ShieldCheck size={12} className="text-emerald-500/30 group-hover:text-emerald-500 transition-colors" />
+                      <span className="text-[8px] font-black text-slate-300 uppercase tracking-widest leading-none">Global Lead</span>
+                    </div>
+                    <Sparkles size={14} className="text-slate-100 group-hover:text-amber-400 transition-colors" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Mobile View: Auto-Scrolling Ticker */}
+        <div className="md:hidden relative">
+          <div className="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-slate-50 via-slate-50/40 to-transparent z-10 pointer-events-none" />
+          <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-slate-50 via-slate-50/40 to-transparent z-10 pointer-events-none" />
+
+          <div
+            ref={scrollContainerRef}
+            onMouseEnter={() => setIsPaused(true)}
+            onMouseLeave={() => setIsPaused(false)}
+            onTouchStart={() => setIsPaused(true)}
+            onTouchEnd={() => setIsPaused(false)}
+            className="flex flex-nowrap overflow-x-auto no-scrollbar gap-6 py-10 px-4 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+          >
+            {repeatedCoFounders.map((founder, index) => (
+              <div
+                key={`${founder.id}-${index}`}
+                className="group relative flex-shrink-0 w-[280px]"
+              >
+                <div className="absolute -top-3 -right-3 w-full h-full bg-slate-100/50 rounded-[2rem] -z-10 group-hover:-top-4 group-hover:-right-4 transition-all duration-500 border border-slate-200" />
+
+                <div className="relative bg-white rounded-[2rem] p-6 border border-slate-200 shadow-lg overflow-hidden transition-all duration-500 h-[420px] flex flex-col">
+                  <div className="flex flex-col gap-6 items-center text-center relative z-10 h-full">
+                    <div className="relative shrink-0">
+                      <div className="w-24 h-24 rounded-2xl p-1 bg-slate-50 border border-slate-100 overflow-hidden group-hover:border-slate-300 transition-colors">
+                        <Image
+                          src={founder.image}
+                          alt={founder.name}
+                          width={96}
+                          height={96}
+                          className={`w-full h-full rounded-xl object-cover transition-all duration-700 ${founder.imgClass || 'scale-110'}`}
+                        />
+                      </div>
+                      <div className={`absolute -bottom-1.5 -right-1.5 px-2 py-0.5 rounded-md bg-gradient-to-br ${founder.color} text-white text-[7px] font-black uppercase tracking-widest shadow-md`}>
+                        {founder.badge}
+                      </div>
                     </div>
 
-                    <div className="mt-6 flex items-center justify-between">
-                      <button
-                        onClick={() => setExpandedId(expandedId === founder.id ? null : founder.id)}
-                        className="flex items-center gap-1.5 text-[9px] font-black uppercase tracking-widest text-[#034FA3] hover:text-[#c4925f] transition-colors"
-                      >
-                        {expandedId === founder.id ? t.readLess : t.readMore}
-                        <ChevronDown size={12} className={`transition-transform duration-300 ${expandedId === founder.id ? 'rotate-180' : ''}`} />
-                      </button>
-                      <Sparkles size={14} className="text-slate-200" />
+                    <div className="flex-grow w-full">
+                      <div className="flex flex-col items-center justify-between gap-2 mb-1">
+                        <div>
+                          <h3 className="text-lg font-black text-slate-900 tracking-tight group-hover:text-[#034FA3] transition-colors leading-tight">
+                            {founder.name}
+                          </h3>
+                          <p className="text-[8px] font-black text-emerald-600 uppercase tracking-[0.2em] mt-0.5">
+                            Executive Board
+                          </p>
+                        </div>
+                      </div>
+
+                      <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest leading-relaxed mb-4">
+                        {founder.role}
+                      </p>
+
+                      <div className="relative">
+                        <Quote size={14} className="text-slate-100 absolute -top-2 -left-1 -z-10" />
+                        <div className="text-[11px] text-slate-500 leading-relaxed text-center font-medium line-clamp-4">
+                          {founder.bio}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="mt-auto pt-4 border-t border-slate-50 flex items-center justify-between w-full">
+                      <div className="flex items-center gap-2">
+                        <ShieldCheck size={12} className="text-emerald-500/30 group-hover:text-emerald-500 transition-colors" />
+                        <span className="text-[8px] font-black text-slate-300 uppercase tracking-widest leading-none">Global Lead</span>
+                      </div>
+                      <Sparkles size={14} className="text-slate-100 group-hover:text-amber-400 transition-colors" />
                     </div>
                   </div>
                 </div>
               </div>
-            </motion.div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
     </section>
